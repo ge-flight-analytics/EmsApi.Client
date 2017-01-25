@@ -1,9 +1,9 @@
-# Python EMS API Tools and Documentation
+# Python - EMS API Tools and Documentation
 ## emsPy
 
 A Python client for the EMS API.
 
-Dependency: 
+Dependencies: 
 * numpy 1.11
 * pandas 0.18
 * networkx 1.11
