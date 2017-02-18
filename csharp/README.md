@@ -1,5 +1,12 @@
 # C\# EMS API Tools and Documentation
 
+## Current Status
+* Only the Ems System routes are implemented, since they were the easiest to work through as a start. 
+* It's fairly straightforward to implement new routes (see section below).
+
+## C\# DTO classes
+The C\# DTO classes are available upon request.
+
 ## How to get started
 * Clone the repository and build EmsApi.Client with Visual Studio 2015 or 2017.
 * Include the EmsApi.Client assmembly in your project.
@@ -16,7 +23,7 @@
 * Figure out if there are threading issues with the authentication class.
 * Add unit test project to test EmsApiService (would work similar to how the dotnet core example works now)
 * Add some reasonable timeouts and handling for authentication errors.
-* Add DTO objects
+* Add DTO classes
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI it never times out (or takes a long time).
