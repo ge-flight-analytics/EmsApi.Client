@@ -1,10 +1,3 @@
-# C\# EMS API Tools and Documentation
-
-## How to get started
-* Clone the repository and build EmsApi.Client with Visual Studio 2015 or 2017.
-* Include the EmsApi.Client assmembly in your project.
-* Take a look at the examples for help, the DotnetCoreConsole example is intended to be very straightforward.
-
 ## How to implement new routes
 * Add model objects for the responses to V2/Model
 * Add the route definitions to Service/IEmsApi.cs

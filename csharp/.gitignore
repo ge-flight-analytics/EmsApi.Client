@@ -1,0 +1,6 @@
+$RECYCLE.BIN
+.vs
+.suo
+packages/
+obj/
+bin/
