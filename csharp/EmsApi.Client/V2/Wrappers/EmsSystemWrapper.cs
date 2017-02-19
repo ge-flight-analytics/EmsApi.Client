@@ -83,12 +83,13 @@ namespace EmsApi.Client.V2.Wrappers
             return m_api.PingEmsSystem( id );
         }
 
-        /// <summary>
-        /// Returns true if the EMS system is online.
-        /// </summary>
-        /// <param name="id">
-        /// The EMS 
-        public bool Ping( int id )
+		/// <summary>
+		/// Returns true if the EMS system is online.
+		/// </summary>
+		/// <param name="id">
+		/// The EMS system id to check.
+		/// </param>
+		public bool Ping( int id )
         {
             return PingAsync( id ).Result;
         }
