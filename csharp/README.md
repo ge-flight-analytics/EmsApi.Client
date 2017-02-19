@@ -17,7 +17,7 @@ The C\# DTO classes are available upon request.
 * Clone the repository.
 * In the EmsApi.Client directory, open EmsApi.Client.sln for Visual Studio 2017, or EmsApi.Client.Vs2015.sln for Visual Studio 2015.
 * Build the project, and the generated assembly will end up in EmsApi.Client\bin.
-* Build and examine the example projects using Examples\EmsApi.Examples.sln
+* Build and examine the example projects in Examples\EmsApi.Example.sln (or EmsApi.Example.Vs2015.sln for VS 2015).
 * Include the EmsApi.Client.dll assembly in your project.
 	* You will also need ot include nuget references for "System.Net.Http 4.3" and "Refit 3.0.1", until EmsApi.Client.dll is also diributed as a nuget package.
 	* The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1.
