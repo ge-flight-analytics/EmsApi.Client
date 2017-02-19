@@ -1,5 +1,11 @@
 # C\# EMS API Tools and Documentation
 
+## Prerequisites
+The build the projects, you will need either:
+* VS2015 with Update 5 and the latest version of .NET core tooling (preview 2): 
+	* https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689
+* VS2017 Release Candidate, with the cross-platform development package installed (.net core tools).
+
 ## Current Status
 * Only the Ems System routes are implemented, since they were the easiest to work through as a start. 
 * It's fairly straightforward to implement new routes (see section below).
@@ -8,8 +14,11 @@
 The C\# DTO classes are available upon request.
 
 ## How to get started
-* Clone the repository and build EmsApi.Client with Visual Studio 2015 or 2017.
-* Include the EmsApi.Client assmembly in your project.
+* Clone the repository.
+* Open EmsApi.Client.sln for Visual Studio 2017, or EmsApi.Client.Vs2015.sln for Visual Studio 2015.
+* Build the project, the generated assembly will end up in EmsApi.Client\bin.
+* Include the generated assembly in your project.
+	* You will also need to include a nuget reference to "refit 3.0.1", until this library is also diributed as a nuget package.
 * Take a look at the examples for help, the DotnetCoreConsole example is intended to be very straightforward.
 
 ## How to implement new routes
@@ -23,6 +32,8 @@ The C\# DTO classes are available upon request.
 * Figure out if there are threading issues with the authentication class.
 * Add unit test project to test EmsApiService (would work similar to how the dotnet core example works now)
 * Add some reasonable timeouts and handling for authentication errors.
+* Fix VS2015 project for DotnetCoreConsole example. It does not exist right now. It needs to use xproj format.
+* The client library project files for VS2015 and VS2017 use different formats. The VS2017 format automatically includes everything under the directory unless it is explicitly told to ignore it. The VS2015 project must explicitly list the cs files in the csproj file. Therefore, when files are added or moved right now, the VS2015 project will need to be updated.
 * Add DTO classes
 
 ## Bugs

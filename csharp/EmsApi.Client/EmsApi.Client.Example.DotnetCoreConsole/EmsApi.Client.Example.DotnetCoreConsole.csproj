@@ -6,7 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmsApi.Client\EmsApi.Client.csproj" />
+    <PackageReference Include="refit" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EmsApi.Client">
+      <HintPath>..\EmsApi.Client\bin\EmsApi.Client.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

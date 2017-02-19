@@ -4,3 +4,4 @@ $RECYCLE.BIN
 packages/
 obj/
 bin/
+project.lock.json
