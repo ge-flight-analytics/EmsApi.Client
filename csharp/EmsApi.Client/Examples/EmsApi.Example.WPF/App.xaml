@@ -1,7 +1,6 @@
-﻿<Application x:Class="EmsApi.Client.Example.WPF.App"
+﻿<Application x:Class="EmsApi.Example.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:EmsApi.Client.Example.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

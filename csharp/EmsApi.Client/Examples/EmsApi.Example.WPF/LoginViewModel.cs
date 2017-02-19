@@ -1,5 +1,5 @@
 ﻿
-namespace EmsApi.Client.Example.WPF
+namespace EmsApi.Example.WPF
 {
     public class LoginViewModel
     {

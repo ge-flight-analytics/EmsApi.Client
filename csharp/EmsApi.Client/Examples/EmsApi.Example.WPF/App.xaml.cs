@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using EmsApi.Client.V2;
 
-namespace EmsApi.Client.Example.WPF
+namespace EmsApi.Example.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

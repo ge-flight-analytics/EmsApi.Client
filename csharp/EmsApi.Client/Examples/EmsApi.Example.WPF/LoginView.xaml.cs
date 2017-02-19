@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace EmsApi.Client.Example.WPF
+namespace EmsApi.Example.WPF
 {
     /// <summary>
     /// Interaction logic for LoginView.xaml

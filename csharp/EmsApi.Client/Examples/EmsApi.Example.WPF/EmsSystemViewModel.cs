@@ -1,6 +1,6 @@
 ﻿using EmsApi.Client.V2.Model;
 
-namespace EmsApi.Client.Example.WPF
+namespace EmsApi.Example.WPF
 {
     /// <summary>
     /// The ViewModel for an EMS system accessed via the API.

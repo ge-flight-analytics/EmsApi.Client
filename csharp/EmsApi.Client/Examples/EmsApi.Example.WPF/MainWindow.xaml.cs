@@ -4,7 +4,7 @@ using System.Windows;
 
 using EmsApi.Client.V2.Model;
 
-namespace EmsApi.Client.Example.WPF
+namespace EmsApi.Example.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -31,6 +31,5 @@ namespace EmsApi.Client.Example.WPF
                 m_emsSystems.Add( new EmsSystemViewModel( ems, server ) );
             }
         }
-
     }
 }

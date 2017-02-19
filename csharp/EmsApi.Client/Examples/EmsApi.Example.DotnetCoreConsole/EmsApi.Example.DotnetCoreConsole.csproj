@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <Reference Include="EmsApi.Client">
-      <HintPath>..\EmsApi.Client\bin\EmsApi.Client.dll</HintPath>
+      <HintPath>..\..\EmsApi.Client\bin\EmsApi.Client.dll</HintPath>
     </Reference>
   </ItemGroup>
 

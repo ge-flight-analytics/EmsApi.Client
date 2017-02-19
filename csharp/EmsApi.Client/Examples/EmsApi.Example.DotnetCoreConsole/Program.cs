@@ -2,7 +2,7 @@
 using EmsApi.Client.V2;
 using EmsApi.Client.V2.Model;
 
-namespace EmsApi.Client.Example.DotnetCoreConsole
+namespace EmsApi.Example.DotnetCoreConsole
 {
     /// <summary>
     /// Example that demonstrates using the EMS API from a .NET core console application.
@@ -11,7 +11,8 @@ namespace EmsApi.Client.Example.DotnetCoreConsole
     {
         static void Main(string[] args)
         {
-            var config = new EmsApiServiceConfiguration( EmsApiEndpoints.Beta );
+			Console.WriteLine( "Hello from .NET core." );
+			var config = new EmsApiServiceConfiguration( EmsApiEndpoints.Beta );
 
             // Allow the user to override the endpoint, but provide a default.
             Console.Write( string.Format( "Enter Endpoint URL [{0}]: ", config.Endpoint ) );
