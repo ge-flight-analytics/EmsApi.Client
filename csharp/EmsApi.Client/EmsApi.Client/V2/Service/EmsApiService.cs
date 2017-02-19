@@ -26,8 +26,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            // This intentionally does not use the property so we don't try
-            // to validate.
             m_config = new EmsApiServiceConfiguration();
 			m_authCallbacks = new CallbackDictionary();
             Initialize();
@@ -39,7 +37,8 @@ namespace EmsApi.Client.V2
         /// </summary>
 		public EmsApiService( EmsApiServiceConfiguration config )
         {
-            ServiceConfig = config;
+			ValidateConfigOrThrow( config );
+			m_config = config;
 			m_authCallbacks = new CallbackDictionary();
 			Initialize();
 		}
@@ -61,6 +60,13 @@ namespace EmsApi.Client.V2
 			EmsSystems = new EmsSystemWrapper( m_api );
 		}
 
+		private void ValidateConfigOrThrow( EmsApiServiceConfiguration config )
+		{
+			string error;
+			if( !config.Validate( out error ) )
+				throw new InvalidApiConfigurationException( error );
+		}
+
 		/// <summary>
 		/// Gets or sets the current service configuration. If the endpoint or authorization
 		/// properties change, <seealso cref="RequestAuthentication"/> should be called.
@@ -70,10 +76,7 @@ namespace EmsApi.Client.V2
             get { return m_config; }
             set
             {
-                string error;
-                if( !value.Validate( out error ) )
-                    throw new InvalidApiConfigurationException( error );
-
+				ValidateConfigOrThrow( value );
 				m_config = value;
 				m_apiClient.BaseAddress = new Uri( m_config.Endpoint );
 				m_authHandler.UpdateConfiguration( m_config );
