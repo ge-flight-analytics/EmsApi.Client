@@ -11,38 +11,91 @@ namespace EmsApi.Client.Example.WPF
         public App()
         {
             // Initialize logging and other application wide components.
+			s_emsApi = new EmsApiService();
+			s_emsApi.RegisterAuthFailedCallback( AuthenticationFailed );
         }
 
-        protected override void OnStartup( StartupEventArgs e )
+        /// <summary>
+        /// The application wide EMS API service. This property is lazy loaded, and
+		/// accessing it the first time will show the login dialog and set the corresponding
+		/// configuration.
+        /// </summary>
+        public static EmsApiService EmsApi
         {
-            // We need to get login information before connecting to the API.
-            var config = new EmsApiServiceConfiguration();
+            get
+            {
+                // Show the connection dialog until we get authenticated or give up.
+                while( !s_emsApi.Authenticated )
+                {
+                    var config = ShowConnectionDialog();
+					if( config == null )
+					{
+						// Shut down if the user cancelled login.
+						// Note: We do a hard exit here so whatever code is waiting on a login
+						// doesn't have to handle the fact that the API might be null.
+						if( s_emsApi != null )
+							s_emsApi.Dispose();
+
+						System.Environment.Exit( 0 );
+						return null;
+					}
+
+					try
+					{
+						s_emsApi.ServiceConfig = config;
+					}
+					catch( InvalidApiConfigurationException ex )
+					{
+						// Notify the user that some login configuration is wrong, and retry.
+						LoginValidationFailed( ex.Message );
+						continue;
+					}
+
+                    s_emsApi.RequestAuthentication();
+                }   
+
+                return s_emsApi;
+            }
+        }
+
+		private void AuthenticationFailed( string error )
+		{
+			string message = string.Format( "{0}\n\nPlease re-enter credentials, or press cancel to close the application.", error );
+			MessageBox.Show( message, "EMS API Authentication Failed", MessageBoxButton.OK, MessageBoxImage.Error );
+		}
+
+		private static void LoginValidationFailed( string error )
+		{
+			string message = string.Format( "{0}\n\nPress OK to retry.", error );
+			MessageBox.Show( message, "EMS API Configuration Validation Failed", MessageBoxButton.OK, MessageBoxImage.Error );
+		}
+
+		private static EmsApiServiceConfiguration ShowConnectionDialog()
+        {
             var viewModel = new LoginViewModel { Endpoint = EmsApiEndpoints.Beta };
 
             var login = new LoginView( viewModel );
             bool? result = login.ShowDialog();
 
-            // Shut down if we don't get login info.
-            if( !result.HasValue && result.Value )
-                Shutdown();
+            if( !result.HasValue || !result.Value )
+                return null;
 
-            // In a real application you would probably want to bind these
-            // together in the viewmodel, instead of reading back here.
-            config.Endpoint = viewModel.Endpoint;
-            config.UserName = viewModel.Username;
-            config.Password = viewModel.Password;
-            
-            EmsApi = new EmsApiService( config );
-
-            base.OnStartup( e );
+            return new EmsApiServiceConfiguration
+            {
+                Endpoint = viewModel.Endpoint,
+                UserName = viewModel.Username,
+                Password = viewModel.Password
+            };
         }
 
         protected override void OnExit( ExitEventArgs e )
         {
-            EmsApi.Dispose();
+            if( s_emsApi != null )
+                s_emsApi.Dispose();
+
             base.OnExit( e );
         }
 
-        public static EmsApiService EmsApi;
+        private static EmsApiService s_emsApi;
     }
 }

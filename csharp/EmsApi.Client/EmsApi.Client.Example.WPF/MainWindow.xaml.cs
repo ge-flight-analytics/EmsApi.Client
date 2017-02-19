@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows;
 
 using EmsApi.Client.V2.Model;
@@ -12,22 +13,24 @@ namespace EmsApi.Client.Example.WPF
     {
         public MainWindow()
         {
-            // In a large application you would not want to access these things here,
-            // instead it would make more sense to use a DI container and load these
-            // up in a ViewModel class.
-            var api = App.EmsApi;
+            InitializeComponent();
+            m_emsSystems = new ObservableCollection<EmsSystemViewModel>();
+            DataContext = m_emsSystems;
+            Loaded += ( s, e ) => GetEmsSystems();
+        }
 
+        private ObservableCollection<EmsSystemViewModel> m_emsSystems;
+
+        private void GetEmsSystems()
+        {
             // Get each ems system and extended server information, and assign the
             // list of them as the data context.
-            var systemVms = new List<EmsSystemViewModel>();
             foreach( EmsSystem ems in App.EmsApi.EmsSystems.GetAll() )
             {
                 EmsSystemInfo server = App.EmsApi.EmsSystems.GetSystemInfo( ems.Id );
-                systemVms.Add( new EmsSystemViewModel( ems, server ) );
+                m_emsSystems.Add( new EmsSystemViewModel( ems, server ) );
             }
-
-            DataContext = systemVms;
-            InitializeComponent();
         }
+
     }
 }

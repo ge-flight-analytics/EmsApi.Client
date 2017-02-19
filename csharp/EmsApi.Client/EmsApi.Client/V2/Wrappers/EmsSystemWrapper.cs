@@ -20,9 +20,11 @@ namespace EmsApi.Client.V2.Wrappers
         /// <summary>
         /// Returns all EMS systems connected to the API endpoint that the user has access to.
         /// </summary>
-        public IList<EmsSystem> GetAll()
+        public IEnumerable<EmsSystem> GetAll()
         {
-            return GetAllAsync().Result.ToList();
+            var task = GetAllAsync();
+            var result = task.Result;
+            return result;
         }
 
         /// <summary>

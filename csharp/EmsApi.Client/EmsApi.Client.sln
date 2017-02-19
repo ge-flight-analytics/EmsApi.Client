@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsApi.Client", "EmsApi.Client\EmsApi.Client.csproj", "{F924F980-8D7A-4616-8EEB-D5336C14BBED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsApi.Client.Example.DotnetCoreConsole", "EmsApi.Client.Example.DotnetCoreConsole\EmsApi.Client.Example.DotnetCoreConsole.csproj", "{DB02A860-2C89-41C3-882F-5318AD1E9553}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F924F980-8D7A-4616-8EEB-D5336C14BBED} = {F924F980-8D7A-4616-8EEB-D5336C14BBED}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7B2D7F6-0AA5-4260-A913-8FC87769EE93}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsApi.Client.Example.WPF", "EmsApi.Client.Example.WPF\EmsApi.Client.Example.WPF.csproj", "{B9969412-2D10-46BD-8EFC-48EA4F5E2061}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F924F980-8D7A-4616-8EEB-D5336C14BBED} = {F924F980-8D7A-4616-8EEB-D5336C14BBED}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

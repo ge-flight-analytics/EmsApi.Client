@@ -5,3 +5,4 @@ packages/
 obj/
 bin/
 project.lock.json
+EmsApi.Client.Vs2015.nuget.targets

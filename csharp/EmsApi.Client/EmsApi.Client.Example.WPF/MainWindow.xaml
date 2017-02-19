@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EmsApi.Client.Example.WPF"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Connected EMS Systems" Height="350" Width="525">
     <DockPanel LastChildFill="True">
-        <ListView>
+        <ListView ItemsSource="{Binding}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="25" DisplayMemberBinding="{Binding Id}" />

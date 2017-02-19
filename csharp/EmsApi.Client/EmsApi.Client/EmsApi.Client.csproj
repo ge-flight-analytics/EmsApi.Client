@@ -10,6 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="EmsApi.Client.Vs2015.nuget.targets" />
+    <None Remove="project.json" />
+    <None Remove="project.lock.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="refit" Version="3.0.1" />
   </ItemGroup>
 

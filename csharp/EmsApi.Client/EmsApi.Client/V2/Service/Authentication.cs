@@ -11,24 +11,20 @@ namespace EmsApi.Client.V2
 {
     internal class Authentication
     {
-        internal class SecurityConstants
-        {
-            public const string GrantTypePassword = "password";
-            public const string GrantTypeTrusted = "trusted";
-            public const string Scheme = "Bearer";
-        }
-
         /// <summary>
         /// Handles authentication requests for API calls. This class will request authentication
         /// tokens when necessary, and attach the token to the header of every other request.
         /// </summary>
+        /// <remarks>
+        /// Because authentication is not attempted until the first time the service is accessed,
+        /// we provide a callback for authentication errors instead of throwing an exception, since
+        /// it can come at an unexpected time for the client.
+        /// </remarks>
         internal class EmsApiTokenHandler : HttpClientHandler, IDisposable
         {
             public EmsApiTokenHandler( EmsApiServiceConfiguration serviceConfig )
             {
-                m_serviceConfig = serviceConfig;
-                m_tokenExpiration = DateTime.UtcNow;
-                m_authUrl = string.Format( "{0}/token", m_serviceConfig.Endpoint );
+				UpdateConfiguration( serviceConfig );
             }
 
             private string m_authUrl;
@@ -37,15 +33,53 @@ namespace EmsApi.Client.V2
             private DateTime m_tokenExpiration;
             private EmsApiServiceConfiguration m_serviceConfig;
 
-            protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+            /// <summary>
+            /// Returns true if the client is currently authenticated.
+            /// </summary>
+            public bool Authenticated { get; private set; }
+
+            /// <summary>
+            /// Fired to signal that authentication has failed for the current request.
+            /// </summary>
+            public event EventHandler<AuthenticationFailedEventArgs> AuthenticationFailed;
+
+            /// <summary>
+            /// Requests a new authentication token immediately.
+            /// </summary>
+            public bool Authenticate()
+            {
+                string error;
+                if( GetNewBearerToken( out error ) )
+                {
+                    Authenticated = true;
+                    return true;
+                }
+
+				// Notify listerners of authentication failure.
+				OnAuthenticationFailed( new AuthenticationFailedEventArgs( error ) );
+
+                Authenticated = false;
+                return false;
+            }
+
+			public void UpdateConfiguration( EmsApiServiceConfiguration config )
+			{
+				m_serviceConfig = config;
+				m_authUrl = string.Format( "{0}/token", m_serviceConfig.Endpoint );
+
+				// Set the token to invalid in case we need to use different authentication now.
+				m_tokenExpiration = DateTime.UtcNow;
+			}
+
+            protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
             {
                 // Todo: How do we account for race conditions when retrieving a token?
-                if( !IsTokenValid() )
-                    await GetNewBearerToken().ConfigureAwait( false );
+                if( !IsTokenValid() && !Authenticate() )
+                    return new Task<HttpResponseMessage>( () => new HttpResponseMessage( System.Net.HttpStatusCode.Unauthorized ) );
 
-                // Apply our token to the header.
+                // Apply our auth token to the header.
                 request.Headers.Authorization = new AuthenticationHeaderValue( SecurityConstants.Scheme, m_authToken );
-                return await base.SendAsync( request, cancellationToken ).ConfigureAwait( false );
+                return base.SendAsync( request, cancellationToken );
             }
 
             private bool IsTokenValid()
@@ -53,8 +87,10 @@ namespace EmsApi.Client.V2
                 return DateTime.UtcNow < m_tokenExpiration;
             }
 
-            private async Task GetNewBearerToken()
+            private bool GetNewBearerToken( out string error )
             {
+                error = null;
+
                 // We use a separate http client for authentication requests that should only
                 // be loaded once.
                 if( m_authClient == null )
@@ -67,22 +103,31 @@ namespace EmsApi.Client.V2
                     { "password", m_serviceConfig.Password }
                 } );
 
-                HttpResponseMessage response = await m_authClient.PostAsync( m_authUrl, content );
-                if( !response.IsSuccessStatusCode )
+				// Regardless of if we succeed or fail the call, the returned structure will be a chunk of JSON.
+                HttpResponseMessage response = m_authClient.PostAsync( m_authUrl, content ).Result;
+				string rawResult = response.Content.ReadAsStringAsync().Result;
+				JObject result = JObject.Parse( rawResult );
+
+				if( !response.IsSuccessStatusCode )
                 {
-                    throw new UnauthorizedAccessException( string.Format( "Unable to retrieve EMS API token. Status: {0}, Response: {1}",
-                        response.StatusCode, response.Content.ReadAsStringAsync().Result ) );
+					string description = result.GetValue( "error_description" ).ToString();
+                    error = string.Format( "Unable to retrieve EMS API bearer token: {0}", description );
+                    return false;
                 }
 
-                string rawResult = await response.Content.ReadAsStringAsync();
-
-                JObject result = JObject.Parse( rawResult );
                 string token = result.GetValue( "access_token" ).ToString();
                 int expiresIn = result.GetValue( "expires_in" ).ToObject<int>();
 
                 // Stash the new token and keep track of when we expire.
                 m_authToken = token;
                 m_tokenExpiration = DateTime.UtcNow.AddSeconds( expiresIn );
+                return true;
+            }
+
+            private void OnAuthenticationFailed( AuthenticationFailedEventArgs e )
+            {
+                if( AuthenticationFailed != null )
+                    AuthenticationFailed( this, e );
             }
 
             protected override void Dispose( bool disposing )
@@ -92,6 +137,23 @@ namespace EmsApi.Client.V2
 
                 base.Dispose( disposing );
             }
+        }
+
+        internal class SecurityConstants
+        {
+            public const string GrantTypePassword = "password";
+            public const string GrantTypeTrusted = "trusted";
+            public const string Scheme = "Bearer";
+        }
+
+        internal class AuthenticationFailedEventArgs : EventArgs
+        {
+            public AuthenticationFailedEventArgs( string message )
+            {
+                Message = message;
+            }
+
+            public string Message { get; private set; }
         }
     }
 }
