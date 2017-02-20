@@ -16,6 +16,8 @@ namespace EmsApi.Example.DotnetFrameworkConsole
 		{
 			Console.WriteLine( "Hello from .NET framework." );
 			var config = new EmsApiServiceConfiguration( EmsApiEndpoints.Beta );
+			config.ThrowExceptionOnAuthFailure = true;
+			config.ThrowExceptionOnApiFailure = true;
 
 			// Allow the user to override the endpoint, but provide a default.
 			Console.Write( string.Format( "Enter Endpoint URL [{0}]: ", config.Endpoint ) );
