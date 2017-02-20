@@ -41,12 +41,12 @@ namespace EmsApi.Client.V2
     /// </summary>
     public class InvalidApiConfigurationException : EmsApiServiceException
     {
-		/// <summary>
-		/// Thrown when the <seealso cref="EmsApiServiceConfiguration"/> is invalid.
-		/// </summary>
-		/// <param name="why">
-		/// The reason why the configuration is invalid.
-		/// </param>
+        /// <summary>
+        /// Thrown when the <seealso cref="EmsApiServiceConfiguration"/> is invalid.
+        /// </summary>
+        /// <param name="why">
+        /// The reason why the configuration is invalid.
+        /// </param>
         public InvalidApiConfigurationException( string why )
             : base( string.Format( "The EMS API service configuration is not valid: {0}", why ), innerException: null ) { }
     }

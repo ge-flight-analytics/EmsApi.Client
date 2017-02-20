@@ -6,10 +6,12 @@
 
 ## Prerequisites
 To build the projects, you will need either:
-* Visual Studio 2015 with Update 5 and the latest version of .NET core tooling (preview 2).
-	* [MicrosoftASPNETandWebTools-9689](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
+* Visual Studio 2015 with Update 5
+	* [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
+	* EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
+		* Spaces for indentation (4 spaces per indentation).
+		* Lines must end in crlf with no trailing whitespace.
 * Visual Studio 2017 Release Candidate, with the cross-platform development package installed (.net core tools).
-* All projects should work on the Community edition of Visual Studio, but it has not been tested.
 
 ## Try out the examples
 * Clone the repository.
@@ -56,6 +58,7 @@ The C\# DTO classes are available upon request.
     * Specifically if there's a problem with race conditions when getting a new token.
 * Add unit test project (would work similar to how the dotnet core example works now)
 * The client library project files for VS2015 and VS2017 use different formats. The VS2017 format automatically includes everything under the directory unless it is explicitly told to ignore it. The VS2015 project must explicitly list the cs files in the csproj file. Therefore, when files are added or moved right now, the VS2015 project will need to be updated.
+* Test to see if everything builds on VS2015 and VS2017 community editions.
 * Create a script for building library and example with dotnet.exe
 * Create a dotnet core docker example.
 * Create a dotnet framework docker example.

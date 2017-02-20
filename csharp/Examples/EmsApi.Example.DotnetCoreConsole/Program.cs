@@ -11,8 +11,8 @@ namespace EmsApi.Example.DotnetCoreConsole
     {
         static void Main(string[] args)
         {
-			Console.WriteLine( "Hello from .NET core." );
-			var config = new EmsApiServiceConfiguration( EmsApiEndpoints.Beta );
+            Console.WriteLine( "Hello from .NET core." );
+            var config = new EmsApiServiceConfiguration( EmsApiEndpoints.Beta );
             config.ThrowExceptionOnAuthFailure = true;
             config.ThrowExceptionOnApiFailure = true;
 

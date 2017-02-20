@@ -24,7 +24,7 @@ namespace EmsApi.Client.V2
         {
             public EmsApiTokenHandler( EmsApiServiceConfiguration serviceConfig )
             {
-				UpdateConfiguration( serviceConfig );
+                UpdateConfiguration( serviceConfig );
             }
 
             private string m_authUrl;
@@ -55,29 +55,29 @@ namespace EmsApi.Client.V2
                     return true;
                 }
 
-				// Notify listerners of authentication failure.
-				Authenticated = false;
-				OnAuthenticationFailed( new AuthenticationFailedEventArgs( error ) );
+                // Notify listerners of authentication failure.
+                Authenticated = false;
+                OnAuthenticationFailed( new AuthenticationFailedEventArgs( error ) );
                 return false;
             }
 
-			public void UpdateConfiguration( EmsApiServiceConfiguration config )
-			{
-				m_serviceConfig = config;
-				m_authUrl = string.Format( "{0}/token", m_serviceConfig.Endpoint );
+            public void UpdateConfiguration( EmsApiServiceConfiguration config )
+            {
+                m_serviceConfig = config;
+                m_authUrl = string.Format( "{0}/token", m_serviceConfig.Endpoint );
 
-				// Set the token to invalid in case we need to use different authentication now.
-				m_tokenExpiration = DateTime.UtcNow;
-			}
+                // Set the token to invalid in case we need to use different authentication now.
+                m_tokenExpiration = DateTime.UtcNow;
+            }
 
-			protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
-			{
-				// Todo: How do we account for race conditions when retrieving a token?
+            protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+            {
+                // Todo: How do we account for race conditions when retrieving a token?
 
-				// Even if we fail to authenticate, we need to send the request or other code might
-				// be stuck awaiting the send.
-				if( !IsTokenValid() && !Authenticate() )
-					return base.SendAsync( request, cancellationToken );
+                // Even if we fail to authenticate, we need to send the request or other code might
+                // be stuck awaiting the send.
+                if( !IsTokenValid() && !Authenticate() )
+                    return base.SendAsync( request, cancellationToken );
 
                 // Apply our auth token to the header.
                 request.Headers.Authorization = new AuthenticationHeaderValue( SecurityConstants.Scheme, m_authToken );
@@ -105,14 +105,14 @@ namespace EmsApi.Client.V2
                     { "password", m_serviceConfig.Password }
                 } );
 
-				// Regardless of if we succeed or fail the call, the returned structure will be a chunk of JSON.
+                // Regardless of if we succeed or fail the call, the returned structure will be a chunk of JSON.
                 HttpResponseMessage response = m_authClient.PostAsync( m_authUrl, content ).Result;
-				string rawResult = response.Content.ReadAsStringAsync().Result;
-				JObject result = JObject.Parse( rawResult );
+                string rawResult = response.Content.ReadAsStringAsync().Result;
+                JObject result = JObject.Parse( rawResult );
 
-				if( !response.IsSuccessStatusCode )
+                if( !response.IsSuccessStatusCode )
                 {
-					string description = result.GetValue( "error_description" ).ToString();
+                    string description = result.GetValue( "error_description" ).ToString();
                     error = string.Format( "Unable to retrieve EMS API bearer token: {0}", description );
                     return false;
                 }

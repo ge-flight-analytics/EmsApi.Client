@@ -1,24 +1,24 @@
 ﻿
 namespace EmsApi.Client.V2
 {
-	/// <summary>
-	/// The configuration to use when talking to the EMS API. This may be
-	/// modified after the <seealso cref="EmsApiService"/> has been created
-	/// by setting the <seealso cref="EmsApiService.ServiceConfig"/> property.
-	/// </summary>
+    /// <summary>
+    /// The configuration to use when talking to the EMS API. This may be
+    /// modified after the <seealso cref="EmsApiService"/> has been created
+    /// by setting the <seealso cref="EmsApiService.ServiceConfig"/> property.
+    /// </summary>
     public class EmsApiServiceConfiguration
     {
-		/// <summary>
-		/// Creates a new instance of the configuration with the given endpoint.
-		/// </summary>
-		/// <param name="apiEndpoint">
-		/// The API endpoint to connect to. If this is not specified, a default
-		/// value will be used.
-		/// </param>
+        /// <summary>
+        /// Creates a new instance of the configuration with the given endpoint.
+        /// </summary>
+        /// <param name="apiEndpoint">
+        /// The API endpoint to connect to. If this is not specified, a default
+        /// value will be used.
+        /// </param>
         public EmsApiServiceConfiguration( string apiEndpoint = EmsApiEndpoints.Default )
         {
             Endpoint = apiEndpoint;
-			ThrowExceptionOnAuthFailure = false;
+            ThrowExceptionOnAuthFailure = false;
         }
 
         /// <summary>
@@ -44,20 +44,20 @@ namespace EmsApi.Client.V2
         /// </remarks>
         public string TrustedToken { get; set; }
 
-		/// <summary>
-		/// When true, the <seealso cref="EmsApiService"/> will throw an exception for
-		/// authentication failures. The default behavior is to only fire a callback,
-		/// but this might not always be desirable.
-		/// </summary>
-		public bool ThrowExceptionOnAuthFailure { get; set; }
+        /// <summary>
+        /// When true, the <seealso cref="EmsApiService"/> will throw an exception for
+        /// authentication failures. The default behavior is to only fire a callback,
+        /// but this might not always be desirable.
+        /// </summary>
+        public bool ThrowExceptionOnAuthFailure { get; set; }
 
-		/// <summary>
-		/// When true, the <seealso cref="EmsApiService"/> will throw an exception for
-		/// any low level API failures. The default behavior is to only fire a callback,
-		/// but this might not always be desirable. The callbacks may be used to handle
-		/// errors more gracefully than using try / catch blocks for every service access.
-		/// </summary>
-		public bool ThrowExceptionOnApiFailure { get; set; }
+        /// <summary>
+        /// When true, the <seealso cref="EmsApiService"/> will throw an exception for
+        /// any low level API failures. The default behavior is to only fire a callback,
+        /// but this might not always be desirable. The callbacks may be used to handle
+        /// errors more gracefully than using try / catch blocks for every service access.
+        /// </summary>
+        public bool ThrowExceptionOnApiFailure { get; set; }
 
         /// <summary>
         /// Returns true if authentication should use the trusted token, false otherwise.

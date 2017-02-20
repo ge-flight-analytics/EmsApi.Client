@@ -5,17 +5,17 @@ using EmsApi.Client.V2.Model;
 
 namespace EmsApi.Client.V2.Wrappers
 {
-	/// <summary>
-	/// Provides a more natural .NET interface for the EMS API ems-system routes.
-	/// </summary>
+    /// <summary>
+    /// Provides a more natural .NET interface for the EMS API ems-system routes.
+    /// </summary>
     public class EmsSystemWrapper : EmsApiRouteWrapper
     {
-		/// <summary>
-		/// Creates a new instance of the wrapper.
-		/// </summary>
-		/// <param name="api">
-		/// The raw API interface to make calls to.
-		/// </param>
+        /// <summary>
+        /// Creates a new instance of the wrapper.
+        /// </summary>
+        /// <param name="api">
+        /// The raw API interface to make calls to.
+        /// </param>
         public EmsSystemWrapper( IEmsApi api ) : base( api ) { }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public Task<IEnumerable<EmsSystem>> GetAllAsync()
         {
-			return ContinueWithExceptionSafety( api => api.GetEmsSystems() );
+            return ContinueWithExceptionSafety( api => api.GetEmsSystems() );
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public IEnumerable<EmsSystem> GetAll()
         {
-			IEnumerable<EmsSystem> emsSystems = RethrowAggregateExceptions( GetAllAsync() );
-			return EnsureEnumerableNotNull( emsSystems );
+            IEnumerable<EmsSystem> emsSystems = RethrowAggregateExceptions( GetAllAsync() );
+            return EnsureEnumerableNotNull( emsSystems );
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public EmsSystemInfo GetSystemInfo( int id )
         {
-			return RethrowAggregateExceptions( GetSystemInfoAsync( id ) );
+            return RethrowAggregateExceptions( GetSystemInfoAsync( id ) );
         }
 
         /// <summary>
@@ -91,15 +91,15 @@ namespace EmsApi.Client.V2.Wrappers
             return ContinueWithExceptionSafety( api => api.PingEmsSystem( id ) );
         }
 
-		/// <summary>
-		/// Returns true if the EMS system is online.
-		/// </summary>
-		/// <param name="id">
-		/// The EMS system id to check.
-		/// </param>
-		public bool Ping( int id )
+        /// <summary>
+        /// Returns true if the EMS system is online.
+        /// </summary>
+        /// <param name="id">
+        /// The EMS system id to check.
+        /// </param>
+        public bool Ping( int id )
         {
-			return RethrowAggregateExceptions( PingAsync( id ) );
+            return RethrowAggregateExceptions( PingAsync( id ) );
         }
     }
 }
