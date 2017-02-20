@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="V2\Model\EmsSystem.cs" />
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
+    <Compile Include="V2\Service\ApiEventArgs.cs" />
     <Compile Include="V2\Service\Authentication.cs" />
     <Compile Include="V2\Service\EmsApiEndpoints.cs" />
     <Compile Include="V2\Service\EmsApiService.cs" />

@@ -23,7 +23,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public Task<IEnumerable<EmsSystem>> GetAllAsync()
         {
-            return m_api.GetEmsSystems();
+			return ContinueWithExceptionSafety( api => api.GetEmsSystems() );
         }
 
         /// <summary>
@@ -31,9 +31,8 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public IEnumerable<EmsSystem> GetAll()
         {
-            var task = GetAllAsync();
-            var result = task.Result;
-            return result;
+			IEnumerable<EmsSystem> emsSystems = RethrowAggregateExceptions( GetAllAsync() );
+			return EnsureEnumerableNotNull( emsSystems );
         }
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public Task<EmsSystemInfo> GetSystemInfoAsync( int id )
         {
-            return m_api.GetEmsSystemInfo( id );
+            return ContinueWithExceptionSafety( api => api.GetEmsSystemInfo( id ) );
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public EmsSystemInfo GetSystemInfo( int id )
         {
-            return GetSystemInfoAsync( id ).Result;
+			return RethrowAggregateExceptions( GetSystemInfoAsync( id ) );
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public Task<bool> PingAsync( int id )
         {
-            return m_api.PingEmsSystem( id );
+            return ContinueWithExceptionSafety( api => api.PingEmsSystem( id ) );
         }
 
 		/// <summary>
@@ -100,7 +99,7 @@ namespace EmsApi.Client.V2.Wrappers
 		/// </param>
 		public bool Ping( int id )
         {
-            return PingAsync( id ).Result;
+			return RethrowAggregateExceptions( PingAsync( id ) );
         }
     }
 }

@@ -18,6 +18,7 @@ namespace EmsApi.Client.V2
         public EmsApiServiceConfiguration( string apiEndpoint = EmsApiEndpoints.Default )
         {
             Endpoint = apiEndpoint;
+			ThrowExceptionOnAuthFailure = false;
         }
 
         /// <summary>
@@ -42,6 +43,21 @@ namespace EmsApi.Client.V2
         /// This will always be overridden by the username / password.
         /// </remarks>
         public string TrustedToken { get; set; }
+
+		/// <summary>
+		/// When true, the <seealso cref="EmsApiService"/> will throw an exception for
+		/// authentication failures. The default behavior is to only fire a callback,
+		/// but this might not always be desirable.
+		/// </summary>
+		public bool ThrowExceptionOnAuthFailure { get; set; }
+
+		/// <summary>
+		/// When true, the <seealso cref="EmsApiService"/> will throw an exception for
+		/// any low level API failures. The default behavior is to only fire a callback,
+		/// but this might not always be desirable. The callbacks may be used to handle
+		/// errors more gracefully than using try / catch blocks for every service access.
+		/// </summary>
+		public bool ThrowExceptionOnApiFailure { get; set; }
 
         /// <summary>
         /// Returns true if authentication should use the trusted token, false otherwise.

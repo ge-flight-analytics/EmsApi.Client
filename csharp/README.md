@@ -63,4 +63,6 @@ The C\# DTO classes are available upon request.
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI it never times out (or takes a long time).
-* Authentication failure is not well handled by the synchronous methods that call async interface methods, like EmsApiService.EmsSystems.GetAll().
+* Failures from the wrapper classes (authentication, API exception) are still throwing AggregateException instead of EmsApiServiceException when EmsApiServiceConfiguration.ThrowExceptionOnBlahFailure = true.
+	* I think this is happening because the first event which causes the throw happens under a task.
+	* Need to make it so that every exception at least derivces from EmsApiServiceException.

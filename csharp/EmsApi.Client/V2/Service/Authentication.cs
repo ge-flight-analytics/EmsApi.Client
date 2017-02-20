@@ -41,7 +41,7 @@ namespace EmsApi.Client.V2
             /// <summary>
             /// Fired to signal that authentication has failed for the current request.
             /// </summary>
-            public event EventHandler<AuthenticationFailedEventArgs> AuthenticationFailed;
+            public event EventHandler<AuthenticationFailedEventArgs> AuthenticationFailedEvent;
 
             /// <summary>
             /// Requests a new authentication token immediately.
@@ -56,9 +56,8 @@ namespace EmsApi.Client.V2
                 }
 
 				// Notify listerners of authentication failure.
+				Authenticated = false;
 				OnAuthenticationFailed( new AuthenticationFailedEventArgs( error ) );
-
-                Authenticated = false;
                 return false;
             }
 
@@ -71,11 +70,14 @@ namespace EmsApi.Client.V2
 				m_tokenExpiration = DateTime.UtcNow;
 			}
 
-            protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
-            {
-                // Todo: How do we account for race conditions when retrieving a token?
-                if( !IsTokenValid() && !Authenticate() )
-                    return new Task<HttpResponseMessage>( () => new HttpResponseMessage( System.Net.HttpStatusCode.Unauthorized ) );
+			protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+			{
+				// Todo: How do we account for race conditions when retrieving a token?
+
+				// Even if we fail to authenticate, we need to send the request or other code might
+				// be stuck awaiting the send.
+				if( !IsTokenValid() && !Authenticate() )
+					return base.SendAsync( request, cancellationToken );
 
                 // Apply our auth token to the header.
                 request.Headers.Authorization = new AuthenticationHeaderValue( SecurityConstants.Scheme, m_authToken );
@@ -126,8 +128,8 @@ namespace EmsApi.Client.V2
 
             private void OnAuthenticationFailed( AuthenticationFailedEventArgs e )
             {
-                if( AuthenticationFailed != null )
-                    AuthenticationFailed( this, e );
+                if( AuthenticationFailedEvent != null )
+                    AuthenticationFailedEvent( this, e );
             }
 
             protected override void Dispose( bool disposing )
@@ -144,16 +146,6 @@ namespace EmsApi.Client.V2
             public const string GrantTypePassword = "password";
             public const string GrantTypeTrusted = "trusted";
             public const string Scheme = "Bearer";
-        }
-
-        internal class AuthenticationFailedEventArgs : EventArgs
-        {
-            public AuthenticationFailedEventArgs( string message )
-            {
-                Message = message;
-            }
-
-            public string Message { get; private set; }
         }
     }
 }
