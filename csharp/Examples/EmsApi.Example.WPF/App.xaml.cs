@@ -42,6 +42,9 @@ namespace EmsApi.Example.WPF
 
                     try
                     {
+                        // We handle failures through callbacks.
+                        config.ThrowExceptionOnApiFailure = false;
+                        config.ThrowExceptionOnAuthFailure = false;
                         s_emsApi.ServiceConfig = config;
                     }
                     catch( InvalidApiConfigurationException ex )
@@ -72,7 +75,13 @@ namespace EmsApi.Example.WPF
 
         private static EmsApiServiceConfiguration ShowConnectionDialog()
         {
-            var viewModel = new LoginViewModel { Endpoint = EmsApiEndpoints.Beta };
+            var config = new EmsApiServiceConfiguration();
+            var viewModel = new LoginViewModel
+            {
+                Endpoint = config.Endpoint,
+                Username = config.UserName,
+                Password = config.Password
+            };
 
             var login = new LoginView( viewModel );
             bool? result = login.ShowDialog();
@@ -80,12 +89,10 @@ namespace EmsApi.Example.WPF
             if( !result.HasValue || !result.Value )
                 return null;
 
-            return new EmsApiServiceConfiguration
-            {
-                Endpoint = viewModel.Endpoint,
-                UserName = viewModel.Username,
-                Password = viewModel.Password
-            };
+            config.Endpoint = viewModel.Endpoint;
+            config.UserName = viewModel.Username;
+            config.Password = viewModel.Password;
+            return config;
         }
 
         protected override void OnExit( ExitEventArgs e )

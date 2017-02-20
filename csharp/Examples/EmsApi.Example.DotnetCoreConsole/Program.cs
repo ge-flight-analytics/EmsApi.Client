@@ -12,21 +12,24 @@ namespace EmsApi.Example.DotnetCoreConsole
         static void Main(string[] args)
         {
             Console.WriteLine( "Hello from .NET core." );
-            var config = new EmsApiServiceConfiguration( EmsApiEndpoints.Beta );
-            config.ThrowExceptionOnAuthFailure = true;
-            config.ThrowExceptionOnApiFailure = true;
+            var config = new EmsApiServiceConfiguration();
 
             // Allow the user to override the endpoint, but provide a default.
-            Console.Write( string.Format( "Enter Endpoint URL [{0}]: ", config.Endpoint ) );
+            Console.Write( "Enter Endpoint URL [{0}]: ", config.Endpoint );
             string endpoint = Console.ReadLine();
             if( !string.IsNullOrEmpty( endpoint ) )
                 config.Endpoint = endpoint;
 
-            Console.Write( "Enter Username: " );
-            config.UserName = Console.ReadLine();
+            Console.Write( "Enter Username [{0}]: ", config.UserName );
+            string user = Console.ReadLine();
+            if( !string.IsNullOrEmpty( user ) )
+                config.UserName = user;
 
-            Console.Write( "Enter Password: " );
-            config.Password = Console.ReadLine();
+            string defaultPw = !string.IsNullOrEmpty( config.Password ) ? "********" : string.Empty;
+            Console.Write( "Enter Password [{0}]: ", defaultPw );
+            string password = Console.ReadLine();
+            if( !string.IsNullOrEmpty( password ) )
+                config.Password = password;
 
             using( var api = new EmsApiService( config ) )
             {

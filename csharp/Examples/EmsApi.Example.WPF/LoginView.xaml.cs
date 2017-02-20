@@ -12,6 +12,7 @@ namespace EmsApi.Example.WPF
             m_vm = viewModel;
             DataContext = m_vm;
             InitializeComponent();
+            m_password.Password = viewModel.Password;
         }
 
         private LoginViewModel m_vm;
