@@ -1,5 +1,7 @@
 # C\# EMS API Tools and Documentation
 
+[![Build status](https://ci.appveyor.com/api/projects/status/d57rbp4jff31hvlw/branch/csharp-client?svg=true)](https://ci.appveyor.com/project/c-owens/ems-api-sdk/branch/csharp-client)
+
 # Getting Started
 
 ## Prerequisites
