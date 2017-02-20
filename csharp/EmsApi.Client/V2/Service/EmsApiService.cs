@@ -187,6 +187,21 @@ namespace EmsApi.Client.V2
 		}
 
 		/// <summary>
+		/// Unregisters all remaining callbacks in the given map (should be used on shutdown).
+		/// </summary>
+		private void UnregisterCallbackMap<TEventArgs>( Dictionary<Action<string>, EventHandler<TEventArgs>> callbackMap ) 
+			where TEventArgs : ApiEventArgs
+		{
+			// Note: We have to copy the callbacks here, because we cannot modify the
+			// callback map while enumerating it. I'm not sure how expensive this is,
+			// but hopefully it's not a big deal.
+			var callbacks = new Action<string>[callbackMap.Count];
+			callbackMap.Keys.CopyTo( callbacks, 0 );
+			foreach( var callback in callbacks )
+				UnregisterCallbackHandler( callback, callbackMap );
+		}
+
+		/// <summary>
 		/// Free up used resources.
 		/// </summary>
         public void Dispose()
@@ -194,13 +209,9 @@ namespace EmsApi.Client.V2
             if( m_apiClient != null )
                 m_apiClient.Dispose();
 
-			// Unregister authentication failed events.
-			foreach( var callback in m_authCallbacks.Keys )
-				UnregisterAuthFailedCallback( callback );
-
-			// Unregister API exception events.
-			foreach( var callback in m_exceptionCallbacks.Keys )
-				UnregisterApiExceptionCallback( callback );
+			// Unregister callback events.
+			UnregisterCallbackMap( m_authCallbacks );
+			UnregisterCallbackMap( m_exceptionCallbacks );
 
 			// Unregister our own handler for API exceptions.
 			m_authHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;

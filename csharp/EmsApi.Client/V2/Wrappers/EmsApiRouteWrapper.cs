@@ -52,9 +52,13 @@ namespace EmsApi.Client.V2.Wrappers
 		{
 			// All the Refit methods return tasks, so we need to handle exceptions
 			// as continuations.
+			return apiFunc( m_api );
+
+			/*
 			var api = apiFunc( m_api );
 			var safeTask = api.ContinueWith( HandleApiException, TaskContinuationOptions.OnlyOnFaulted );
 			return safeTask;
+			*/
 		}
 
 		/// <summary>
@@ -88,9 +92,13 @@ namespace EmsApi.Client.V2.Wrappers
 			}
 			catch( AggregateException ex )
 			{
-				// Rethrow inner exceptions.
 				foreach( var inner in ex.InnerExceptions )
+				{
+					if( inner is TaskCanceledException )
+						continue;
+
 					throw inner;
+				}		
 			}
 
 			return default( TRet );
@@ -103,8 +111,12 @@ namespace EmsApi.Client.V2.Wrappers
 
 			task.Exception.Handle( ex =>
 			{
-				// We handle all exceptions by firing the API exception event here. Depending on 
-				// the configuration, the EmsApiService class might swallow it, or it might get
+				// We don't handle task cancelled.
+				if( ex is TaskCanceledException )
+					return false;
+
+				// We handle all other exceptions by firing the API exception event here. Depending 
+				// on the configuration, the EmsApiService class might swallow it, or it might get
 				// unpackaged and thrown.
 				OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
 				return true;
