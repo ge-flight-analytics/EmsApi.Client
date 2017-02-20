@@ -1,0 +1,14 @@
+version: 0.1.{build}.{branch}
+pull_requests:
+  do_not_increment_build_number: true
+image: Visual Studio 2015
+configuration: Release
+build_script:
+- ps: >-
+    Push-Location .\csharp\EmsApi.Client
+
+    nuget.exe restore .\EmsApi.Client.Vs2015.sln
+
+    msbuild.exe /p:Configuration=Release .\EmsApi.Client.Vs2015.sln
+
+    nuget.exe pack .\EmsApi.Client.nuspec
