@@ -7,11 +7,20 @@ namespace EmsApi.Client.V2.Wrappers
     /// </summary>
     public class EmsApiRouteWrapper
     {
-        public EmsApiRouteWrapper( IEmsApi api )
+		/// <summary>
+		/// Creates a new instance of a route wrapper.
+		/// </summary>
+		/// <param name="api">
+		/// The raw API interface to make calls to.
+		/// </param>
+		public EmsApiRouteWrapper( IEmsApi api )
         {
             m_api = api;
         }
 
+		/// <summary>
+		/// The reference to the raw api interface.
+		/// </summary>
         protected IEmsApi m_api;
     }
 }

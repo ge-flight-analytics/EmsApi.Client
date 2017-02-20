@@ -7,8 +7,15 @@ build_script:
 - ps: >-
     Push-Location .\csharp\EmsApi.Client
 
+
     nuget.exe restore .\EmsApi.Client.Vs2015.sln
 
     msbuild.exe /p:Configuration=Release .\EmsApi.Client.Vs2015.sln
 
-    nuget.exe pack .\EmsApi.Client.nuspec
+    nuget.exe pack .\EmsApi.Client.nuspec -OutputDirectory .\bin
+
+
+    Pop-Location
+artifacts:
+- path: csharp\EmsApi.Client\bin\EmsApi.Client.*.nupkg
+  name: Release

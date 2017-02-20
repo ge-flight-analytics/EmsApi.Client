@@ -5,8 +5,17 @@ using EmsApi.Client.V2.Model;
 
 namespace EmsApi.Client.V2.Wrappers
 {
+	/// <summary>
+	/// Provides a more natural .NET interface for the EMS API ems-system routes.
+	/// </summary>
     public class EmsSystemWrapper : EmsApiRouteWrapper
     {
+		/// <summary>
+		/// Creates a new instance of the wrapper.
+		/// </summary>
+		/// <param name="api">
+		/// The raw API interface to make calls to.
+		/// </param>
         public EmsSystemWrapper( IEmsApi api ) : base( api ) { }
 
         /// <summary>

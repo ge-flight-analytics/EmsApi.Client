@@ -1,8 +1,20 @@
 ﻿
 namespace EmsApi.Client.V2
 {
+	/// <summary>
+	/// The configuration to use when talking to the EMS API. This may be
+	/// modified after the <seealso cref="EmsApiService"/> has been created
+	/// by setting the <seealso cref="EmsApiService.ServiceConfig"/> property.
+	/// </summary>
     public class EmsApiServiceConfiguration
     {
+		/// <summary>
+		/// Creates a new instance of the configuration with the given endpoint.
+		/// </summary>
+		/// <param name="apiEndpoint">
+		/// The API endpoint to connect to. If this is not specified, a default
+		/// value will be used.
+		/// </param>
         public EmsApiServiceConfiguration( string apiEndpoint = EmsApiEndpoints.Default )
         {
             Endpoint = apiEndpoint;

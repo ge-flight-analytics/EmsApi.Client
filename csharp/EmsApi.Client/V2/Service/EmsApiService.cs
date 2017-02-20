@@ -148,6 +148,9 @@ namespace EmsApi.Client.V2
 			m_authCallbacks.Remove( callback );
 		}
 
+		/// <summary>
+		/// Free up used resources.
+		/// </summary>
         public void Dispose()
         {
             if( m_apiClient != null )
