@@ -214,7 +214,7 @@ namespace EmsApi.Client.V2
             UnregisterCallbackMap( m_exceptionCallbacks );
             
             // Unregister our own handler for API exceptions.
-            m_authHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
+            m_authHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler;
             EmsApiRouteWrapper.ApiMethodFailedEvent -= ApiExceptionHandler;
 
             if( m_authHandler != null )

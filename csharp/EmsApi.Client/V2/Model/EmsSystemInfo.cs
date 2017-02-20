@@ -51,7 +51,7 @@ namespace EmsApi.Client.V2.Model
         public bool EmsWebEnabled { get; set; }
 
         /// <summary>
-        /// The human-readable desceription of security in the aircraft list.
+        /// The human-readable description of security in the aircraft list.
         /// </summary>
         [JsonProperty]
         public string AircraftListDescription { get; set; }

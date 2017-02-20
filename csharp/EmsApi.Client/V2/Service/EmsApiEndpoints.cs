@@ -9,16 +9,26 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// The default endpoint.
         /// </summary>
-        public const string Default = Efoqa;
+        public const string Default = Production;
 
         /// <summary>
-        /// The primary production endpoint.
+        /// The production endpoint.
         /// </summary>
-        public const string Efoqa = "https://ems.efoqa.com/api";
+        public const string Production = "https://ems.efoqa.com/api";
 
         /// <summary>
-        /// The beta endpoint.
+        /// The stable endpoint.
+        /// </summary>
+        public const string Stable = "https://emsapi.ausdig.com/api";
+
+        /// <summary>
+        /// The beta build endpoint.
         /// </summary>
         public const string Beta = "https://emsapibeta.ausdig.com/api";
+
+        /// <summary>
+        /// The nightly build endpoint.
+        /// </summary>
+        public const string Nightly = "https://emsapitest.ausdig.com/api";
     }
 }

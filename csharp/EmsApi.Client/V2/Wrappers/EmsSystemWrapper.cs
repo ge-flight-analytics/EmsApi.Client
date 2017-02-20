@@ -32,7 +32,7 @@ namespace EmsApi.Client.V2.Wrappers
         public IEnumerable<EmsSystem> GetAll()
         {
             IEnumerable<EmsSystem> emsSystems = RethrowAggregateExceptions( GetAllAsync() );
-            return EnsureEnumerableNotNull( emsSystems );
+            return SafeAccessEnumerable( emsSystems );
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public EmsSystem Get( int id )
         {
-            return GetAll().FirstOrDefault( ems => ems.Id == id );
+            return RethrowAggregateExceptions( GetAsync( id ) );
         }
 
         /// <summary>

@@ -75,7 +75,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// <param name="input">
         /// The enumerable to check.
         /// </param>
-        protected IEnumerable<T> EnsureEnumerableNotNull<T>( IEnumerable<T> input )
+        protected static IEnumerable<T> SafeAccessEnumerable<T>( IEnumerable<T> input )
         {
             return input == null ? Enumerable.Empty<T>() : input;
         }
@@ -84,7 +84,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// Rethrows any exceptions that were packaged as an aggregate exception
         /// as due to accessing the task's result.
         /// </summary>
-        protected TRet RethrowAggregateExceptions<TRet>( Task<TRet> task )
+        protected static TRet RethrowAggregateExceptions<TRet>( Task<TRet> task )
         {
             try
             {
