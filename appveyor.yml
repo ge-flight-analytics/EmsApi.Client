@@ -1,0 +1,20 @@
+version: 0.1.{build}
+pull_requests:
+  do_not_increment_build_number: true
+image: Visual Studio 2015
+configuration: Release
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+nuget:
+  project_feed: true
+build_script:
+- ps: '& .\csharp\EmsApi.Client\build.ps1'
+artifacts:
+- path: csharp\EmsApi.Client\bin\EmsApi.Client.*.nupkg
+  name: Release
+- path: csharp\EmsApi.Client\bin\EmsApi.Client.dll
+  name: Release

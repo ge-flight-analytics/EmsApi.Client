@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>EmsApi.Client</id>
+    <version>0.1.0</version>
+    <authors>Cody Owens</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>C# client library for the EMS API</description>
+    <releaseNotes>First release.</releaseNotes>
+    <dependencies>
+      <dependency id="refit" version="3.0.1" />
+      <dependency id="System.Net.Http" version="4.3" />
+    </dependencies>
+  </metadata>
+  <files>
+      <file src="bin\EmsApi.Client.dll" target="lib\netstandard1.4\EmsApi.Client.dll" />
+      <file src="bin\EmsApi.Client.xml" target="lib\netstandard1.4\EmsApi.Client.xml" />
+  </files>
+</package>
