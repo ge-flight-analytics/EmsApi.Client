@@ -1,10 +1,4 @@
 version: 0.1.{build}
-environment:
-  EmsApiTestEndpoint: https://emsapibeta.ausdig.com/api
-  EmsApiTestUsername:
-    secure: Wlg5B5nRKlGU7fqGvHEJuQ==
-  EmsApiTestPassword:
-    secure: ObYiYvzG0hOHNqOIcrIXgg==
 pull_requests:
   do_not_increment_build_number: true
 image: Visual Studio 2015
@@ -15,10 +9,18 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+environment:
+  EmsApiTestEndpoint: https://emsapibeta.ausdig.com/api
+  EmsApiTestUsername:
+    secure: Wlg5B5nRKlGU7fqGvHEJuQ==
+  EmsApiTestPassword:
+    secure: ObYiYvzG0hOHNqOIcrIXgg==
 nuget:
   project_feed: true
 build_script:
 - ps: '& .\csharp\EmsApi.Client\build.ps1'
+test:
+  assemblies: csharp\Tests\bin\Release\EmsApi.Client.Tests.dll
 artifacts:
 - path: csharp\EmsApi.Client\bin\EmsApi.Client.*.nupkg
   name: Release
