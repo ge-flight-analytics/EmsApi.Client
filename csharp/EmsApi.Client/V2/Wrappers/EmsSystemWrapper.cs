@@ -23,7 +23,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public Task<IEnumerable<EmsSystem>> GetAllAsync()
         {
-            return ContinueWithExceptionSafety( api => api.GetEmsSystems() );
+            return m_api.GetEmsSystems();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public IEnumerable<EmsSystem> GetAll()
         {
-            IEnumerable<EmsSystem> emsSystems = RethrowAggregateExceptions( GetAllAsync() );
+            IEnumerable<EmsSystem> emsSystems = ForwardAggregateExceptions( GetAllAsync() );
             return SafeAccessEnumerable( emsSystems );
         }
 
@@ -55,7 +55,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public EmsSystem Get( int id )
         {
-            return RethrowAggregateExceptions( GetAsync( id ) );
+            return ForwardAggregateExceptions( GetAsync( id ) );
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public Task<EmsSystemInfo> GetSystemInfoAsync( int id )
         {
-            return ContinueWithExceptionSafety( api => api.GetEmsSystemInfo( id ) );
+            return m_api.GetEmsSystemInfo( id );
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public EmsSystemInfo GetSystemInfo( int id )
         {
-            return RethrowAggregateExceptions( GetSystemInfoAsync( id ) );
+            return ForwardAggregateExceptions( GetSystemInfoAsync( id ) );
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public Task<bool> PingAsync( int id )
         {
-            return ContinueWithExceptionSafety( api => api.PingEmsSystem( id ) );
+            return m_api.PingEmsSystem( id );
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public bool Ping( int id )
         {
-            return RethrowAggregateExceptions( PingAsync( id ) );
+            return ForwardAggregateExceptions( PingAsync( id ) );
         }
     }
 }

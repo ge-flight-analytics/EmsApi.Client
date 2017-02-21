@@ -26,12 +26,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// <summary>
         /// The reference to the raw api interface.
         /// </summary>
-        /// <remarks>
-        /// This is private so classes which derive from this one must use the
-        /// <seealso cref="ContinueWithExceptionSafety{TRet}(Func{IEmsApi, Task{TRet}})"/>
-        /// method instead.
-        /// </remarks>
-        private IEmsApi m_api;
+        protected IEmsApi m_api;
 
         /// <summary>
         /// Event that is fired whenever a low level API exception occurs.
@@ -40,26 +35,6 @@ namespace EmsApi.Client.V2.Wrappers
         /// This is static so that this same event will fire for all derived wrapper classes.
         /// </remarks>
         internal static event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
-
-        /// <summary>
-        /// Executes a delegate that returns a task which accesses the API interface.
-        /// The task forwards all exceptions through the <seealso cref="ApiMethodFailedEvent"/>.
-        /// </summary>
-        /// <param name="apiFunc">
-        /// The delegate for a function to execute.
-        /// </param>
-        protected Task<TRet> ContinueWithExceptionSafety<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
-        {
-            // All the Refit methods return tasks, so we need to handle exceptions
-            // as continuations.
-            return apiFunc( m_api );
-
-            /*
-            var api = apiFunc( m_api );
-            var safeTask = api.ContinueWith( HandleApiException, TaskContinuationOptions.OnlyOnFaulted );
-            return safeTask;
-            */
-        }
 
         /// <summary>
         /// Checks the input enumerable for null, and returns an empty enumerable instead
@@ -81,10 +56,10 @@ namespace EmsApi.Client.V2.Wrappers
         }
 
         /// <summary>
-        /// Rethrows any exceptions that were packaged as an aggregate exception
-        /// as due to accessing the task's result.
+        /// Unpackages the result and turns any exceptions into events that may or may
+        /// not throw exceptions (based on the settings).
         /// </summary>
-        protected static TRet RethrowAggregateExceptions<TRet>( Task<TRet> task )
+        protected TRet ForwardAggregateExceptions<TRet>( Task<TRet> task )
         {
             try
             {
@@ -92,33 +67,16 @@ namespace EmsApi.Client.V2.Wrappers
             }
             catch( AggregateException ex )
             {
-                // Rethrow inner exceptions.
                 foreach( var inner in ex.InnerExceptions )
-                    throw inner;
+                {
+                    if( inner is TaskCanceledException )
+                        throw inner;
+
+                    // Rethrow if it's already EmsApiException, or wrap it otherwise.
+                    OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
+                }
             }
 
-            return default( TRet );
-        }
-
-        private TRet HandleApiException<TRet>( Task<TRet> task )
-        {
-            if( task.Exception == null )
-                return task.Result;
-
-            task.Exception.Handle( ex =>
-            {
-                // We don't handle task cancelled.
-                if( ex is TaskCanceledException )
-                    return false;
-
-                // We handle all other exceptions by firing the API exception event here. Depending 
-                // on the configuration, the EmsApiService class might swallow it, or it might get
-                // unpackaged and thrown.
-                OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
-                return true;
-            } );
-
-            // This will normally return null, the caller can handle null if it wants.
             return default( TRet );
         }
 

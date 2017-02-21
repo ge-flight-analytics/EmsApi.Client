@@ -9,7 +9,7 @@ namespace EmsApi.Client.Tests
     {
         private const string Header = "Service: ";
 
-        [Fact( DisplayName = Header + "Invalid configuration should throw an exception" ) ]
+        [Fact( DisplayName = Header + "An invalid configuration should throw an exception" ) ]
         public void Invalid_configuration_should_throw_exception()
         {
             var service = new EmsApiService();
@@ -23,8 +23,8 @@ namespace EmsApi.Client.Tests
             Assert.True( !string.IsNullOrEmpty( ex.Message ) );
         }
 
-        [Fact( DisplayName = Header + "Service can dispose gracefully" )]
-        public void Service_can_shutdown_gracefully()
+        [Fact( DisplayName = Header + "The service should shut down gracefully" )]
+        public void Service_should_shut_down_gracefully()
         {
             var service = NewService();
             service.Dispose();

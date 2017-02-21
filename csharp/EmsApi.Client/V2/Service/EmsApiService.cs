@@ -227,7 +227,7 @@ namespace EmsApi.Client.V2
         {
             if( m_config.ThrowExceptionOnApiFailure )
             {
-                throw new EmsApiServiceException( "An EMS API access exception occured, and the ThrowExceptionOnApiFailure setting is true.",
+                throw new EmsApiException( "An EMS API access exception occured, and the ThrowExceptionOnApiFailure setting is true.",
                     args.Exception );
             }
 
@@ -236,8 +236,6 @@ namespace EmsApi.Client.V2
                 System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
                     args.ApiException.ReasonPhrase, args.ApiException.Message );
             }
-
-            System.Diagnostics.Debug.Assert( false, "API access exception." );
         }
 
         /// <summary>
@@ -248,12 +246,11 @@ namespace EmsApi.Client.V2
             if( m_config.ThrowExceptionOnAuthFailure )
             {
                 throw new EmsApiAuthenticationException( string.Format(
-                    "An EMS API authentication exception occured, and the ThrowExceptionOnAuthFailure setting is true: {0}",
+                    "An EMS API authentication exceptionoc ured, and the ThrowExceptionOnAuthFailure setting is true: {0}",
                     args.Message ) );
             }
 
             System.Diagnostics.Debug.WriteLine( "EMS API client encountered authentication failure: {0}", args.Message );
-            System.Diagnostics.Debug.Assert( false, "API authentication failure." );
         }
 
         /// <summary>
