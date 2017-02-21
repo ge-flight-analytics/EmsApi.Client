@@ -1,0 +1,10 @@
+$RECYCLE.BIN
+.vs
+.suo
+packages/
+obj/
+bin/
+project.lock.json
+*.nupkg
+*.nuget.targets
+EmsApi.Client.Vs2015.nuget.targets
