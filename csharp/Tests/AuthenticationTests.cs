@@ -9,11 +9,9 @@ namespace EmsApi.Client.Tests
     {
         private const string Header = "Authentication: ";
 
-        [Fact( DisplayName = Header + "Username and password should be authenticated" )]
-        public void Username_password_should_be_authenticated()
+        [Fact( DisplayName = Header + "Valid login should be authenticated" )]
+        public void Valid_login_should_be_authenticated()
         {
-            // Fixme: This one seems to have a race condition. It fails when you run all
-            // tests, but succeeds when you run it by itself afterwards.
             var service = NewService();
             Assert.True( service.Authenticate() );
         }

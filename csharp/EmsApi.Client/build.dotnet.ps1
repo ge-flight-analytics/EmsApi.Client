@@ -1,7 +1,7 @@
 Push-Location $PSScriptRoot
 
-dotnet restore .\EmsApi.Client.sln
-dotnet build .\EmsApi.Client.sln
+dotnet restore "EmsApi.Client.sln"
+dotnet build "EmsApi.Client.sln"
 
 $packArgs = @( "pack", ".\EmsApi.Client.nuspec", "-OutputDirectory .\bin" )
 $version = $env:APPVEYOR_BUILD_VERSION

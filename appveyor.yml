@@ -12,7 +12,7 @@ assembly_info:
 nuget:
   project_feed: true
 build_script:
-- ps: '& .\csharp\EmsApi.Client\appveyor.build.ps1'
+- ps: '& .\csharp\EmsApi.Client\build.ps1'
 artifacts:
 - path: csharp\EmsApi.Client\bin\EmsApi.Client.*.nupkg
   name: Release
