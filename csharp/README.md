@@ -6,7 +6,7 @@
 
 ## Prerequisites
 To build the projects, you will need either:
-* Visual Studio 2015 with Update 5
+* Visual Studio 2015 with Update 3
 	* [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
 	* EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
 		* Spaces for indentation (4 spaces per indentation).
