@@ -54,7 +54,9 @@
     <Compile Include="V2\Service\IEmsApi.cs" />
     <Compile Include="V2\Wrappers\EmsApiRouteWrapper.cs" />
     <Compile Include="V2\Wrappers\EmsSystemWrapper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
