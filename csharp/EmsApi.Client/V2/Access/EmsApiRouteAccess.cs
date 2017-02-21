@@ -4,30 +4,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmsApi.Client.V2.Wrappers
+namespace EmsApi.Client.V2.Access
 {
     /// <summary>
-    /// An API route wrapper is intended to convert the raw IEmsApi interface calls
-    /// to something that is a little more natural to work with inside .NET applications.
+    /// A route access class is intended to be the primary access method for an API
+    /// route in the library. The three major goals of these classes are:
+    /// 1) To provide access methods that are simple for a client of the library to use.
+    /// 2) To provide both synchronous and asynchronous access methods.
+    /// 3) To provide unified error handling for both asynchronous and synchronous methods.
     /// </summary>
-    public abstract class EmsApiRouteWrapper
+    public abstract class EmsApiRouteAccess
     {
         /// <summary>
-        /// Creates a new instance of a route wrapper.
+        /// Creates a new instance of an access class.
+        /// </summary>
+        internal EmsApiRouteAccess() { }
+
+        /// <summary>
+        /// Sets the interface instance used by the access class. This must
+        /// be called before accessing methods on the class.
         /// </summary>
         /// <param name="api">
-        /// The raw API interface to make calls to.
+        /// The API interface to call into.
         /// </param>
-        public EmsApiRouteWrapper( IEmsApi api )
+        /// <remarks>
+        /// This is here so that the service class can use the default constructor,
+        /// then set the interface afterwards.
+        /// </remarks>
+        internal void SetInterface( IEmsApi api )
         {
             m_api = api;
         }
 
-        /// <summary>
-        /// The reference to the raw api interface. This is private so that derived classes 
+        /// The reference to the raw api interface. This is private get so that derived classes
         /// are required to call <seealso cref="ContinueWithExceptionSafety{TRet}(Func{IEmsApi, Task{TRet}})"/>
         /// in order to access the interface.
-        /// </summary>
         private IEmsApi m_api;
 
         /// <summary>
@@ -36,7 +47,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// <remarks>
         /// This is static so that this same event will fire for all derived wrapper classes.
         /// </remarks>
-        internal static event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
+        internal event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
 
         /// <summary>
         /// Checks the input enumerable for null, and returns an empty enumerable instead
@@ -59,7 +70,7 @@ namespace EmsApi.Client.V2.Wrappers
 
         /// <summary>
         /// Adds a continuation onto the task that automatically handles API interface exceptions.
-        /// The exceptions are handled by forwarding all exceptions as events to the 
+        /// The exceptions are handled by forwarding all exceptions as events to the
         /// <seealso cref="ApiMethodFailedEvent"/>. From non-asynchronous code, these tasks should
         /// be accessed via <seealso cref="AccessTaskResult{TRet}(Task{TRet})"/> so that aggregate
         /// errors are converted to our own exception type.
@@ -68,8 +79,8 @@ namespace EmsApi.Client.V2.Wrappers
         /// The delegate that needs to be run with exception safety.
         /// </param>
         /// <remarks>
-        /// The point of this is to make sure all tasks from Refit automatically convert exceptions 
-        /// into the API failed event when they are evaluated. 
+        /// The point of this is to make sure all tasks from Refit automatically convert exceptions
+        /// into the API failed event when they are evaluated.
         /// </remarks>
         protected Task<TRet> ContinueWithExceptionSafety<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
         {
@@ -80,8 +91,8 @@ namespace EmsApi.Client.V2.Wrappers
 
         /// <summary>
         /// Accesses the result of the task, rethrowing inner exceptions for aggregate
-        /// exceptions that occur during task execution. Since all inner exceptions are 
-        /// handled by the <seealso cref="HandleApiException"/> callback, we should only 
+        /// exceptions that occur during task execution. Since all inner exceptions are
+        /// handled by the <seealso cref="HandleApiException"/> callback, we should only
         /// ever see exceptions thrown as a result of <seealso cref="OnApiMethodFailed(ApiExceptionEventArgs)"/>
         /// calls, and task cancellation exceptions.
         /// </summary>
@@ -111,7 +122,7 @@ namespace EmsApi.Client.V2.Wrappers
                 if( ex is TaskCanceledException )
                     return false;
 
-                // We handle all other exceptions by firing the API exception event here. Depending 
+                // We handle all other exceptions by firing the API exception event here. Depending
                 // on the configuration, the EmsApiService class might swallow it, or it might get
                 // unpackaged and thrown.
                 OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );

@@ -7,7 +7,6 @@ namespace EmsApi.Client.Tests
     {
         private const string Header = "Error Handling: ";
 
-        // Tests that an exception is thrown when the configuration value to do so is set to true.
         [Fact( DisplayName = Header + "Enabling auth exceptions should throw an exception" )]
         public void Enabling_auth_exceptions_should_throw_an_exception()
         {
@@ -41,8 +40,6 @@ namespace EmsApi.Client.Tests
         [Fact( DisplayName = Header + "Disabling api exceptions should not throw an exception" )]
         public void Disabling_api_exceptions_should_not_throw_an_exception()
         {
-            // Fixme: This one seems to have a race condition when running all tests
-            // at once. It works if you run it individually after.
             using( var service = NewInvalidLoginService() )
             {
                 service.ServiceConfig.ThrowExceptionOnApiFailure = false;

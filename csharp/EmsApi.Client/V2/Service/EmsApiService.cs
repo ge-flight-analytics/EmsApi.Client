@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Refit;
 
-using EmsApi.Client.V2.Wrappers;
-
+using EmsApi.Client.V2.Access;
 
 namespace EmsApi.Client.V2
 {
-    using AuthCallbackDictionary = Dictionary<Action<string>, EventHandler<AuthenticationFailedEventArgs>>;
-    using ExceptionCallbackDictionary = Dictionary<Action<string>, EventHandler<ApiExceptionEventArgs>>;
-
     /// <summary>
     /// The client side representation of the EMS API.
     /// </summary>
@@ -42,13 +38,13 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// Sets up our API interface and wrapper classes.
+        /// Sets up our API interface and access properties.
         /// </summary>
         private void Initialize()
         {
-            // Set up our event maps.
-            m_authCallbacks = new AuthCallbackDictionary();
-            m_exceptionCallbacks = new ExceptionCallbackDictionary();
+            m_cleanup = new List<Action>();
+            m_authCallbacks = new List<Action<string>>();
+            m_exceptionCallbacks = new List<Action<string>>();
 
             // Set up authentication.
             m_authHandler = new Authentication.EmsApiTokenHandler( m_config );
@@ -58,12 +54,30 @@ namespace EmsApi.Client.V2
             // Set up the API client abstraction.
             m_api = RestService.For<IEmsApi>( m_apiClient );
 
-            // Set up wrapper properties for the interface.
-            EmsSystems = new EmsSystemWrapper( m_api );
+            // Set up access properties.
+            InitializeAccessProperties();
 
-            // Subscribe to failure events.
-            EmsApiRouteWrapper.ApiMethodFailedEvent += ApiExceptionHandler;
+            // Subscribe to authentication failure events.
             m_authHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
+            m_cleanup.Add( () => m_authHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
+        }
+
+        /// <summary>
+        /// Initializes all the known access classes, hooks their API method failed event,
+        /// and adds a cleanup function to remove the event handler on shutdown.
+        /// </summary>
+        private void InitializeAccessProperties()
+        {
+            EmsSystems = InitializeAccessClass<EmsSystemsAccess>();
+        }
+
+        private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
+        {
+            EmsApiRouteAccess access = new TAccess();
+            access.SetInterface( m_api );
+            access.ApiMethodFailedEvent += ApiExceptionHandler;
+            m_cleanup.Add( () => access.ApiMethodFailedEvent -= ApiExceptionHandler );
+            return (TAccess)access;
         }
 
         /// <summary>
@@ -92,7 +106,7 @@ namespace EmsApi.Client.V2
 
         /// <summary>
         /// Manually initiate authentication. Returns true if authentication succeeded,
-        /// or false otherwise. Normally authentication is performed on the first API 
+        /// or false otherwise. Normally authentication is performed on the first API
         /// request or on the next request whenever the current token times out.
         /// </summary>
         public bool Authenticate()
@@ -101,9 +115,9 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// Access to EmsSystem routes.
+        /// Access to ems-system routes.
         /// </summary>
-        public EmsSystemWrapper EmsSystems { get; private set; }
+        public EmsSystemsAccess EmsSystems { get; private set; }
 
         /// <summary>
         /// Provides raw access the the API interface. Typically you would want
@@ -118,13 +132,12 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Registers a callback to be notified when API authentication fails. The callback will
         /// be executed for every authentication failure, even subsequent failures in rapid succession.
-        /// All callbacks will be automatically unregistered when the service is disposed, or they may 
+        /// All callbacks will be automatically unregistered when the service is disposed, or they may
         /// be manually unregistered with <seealso cref="UnregisterAuthFailedCallback( Action{ string } )"/>
         /// </summary>
         public void RegisterAuthFailedCallback( Action<string> callback )
         {
-            var handler = RegisterCallbackHandler( callback, m_authCallbacks );
-            m_authHandler.AuthenticationFailedEvent += handler;
+            m_authCallbacks.Add( callback );
         }
 
         /// <summary>
@@ -132,8 +145,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public void UnregisterAuthFailedCallback( Action<string> callback )
         {
-            var handler = UnregisterCallbackHandler( callback, m_authCallbacks );
-            m_authHandler.AuthenticationFailedEvent -= handler;
+            m_authCallbacks.Remove( callback );
         }
 
         /// <summary>
@@ -142,8 +154,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public void RegisterApiExceptionCallback( Action<string> callback )
         {
-            var handler = RegisterCallbackHandler( callback, m_exceptionCallbacks );
-            EmsApiRouteWrapper.ApiMethodFailedEvent += handler;
+            m_exceptionCallbacks.Add( callback );
         }
 
         /// <summary>
@@ -151,53 +162,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public void UnregisterApiExceptionCallback( Action<string> callback )
         {
-            var handler = UnregisterCallbackHandler( callback, m_exceptionCallbacks );
-            EmsApiRouteWrapper.ApiMethodFailedEvent -= handler;
-        }
-
-        /// <summary>
-        /// Generates an event handler to connect an event from some other member of this class
-        /// to the given callback function. Callbacks and handlers are stored in a dictionary
-        /// so that they may be gracefully unregistered later.
-        /// </summary>
-        private EventHandler<TEventArgs> RegisterCallbackHandler<TEventArgs>( Action<string> callback, 
-            Dictionary<Action<string>, EventHandler<TEventArgs>> callbackMap ) where TEventArgs : ApiEventArgs
-        {
-            var handler = new EventHandler<TEventArgs>( ( s, e ) => callback( e.Message ) );
-            callbackMap.Add( callback, handler );
-            return handler;
-        }
-
-        /// <summary>
-        /// Removes a callback from our internal dictionaries, and returns the remaining event handler.
-        /// </summary>
-        private EventHandler<TEventArgs> UnregisterCallbackHandler<TEventArgs>( Action<string> callback,
-            Dictionary<Action<string>, EventHandler<TEventArgs>> callbackMap ) where TEventArgs : ApiEventArgs
-        {
-            EventHandler<TEventArgs> handler;
-            if( !callbackMap.TryGetValue( callback, out handler ) )
-            {
-                System.Diagnostics.Debug.Assert( false, "Could not unregister EMS API callback." );
-                return null;
-            }
-
-            callbackMap.Remove( callback );
-            return handler;
-        }
-
-        /// <summary>
-        /// Unregisters all remaining callbacks in the given map (should be used on shutdown).
-        /// </summary>
-        private void UnregisterCallbackMap<TEventArgs>( Dictionary<Action<string>, EventHandler<TEventArgs>> callbackMap ) 
-            where TEventArgs : ApiEventArgs
-        {
-            // Note: We have to copy the callbacks here, because we cannot modify the
-            // callback map while enumerating it. I'm not sure how expensive this is,
-            // but hopefully it's not a big deal.
-            var callbacks = new Action<string>[callbackMap.Count];
-            callbackMap.Keys.CopyTo( callbacks, 0 );
-            foreach( var callback in callbacks )
-                UnregisterCallbackHandler( callback, callbackMap );
+            m_exceptionCallbacks.Remove( callback );
         }
 
         /// <summary>
@@ -205,16 +170,15 @@ namespace EmsApi.Client.V2
         /// </summary>
         public void Dispose()
         {
+            // Perform cleanup actions.
+            if( m_cleanup != null )
+            {
+                foreach( Action action in m_cleanup )
+                    action();
+            }
+
             if( m_apiClient != null )
                 m_apiClient.Dispose();
-
-            // Unregister callback events.
-            UnregisterCallbackMap( m_authCallbacks );
-            UnregisterCallbackMap( m_exceptionCallbacks );
-            
-            // Unregister our own handler for API exceptions.
-            m_authHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler;
-            EmsApiRouteWrapper.ApiMethodFailedEvent -= ApiExceptionHandler;
 
             if( m_authHandler != null )
                 m_authHandler.Dispose();
@@ -225,6 +189,10 @@ namespace EmsApi.Client.V2
         /// </summary>
         private void ApiExceptionHandler( object sender, ApiExceptionEventArgs args )
         {
+            // Execute our callbacks. We don't handle exceptions since this is client code anyway.
+            foreach( var callback in m_exceptionCallbacks )
+                callback( args.Message );
+
             if( m_config.ThrowExceptionOnApiFailure )
             {
                 throw new EmsApiException( "An EMS API access exception occured, and the ThrowExceptionOnApiFailure setting is true.",
@@ -243,6 +211,10 @@ namespace EmsApi.Client.V2
         /// </summary>
         private void AuthenticationFailedHandler( object sender, AuthenticationFailedEventArgs args )
         {
+            // Execute our callbacks. We don't handle exceptions since this is client code anyway.
+            foreach( var callback in m_authCallbacks )
+                callback( args.Message );
+
             if( m_config.ThrowExceptionOnAuthFailure )
             {
                 throw new EmsApiAuthenticationException( string.Format(
@@ -264,17 +236,19 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// The authentication failed callbacks that have ben registered through 
-        /// <seealso cref="RegisterAuthFailedCallback( Action{ string } )"/>.
-        /// This dictionary is keyed by the function the user passes in as the callback,
-        /// and the value is an event handler wrapped around the callback function.
+        /// The callbacks to execute when authentication fails.
         /// </summary>
-        private AuthCallbackDictionary m_authCallbacks;
+        private List<Action<string>> m_authCallbacks;
 
         /// <summary>
-        /// The API exception callbacks.
+        /// The callbacks to execute when a low level API exception occurs.
         /// </summary>
-        private ExceptionCallbackDictionary m_exceptionCallbacks;
+        private List<Action<string>> m_exceptionCallbacks;
+
+        /// <summary>
+        /// A list of actions to perform when the service is disposed.
+        /// </summary>
+        private List<Action> m_cleanup;
 
         private IEmsApi m_api;
         private EmsApiServiceConfiguration m_config;

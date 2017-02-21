@@ -45,10 +45,10 @@ To build the projects, you will need either:
 The C\# DTO classes are available upon request.		
 
 ## How to implement new routes
-* Add model objects for the responses to V2/Model
-* Add the route definitions to Service/IEmsApi.cs
-* Implement a wrapper class for the route deriving from Wrappers/EmsApiRouteWrapper.cs
-* Add a public property for the wrapper class to Service/EmsApiService.cs, and add it to the Initialize function.
+* Add model objects for the responses to V2\Model
+* Add the route definitions to IEmsApi.cs
+* Implement an access class for the route deriving from Access\EmsApiRouteAccess.cs
+* Add a public property for the access class to Service\EmsApiService.cs, and add it to the InitializeAccessProperties function.
 
 ## Todo
 * Implement the rest of the routes.

@@ -43,6 +43,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
+    <Compile Include="V2\Access\EmsSystemsAccess.cs" />
+    <Compile Include="V2\IEmsApi.cs" />
     <Compile Include="V2\Model\EmsSystem.cs" />
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
     <Compile Include="V2\Service\ApiEventArgs.cs" />
@@ -51,9 +54,6 @@
     <Compile Include="V2\Service\EmsApiService.cs" />
     <Compile Include="V2\Service\EmsApiServiceConfiguration.cs" />
     <Compile Include="V2\Service\EmsApiServiceException.cs" />
-    <Compile Include="V2\Service\IEmsApi.cs" />
-    <Compile Include="V2\Wrappers\EmsApiRouteWrapper.cs" />
-    <Compile Include="V2\Wrappers\EmsSystemWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
