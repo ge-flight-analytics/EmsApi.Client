@@ -47,14 +47,14 @@ namespace EmsApi.Example.WPF
                         config.ThrowExceptionOnAuthFailure = false;
                         s_emsApi.ServiceConfig = config;
                     }
-                    catch( InvalidApiConfigurationException ex )
+                    catch( EmsApiConfigurationException ex )
                     {
                         // Notify the user that some login configuration is wrong, and retry.
                         LoginValidationFailed( ex.Message );
                         continue;
                     }
 
-                    s_emsApi.RequestAuthentication();
+                    s_emsApi.Authenticate();
                 }   
 
                 return s_emsApi;

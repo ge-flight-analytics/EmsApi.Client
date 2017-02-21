@@ -39,7 +39,7 @@ namespace EmsApi.Client.V2
     /// <summary>
     /// Thrown when the API configuration is not valid.
     /// </summary>
-    public class InvalidApiConfigurationException : EmsApiServiceException
+    public class EmsApiConfigurationException : EmsApiServiceException
     {
         /// <summary>
         /// Thrown when the <seealso cref="EmsApiServiceConfiguration"/> is invalid.
@@ -47,7 +47,21 @@ namespace EmsApi.Client.V2
         /// <param name="why">
         /// The reason why the configuration is invalid.
         /// </param>
-        public InvalidApiConfigurationException( string why )
+        public EmsApiConfigurationException( string why )
             : base( string.Format( "The EMS API service configuration is not valid: {0}", why ), innerException: null ) { }
+    }
+
+    public class EmsApiAuthenticationException : EmsApiServiceException
+    {
+        /// <summary>
+        /// Thrown when authentication fails and <seealso cref="EmsApiServiceConfiguration.ThrowExceptionOnAuthFailure"/>
+        /// is set to true.
+        /// </summary>
+        /// <param name="why">
+        /// The reason for the authentication failure.
+        /// </param>
+        public EmsApiAuthenticationException( string why )
+            : base( string.Format( "The EMS API service authentication failed: {0}", why ), innerException: null ) {
+        }
     }
 }

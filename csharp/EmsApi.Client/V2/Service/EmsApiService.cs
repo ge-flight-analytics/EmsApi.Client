@@ -68,7 +68,7 @@ namespace EmsApi.Client.V2
 
         /// <summary>
         /// Gets or sets the current service configuration. If the endpoint or authorization
-        /// properties change, <seealso cref="RequestAuthentication"/> should be called.
+        /// properties change, <seealso cref="Authenticate"/> should be called.
         /// </summary>
         public EmsApiServiceConfiguration ServiceConfig
         {
@@ -91,12 +91,11 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// Manually request authentication. Normally authentication is performed on the first
-        /// API request or whenever the current token times out. Authentication will automatically
-        /// be handled on the next request, but this may be used to force it and wait for a failure
-        /// callback.
+        /// Manually initiate authentication. Returns true if authentication succeeded,
+        /// or false otherwise. Normally authentication is performed on the first API 
+        /// request or on the next request whenever the current token times out.
         /// </summary>
-        public bool RequestAuthentication()
+        public bool Authenticate()
         {
             return m_authHandler.Authenticate();
         }
@@ -248,7 +247,7 @@ namespace EmsApi.Client.V2
         {
             if( m_config.ThrowExceptionOnAuthFailure )
             {
-                throw new EmsApiServiceException( string.Format(
+                throw new EmsApiAuthenticationException( string.Format(
                     "An EMS API authentication exception occured, and the ThrowExceptionOnAuthFailure setting is true: {0}",
                     args.Message ) );
             }
@@ -264,7 +263,7 @@ namespace EmsApi.Client.V2
         {
             string error;
             if( !config.Validate( out error ) )
-                throw new InvalidApiConfigurationException( error );
+                throw new EmsApiConfigurationException( error );
         }
 
         /// <summary>

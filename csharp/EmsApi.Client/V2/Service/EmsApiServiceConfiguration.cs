@@ -142,5 +142,22 @@ namespace EmsApi.Client.V2
             }
         }
 
+        /// <summary>
+        /// Retrun a copy of the configuration.
+        /// </summary>
+        /// <returns></returns>
+        public EmsApiServiceConfiguration Clone()
+        {
+            return new EmsApiServiceConfiguration
+            {
+                Endpoint = this.Endpoint,
+                UserName = this.UserName,
+                Password = this.Password,
+                TrustedToken = this.TrustedToken,
+                ThrowExceptionOnApiFailure = this.ThrowExceptionOnApiFailure,
+                ThrowExceptionOnAuthFailure = this.ThrowExceptionOnAuthFailure
+            };
+        }
+
     }
 }
