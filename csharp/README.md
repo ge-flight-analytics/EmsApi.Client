@@ -56,7 +56,6 @@ The C\# DTO classes are available upon request.
 * Implement trusted service authentication, only user / pass works currently.
 * Figure out if there are threading issues with the authentication class.
     * Specifically if there's a problem with race conditions when getting a new token.
-* Add unit test project (would work similar to how the dotnet core example works now)
 * The client library project files for VS2015 and VS2017 use different formats. The VS2017 format automatically includes everything under the directory unless it is explicitly told to ignore it. The VS2015 project must explicitly list the cs files in the csproj file. Therefore, when files are added or moved right now, the VS2015 project will need to be updated.
 * Test to see if everything builds on VS2015 and VS2017 community editions.
 * Create a script for building library and example with dotnet.exe
@@ -66,6 +65,3 @@ The C\# DTO classes are available upon request.
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI it never times out (or takes a long time).
-* Failures from the wrapper classes (authentication, API exception) are still throwing AggregateException instead of EmsApiServiceException when EmsApiServiceConfiguration.ThrowExceptionOnBlahFailure = true.
-	* I think this is happening because the first event which causes the throw happens under a task.
-	* Need to make it so that every exception at least derivces from EmsApiServiceException.

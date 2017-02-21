@@ -23,16 +23,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </summary>
         public Task<IEnumerable<EmsSystem>> GetAllAsync()
         {
-            return m_api.GetEmsSystems();
-        }
-
-        /// <summary>
-        /// Returns all EMS systems connected to the API endpoint that the user has access to.
-        /// </summary>
-        public IEnumerable<EmsSystem> GetAll()
-        {
-            IEnumerable<EmsSystem> emsSystems = ForwardAggregateExceptions( GetAllAsync() );
-            return SafeAccessEnumerable( emsSystems );
+            return ContinueWithExceptionSafety( api => api.GetEmsSystems() );
         }
 
         /// <summary>
@@ -41,21 +32,12 @@ namespace EmsApi.Client.V2.Wrappers
         /// <param name="id">
         /// The EMS system id to return.
         /// </param>
-        public async Task<EmsSystem> GetAsync( int id )
+        public Task<EmsSystem> GetAsync( int id )
         {
-            var allSystems = await GetAllAsync();
-            return allSystems.FirstOrDefault( ems => ems.Id == id );
-        }
-
-        /// <summary>
-        /// Returns a single EMS system that the user has access to. 
-        /// </summary>
-        /// <param name="id">
-        /// The EMS system id to return.
-        /// </param>
-        public EmsSystem Get( int id )
-        {
-            return ForwardAggregateExceptions( GetAsync( id ) );
+            return GetAllAsync().ContinueWith( t =>
+            {
+                return t.Result.FirstOrDefault( ems => ems.Id == id );
+            } );
         }
 
         /// <summary>
@@ -66,7 +48,26 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public Task<EmsSystemInfo> GetSystemInfoAsync( int id )
         {
-            return m_api.GetEmsSystemInfo( id );
+            return ContinueWithExceptionSafety( api => api.GetEmsSystemInfo( id ) );
+        }
+
+        /// <summary>
+        /// Returns all EMS systems connected to the API endpoint that the user has access to.
+        /// </summary>
+        public IEnumerable<EmsSystem> GetAll()
+        {
+            return SafeAccessEnumerable( AccessTaskResult( GetAllAsync() ) );
+        }
+
+        /// <summary>
+        /// Returns a single EMS system that the user has access to. 
+        /// </summary>
+        /// <param name="id">
+        /// The EMS system id to return.
+        /// </param>
+        public EmsSystem Get( int id )
+        {
+            return AccessTaskResult( GetAsync( id ) );
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public EmsSystemInfo GetSystemInfo( int id )
         {
-            return ForwardAggregateExceptions( GetSystemInfoAsync( id ) );
+            return AccessTaskResult( GetSystemInfoAsync( id ) );
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public Task<bool> PingAsync( int id )
         {
-            return m_api.PingEmsSystem( id );
+            return ContinueWithExceptionSafety( api => api.PingEmsSystem( id ) );
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace EmsApi.Client.V2.Wrappers
         /// </param>
         public bool Ping( int id )
         {
-            return ForwardAggregateExceptions( PingAsync( id ) );
+            return AccessTaskResult( PingAsync( id ) );
         }
     }
 }
