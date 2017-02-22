@@ -22,6 +22,25 @@ namespace EmsApi.Client.Tests
             setConfig.ShouldThrowExactly<EmsApiConfigurationException>();
         }
 
+        [Fact( DisplayName = "Valid configuration should change service state" )]
+        public void Valid_configuration_should_change_service_state()
+        {
+            using( var service = NewService() )
+            {
+                // Authenticate the first time.
+                service.Authenticate().Should().BeTrue();
+                service.Authenticated.Should().BeTrue();
+
+                // Change the configuration.
+                var newConfig = m_config.Clone();
+                Action setConfig = () => service.ServiceConfig = newConfig;
+                setConfig.ShouldNotThrow();
+
+                // Make sure we are no longer authenticated.
+                service.Authenticated.Should().BeFalse();
+            }
+        }
+
         [Fact( DisplayName = "Service should shut down gracefully" )]
         public void Service_should_shut_down_gracefully()
         {

@@ -41,16 +41,45 @@ namespace EmsApi.Client.Tests
         }
 
         /// <summary>
+        /// Returns a new instance of the EMS API service with a valid configuration
+        /// that does not throw exceptions.
+        /// </summary>
+        protected static EmsApiService NewNoThrowService()
+        {
+            var config = m_config.Clone();
+            config.ThrowExceptionOnApiFailure = false;
+            config.ThrowExceptionOnAuthFailure = false;
+            return new EmsApiService( config );
+        }
+
+        /// <summary>
         /// Returns a new instance of the EMS API service with an invalid login.
         /// </summary>
         protected static EmsApiService NewInvalidLoginService()
         {
-            EmsApiServiceConfiguration config = m_config.Clone();
-            config.UserName = string.Format( "Inv@lidUser{0}", Guid.NewGuid() );
+            return new EmsApiService( GetInvalidLoginConfig() );
+        }
+
+        /// <summary>
+        /// Returns a new instance of the EMS API service with a valid configuration
+        /// that does not throw exceptions.
+        /// </summary>
+        protected static EmsApiService NewNoThrowInvalidLoginService()
+        {
+            var config = GetInvalidLoginConfig();
+            config.ThrowExceptionOnApiFailure = false;
+            config.ThrowExceptionOnAuthFailure = false;
             return new EmsApiService( config );
         }
 
-        private static readonly EmsApiServiceConfiguration m_config;
+        private static EmsApiServiceConfiguration GetInvalidLoginConfig()
+        {
+            EmsApiServiceConfiguration config = m_config.Clone();
+            config.UserName = string.Format( "Inv@lidUser{0}", Guid.NewGuid() );
+            return config;
+        }
+
+        protected static readonly EmsApiServiceConfiguration m_config;
     }
 
     /// <summary>

@@ -120,16 +120,6 @@ namespace EmsApi.Client.V2
         public EmsSystemsAccess EmsSystems { get; private set; }
 
         /// <summary>
-        /// Provides raw access the the API interface. Typically you would want
-        /// to avoid using this directly, unless the functionality you need is
-        /// not exposed by one of the specific properties on this class.
-        /// </summary>
-        public IEmsApi Raw
-        {
-            get { return m_api; }
-        }
-
-        /// <summary>
         /// Registers a callback to be notified when API authentication fails. The callback will
         /// be executed for every authentication failure, even subsequent failures in rapid succession.
         /// All callbacks will be automatically unregistered when the service is disposed, or they may

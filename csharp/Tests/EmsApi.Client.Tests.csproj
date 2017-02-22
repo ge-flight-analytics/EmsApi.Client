@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationTests.cs" />
+    <Compile Include="CallbackTests.cs" />
     <Compile Include="ErrorHandlingTests.cs" />
     <Compile Include="Features\EmsSystems.feature.cs">
       <AutoGen>True</AutoGen>

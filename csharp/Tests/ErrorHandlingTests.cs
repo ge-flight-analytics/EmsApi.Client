@@ -16,11 +16,8 @@ namespace EmsApi.Client.Tests
         [Fact( DisplayName = "Disabling auth exceptions should not throw an exception" )]
         public void Disabling_auth_exceptions_should_not_throw_an_exception()
         {
-            using( var service = NewInvalidLoginService() )
-            {
-                service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
+            using( var service = NewNoThrowInvalidLoginService() )
                 service.Authenticate();
-            }
         }
 
         [Fact( DisplayName = "Enabling api exceptions should throw an exception" )]
@@ -41,7 +38,7 @@ namespace EmsApi.Client.Tests
         [Fact( DisplayName = "Disabling api exceptions should not throw an exception" )]
         public void Disabling_api_exceptions_should_not_throw_an_exception()
         {
-            using( var service = NewInvalidLoginService() )
+            using( var service = NewNoThrowInvalidLoginService() )
             {
                 service.ServiceConfig.ThrowExceptionOnApiFailure = false;
                 service.ServiceConfig.ThrowExceptionOnAuthFailure = false;

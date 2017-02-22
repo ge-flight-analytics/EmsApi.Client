@@ -68,6 +68,7 @@ namespace EmsApi.Client.V2
 
                 // Set the token to invalid in case we need to use different authentication now.
                 m_tokenExpiration = DateTime.UtcNow;
+                Authenticated = false;
             }
 
             protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
