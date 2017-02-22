@@ -43,11 +43,17 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="V2\Access\AssetsAccess.cs" />
     <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
     <Compile Include="V2\Access\EmsSystemsAccess.cs" />
     <Compile Include="V2\IEmsApi.cs" />
+    <Compile Include="V2\Model\Aircraft.cs" />
+    <Compile Include="V2\Model\Airport.cs" />
+    <Compile Include="V2\Model\CommonModels.cs" />
     <Compile Include="V2\Model\EmsSystem.cs" />
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
+    <Compile Include="V2\Model\Fleet.cs" />
+    <Compile Include="V2\Model\FlightPhase.cs" />
     <Compile Include="V2\Service\ApiEventArgs.cs" />
     <Compile Include="V2\Service\Authentication.cs" />
     <Compile Include="V2\Service\EmsApiEndpoints.cs" />

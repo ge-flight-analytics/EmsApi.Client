@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using Refit;
 
@@ -38,6 +39,26 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
+        /// Access to ems-system routes.
+        /// </summary>
+        public EmsSystemsAccess EmsSystems { get; private set; }
+
+        /// <summary>
+        /// Access to assets routes.
+        /// </summary>
+        public AssetsAccess Assets { get; private set; }
+
+        /// <summary>
+        /// The current EMS system that the service is operating on. This value may
+        /// be set to exclude it from access methods that need an EMS system specified.
+        /// </summary>
+        public int CachedEmsSystem
+        {
+            get { return m_cachedEmsSystemId; }
+            set { SetCachedEmsSystem( value ); }
+        }
+
+        /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
         private void Initialize()
@@ -68,7 +89,9 @@ namespace EmsApi.Client.V2
         /// </summary>
         private void InitializeAccessProperties()
         {
+            m_accessors = new List<EmsApiRouteAccess>();
             EmsSystems = InitializeAccessClass<EmsSystemsAccess>();
+            Assets = InitializeAccessClass<AssetsAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
@@ -77,7 +100,19 @@ namespace EmsApi.Client.V2
             access.SetInterface( m_api );
             access.ApiMethodFailedEvent += ApiExceptionHandler;
             m_cleanup.Add( () => access.ApiMethodFailedEvent -= ApiExceptionHandler );
+            m_accessors.Add( access );
+
             return (TAccess)access;
+        }
+
+        private void SetCachedEmsSystem( int newId )
+        {
+            if( newId <= 0 )
+                throw new EmsApiException( "The cached EMS system id must be greater than 0." );
+
+            m_cachedEmsSystemId = newId;
+            m_accessors.OfType<CachedEmsIdRouteAccess>().ToList()
+                .ForEach( a => a.SetEmsSystemId( m_cachedEmsSystemId ) );
         }
 
         /// <summary>
@@ -113,11 +148,6 @@ namespace EmsApi.Client.V2
         {
             return m_authHandler.Authenticate();
         }
-
-        /// <summary>
-        /// Access to ems-system routes.
-        /// </summary>
-        public EmsSystemsAccess EmsSystems { get; private set; }
 
         /// <summary>
         /// Registers a callback to be notified when API authentication fails. The callback will
@@ -239,6 +269,17 @@ namespace EmsApi.Client.V2
         /// A list of actions to perform when the service is disposed.
         /// </summary>
         private List<Action> m_cleanup;
+
+        /// <summary>
+        /// References to the Access classes exposed by this service, so that
+        /// we can perform operations on them iteratively.
+        /// </summary>
+        private List<EmsApiRouteAccess> m_accessors;
+
+        /// <summary>
+        /// The current value for the cached ems system id.
+        /// </summary>
+        private int m_cachedEmsSystemId;
 
         private IEmsApi m_api;
         private EmsApiServiceConfiguration m_config;

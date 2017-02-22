@@ -37,7 +37,7 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// The reference to the raw api interface. This is private get so that derived classes
-        /// are required to call <seealso cref="ContinueWithExceptionSafety{TRet}(Func{IEmsApi, Task{TRet}})"/>
+        /// are required to call <seealso cref="CallApiTask{TRet}(Func{IEmsApi, Task{TRet}})"/>
         /// in order to access the interface.
         private IEmsApi m_api;
 
@@ -69,10 +69,19 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
-        /// Adds a continuation onto the task that automatically handles API interface exceptions.
-        /// The exceptions are handled by forwarding all exceptions as events to the
-        /// <seealso cref="ApiMethodFailedEvent"/>. From non-asynchronous code, these tasks should
-        /// be accessed via <seealso cref="AccessTaskResult{TRet}(Task{TRet})"/> so that aggregate
+        /// Unpackages the return value of the task as an enumerable that cannot be null.
+        /// </summary>
+        protected static IEnumerable<TEnum> SafeAccessEnumerableTask<TEnum>( Task<IEnumerable<TEnum>> task )
+        {
+            return SafeAccessEnumerable( AccessTaskResult( task ) );
+        }
+
+        /// <summary>
+        /// Must be used by derived classes to access methods on the <seealso cref="IEmsApi"/>
+        /// interface. This method adds continuation onto the task that automatically handles API 
+        /// interface exceptions. The exceptions are handled by forwarding all exceptions as events 
+        /// to the <seealso cref="ApiMethodFailedEvent"/>. From non-asynchronous code, these tasks 
+        /// should be accessed via <seealso cref="AccessTaskResult{TRet}(Task{TRet})"/> so that aggregate
         /// errors are converted to our own exception type.
         /// </summary>
         /// <param name="apiFunc">
@@ -82,7 +91,7 @@ namespace EmsApi.Client.V2.Access
         /// The point of this is to make sure all tasks from Refit automatically convert exceptions
         /// into the API failed event when they are evaluated.
         /// </remarks>
-        protected Task<TRet> ContinueWithExceptionSafety<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
+        protected Task<TRet> CallApiTask<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
         {
             var api = apiFunc( m_api );
             var safeTask = api.ContinueWith( HandleApiException );
@@ -96,7 +105,7 @@ namespace EmsApi.Client.V2.Access
         /// ever see exceptions thrown as a result of <seealso cref="OnApiMethodFailed(ApiExceptionEventArgs)"/>
         /// calls, and task cancellation exceptions.
         /// </summary>
-        protected TRet AccessTaskResult<TRet>( Task<TRet> task )
+        protected static TRet AccessTaskResult<TRet>( Task<TRet> task )
         {
             try
             {
@@ -138,5 +147,51 @@ namespace EmsApi.Client.V2.Access
             if( ApiMethodFailedEvent != null )
                 ApiMethodFailedEvent( this, args );
         }
+    }
+
+    /// <summary>
+    /// Adds some additional functions for setting and accessing a cached EMS server id.
+    /// </summary>
+    public abstract class CachedEmsIdRouteAccess : EmsApiRouteAccess
+    {
+        /// <summary>
+        /// A special id to use when an EMS system ID is not being provided for a method call.
+        /// </summary>
+        public const int NoEmsServerSpecified = -1;
+
+        /// <summary>
+        /// Allows the library user to set a particular EMS system id and have all subsequent
+        /// method calls refer to that system.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system to cache.
+        /// </param>
+        internal void SetEmsSystemId( int emsSystemId )
+        {
+            m_emsId = emsSystemId;
+        }
+
+        /// <summary>
+        /// Returns the proper EMS system to access for the method call.
+        /// </summary>
+        /// <param name="inputArg">
+        /// The value for the emsSystemId parameter that was passed to the method originally.
+        /// </param>
+        /// <returns></returns>
+        protected int GetEmsSystemForMethodCall( int inputArg )
+        {
+            if( inputArg == NoEmsServerSpecified )
+            {
+                // Make sure we have a cached value or throw an exception.
+                if( m_emsId == NoEmsServerSpecified )
+                    throw new EmsApiException( "No EMS server was specified for the method call, and a cached server has not been set." );
+
+                return m_emsId;
+            }
+
+            return inputArg;
+        }
+
+        private int m_emsId = NoEmsServerSpecified;
     }
 }

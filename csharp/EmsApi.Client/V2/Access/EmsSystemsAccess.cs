@@ -15,7 +15,7 @@ namespace EmsApi.Client.V2.Access
         /// </summary>
         public Task<IEnumerable<EmsSystem>> GetAllAsync()
         {
-            return ContinueWithExceptionSafety( api => api.GetEmsSystems() );
+            return CallApiTask( api => api.GetEmsSystems() );
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace EmsApi.Client.V2.Access
         /// </param>
         public Task<EmsSystemInfo> GetSystemInfoAsync( int id )
         {
-            return ContinueWithExceptionSafety( api => api.GetEmsSystemInfo( id ) );
+            return CallApiTask( api => api.GetEmsSystemInfo( id ) );
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace EmsApi.Client.V2.Access
         /// </summary>
         public IEnumerable<EmsSystem> GetAll()
         {
-            return SafeAccessEnumerable( AccessTaskResult( GetAllAsync() ) );
+            return SafeAccessEnumerableTask( GetAllAsync() );
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace EmsApi.Client.V2.Access
         /// </param>
         public Task<bool> PingAsync( int id )
         {
-            return ContinueWithExceptionSafety( api => api.PingEmsSystem( id ) );
+            return CallApiTask( api => api.PingEmsSystem( id ) );
         }
 
         /// <summary>

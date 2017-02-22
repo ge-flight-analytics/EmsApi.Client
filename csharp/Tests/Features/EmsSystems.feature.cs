@@ -34,7 +34,7 @@ namespace EmsApi.Client.Tests.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EmsSystems", "\tAs an application developer\r\n\tI want to be able to list and query EMS systems\r\n\t" +
-                    "So that I can use that information in other queries", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "So that I can use the information in other queries, and build my application", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,12 +81,10 @@ namespace EmsApi.Client.Tests.Features
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("A valid service to connect to", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
- testRunner.And("A valid login to the service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 9
  testRunner.When("I run GetAll", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 10
+#line 9
  testRunner.Then("EmsSystem objects are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -98,15 +96,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GetASingleEMSSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a single EMS system", ((string[])(null)));
-#line 12
+#line 11
 this.ScenarioSetup(scenarioInfo);
+#line 12
+ testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 13
- testRunner.Given("A valid service to connect to", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 14
- testRunner.And("A valid login to the service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
  testRunner.When("I run Get and enter the value 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
+#line 14
  testRunner.Then("An EmsSystem object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -118,15 +114,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PingAnEMSSystem()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ping an EMS system", ((string[])(null)));
-#line 18
+#line 16
 this.ScenarioSetup(scenarioInfo);
-#line 19
- testRunner.Given("A valid service to connect to", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
- testRunner.And("A valid login to the service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 17
+ testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
  testRunner.When("I run ping and enter the value 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 22
+#line 19
  testRunner.Then("The result is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -138,15 +132,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GetEMSSystemInformation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get EMS system information", ((string[])(null)));
-#line 24
+#line 21
 this.ScenarioSetup(scenarioInfo);
-#line 25
- testRunner.Given("A valid service to connect to", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
- testRunner.And("A valid login to the service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 22
+ testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 23
  testRunner.When("I run GetSystemInfo and enter the value 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 28
+#line 24
  testRunner.Then("An EmsSystemInfo object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

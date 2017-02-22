@@ -73,6 +73,7 @@ The C\# DTO classes are available upon request.
 * Create a dotnet core docker example.
 * Create a dotnet framework docker example.
 * Add DTO classes
+* Figure out what the units are for the airport elevation field, and document it on the Model class.
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI it never times out (or takes a long time).
