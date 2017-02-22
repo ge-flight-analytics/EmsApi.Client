@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+using FluentAssertions;
 
 using EmsApi.Client.V2;
 
@@ -7,9 +8,7 @@ namespace EmsApi.Client.Tests
 {
     public class ServiceTests : TestBase
     {
-        private const string Header = "Service: ";
-
-        [Fact( DisplayName = Header + "An invalid configuration should throw an exception" ) ]
+        [Fact( DisplayName = "Invalid configuration should throw an exception" ) ]
         public void Invalid_configuration_should_throw_exception()
         {
             var service = new EmsApiService();
@@ -19,11 +18,11 @@ namespace EmsApi.Client.Tests
                 Password = null
             };
 
-            Exception ex = Assert.Throws<EmsApiConfigurationException>( () => service.ServiceConfig = badConfig );
-            Assert.True( !string.IsNullOrEmpty( ex.Message ) );
+            Action setConfig = () => service.ServiceConfig = badConfig;
+            setConfig.ShouldThrowExactly<EmsApiConfigurationException>();
         }
 
-        [Fact( DisplayName = Header + "The service should shut down gracefully" )]
+        [Fact( DisplayName = "Service should shut down gracefully" )]
         public void Service_should_shut_down_gracefully()
         {
             var service = NewService();

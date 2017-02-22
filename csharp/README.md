@@ -58,6 +58,8 @@ The C\# DTO classes are available upon request.
 * Add the route definitions to IEmsApi.cs
 * Implement an access class for the route deriving from Access\EmsApiRouteAccess.cs
 * Add a public property for the access class to Service\EmsApiService.cs, and add it to the InitializeAccessProperties function.
+* Add a SpecFlow test for the new routes.
+	* Note: The SpecFlow Visual Studio extension is required when adding new tests in the Tests\Features directory, but it isn't required for running the existing tests.
 
 ## Todo
 * Implement the rest of the routes.

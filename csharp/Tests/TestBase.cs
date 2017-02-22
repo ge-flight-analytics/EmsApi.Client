@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 using EmsApi.Client.V2;
 
@@ -31,8 +29,6 @@ namespace EmsApi.Client.Tests
                 UserName = user,
                 Password = pass
             };
-
-            m_rand = new Random();
         }
 
         /// <summary>
@@ -54,7 +50,17 @@ namespace EmsApi.Client.Tests
             return new EmsApiService( config );
         }
 
-        private static readonly Random m_rand;
         private static readonly EmsApiServiceConfiguration m_config;
+    }
+
+    /// <summary>
+    /// Provides some member variables for the tests to use to pass results
+    /// between methods.
+    /// </summary>
+    public abstract class FeatureTestBase : TestBase
+    {
+        protected EmsApiService m_service;
+        protected object m_resultObj;
+        protected bool m_resultBool;
     }
 }
