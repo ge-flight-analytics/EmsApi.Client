@@ -113,7 +113,7 @@ namespace EmsApi.Client.V2
 
                 if( !response.IsSuccessStatusCode )
                 {
-                    string description = result.GetValue( "error_description" ).ToString();
+                    string description = result.GetValue( "message" ).ToString();
                     error = string.Format( "Unable to retrieve EMS API bearer token: {0}", description );
                     return false;
                 }
