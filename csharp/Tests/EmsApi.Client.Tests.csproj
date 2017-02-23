@@ -167,6 +167,12 @@
     </Compile>
     <Compile Include="Features\EmsSystemsSteps.cs" />
     <Compile Include="Features\FeatureTest.cs" />
+    <Compile Include="Features\Swagger.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Swagger.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\SwaggerSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceTests.cs" />
     <Compile Include="TestBase.cs" />
@@ -180,6 +186,10 @@
     <None Include="Features\EmsSystems.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>EmsSystems.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Swagger.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Swagger.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

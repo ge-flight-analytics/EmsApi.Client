@@ -130,5 +130,14 @@ namespace EmsApi.Client.V2
         /// <returns></returns>
         [Get( "/v2/ems-systems/{emsSystemId}/assets/airports/{airportId}" )]
         Task<Airport> GetAirport( int emsSystemId, int airportId );
+
+        /// <summary>
+        /// Returns the swagger specification as a raw JSON string.
+        /// </summary>
+        /// <param name="apiVersion">
+        /// The version of the API to return the specification for. The default is "v2".
+        /// </param>
+        [Get( "/{apiVersion}/swagger" )]
+        Task<string> GetSwaggerSpecification( string apiVersion = "v2" );
     }
 }

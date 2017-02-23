@@ -46,6 +46,7 @@
     <Compile Include="V2\Access\AssetsAccess.cs" />
     <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
     <Compile Include="V2\Access\EmsSystemsAccess.cs" />
+    <Compile Include="V2\Access\SwaggerAccess.cs" />
     <Compile Include="V2\IEmsApi.cs" />
     <Compile Include="V2\Model\Aircraft.cs" />
     <Compile Include="V2\Model\Airport.cs" />
