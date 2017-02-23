@@ -23,7 +23,7 @@ To build the projects, you will need either:
 * Add a new project in the EmsApi.Example solution. Choose your desired flavor of .NET and add the project to the Examples directory.
 * Modify the Solution's properties to have the new project depend on EmsApi.Client.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, select EmsApi.Client\bin\EmsApi.Client.dll
+* Select Browse, select bin\EmsApi.Client.dll
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project, until this library is distributed as a nuget package.
 
@@ -39,7 +39,7 @@ To build the projects, you will need either:
 * Download this repository and build EmsApi.Client.sln
 * Start a new project or solution in Visual Studio.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, locate EmsApi.Client\bin\EmsApi.Client.dll under this directory.
+* Select Browse, locate bin\EmsApi.Client.dll under this directory.
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project.
 * The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1, and some other stuff like UWP and Xamarin.
@@ -63,7 +63,6 @@ The C\# DTO classes are available upon request.
 
 ## Todo
 * Implement the rest of the routes.
-* Figure out if an example project can reference the library by the VS Project reference thing.
 * Implement trusted service authentication, only user / pass works currently.
 * Figure out if there are threading issues with the authentication class.
     * Specifically if there's a problem with race conditions when getting a new token.
@@ -72,8 +71,6 @@ The C\# DTO classes are available upon request.
 * Create a script for building library and example with dotnet.exe
 * Create a dotnet core docker example.
 * Create a dotnet framework docker example.
-* Add DTO classes
-* Figure out what the units are for the airport elevation field, and document it on the Model class.
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI it never times out (or takes a long time).

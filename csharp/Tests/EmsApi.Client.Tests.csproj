@@ -205,6 +205,10 @@
     <Error Condition="!Exists('..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets'))" />
   </Target>
   <Import Project="..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets" Condition="Exists('..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(ProjectDir)..\bin\"
+copy "$(TargetPath)" "$(ProjectDir)..\bin\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

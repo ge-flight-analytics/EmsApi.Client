@@ -12,17 +12,19 @@ assembly_info:
 environment:
   EmsApiTestEndpoint: https://emsapibeta.ausdig.com/api
   EmsApiTestUsername:
-    secure: Wlg5B5nRKlGU7fqGvHEJuQ==
+    secure: IpC7n4Gq5x7QPNSkY4FNrw==
   EmsApiTestPassword:
-    secure: ObYiYvzG0hOHNqOIcrIXgg==
+    secure: qTDOVAxHa2DdMrpU276vMQ==
 nuget:
   project_feed: true
 build_script:
-- ps: '& .\csharp\EmsApi.Client\build.ps1'
+- ps: '& .\csharp\EmsApi.Dto\Update-EmsApiSwaggerSpecAuto.ps1; & .\csharp\build.ps1 -Release'
 test:
-  assemblies: csharp\Tests\bin\Release\EmsApi.Client.Tests.dll
+  assemblies: csharp\bin\EmsApi.Client.Tests.dll
 artifacts:
-- path: csharp\EmsApi.Client\bin\EmsApi.Client.*.nupkg
+- path: csharp\bin\EmsApi.Client.*.nupkg
   name: Release
-- path: csharp\EmsApi.Client\bin\EmsApi.Client.dll
+- path: csharp\bin\EmsApi.Client.dll
+  name: Release
+- path: csharp\bin\EmsApi.Dto.dll
   name: Release

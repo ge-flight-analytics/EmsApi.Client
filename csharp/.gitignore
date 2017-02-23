@@ -7,4 +7,5 @@ bin/
 project.lock.json
 *.nupkg
 *.nuget.targets
-EmsApi.Client.Vs2015.nuget.targets
+*.nuget.props
+EmsApi.Dto/Generated/*

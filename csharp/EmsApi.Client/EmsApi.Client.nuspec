@@ -10,6 +10,7 @@
     <dependencies>
       <dependency id="refit" version="3.0.1" />
       <dependency id="System.Net.Http" version="4.3" />
+      <dependency id="EmsApi.Dto" version="0.1" />
     </dependencies>
   </metadata>
   <files>

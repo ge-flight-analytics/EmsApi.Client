@@ -40,4 +40,10 @@
     <PackageReference Include="refit" Version="3.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="EmsApi.Dto">
+      <HintPath>..\EmsApi.Dto\bin\EmsApi.DTO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
