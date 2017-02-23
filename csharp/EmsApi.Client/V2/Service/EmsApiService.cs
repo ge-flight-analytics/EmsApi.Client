@@ -69,7 +69,7 @@ namespace EmsApi.Client.V2
 
             // Set up authentication.
             m_authHandler = new Authentication.EmsApiTokenHandler( m_config );
-            m_apiClient = new HttpClient( m_authHandler );
+            m_apiClient = AllocateHttpClient();
             m_apiClient.BaseAddress = new Uri( m_config.Endpoint );
 
             // Set up the API client abstraction.
@@ -81,6 +81,15 @@ namespace EmsApi.Client.V2
             // Subscribe to authentication failure events.
             m_authHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
             m_cleanup.Add( () => m_authHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
+        }
+
+        /// <summary>
+        /// Allocates a new HttpClient which handles injecting authentication tokens into the headers during a RESTful request.
+        /// </summary>
+        /// <returns></returns>
+        public HttpClient AllocateHttpClient( )
+        {
+            return new HttpClient(m_authHandler);
         }
 
         /// <summary>
