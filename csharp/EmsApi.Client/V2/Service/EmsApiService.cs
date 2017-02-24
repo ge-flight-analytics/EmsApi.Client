@@ -39,6 +39,11 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
+        /// Access to the swagger specification.
+        /// </summary>
+        public SwaggerAccess Swagger { get; private set; }
+
+        /// <summary>
         /// Access to ems-system routes.
         /// </summary>
         public EmsSystemsAccess EmsSystems { get; private set; }
@@ -99,6 +104,7 @@ namespace EmsApi.Client.V2
         private void InitializeAccessProperties()
         {
             m_accessors = new List<EmsApiRouteAccess>();
+            Swagger = InitializeAccessClass<SwaggerAccess>();
             EmsSystems = InitializeAccessClass<EmsSystemsAccess>();
             Assets = InitializeAccessClass<AssetsAccess>();
         }

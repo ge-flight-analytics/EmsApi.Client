@@ -5,17 +5,20 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{60E9EF36-B92A-4486-A1C1-BD90C44188C4}</ProjectGuid>
+    <ProjectGuid>{86F1DF15-9BC1-4828-80DB-878DB1DB037D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EmsApi.Client</RootNamespace>
-    <AssemblyName>EmsApi.Client</AssemblyName>
+    <RootNamespace>EmsApi.Dto</RootNamespace>
+    <AssemblyName>EmsApi.Dto</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(NuGetPackageRoot)' == ''">
+    <NuGetPackageRoot>$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,8 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\EmsApi.Client.xml</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
+    <DocumentationFile>bin\Debug\EmsApi.Dto.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,58 +37,35 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\EmsApi.Client.xml</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
+    <DocumentationFile>bin\Release\EmsApi.Dto.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="project.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="V2\Access\AssetsAccess.cs" />
-    <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
-    <Compile Include="V2\Access\EmsSystemsAccess.cs" />
-    <Compile Include="V2\Access\SwaggerAccess.cs" />
-    <Compile Include="V2\IEmsApi.cs" />
-    <Compile Include="V2\Model\Aircraft.cs" />
-    <Compile Include="V2\Model\Airport.cs" />
-    <Compile Include="V2\Model\CommonModels.cs" />
-    <Compile Include="V2\Model\EmsSystem.cs" />
-    <Compile Include="V2\Model\EmsSystemInfo.cs" />
-    <Compile Include="V2\Model\Fleet.cs" />
-    <Compile Include="V2\Model\FlightPhase.cs" />
-    <Compile Include="V2\Service\ApiEventArgs.cs" />
-    <Compile Include="V2\Service\Authentication.cs" />
-    <Compile Include="V2\Service\EmsApiEndpoints.cs" />
-    <Compile Include="V2\Service\EmsApiService.cs" />
-    <Compile Include="V2\Service\EmsApiServiceConfiguration.cs" />
-    <Compile Include="V2\Service\EmsApiServiceException.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EmsApi.Dto\EmsApi.Dto.csproj">
-      <Project>{86f1df15-9bc1-4828-80db-878db1db037d}</Project>
-      <Name>EmsApi.Dto</Name>
-    </ProjectReference>
+    <Compile Include="Generated\EmsApi.Dto.V2.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(NuGetPackageRoot)\NSwag.MSBuild\9.5.0\build\NSwag.MSBuild.props" Condition="'$(NSwagExe)' == ''" />
+  <Target Name="BeforeBuild">
+    <Exec Command="$(NSwagExe) swagger2csclient /input:$(ProjectDir)ems-api.json /namespace:EmsApi.Dto.V2 /output:$(ProjectDir)Generated/EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
+    <!-- <Exec Command="$(NSwagExe) swagger2tsclient /input:$(ProjectDir)ems-api.json /namespace:ems.api.v2 /moduleName:ems.api.v2 /output:$(ProjectDir)Generated/ems-api-v2.d.ts /generateClientClasses:false /generateDtoTypes:true /generateDefaultValues:false /typeStyle:Interface" /> -->
+  </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" ..\
-copy "$(TargetDir)EmsApi.Client.xml" ..\
+    <PostBuildEvent>echo Copy to EmsApi.Dto\bin for nuget package
+copy "$(TargetPath)" ..\
+copy "$(TargetDir)EmsApi.Dto.xml" ..\
+
+echo Copy generated output to csharp\bin
 mkdir "$(ProjectDir)..\bin\"
 copy "$(TargetPath)" "$(ProjectDir)..\bin\"
-</PostBuildEvent>
+copy "$(ProjectDir)Generated\EmsApi.Dto.V2.cs" "$(ProjectDir)..\bin\"
+echo copy "$(ProjectDir)Generated\ems-api-v2.d.ts" "$(ProjectDir)..\bin\"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>echo $(MSBuildToolsPath)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

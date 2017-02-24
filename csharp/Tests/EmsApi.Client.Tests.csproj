@@ -167,6 +167,12 @@
     </Compile>
     <Compile Include="Features\EmsSystemsSteps.cs" />
     <Compile Include="Features\FeatureTest.cs" />
+    <Compile Include="Features\Swagger.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Swagger.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\SwaggerSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceTests.cs" />
     <Compile Include="TestBase.cs" />
@@ -180,6 +186,10 @@
     <None Include="Features\EmsSystems.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>EmsSystems.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Swagger.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Swagger.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -195,6 +205,10 @@
     <Error Condition="!Exists('..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets'))" />
   </Target>
   <Import Project="..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets" Condition="Exists('..\EmsApi.Client\packages\refit.3.0.1\build\netstandard1.3\refit.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(ProjectDir)..\bin\"
+copy "$(TargetPath)" "$(ProjectDir)..\bin\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
