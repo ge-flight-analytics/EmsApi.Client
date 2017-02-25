@@ -6,13 +6,13 @@
 
 ## Prerequisites
 * Visual Studio 2015 with Update 3
-	* [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
-	* EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
-		* Spaces for indentation (4 spaces per indentation).
-		* Lines must end in crlf with no trailing whitespace.
-	* Specflow extension, if you are writing or running tests.
+* With the [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
+* And the EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
+	* Spaces for indentation (4 spaces per indentation).
+	* Lines must end in crlf with no trailing whitespace.
+* And the Specflow extension, if you are writing or running tests.
 
-# Build the repository
+## Build the repository
 * Open `csharp\EmsApi.sln` and build the whole solution, or run the `csharp\build.ps1` file.
 
 ## Try out the examples
@@ -21,28 +21,30 @@
 * Rebuild the solution.
 * Right click one of the examples in the Solution Explorer and select "Set as StartUp Project". Use the Debug > Start Debugging menu item to run the example.
 
-## Start a new example project
+## Create a new example project
 * Add a new project in the `csharp\Examples\EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
+	* *Note:* If you're using .NET framework, the target framework of the project needs to be updated to at least ".NET Framework 4.6.1".
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
 * Select Browse, select `csharp\bin\EmsApi.Client.dll`
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
-* Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project, until this library is distributed as a nuget package.
+* Add nuget references for `System.Net.Http 4.3`+ and `Refit 3.0.1` in your project.
 
-## Include the library in your own project (the nuget way).
+## Include the library in your own project (using nuget)
 * Start a new project or solution in Visual Studio.
+	* *Note:* If you're using .NET framework, the target framework of the project needs to be updated to at least ".NET Framework 4.6.1".
 * In the Solution Explorer, right click the References entry under the project and select Manage Nuget Packages...
 * In the Package source box at the top right, select the ems-api-sdk package source.
 	* If it's not already in the list, click the gear icon next to the dropdown, and add a new source with the name "ems-api-sdk", and the [Appveyor project nuget package source](https://ci.appveyor.com/nuget/ems-api-sdk) URL.
 	* The appveyor feed is the only way to get packages currently. Once the library reaches 1.0 we will provide nuget.org packages as well.
 * Search or browse for "EmsApi.Client" and install.
 
-## Include the library in your own project (the build it yourself way).
+## Include the library in your own project (using source)
 * Download this repository and build `csharp\EmsApi.sln`
 * Start a new project or solution in Visual Studio.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
 * Select Browse, locate `csharp\bin\EmsApi.Client.dll` under this directory.
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
-* Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project.
+* Add nuget references for `System.Net.Http 4.3`+ and `Refit 3.0.1` in your project.
 * The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1, and some other stuff like UWP and Xamarin.
 
 # Details
