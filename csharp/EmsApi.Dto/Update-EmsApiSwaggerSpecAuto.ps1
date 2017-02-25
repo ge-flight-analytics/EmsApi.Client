@@ -10,14 +10,16 @@ try
     $endpoint = $env:EmsApiTestEndpoint
     if( [string]::IsNullOrEmpty( $endpoint ) )
     {
-        throw "Missing EmsApiTestEndpoint environment variable, cannot download swagger spec."
+        Write-Warning "Missing EmsApiTestEndpoint environment variable, cannot download swagger spec."
+        return
     }
 
     $user = $env:EmsApiTestUsername
     $pass = $env:EmsApiTestPassword
     if( [string]::IsNullOrEmpty( $user ) -or [string]::IsNullOrEmpty( $pass ) )
     {
-        throw "Missing EmsApiTestUsername or EmsApiTestPassword environment variables, cannot download swagger spec."
+        Write-Warning "Missing EmsApiTestUsername or EmsApiTestPassword environment variables, cannot download swagger spec."
+        return
     }
 
     # Convert our plain text password to a secure string, that's what the script takes.
