@@ -13,16 +13,16 @@
 	* Specflow extension, if you are writing or running tests.
 
 # Build the repository
-* Either open *EmsApi.sln* and build the whole solution, or run the `.\build.ps1` file.
+* Either open `EmsApi.sln` and build the whole solution, or run the `.\build.ps1` file.
 
 ## Try out the examples
 * Clone the repository.
-* Open *EmsApi.Example.sln* in the Examples directory.
+* Open `EmsApi.Example.sln` in the Examples directory.
 * Rebuild the solution.
 * Right click one of the examples in the Solution Explorer and select "Set as StartUp Project". Use the Debug > Start Debugging menu item to run the example.
 
 ## Start a new example project
-* Add a new project in the *EmsApi.Example* solution. Choose your desired flavor of .NET and add the project to the Examples directory.
+* Add a new project in the `EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
 * Select Browse, select `bin\EmsApi.Client.dll`
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
@@ -37,7 +37,7 @@
 * Search or browse for "EmsApi.Client" and install.
 
 ## Include the library in your own project (the build it yourself way).
-* Download this repository and build *EmsApi.Client.sln*
+* Download this repository and build `EmsApi.Client.sln`
 * Start a new project or solution in Visual Studio.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
 * Select Browse, locate `bin\EmsApi.Client.dll` under this directory.
