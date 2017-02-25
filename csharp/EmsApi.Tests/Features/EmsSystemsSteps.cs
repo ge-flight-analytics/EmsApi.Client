@@ -1,7 +1,7 @@
 ﻿using TechTalk.SpecFlow;
 using FluentAssertions;
 
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.Tests.Features
 {

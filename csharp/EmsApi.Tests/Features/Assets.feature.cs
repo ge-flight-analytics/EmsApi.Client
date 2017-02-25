@@ -265,7 +265,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 66
  testRunner.And("The Id property is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.And("The AirportCode is not empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The PreferredCode is not empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

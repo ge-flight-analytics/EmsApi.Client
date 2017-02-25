@@ -1,11 +1,15 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace EmsApi.Client.V2.Model
+namespace EmsApi.Dto.V2
 {
     /// <summary>
     /// Additional server information about an EMS system connected to the API.
     /// </summary>
+    /// <remarks>
+    /// This isn't described in the swagger spec, so it's not in the EmsApi.Dto
+    /// namespace already.
+    /// </remarks>
     public class EmsSystemInfo
     {
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.V2.Access
 {
@@ -19,7 +19,7 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
-        /// Returns a single EMS system that the user has access to. 
+        /// Returns a single EMS system that the user has access to.
         /// </summary>
         /// <param name="id">
         /// The EMS system id to return.
@@ -52,7 +52,7 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
-        /// Returns a single EMS system that the user has access to. 
+        /// Returns a single EMS system that the user has access to.
         /// </summary>
         /// <param name="id">
         /// The EMS system id to return.
