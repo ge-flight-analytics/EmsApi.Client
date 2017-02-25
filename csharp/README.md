@@ -5,25 +5,26 @@
 # Getting Started
 
 ## Prerequisites
-To build the projects, you will need either:
 * Visual Studio 2015 with Update 3
 	* [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
 	* EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
 		* Spaces for indentation (4 spaces per indentation).
 		* Lines must end in crlf with no trailing whitespace.
-* Visual Studio 2017 Release Candidate, with the cross-platform development package installed (.net core tools).
+	* Specflow extension, if you are writing or running tests.
+
+# Build the repository
+* Either open *EmsApi.sln* and build the whole solution, or run the `.\build.ps1` file.
 
 ## Try out the examples
 * Clone the repository.
-* Open EmsApi.Example.sln in the Examples directory if you're using Visual Studio 2017, or EmsApi.Example.Vs2015.sln if you're using Visual Studio 2015.
+* Open *EmsApi.Example.sln* in the Examples directory.
 * Rebuild the solution.
 * Right click one of the examples in the Solution Explorer and select "Set as StartUp Project". Use the Debug > Start Debugging menu item to run the example.
 
 ## Start a new example project
-* Add a new project in the EmsApi.Example solution. Choose your desired flavor of .NET and add the project to the Examples directory.
-* Modify the Solution's properties to have the new project depend on EmsApi.Client.
+* Add a new project in the *EmsApi.Example* solution. Choose your desired flavor of .NET and add the project to the Examples directory.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, select bin\EmsApi.Client.dll
+* Select Browse, select `bin\EmsApi.Client.dll`
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project, until this library is distributed as a nuget package.
 
@@ -36,10 +37,10 @@ To build the projects, you will need either:
 * Search or browse for "EmsApi.Client" and install.
 
 ## Include the library in your own project (the build it yourself way).
-* Download this repository and build EmsApi.Client.sln
+* Download this repository and build *EmsApi.Client.sln*
 * Start a new project or solution in Visual Studio.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, locate bin\EmsApi.Client.dll under this directory.
+* Select Browse, locate `bin\EmsApi.Client.dll` under this directory.
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project.
 * The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1, and some other stuff like UWP and Xamarin.

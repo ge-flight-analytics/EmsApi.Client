@@ -10,25 +10,6 @@ param
     [switch] $Release
 )
 
-function New-Package( [string] $nuspecFile )
-{
-    $packArgs = @( "pack", $nuspecFile, "-OutputDirectory .\bin" )    
-
-    # Include appveyor build info if present.
-    $version = $env:APPVEYOR_BUILD_VERSION
-    if( $version ) { $packArgs += "-Version $version" }
-
-    $branch = $env:APPVEYOR_REPO_BRANCH
-    if( $branch -and $branch -ne 'master' ) 
-    {
-        $packArgs += "-Suffix $branch"
-    }
-
-    $packExp = "nuget.exe $packArgs"
-    $packExp
-    Invoke-Expression $packExp
-}
-
 function Find-MsBuild
 {
     $msBuild = Get-Command "msbuild.exe" -ErrorAction SilentlyContinue
@@ -51,39 +32,21 @@ function Find-MsBuild
     return $msBuild
 }
 
-function Build-Project( [string] $csProj )
+$config = "Debug"
+if( $Release.IsPresent )
 {
-    $config = "Debug"
-    if( $Release.IsPresent )
-    {
-        $config = "Release"
-    }
-
-    # Run the build.
-    $msBuild = Find-MsBuild
-    Write-Host "Using msbuild at '$msBuild'" -ForegroundColor Yellow
-    Write-Host "Building $csProj with $config" -ForegroundColor Yellow
-    & $msBuild "/p:Configuration=$config" $csProj
-
-    # Find the nuspec file in the same directory
-    $csProjDir = Split-Path  ( Resolve-Path $csProj | Select-Object -Expand Path )
-    $nuSpec = Get-ChildItem $csProjDir -Filter "*.nuspec" | Select-Object -First 1
-    if( $nuSpec -eq $null )
-    {
-        throw "Could not find *.nuspec file in $csProjDir"
-    }
-
-    # Generate the package.
-    New-Package $nuSpec.FullName
+    $config = "Release"
 }
 
-try
-{
-    Push-Location $PSScriptRoot
-    Build-Project .\EmsApi.Dto\EmsApi.Dto.csproj
-    Build-Project .\EmsApi.Client\EmsApi.Client.Vs2015.csproj
-}
-finally
-{
-    Pop-Location
-}
+$msBuild = Find-MsBuild
+Write-Host "Using msbuild at '$msBuild'" -ForegroundColor Yellow
+
+# Build the library and tests.
+$building = "$PSScriptRoot\EmsApi.sln"
+Write-Host "Building $building with $config" -ForegroundColor Yellow
+& $msBuild "/p:Configuration=$config" "/verbosity:minimal" $building
+
+# Build the examples.
+$building = "$PSScriptRoot\Examples\EmsApi.Example.sln"
+Write-Host "Building $building with $config" -ForegroundColor Yellow
+& $msBuild "/p:Configuration=$config" "/verbosity:minimal" $building

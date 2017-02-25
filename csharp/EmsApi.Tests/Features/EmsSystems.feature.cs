@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace EmsApi.Client.Tests.Features
+namespace EmsApi.Tests.Features
 {
     using TechTalk.SpecFlow;
     

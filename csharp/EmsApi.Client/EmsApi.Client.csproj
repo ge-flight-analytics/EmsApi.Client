@@ -1,49 +1,85 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
-      <PackageId>EmsApi.Client</PackageId>
-      <PackageVersion>0.1.0</PackageVersion>
-      <Authors>Cody Owens</Authors>
-      <Description>C# client library for the EMS API</Description>
-      <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-      <PackageReleaseNotes>First release</PackageReleaseNotes>
-    <Version>0.1.0</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Company />
-    <PostBuildEvent>copy "EmsApi.Client.dll" "..\..\"</PostBuildEvent>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{60E9EF36-B92A-4486-A1C1-BD90C44188C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EmsApi.Client</RootNamespace>
+    <AssemblyName>EmsApi.Client</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <BuildPackage>true</BuildPackage>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.4\EmsApi.Client.xml</DocumentationFile>
-    <NoWarn>1701;1702;1705;CS1591</NoWarn>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EmsApi.Client.xml</DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.4\EmsApi.Client.xml</DocumentationFile>
-    <NoWarn>1701;1702;1705;CS1591</NoWarn>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EmsApi.Client.xml</DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
-    <Compile Remove="Properties\AssemblyInfo.cs" />
+    <None Include="EmsApi.Client.nuspec" />
+    <None Include="project.json" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
-
   <ItemGroup>
-    <None Remove="EmsApi.Client.Vs2015.nuget.targets" />
-    <None Remove="project.json" />
-    <None Remove="project.lock.json" />
+    <Compile Include="V2\Access\AssetsAccess.cs" />
+    <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
+    <Compile Include="V2\Access\EmsSystemsAccess.cs" />
+    <Compile Include="V2\Access\SwaggerAccess.cs" />
+    <Compile Include="V2\IEmsApi.cs" />
+    <Compile Include="V2\Model\Aircraft.cs" />
+    <Compile Include="V2\Model\Airport.cs" />
+    <Compile Include="V2\Model\CommonModels.cs" />
+    <Compile Include="V2\Model\EmsSystem.cs" />
+    <Compile Include="V2\Model\EmsSystemInfo.cs" />
+    <Compile Include="V2\Model\Fleet.cs" />
+    <Compile Include="V2\Model\FlightPhase.cs" />
+    <Compile Include="V2\Service\ApiEventArgs.cs" />
+    <Compile Include="V2\Service\Authentication.cs" />
+    <Compile Include="V2\Service\EmsApiEndpoints.cs" />
+    <Compile Include="V2\Service\EmsApiService.cs" />
+    <Compile Include="V2\Service\EmsApiServiceConfiguration.cs" />
+    <Compile Include="V2\Service\EmsApiServiceException.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="refit" Version="3.0.1" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-
   <ItemGroup>
-    <Reference Include="EmsApi.Dto">
-      <HintPath>..\EmsApi.Dto\bin\EmsApi.DTO.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\EmsApi.Dto\EmsApi.Dto.csproj">
+      <Project>{86f1df15-9bc1-4828-80db-878db1db037d}</Project>
+      <Name>EmsApi.Dto</Name>
+    </ProjectReference>
   </ItemGroup>
-
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(SolutionDir)EmsApi.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
