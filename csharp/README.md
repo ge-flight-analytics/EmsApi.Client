@@ -13,18 +13,18 @@
 	* Specflow extension, if you are writing or running tests.
 
 # Build the repository
-* Either open `EmsApi.sln` and build the whole solution, or run the `.\build.ps1` file.
+* Open `csharp\EmsApi.sln` and build the whole solution, or run the `csharp\build.ps1` file.
 
 ## Try out the examples
 * Clone the repository.
-* Open `EmsApi.Example.sln` in the Examples directory.
+* Open `csharp\Examples\EmsApi.Example.sln`
 * Rebuild the solution.
 * Right click one of the examples in the Solution Explorer and select "Set as StartUp Project". Use the Debug > Start Debugging menu item to run the example.
 
 ## Start a new example project
-* Add a new project in the `EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
+* Add a new project in the `csharp\Examples\EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, select `bin\EmsApi.Client.dll`
+* Select Browse, select `csharp\bin\EmsApi.Client.dll`
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project, until this library is distributed as a nuget package.
 
@@ -37,10 +37,10 @@
 * Search or browse for "EmsApi.Client" and install.
 
 ## Include the library in your own project (the build it yourself way).
-* Download this repository and build `EmsApi.Client.sln`
+* Download this repository and build `csharp\EmsApi.sln`
 * Start a new project or solution in Visual Studio.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, locate `bin\EmsApi.Client.dll` under this directory.
+* Select Browse, locate `csharp\bin\EmsApi.Client.dll` under this directory.
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for "System.Net.Http 4.3" and "Refit 3.0.1" in your project.
 * The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1, and some other stuff like UWP and Xamarin.
@@ -48,11 +48,7 @@
 # Details
 
 ## Current Status
-* Only the Ems System routes are implemented, since they were the easiest to work through as a start. 
-* It's fairly straightforward to implement new routes (see section below).
-
-## C\# DTO classes
-The C\# DTO classes are available upon request.		
+* Only a few routes are implemented, but it's fairly straightforward to implement new routes (see section below).
 
 ## How to implement new routes
 * Add model objects for the responses to V2\Model
@@ -60,15 +56,12 @@ The C\# DTO classes are available upon request.
 * Implement an access class for the route deriving from Access\EmsApiRouteAccess.cs
 * Add a public property for the access class to Service\EmsApiService.cs, and add it to the InitializeAccessProperties function.
 * Add a SpecFlow test for the new routes.
-	* Note: The SpecFlow Visual Studio extension is required when adding new tests in the Tests\Features directory, but it isn't required for running the existing tests.
 
 ## Todo
 * Implement the rest of the routes.
 * Implement trusted service authentication, only user / pass works currently.
-* Figure out if there are threading issues with the authentication class.
-    * Specifically if there's a problem with race conditions when getting a new token.
-* The client library project files for VS2015 and VS2017 use different formats. The VS2017 format automatically includes everything under the directory unless it is explicitly told to ignore it. The VS2015 project must explicitly list the cs files in the csproj file. Therefore, when files are added or moved right now, the VS2015 project will need to be updated.
-* Test to see if everything builds on VS2015 and VS2017 community editions.
+* Make authentication properly async, and figure out if there are other authentication threading issues with respect to getting a new token.
+* Test to see if everything builds on VS2015 community edition.
 * Create a script for building library and example with dotnet.exe
 * Create a dotnet core docker example.
 * Create a dotnet framework docker example.
