@@ -3,7 +3,7 @@ using System.Linq;
 using TechTalk.SpecFlow;
 using FluentAssertions;
 
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.Tests.Features
 {
@@ -126,10 +126,10 @@ namespace EmsApi.Client.Tests.Features
             m_result.Object.ShouldNotBeNullOfType<Airport>();
         }
 
-        [Then( @"The AirportCode is not empty" )]
+        [Then( @"The PreferredCode is not empty" )]
         public void ThenTheAirportCodeIsNotEmpty()
         {
-            m_result.Object.As<Airport>().AirportCode.Should().NotBeNullOrEmpty();
+            m_result.Object.As<Airport>().CodePreferred.Should().NotBeNullOrEmpty();
         }
 
     }

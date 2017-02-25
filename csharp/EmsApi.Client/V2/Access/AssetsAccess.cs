@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.V2.Access
 {

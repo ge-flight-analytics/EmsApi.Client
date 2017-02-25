@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using Refit;
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.V2
 {
@@ -15,7 +15,7 @@ namespace EmsApi.Client.V2
     /// The library uses code generation to compile the stub implementation into this
     /// assembly, so every time this project is built a RefitStubs.g.cs file is generated
     /// in the obj folder and included.
-    /// 
+    ///
     /// Note: It's important to not use constants in the REST attributes below, the library
     /// does not properly generate stubs for these (it seems to omit them).
     /// </remarks>

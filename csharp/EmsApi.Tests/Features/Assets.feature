@@ -64,4 +64,4 @@ Scenario: Get a single airport
 	When I run GetAirport and enter the value 0
 	Then An Airport object is returned
 	And The Id property is 0
-	And The AirportCode is not empty
+	And The PreferredCode is not empty
