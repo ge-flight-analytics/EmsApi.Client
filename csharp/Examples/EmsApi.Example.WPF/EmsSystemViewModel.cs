@@ -1,4 +1,5 @@
-﻿using EmsApi.Client.V2.Model;
+﻿using EmsApi.Client.V2;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Example.WPF
 {
@@ -18,7 +19,7 @@ namespace EmsApi.Example.WPF
 
         public int Id
         {
-            get { return m_system.Id; }
+            get { return m_system.Id.Value; }
         }
 
         public string Name

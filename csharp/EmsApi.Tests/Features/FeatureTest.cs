@@ -6,7 +6,7 @@ using EmsApi.Client.V2;
 using FluentAssertions;
 using TechTalk.SpecFlow;
 
-namespace EmsApi.Client.Tests
+namespace EmsApi.Tests
 {
     /// <summary>
     /// Provides some common variables and test methods to be used for SpecFlow tests

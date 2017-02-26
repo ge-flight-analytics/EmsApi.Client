@@ -132,6 +132,43 @@ namespace EmsApi.Client.V2
         Task<Airport> GetAirport( int emsSystemId, int airportId );
 
         /// <summary>
+        /// Returns the current trajectory configuration.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system that owns the trajectories.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/trajectory-configurations" )]
+        Task<IEnumerable<TrajectoryConfiguration>> GetTrajectoryConfigurations( int emsSystemId );
+
+        /// <summary>
+        /// Returns a trajectory path for the given flight.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system that owns the trajectories.
+        /// </param>
+        /// <param name="flightId">
+        /// The flight id to return trajectories for.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/trajectories" )]
+        Task<TrajectoryValueArray> GetTrajectory( int emsSystemId, int flightId );
+
+        /// <summary>
+        /// Returns a KML document XML for the given flight and trajectory id.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system that owns the trajectories.
+        /// </param>
+        /// <param name="flightId">
+        /// The flight id to return a trajectory for.
+        /// </param>
+        /// <param name="trajectoryId">
+        /// The string identifier for the trajectory type to return.
+        /// </param>
+        /// <returns></returns>
+        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/kml-trajectories/{trajectoryId}" )]
+        Task<string> GetTrajectoryKml( int emsSystemId, int flightId, string trajectoryId );
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">

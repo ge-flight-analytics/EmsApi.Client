@@ -54,6 +54,11 @@ namespace EmsApi.Client.V2
         public AssetsAccess Assets { get; private set; }
 
         /// <summary>
+        /// Access to trajectory routes.
+        /// </summary>
+        public TrajectoriesAccess Trajectories { get; private set; }
+
+        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -107,6 +112,7 @@ namespace EmsApi.Client.V2
             Swagger = InitializeAccessClass<SwaggerAccess>();
             EmsSystems = InitializeAccessClass<EmsSystemsAccess>();
             Assets = InitializeAccessClass<AssetsAccess>();
+            Trajectories = InitializeAccessClass<TrajectoriesAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
@@ -230,7 +236,7 @@ namespace EmsApi.Client.V2
 
             if( m_config.ThrowExceptionOnApiFailure )
             {
-                throw new EmsApiException( "An EMS API access exception occured, and the ThrowExceptionOnApiFailure setting is true.",
+                throw new EmsApiException( "An EMS API access exception occurred, and the ThrowExceptionOnApiFailure setting is true.",
                     args.Exception );
             }
 
@@ -253,7 +259,7 @@ namespace EmsApi.Client.V2
             if( m_config.ThrowExceptionOnAuthFailure )
             {
                 throw new EmsApiAuthenticationException( string.Format(
-                    "An EMS API authentication exceptionoc ured, and the ThrowExceptionOnAuthFailure setting is true: {0}",
+                    "An EMS API authentication exception occurred, and the ThrowExceptionOnAuthFailure setting is true: {0}",
                     args.Message ) );
             }
 

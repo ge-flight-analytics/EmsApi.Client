@@ -1,7 +1,7 @@
 ﻿using TechTalk.SpecFlow;
 using Newtonsoft.Json.Linq;
 
-namespace EmsApi.Client.Tests.Features
+namespace EmsApi.Tests.Features
 {
     [Binding, Scope( Feature = "Swagger" )]
     public class SwaggerSteps : FeatureTest

@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.Windows;
 
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Example.WPF
 {
@@ -27,7 +26,7 @@ namespace EmsApi.Example.WPF
             // list of them as the data context.
             foreach( EmsSystem ems in App.EmsApi.EmsSystems.GetAll() )
             {
-                EmsSystemInfo server = App.EmsApi.EmsSystems.GetSystemInfo( ems.Id );
+                EmsSystemInfo server = App.EmsApi.EmsSystems.GetSystemInfo( ems.Id.Value );
                 m_emsSystems.Add( new EmsSystemViewModel( ems, server ) );
             }
         }

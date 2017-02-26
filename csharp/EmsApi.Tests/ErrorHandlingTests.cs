@@ -1,8 +1,9 @@
 ﻿using System;
 using FluentAssertions;
 using Xunit;
+using EmsApi.Client.V2;
 
-namespace EmsApi.Client.Tests
+namespace EmsApi.Tests
 {
     public class ErrorHandlingTests : TestBase
     {
@@ -10,7 +11,7 @@ namespace EmsApi.Client.Tests
         public void Enabling_auth_exceptions_should_throw_an_exception()
         {
             using( var service = NewInvalidLoginService() )
-                Assert.Throws<V2.EmsApiAuthenticationException>( () => service.Authenticate() );
+                Assert.Throws<EmsApiAuthenticationException>( () => service.Authenticate() );
         }
 
         [Fact( DisplayName = "Disabling auth exceptions should not throw an exception" )]
@@ -31,7 +32,7 @@ namespace EmsApi.Client.Tests
                 service.ServiceConfig.ThrowExceptionOnApiFailure = true;
 
                 Action causeFailure = () => service.EmsSystems.GetAll();
-                causeFailure.ShouldThrowExactly<V2.EmsApiException>();
+                causeFailure.ShouldThrowExactly<EmsApiException>();
             }
         }
 

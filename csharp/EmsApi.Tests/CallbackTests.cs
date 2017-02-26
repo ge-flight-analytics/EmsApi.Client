@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using FluentAssertions;
 
-namespace EmsApi.Client.Tests
+namespace EmsApi.Tests
 {
     public class CallbackTests : TestBase
     {
