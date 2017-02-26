@@ -59,6 +59,11 @@ namespace EmsApi.Client.V2
         public TrajectoriesAccess Trajectories { get; private set; }
 
         /// <summary>
+        /// Access to APM profile routes.
+        /// </summary>
+        public ProfilesAccess Profiles { get; private set; }
+
+        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -113,6 +118,7 @@ namespace EmsApi.Client.V2
             EmsSystems = InitializeAccessClass<EmsSystemsAccess>();
             Assets = InitializeAccessClass<AssetsAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
+            Profiles = InitializeAccessClass<ProfilesAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()

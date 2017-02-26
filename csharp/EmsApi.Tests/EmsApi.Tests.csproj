@@ -199,6 +199,12 @@
     </Compile>
     <Compile Include="Features\EmsSystemsSteps.cs" />
     <Compile Include="Features\FeatureTest.cs" />
+    <Compile Include="Features\Profiles.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Profiles.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\ProfilesSteps.cs" />
     <Compile Include="Features\Swagger.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,6 +232,10 @@
     <None Include="Features\EmsSystems.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>EmsSystems.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Profiles.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Profiles.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Swagger.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
