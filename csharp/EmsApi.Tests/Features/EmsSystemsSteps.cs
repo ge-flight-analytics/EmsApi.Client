@@ -3,7 +3,7 @@ using FluentAssertions;
 
 using EmsApi.Dto.V2;
 
-namespace EmsApi.Client.Tests.Features
+namespace EmsApi.Tests.Features
 {
     [Binding, Scope( Feature = "EmsSystems" )]
     public class EmsSystemsSteps : FeatureTest

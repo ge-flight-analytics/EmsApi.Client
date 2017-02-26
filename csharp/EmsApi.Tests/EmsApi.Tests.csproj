@@ -205,6 +205,12 @@
       <DependentUpon>Swagger.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\SwaggerSteps.cs" />
+    <Compile Include="Features\Trajectories.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Trajectories.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\TrajectoriesSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceTests.cs" />
     <Compile Include="TestBase.cs" />
@@ -224,6 +230,10 @@
     <None Include="Features\Swagger.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Swagger.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Trajectories.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Trajectories.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

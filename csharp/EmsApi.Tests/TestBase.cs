@@ -2,7 +2,7 @@
 
 using EmsApi.Client.V2;
 
-namespace EmsApi.Client.Tests
+namespace EmsApi.Tests
 {
     /// <summary>
     /// Base class for tests that provides a valid test API endpoint.

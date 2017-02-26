@@ -4,7 +4,7 @@ using FluentAssertions;
 
 using EmsApi.Client.V2;
 
-namespace EmsApi.Client.Tests
+namespace EmsApi.Tests
 {
     public class AuthenticationTests : TestBase
     {
