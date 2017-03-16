@@ -216,6 +216,160 @@ namespace EmsApi.Client.V2
         Task<EmsProfileGlossary> GetProfileGlossary( int emsSystemId, string profileId, int? profileVersionNumber = null, string format = null );
 
         /// <summary>
+        /// Returns information about the parameter sets on the given EMS system.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system that owns the parameter sets.
+        /// </param>
+        /// <param name="groupId">
+        /// The optional ID of the parameter set group to return.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/parameter-sets" )]
+        Task<ParameterSetGroup> GetParameterSets( int emsSystemId, string groupId = null );
+
+        /// <summary>
+        /// Searches for analytics by name.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="text">
+        /// The search terms used to find a list of analytics by name.
+        /// </param>
+        /// <param name="groupId">
+        /// An optional group ID to specify where to limit the search. If not specified, all groups are searched.
+        /// </param>
+        /// <param name="maxResults">
+        /// The optional maximum number of matching results to return. If not specified, a default value of 200
+        /// is used. Use 0 to return all results.
+        /// </param>
+        /// <param name="category">
+        /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
+        /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/analytics" )]
+        Task<IEnumerable<AnalyticInfo>> GetAnalytics( int emsSystemId, string text, string groupId = null, int? maxResults = null, string category = null );
+
+        /// <summary>
+        /// Searches for analytics by name for a specific flight.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="flightId">
+        /// The integer ID of the flight record to use when searching analytics.
+        /// </param>
+        /// <param name="text">
+        /// The search terms used to find a list of analytics by name.
+        /// </param>
+        /// <param name="groupId">
+        /// An optional group ID to specify where to limit the search. If not specified, all groups are searched.
+        /// </param>
+        /// <param name="maxResults">
+        /// The optional maximum number of matching results to return. If not specified, a default value of 200
+        /// is used. Use 0 to return all results.
+        /// </param>
+        /// <param name="category">
+        /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
+        /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
+        Task<IEnumerable<AnalyticInfo>> GetAnalytics( int emsSystemId, int flightId, string text, string groupId = null, int? maxResults = null, string category = null );
+
+        /// <summary>
+        /// Retrieves metadata information associated with an analytic such as a description or units.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="analyticId">
+        /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/analytics" )]
+        Task<AnalyticInfo> GetAnalyticInfo( int emsSystemId, AnalyticId analyticId );
+
+        /// <summary>
+        /// Retrieves metadata information associated with an analytic such as a description or units.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="flightId">
+        /// The integer ID of the flight record to use when retrieving the analytic information.
+        /// </param>
+        /// <param name="analyticId">
+        /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
+        Task<AnalyticInfo> GetAnalyticInfo( int emsSystemId, int flightId, AnalyticId analyticId );
+
+        /// <summary>
+        /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="analyticGroupId">
+        /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
+        /// </param>
+        /// <param name="category">
+        /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
+        /// analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/analytic-groups" )]
+        Task<AnalyticGroupContents> GetAnalyticGroup( int emsSystemId, string analyticGroupId = null, string category = null );
+
+        /// <summary>
+        /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="flightId">
+        /// The integer ID of the flight record to use when retrieving the analytic information.
+        /// </param>
+        /// <param name="analyticGroupId">
+        /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
+        /// </param>
+        /// <param name="category">
+        /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
+        /// analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytic-groups" )]
+        Task<AnalyticGroupContents> GetAnalyticGroup( int emsSystemId, int flightId, string analyticGroupId = null, string category = null );
+
+        /// <summary>
+        /// Queries offsets and values in time-series data for a specified flight and analytic.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="flightId">
+        /// The integer ID of the flight record for which to query data.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/query" )]
+        Task<QueryResult> GetAnalyticResults( int emsSystemId, int flightId, Query query );
+
+        /// <summary>
+        /// Returns the analytic metadata for a flight.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="flightId">
+        /// The integer ID of the flight record for which to retrieve data.
+        /// </param>
+        /// <param name="analyticId">
+        /// The analytic ID (wrapped in double quotes) for which metadata is retrieved.
+        /// These identifiers are typically obtained from nodes in an analytic group tree.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/metadata" )]
+        Task<Metadata> GetAnalyticMetadata( int emsSystemId, int flightId, string analyticId );
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">

@@ -50,6 +50,14 @@ namespace EmsApi.Client.V2.Access
         internal event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
 
         /// <summary>
+        /// Converts an enum value into a string suitable for an API method call.
+        /// </summary>
+        protected static string MakeEnumString<TEnum>( Enum value )
+        {
+            return Enum.GetName( typeof( TEnum ), value ).ToLower();
+        }
+
+        /// <summary>
         /// Checks the input enumerable for null, and returns an empty enumerable instead
         /// if it is null.
         /// </summary>
@@ -78,9 +86,9 @@ namespace EmsApi.Client.V2.Access
 
         /// <summary>
         /// Must be used by derived classes to access methods on the <seealso cref="IEmsApi"/>
-        /// interface. This method adds continuation onto the task that automatically handles API 
-        /// interface exceptions. The exceptions are handled by forwarding all exceptions as events 
-        /// to the <seealso cref="ApiMethodFailedEvent"/>. From non-asynchronous code, these tasks 
+        /// interface. This method adds continuation onto the task that automatically handles API
+        /// interface exceptions. The exceptions are handled by forwarding all exceptions as events
+        /// to the <seealso cref="ApiMethodFailedEvent"/>. From non-asynchronous code, these tasks
         /// should be accessed via <seealso cref="AccessTaskResult{TRet}(Task{TRet})"/> so that aggregate
         /// errors are converted to our own exception type.
         /// </summary>
