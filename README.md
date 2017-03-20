@@ -1,6 +1,6 @@
 # C\# EMS API Tools and Documentation
 
-[![Build status](https://ci.appveyor.com/api/projects/status/h45t0p9hd6cutcyw?svg=true)](https://ci.appveyor.com/project/GEAviationFlightAnalytics/ems-api-sdk)
+[![Build status](https://ci.appveyor.com/api/projects/status/396p7tm0hfyeyd98?svg=true)](https://ci.appveyor.com/project/GEAviationFlightAnalytics/emsapi-client)
 
 # Getting Started
 

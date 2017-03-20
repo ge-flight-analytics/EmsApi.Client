@@ -18,12 +18,12 @@ environment:
 nuget:
   project_feed: true
 before_build:
-- ps: '& csharp\EmsApi.Dto\Update-EmsApiSwaggerSpecAuto.ps1'
+- ps: '& EmsApi.Dto\Update-EmsApiSwaggerSpecAuto.ps1'
 build:
-  project: csharp\EmsApi.sln
+  project: EmsApi.sln
   verbosity: minimal
 test: off
 artifacts:
-- path: csharp\bin\*.nupkg
-- path: csharp\bin\*.dll
-- path: csharp\bin\*.cs
+- path: bin\*.nupkg
+- path: bin\*.dll
+- path: bin\*.cs
