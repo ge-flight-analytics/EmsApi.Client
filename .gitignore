@@ -1,8 +1,0 @@
-# Python specific
-*.pyc
-
-# R specific
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
