@@ -64,6 +64,16 @@ namespace EmsApi.Client.V2
         public ProfilesAccess Profiles { get; private set; }
 
         /// <summary>
+        /// Access to parameter-sets routes
+        /// </summary>
+        public ParameterSetsAccess ParameterSets { get; private set; }
+
+        /// <summary>
+        /// Access to analytics routes.
+        /// </summary>
+        public AnalyticsAccess Analytics { get; private set; }
+
+        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -99,12 +109,12 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// Allocates a new HttpClient which handles injecting authentication tokens into the headers during a RESTful request.
+        /// Allocates a new HttpClient, which handles injecting authentication tokens into the headers
+        /// during a RESTful request.
         /// </summary>
-        /// <returns></returns>
-        public HttpClient AllocateHttpClient( )
+        public HttpClient AllocateHttpClient()
         {
-            return new HttpClient(m_authHandler);
+            return new HttpClient( m_authHandler );
         }
 
         /// <summary>
@@ -119,6 +129,8 @@ namespace EmsApi.Client.V2
             Assets = InitializeAccessClass<AssetsAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
             Profiles = InitializeAccessClass<ProfilesAccess>();
+            ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
+            Analytics = InitializeAccessClass<AnalyticsAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()

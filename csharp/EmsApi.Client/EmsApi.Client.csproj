@@ -45,9 +45,11 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="V2\Access\AnalyticsAccess.cs" />
     <Compile Include="V2\Access\AssetsAccess.cs" />
     <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
     <Compile Include="V2\Access\EmsSystemsAccess.cs" />
+    <Compile Include="V2\Access\ParameterSetsAccess.cs" />
     <Compile Include="V2\Access\ProfilesAccess.cs" />
     <Compile Include="V2\Access\SwaggerAccess.cs" />
     <Compile Include="V2\Access\TrajectoriesAccess.cs" />
