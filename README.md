@@ -14,19 +14,19 @@
 * And the Specflow extension, if you are writing or running tests.
 
 ## Build the repository
-* Open `csharp\EmsApi.sln` and build the whole solution, or run the `csharp\build.ps1` file.
+* Open `EmsApi.sln` and build the whole solution, or run the `build.ps1` file.
 
 ## Try out the examples
 * Clone the repository.
-* Open `csharp\Examples\EmsApi.Example.sln`
+* Open `Examples\EmsApi.Example.sln`
 * Rebuild the solution.
 * Right click one of the examples in the Solution Explorer and select "Set as StartUp Project". Use the Debug > Start Debugging menu item to run the example.
 
 ## Create a new example project
-* Add a new project in the `csharp\Examples\EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
+* Add a new project in the `Examples\EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
 	* *Note:* If you're using .NET framework, the target framework of the project needs to be updated to at least ".NET Framework 4.6.1".
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, select `csharp\bin\EmsApi.Client.dll`
+* Select Browse, select `bin\EmsApi.Client.dll`
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for `System.Net.Http 4.3`+ and `Refit 3.0.1` in your project.
 
@@ -40,10 +40,10 @@
 * Search or browse for "EmsApi.Client" and install.
 
 ## Include the library in your own project (using source)
-* Download this repository and build `csharp\EmsApi.sln`
+* Download this repository and build `EmsApi.sln`
 * Start a new project or solution in Visual Studio.
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, locate `csharp\bin\EmsApi.Client.dll` under this directory.
+* Select Browse, locate `bin\EmsApi.Client.dll` under this directory.
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
 * Add nuget references for `System.Net.Http 4.3`+ and `Refit 3.0.1` in your project.
 * The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1, and some other stuff like UWP and Xamarin.
