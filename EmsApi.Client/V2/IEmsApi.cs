@@ -274,7 +274,7 @@ namespace EmsApi.Client.V2
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
-        Task<IEnumerable<AnalyticInfo>> GetAnalytics( int emsSystemId, int flightId, string text, string groupId = null, int? maxResults = null, string category = null );
+        Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFlight( int emsSystemId, int flightId, string text, string groupId = null, int? maxResults = null, string category = null );
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
@@ -301,7 +301,7 @@ namespace EmsApi.Client.V2
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
         [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
-        Task<AnalyticInfo> GetAnalyticInfo( int emsSystemId, int flightId, AnalyticId analyticId );
+        Task<AnalyticInfo> GetAnalyticInfoWithFlight( int emsSystemId, int flightId, AnalyticId analyticId );
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
@@ -336,7 +336,7 @@ namespace EmsApi.Client.V2
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroup( int emsSystemId, int flightId, string analyticGroupId = null, string category = null );
+        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int emsSystemId, int flightId, string analyticGroupId = null, string category = null );
 
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.
