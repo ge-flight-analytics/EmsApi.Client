@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsApi.Example.WPF", "EmsAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsApi.Example.GoogleEarth", "EmsApi.Example.GoogleEarth\EmsApi.Example.GoogleEarth.csproj", "{333B2CB1-B1E8-4E51-845F-0FB8F06B3668}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsApi.Example.UraTree", "EmsApi.Example.UraTree\EmsApi.Example.UraTree.csproj", "{1F4AA780-A595-45F6-B3F6-D2EB1E750D28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{333B2CB1-B1E8-4E51-845F-0FB8F06B3668}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{333B2CB1-B1E8-4E51-845F-0FB8F06B3668}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{333B2CB1-B1E8-4E51-845F-0FB8F06B3668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4AA780-A595-45F6-B3F6-D2EB1E750D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4AA780-A595-45F6-B3F6-D2EB1E750D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4AA780-A595-45F6-B3F6-D2EB1E750D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4AA780-A595-45F6-B3F6-D2EB1E750D28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
