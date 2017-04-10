@@ -26,9 +26,12 @@ namespace EmsApi.Example.GoogleEarth
             if( m_api.Authenticated )
                 return;
 
-            m_api.ServiceConfig.Endpoint = m_endpointBox.Text;
-            m_api.ServiceConfig.UserName = m_userBox.Text;
-            m_api.ServiceConfig.Password = m_passwordBox.Text;
+            m_api.ServiceConfig = new EmsApiServiceConfiguration
+            {
+                Endpoint = m_endpointBox.Text,
+                UserName = m_userBox.Text,
+                Password = m_passwordBox.Text
+            };
 
             try
             {

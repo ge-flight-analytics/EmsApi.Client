@@ -27,7 +27,6 @@ namespace EmsApi.Client.V2
                 UpdateConfiguration( serviceConfig );
             }
 
-            private string m_authUrl;
             private HttpClient m_authClient;
             private string m_authToken;
             private DateTime m_tokenExpiration;
@@ -64,7 +63,6 @@ namespace EmsApi.Client.V2
             public void UpdateConfiguration( EmsApiServiceConfiguration config )
             {
                 m_serviceConfig = config;
-                m_authUrl = string.Format( "{0}/token", m_serviceConfig.Endpoint );
 
                 // Set the token to invalid in case we need to use different authentication now.
                 m_tokenExpiration = DateTime.UtcNow;
@@ -97,7 +95,10 @@ namespace EmsApi.Client.V2
                 // We use a separate http client for authentication requests that should only
                 // be loaded once.
                 if( m_authClient == null )
+                {
                     m_authClient = new HttpClient();
+                    m_authClient.DefaultRequestHeaders.Add( "User-Agent", EmsApiService.UserAgent );
+                }
 
                 var content = new FormUrlEncodedContent( new Dictionary<string, string>
                 {
@@ -107,7 +108,7 @@ namespace EmsApi.Client.V2
                 } );
 
                 // Regardless of if we succeed or fail the call, the returned structure will be a chunk of JSON.
-                HttpResponseMessage response = m_authClient.PostAsync( m_authUrl, content ).Result;
+                HttpResponseMessage response = m_authClient.PostAsync( GetAuthenticationUrl(), content ).Result;
                 string rawResult = response.Content.ReadAsStringAsync().Result;
                 JObject result = JObject.Parse( rawResult );
 
@@ -125,6 +126,11 @@ namespace EmsApi.Client.V2
                 m_authToken = token;
                 m_tokenExpiration = DateTime.UtcNow.AddSeconds( expiresIn );
                 return true;
+            }
+
+            private string GetAuthenticationUrl()
+            {
+                return string.Format( "{0}/token", m_serviceConfig.Endpoint );
             }
 
             private void OnAuthenticationFailed( AuthenticationFailedEventArgs e )

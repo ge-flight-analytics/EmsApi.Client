@@ -28,6 +28,11 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
+        /// The user-agent to use for requests.
+        /// </summary>
+        internal const string UserAgent = "EmsApiClient Dotnet v0.1";
+
+        /// <summary>
         /// Provides access to the EMS API using the provided configuration settings.
         /// At a minimum, a username and password must be specified.
         /// </summary>
@@ -165,8 +170,13 @@ namespace EmsApi.Client.V2
             {
                 ValidateConfigOrThrow( value );
                 m_config = value;
-                m_apiClient.BaseAddress = new Uri( m_config.Endpoint );
                 m_authHandler.UpdateConfiguration( m_config );
+
+                if( m_apiClient.BaseAddress.AbsoluteUri != value.Endpoint )
+                {
+                    m_apiClient.BaseAddress = new Uri( m_config.Endpoint );
+                    m_api = RestService.For<IEmsApi>( m_apiClient );
+                }
             }
         }
 

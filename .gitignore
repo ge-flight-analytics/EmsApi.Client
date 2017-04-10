@@ -5,6 +5,7 @@ packages/
 obj/
 bin/
 project.lock.json
+*.user
 *.nupkg
 *.nuget.targets
 *.nuget.props

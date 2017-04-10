@@ -20,7 +20,7 @@ namespace EmsApi.Client.V2
     /// Note: It's important to not use constants in the REST attributes below, the library
     /// does not properly generate stubs for these (it seems to omit them).
     /// </remarks>
-    [Headers( "User-Agent: EmsApi.Client (dotnet)" )]
+    [Headers( "User-Agent: " + EmsApiService.UserAgent )]
     public interface IEmsApi
     {
         /// <summary>
