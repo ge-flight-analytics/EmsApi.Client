@@ -30,7 +30,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// The user-agent to use for requests.
         /// </summary>
-        internal const string UserAgent = "EmsApiClient Dotnet v0.1";
+        internal const string UserAgent = "ems-api-sdk Dotnet v0.1";
 
         /// <summary>
         /// Provides access to the EMS API using the provided configuration settings.
