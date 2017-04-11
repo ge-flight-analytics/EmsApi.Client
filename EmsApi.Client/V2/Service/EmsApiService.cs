@@ -28,11 +28,6 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// The user-agent to use for requests.
-        /// </summary>
-        internal const string UserAgent = "ems-api-sdk Dotnet v0.1";
-
-        /// <summary>
         /// Provides access to the EMS API using the provided configuration settings.
         /// At a minimum, a username and password must be specified.
         /// </summary>
@@ -89,6 +84,13 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
+        /// The HTTP client used by the API. This is normally not access directly, but
+        /// can be used to let the library handle headers and authentication while sending
+        /// your own requests manually.
+        /// </summary>
+        public HttpClient HttpClient { get; private set; }
+
+        /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
         private void Initialize()
@@ -97,15 +99,10 @@ namespace EmsApi.Client.V2
             m_authCallbacks = new List<Action<string>>();
             m_exceptionCallbacks = new List<Action<string>>();
 
-            // Set up authentication.
-            m_authHandler = new Authentication.EmsApiTokenHandler( m_config );
-            m_apiClient = AllocateHttpClient();
-            m_apiClient.BaseAddress = new Uri( m_config.Endpoint );
+            // Set up all the client services we need to use.
+            AllocateClients();
 
-            // Set up the API client abstraction.
-            m_api = RestService.For<IEmsApi>( m_apiClient );
-
-            // Set up access properties.
+            // Set up access properties for extenal clients to use.
             InitializeAccessProperties();
 
             // Subscribe to authentication failure events.
@@ -114,12 +111,17 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// Allocates a new HttpClient, which handles injecting authentication tokens into the headers
-        /// during a RESTful request.
+        /// Allocates all of the background clients and services needed to function. Thsi will instantiate
+        /// a new authentication handler, use that to create a new HttpClient, set some default headers, and
+        /// then allocate a new Refit interface implementation.
         /// </summary>
-        public HttpClient AllocateHttpClient()
+        private void AllocateClients()
         {
-            return new HttpClient( m_authHandler );
+            m_authHandler = new Authentication.EmsApiTokenHandler( m_config );
+            HttpClient = new HttpClient( m_authHandler );
+            HttpClient.BaseAddress = new Uri( m_config.Endpoint );
+            m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
+            m_api = RestService.For<IEmsApi>( HttpClient );
         }
 
         /// <summary>
@@ -160,8 +162,9 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// Gets or sets the current service configuration. If the endpoint or authorization
-        /// properties change, <seealso cref="Authenticate"/> should be called.
+        /// Gets or sets the current service configuration. When setting this value, everything
+        /// including the base <seealso cref="HttpClient"/> is re-allocated, since the endpoint
+        /// or authentication properties may have changed.
         /// </summary>
         public EmsApiServiceConfiguration ServiceConfig
         {
@@ -170,13 +173,7 @@ namespace EmsApi.Client.V2
             {
                 ValidateConfigOrThrow( value );
                 m_config = value;
-                m_authHandler.UpdateConfiguration( m_config );
-
-                if( m_apiClient.BaseAddress.AbsoluteUri != value.Endpoint )
-                {
-                    m_apiClient.BaseAddress = new Uri( m_config.Endpoint );
-                    m_api = RestService.For<IEmsApi>( m_apiClient );
-                }
+                AllocateClients();
             }
         }
 
@@ -245,9 +242,6 @@ namespace EmsApi.Client.V2
                 foreach( Action action in m_cleanup )
                     action();
             }
-
-            if( m_apiClient != null )
-                m_apiClient.Dispose();
 
             if( m_authHandler != null )
                 m_authHandler.Dispose();
@@ -333,6 +327,5 @@ namespace EmsApi.Client.V2
         private IEmsApi m_api;
         private EmsApiServiceConfiguration m_config;
         private Authentication.EmsApiTokenHandler m_authHandler;
-        private HttpClient m_apiClient;
     }
 }

@@ -61,6 +61,7 @@
     <Compile Include="V2\Service\EmsApiService.cs" />
     <Compile Include="V2\Service\EmsApiServiceConfiguration.cs" />
     <Compile Include="V2\Service\EmsApiServiceException.cs" />
+    <Compile Include="V2\Service\HttpHeaderNames.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

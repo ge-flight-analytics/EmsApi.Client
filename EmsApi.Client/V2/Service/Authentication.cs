@@ -24,10 +24,9 @@ namespace EmsApi.Client.V2
         {
             public EmsApiTokenHandler( EmsApiServiceConfiguration serviceConfig )
             {
-                UpdateConfiguration( serviceConfig );
+                m_serviceConfig = serviceConfig;
             }
 
-            private HttpClient m_authClient;
             private string m_authToken;
             private DateTime m_tokenExpiration;
             private EmsApiServiceConfiguration m_serviceConfig;
@@ -45,7 +44,7 @@ namespace EmsApi.Client.V2
             /// <summary>
             /// Requests a new authentication token immediately.
             /// </summary>
-            public bool Authenticate()
+            public bool Authenticate( CancellationToken? cancel = null )
             {
                 string error;
                 if( GetNewBearerToken( out error ) )
@@ -60,22 +59,13 @@ namespace EmsApi.Client.V2
                 return false;
             }
 
-            public void UpdateConfiguration( EmsApiServiceConfiguration config )
-            {
-                m_serviceConfig = config;
-
-                // Set the token to invalid in case we need to use different authentication now.
-                m_tokenExpiration = DateTime.UtcNow;
-                Authenticated = false;
-            }
-
             protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
             {
                 // Todo: How do we account for race conditions when retrieving a token?
 
                 // Even if we fail to authenticate, we need to send the request or other code might
                 // be stuck awaiting the send.
-                if( !IsTokenValid() && !Authenticate() )
+                if( !IsTokenValid() && !Authenticate( cancellationToken ) )
                     return base.SendAsync( request, cancellationToken );
 
                 // Apply our auth token to the header.
@@ -88,27 +78,24 @@ namespace EmsApi.Client.V2
                 return DateTime.UtcNow < m_tokenExpiration;
             }
 
-            private bool GetNewBearerToken( out string error )
+            private bool GetNewBearerToken( out string error, CancellationToken? cancel = null )
             {
                 error = null;
 
-                // We use a separate http client for authentication requests that should only
-                // be loaded once.
-                if( m_authClient == null )
-                {
-                    m_authClient = new HttpClient();
-                    m_authClient.DefaultRequestHeaders.Add( "User-Agent", EmsApiService.UserAgent );
-                }
+                HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, string.Format( "{0}/token", m_serviceConfig.Endpoint ) );
+                m_serviceConfig.AddDefaultRequestHeaders( request.Headers );
 
-                var content = new FormUrlEncodedContent( new Dictionary<string, string>
+                request.Content = new FormUrlEncodedContent( new Dictionary<string, string>
                 {
                     { "grant_type", SecurityConstants.GrantTypePassword },
                     { "username", m_serviceConfig.UserName },
                     { "password", m_serviceConfig.Password }
                 } );
 
+                CancellationToken cancelToken = cancel.HasValue ? cancel.Value : new CancellationToken();
+                HttpResponseMessage response = base.SendAsync( request, cancelToken ).Result;
+
                 // Regardless of if we succeed or fail the call, the returned structure will be a chunk of JSON.
-                HttpResponseMessage response = m_authClient.PostAsync( GetAuthenticationUrl(), content ).Result;
                 string rawResult = response.Content.ReadAsStringAsync().Result;
                 JObject result = JObject.Parse( rawResult );
 
@@ -128,11 +115,6 @@ namespace EmsApi.Client.V2
                 return true;
             }
 
-            private string GetAuthenticationUrl()
-            {
-                return string.Format( "{0}/token", m_serviceConfig.Endpoint );
-            }
-
             private void OnAuthenticationFailed( AuthenticationFailedEventArgs e )
             {
                 if( AuthenticationFailedEvent != null )
@@ -141,9 +123,6 @@ namespace EmsApi.Client.V2
 
             protected override void Dispose( bool disposing )
             {
-                if( m_authClient != null )
-                    m_authClient.Dispose();
-
                 base.Dispose( disposing );
             }
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Refit;
@@ -20,7 +19,6 @@ namespace EmsApi.Client.V2
     /// Note: It's important to not use constants in the REST attributes below, the library
     /// does not properly generate stubs for these (it seems to omit them).
     /// </remarks>
-    [Headers( "User-Agent: " + EmsApiService.UserAgent )]
     public interface IEmsApi
     {
         /// <summary>

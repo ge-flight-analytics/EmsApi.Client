@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 
 namespace EmsApi.Client.V2
 {
@@ -51,6 +52,17 @@ namespace EmsApi.Client.V2
         public string Password { get; set; }
 
         /// <summary>
+        /// The application name to pass along to the EMS API. This is used for logging on the
+        /// server side.
+        /// </summary>
+        public string ApplicationName { get; set; }
+
+        /// <summary>
+        /// The user agent header to pass along to the EMS API. 
+        /// </summary>
+        public string UserAgent { get { return "ems-api-sdk Dotnet v0.1"; } }
+
+        /// <summary>
         /// The trusted token to use for authentication.
         /// </summary>
         /// <remarks>
@@ -80,6 +92,18 @@ namespace EmsApi.Client.V2
         public bool UseTrustedToken()
         {
             return string.IsNullOrEmpty( UserName );
+        }
+
+        /// <summary>
+        /// Adds the default headers into the given header collection.
+        /// </summary>
+        public void AddDefaultRequestHeaders( HttpRequestHeaders headerCollection )
+        {
+            headerCollection.Add( HttpHeaderNames.UserAgent, UserAgent );
+
+            // Optional application name.
+            if( !string.IsNullOrEmpty( ApplicationName ) )
+                headerCollection.Add( HttpHeaderNames.ApplicationName, ApplicationName );
         }
 
         /// <summary>
@@ -145,7 +169,6 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Retrun a copy of the configuration.
         /// </summary>
-        /// <returns></returns>
         public EmsApiServiceConfiguration Clone()
         {
             return new EmsApiServiceConfiguration
@@ -153,6 +176,7 @@ namespace EmsApi.Client.V2
                 Endpoint = this.Endpoint,
                 UserName = this.UserName,
                 Password = this.Password,
+                ApplicationName = this.ApplicationName,
                 TrustedToken = this.TrustedToken,
                 ThrowExceptionOnApiFailure = this.ThrowExceptionOnApiFailure,
                 ThrowExceptionOnAuthFailure = this.ThrowExceptionOnAuthFailure
