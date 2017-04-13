@@ -44,7 +44,7 @@
     <!-- This does not have the build number on it, that one is set to 0. -->
     <Version>$(APPVEYOR_BUILD_VERSION)</Version>
 
-    <!-- Split it into parts (we expect major.minor.build -->
+    <!-- Split it into parts (we expect major.minor.build) -->
     <Major>$(Version.Split( '.' )[0])</Major>
     <Minor>$(Version.Split( '.' )[1])</Minor>
     <Build>$(APPVEYOR_BUILD_NUMBER)</Build>
