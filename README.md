@@ -51,33 +51,23 @@
 # Details
 
 ## Current Status
-* Only the following sections of the API are implemented (see TODO for the remaining list):
-	* Asset API
-	* EMS System API
-	* Profile API
-	* Trajectory API
-	* Swagger API
-* Most all of the common code has been written.
-* More examples are already welcomed.
+* All of the routes have been implemented. 
+* Now the focus is on 
+	* Building more .NET friendly ways of using the routes, through the Access classes.
+	* Updating documentation
+	* Building examples
 
-## How to implement new routes
-* Add the route definitions to IEmsApi.cs.
-	* Note: All of the objects that need to be returned from IEmsApi should be found in the EmsApi.Dto.V2 namespace already. These objects are automatically generated using the EMS API swagger specification, to exactly match the JSON structures that the API returns. **DO NOT** rewrite them in the Models namespace, unless it really doesn't exist in EmsApi.Dto.
-* Implement an access class for the route.
-*	Deriving from EmsApi.Client.V2.Access.EmsApiRouteAccess (or CachedEmsIdRouteAccess if the routes your implementing require an EMS system to be specified).
-*	Use one of the existing ones as an example.
-* Add a public property for the access class to EmsApiService, and add it to the InitializeAccessProperties function.
-* Add a SpecFlow test for the new routes.
 
 ## Todo
 * Finish implementing non-admin routes, the following still need to be completed:
-	* Database API: /v2/ems-systems/{emsSystemId}/databases/...
-	* Tableau APIs?: /v2/tableau/...
 	* Transfer APIs: /v2/ems-systems/{emsSystemId}/uploads/...
+* Add specflow tests for Analytics routes.
+* The Database routes use QueryResult2 and Query2 classes from EmsApi.Dto. These are conflated with the Query Really these should come from different namespaces, but since everything gets jammed in one namespace in the EmsApi.Dto.V2.cs file, it appends the 2. It would be nice to fix this with some sort of transformation for nswag.
+* Copy doc comments from IEmsApi to the access classes, since those are used directly by clients.
+* Make release process, have releases push to nuget.org
 * Implement trusted service authentication, only user / pass works currently.
 * Make authentication properly async, and figure out if there are other authentication threading issues with respect to getting a new token.
 	* The only implementation is synchronous right now.
-* Test to see if everything builds on VS2015 community edition.
 * Write some async tests, none of the async code has been used / tested currently
 	* Although the synchronous methods actually call the async methods and await the result, error handling might not work correctly when using the async methods directly from client code.
 * Create a script for building library and example with dotnet.exe

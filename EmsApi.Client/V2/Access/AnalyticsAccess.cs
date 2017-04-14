@@ -257,7 +257,7 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public AnalyticGroupContents GetGroup( int flightId, int emsSystem = NoEmsServerSpecified, string analyticGroupId = null, Category category = Category.Full )
+        public AnalyticGroupContents GetGroup( int flightId, string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetGroupAsync( flightId, analyticGroupId, category, emsSystem ) );
         }

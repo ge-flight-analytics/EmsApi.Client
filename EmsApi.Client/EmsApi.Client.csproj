@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="V2\Access\AnalyticsAccess.cs" />
     <Compile Include="V2\Access\AssetsAccess.cs" />
+    <Compile Include="V2\Access\DatabaseAccess.cs" />
     <Compile Include="V2\Access\EmsApiRouteAccess.cs" />
     <Compile Include="V2\Access\EmsSystemsAccess.cs" />
     <Compile Include="V2\Access\ParameterSetsAccess.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="V2\Access\SwaggerAccess.cs" />
     <Compile Include="V2\Access\TrajectoriesAccess.cs" />
     <Compile Include="V2\IEmsApi.cs" />
+    <Compile Include="V2\Model\DatabaseQueryResult.cs" />
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
     <Compile Include="V2\Service\ApiEventArgs.cs" />
     <Compile Include="V2\Service\Authentication.cs" />

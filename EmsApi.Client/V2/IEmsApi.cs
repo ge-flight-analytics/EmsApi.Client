@@ -386,6 +386,146 @@ namespace EmsApi.Client.V2
         Task<Metadata> GetAnalyticMetadata( int emsSystemId, int flightId, string analyticId );
 
         /// <summary>
+        /// Returns a database group with a matching ID containing only its immediate children 
+        /// in a hierarchical tree used to organize databases.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="groupId">
+        /// The unique identifier of the EMS database group whose contents to return. If not specified, 
+        /// the contents of the root group are returned.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/database-groups" )]
+        Task<DatabaseGroup> GetDatabaseGroup( int emsSystemId, string groupId = null );
+
+        /// <summary>
+        /// Returns a field group with a matching ID containing only its immediate children in a 
+        /// hierarchical tree used to organize fields.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database containing a field group to return.
+        /// </param>
+        /// <param name="groupId">
+        /// The unique identifier of a field group whose contents to return. If not specified, 
+        /// the contents of the root group are returned.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/field-groups" )]
+        Task<FieldGroup> GetDatabaseFieldGroup( int emsSystemId, string databaseId, string groupId = null );
+
+        /// <summary>
+        /// Returns information about a database field matching the specified ID.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database containing a field to return.
+        /// </param>
+        /// <param name="fieldId">
+        /// The unique identifier of the field whose information to return.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/fields/{fieldId}" )]
+        Task<Field> GetDatabaseFieldDefinition( int emsSystemId, string databaseId, string fieldId );
+
+        /// <summary>
+        /// Returns all the fields matching the specified search options.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the database containing fields to return.
+        /// </param>
+        /// <param name="search">
+        /// An optional field name search string used to match fields to return.
+        /// </param>
+        /// <param name="fieldGroupId">
+        /// The optional parent field group ID whose contents to search.
+        /// </param>
+        /// <param name="includeProfiles">
+        /// An optional setting to indicate whether to search fields in profiles. By default, 
+        /// this is false since including profile fields will significantly increase search time.
+        /// </param>
+        /// <param name="maxResults">
+        /// The maximum number of fields to return. This defaults to 200 fields. If this is set to 
+        /// 0 all the results will be returned.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/fields" )]
+        Task<IEnumerable<Field>> SearchDatabaseFields( int emsSystemId, string databaseId, string search = null, string fieldGroupId = null, bool includeProfiles = false, int maxResults = 200 );
+
+        /// <summary>
+        /// Queries a database for information, composing the query with information provided in the 
+        /// specified query structure.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/query" )]
+        Task<QueryResult2> QueryDatabase( int emsSystemId, string databaseId, Query2 query );
+
+        /// <summary>
+        /// Creates a query on a database using the provided query structure and returns an ID that 
+        /// can be used to fetch result data through other async-query routes.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query" )]
+        Task<AsyncQueryInfo> StartAsyncDatabaseQuery( int emsSystemId, string databaseId, Query2 query );
+
+        /// <summary>
+        /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="queryId">
+        /// The unique identifier of the query created by the API.
+        /// </param>
+        /// <param name="start">
+        /// The zero-based index of the first row to return.
+        /// </param>
+        /// <param name="end">
+        /// The zero-based index of the last row to return.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
+        Task<AsyncQueryData> ReadAsyncDatabaseQuery( int emsSystemId, string databaseId, string queryId, int start, int end );
+
+        /// <summary>
+        /// Stops the async query with the given ID.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="queryId">
+        /// The unique identifier of the query created by the API.
+        /// </param>
+        [Delete( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}" )]
+        Task StopAsyncDatabaseQuery( int emsSystemId, string databaseId, string queryId );
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">

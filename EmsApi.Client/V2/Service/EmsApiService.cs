@@ -74,6 +74,11 @@ namespace EmsApi.Client.V2
         public AnalyticsAccess Analytics { get; private set; }
 
         /// <summary>
+        /// Access to database routes.
+        /// </summary>
+        public DatabaseAccess Databases { get; private set; }
+
+        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -138,6 +143,7 @@ namespace EmsApi.Client.V2
             Profiles = InitializeAccessClass<ProfilesAccess>();
             ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
             Analytics = InitializeAccessClass<AnalyticsAccess>();
+            Databases = InitializeAccessClass<DatabaseAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()

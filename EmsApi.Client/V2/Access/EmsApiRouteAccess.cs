@@ -101,9 +101,25 @@ namespace EmsApi.Client.V2.Access
         /// </remarks>
         protected Task<TRet> CallApiTask<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
         {
-            var api = apiFunc( m_api );
-            var safeTask = api.ContinueWith( HandleApiException );
-            return safeTask;
+            return apiFunc( m_api ).ContinueWith( HandleApiException );
+        }
+
+        /// <summary>
+        /// Must be used by derived classes to access methods on the <seealso cref="IEmsApi"/>
+        /// interface. This method adds continuation onto the task that automatically handles API
+        /// interface exceptions. The exceptions are handled by forwarding all exceptions as events
+        /// to the <seealso cref="ApiMethodFailedEvent"/>.
+        /// </summary>
+        /// <param name="apiFunc">
+        /// The delegate that needs to be run with exception safety.
+        /// </param>
+        /// <remarks>
+        /// The point of this is to make sure all tasks from Refit automatically convert exceptions
+        /// into the API failed event when they are evaluated.
+        /// </remarks>
+        protected Task CallApiTask( Func<IEmsApi, Task> apiFunc )
+        {
+            return apiFunc( m_api ).ContinueWith( HandleApiException );
         }
 
         /// <summary>
@@ -133,21 +149,31 @@ namespace EmsApi.Client.V2.Access
             if( task.Exception == null )
                 return task.Result;
 
-            task.Exception.Handle( ex =>
-            {
-                // We don't handle task cancelled.
-                if( ex is TaskCanceledException )
-                    return false;
-
-                // We handle all other exceptions by firing the API exception event here. Depending
-                // on the configuration, the EmsApiService class might swallow it, or it might get
-                // unpackaged and thrown.
-                OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
-                return true;
-            } );
+            task.Exception.Handle( HandleTaskException );
 
             // This will normally return null, the caller can handle null if it wants.
             return default( TRet );
+        }
+
+        private void HandleApiException( Task task )
+        {
+            if( task.Exception == null )
+                return;
+
+            task.Exception.Handle( HandleTaskException );
+        }
+
+        private bool HandleTaskException( Exception ex )
+        {
+            // We don't handle task cancelled.
+            if( ex is TaskCanceledException )
+                return false;
+
+            // We handle all other exceptions by firing the API exception event here. Depending
+            // on the configuration, the EmsApiService class might swallow it, or it might get
+            // unpackaged and thrown.
+            OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
+            return true;
         }
 
         private void OnApiMethodFailed( ApiExceptionEventArgs args )
