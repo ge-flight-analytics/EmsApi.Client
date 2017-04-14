@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using EmsApi.Client.V2.Model;
 using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.V2.Access
@@ -190,10 +189,17 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<QueryResult2> SimpleQueryAsync( string databaseId, Query2 query, int emsSystem = NoEmsServerSpecified )
+        public Task<DatabaseQueryResult> SimpleQueryAsync( string databaseId, QueryWrapper query, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.QueryDatabase( ems, databaseId, query ) );
+            return CallApiTask( api => api.QueryDatabase( ems, databaseId, query.Raw ) ).ContinueWith( task =>
+            {
+                // Convert to our result format.
+                QueryResult2 queryResult = task.Result;
+                var result = new DatabaseQueryResult( queryResult.Header );
+                result.AddRows( query.Raw, queryResult.Rows );
+                return result;
+            } );
         }
 
         /// <summary>
@@ -210,7 +216,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public QueryResult2 SimpleQuery( string databaseId, Query2 query, int emsSystem = NoEmsServerSpecified )
+        public DatabaseQueryResult SimpleQuery( string databaseId, QueryWrapper query, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( SimpleQueryAsync( databaseId, query, emsSystem ) );
         }
@@ -232,7 +238,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public async Task<DatabaseQueryResult> QueryAsync( string databaseId, Query2 query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public async Task<DatabaseQueryResult> QueryAsync( string databaseId, QueryWrapper query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
             var result = new DatabaseQueryResult( info.Header );
@@ -242,7 +248,7 @@ namespace EmsApi.Client.V2.Access
             while( moreToRead )
             {
                 AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, emsSystem );
-                result.AddRows( query, data.Rows );
+                result.AddRows( query.Raw, data.Rows );
                 moreToRead = data.HasMoreRows;
             }
 
@@ -270,7 +276,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public async Task QueryAsync( string databaseId, Query2 query, Action<DatabaseQueryResult.Row> rowCallback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public async Task QueryAsync( string databaseId, QueryWrapper query, Action<DatabaseQueryResult.Row> rowCallback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
             var result = new DatabaseQueryResult( info.Header );
@@ -280,7 +286,7 @@ namespace EmsApi.Client.V2.Access
             while( moreToRead )
             {
                 AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, emsSystem );
-                result.AddRows( query, data.Rows );
+                result.AddRows( query.Raw, data.Rows );
                 moreToRead = data.HasMoreRows;
             }
 
@@ -304,7 +310,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public DatabaseQueryResult Query( string databaseId, Query2 query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public DatabaseQueryResult Query( string databaseId, QueryWrapper query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( QueryAsync( databaseId, query, rowsPerCall, emsSystem ) );
         }
@@ -329,7 +335,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public void Query( string databaseId, Query2 query, Action<DatabaseQueryResult.Row> rowCallback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public void Query( string databaseId, QueryWrapper query, Action<DatabaseQueryResult.Row> rowCallback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             QueryAsync( databaseId, query, rowCallback, rowsPerCall, emsSystem ).RunSynchronously();
         }
@@ -347,10 +353,10 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<AsyncQueryInfo> StartQueryAsync( string databaseId, Query2 query, int emsSystem = NoEmsServerSpecified )
+        public Task<AsyncQueryInfo> StartQueryAsync( string databaseId, QueryWrapper query, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.StartAsyncDatabaseQuery( ems, databaseId, query ) );
+            return CallApiTask( api => api.StartAsyncDatabaseQuery( ems, databaseId, query.Raw ) );
         }
 
         /// <summary>
@@ -366,7 +372,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public AsyncQueryInfo StartQuery( string databaseId, Query2 query, int emsSystem = NoEmsServerSpecified )
+        public AsyncQueryInfo StartQuery( string databaseId, QueryWrapper query, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( StartQueryAsync( databaseId, query, emsSystem ) );
         }

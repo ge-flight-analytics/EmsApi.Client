@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using Newtonsoft.Json.Linq;
-using EmsApi.Dto.V2;
 
-namespace EmsApi.Client.V2.Model
+namespace EmsApi.Dto.V2
 {
     /// <summary>
     /// Wrapper for database query results.
@@ -23,11 +23,11 @@ namespace EmsApi.Client.V2.Model
                 m_orderedColumnNames.Add( header.Name );
             }
 
-            m_rows = new List<Row>();
+            Rows = new List<Row>();
         }
 
         /// <summary>
-        /// The rows from the query. Each row contains multiple 
+        /// The rows from the query. Each row contains multiple values (one for each column).
         /// </summary>
         public List<Row> Rows { get; private set; }
 
@@ -49,11 +49,6 @@ namespace EmsApi.Client.V2.Model
         private List<string> m_orderedColumnNames;
 
         /// <summary>
-        /// The rows that have been added to the result.
-        /// </summary>
-        private List<Row> m_rows;
-
-        /// <summary>
         /// Converts query result strings into Row objects, and adds them to the collection.
         /// </summary>
         internal void AddRows( Query2 query, IEnumerable<string> rowsFromAsyncQuery )
@@ -69,6 +64,24 @@ namespace EmsApi.Client.V2.Model
             
             // Access the enumerable in a series, because the order matters.
             Rows.AddRange( rowsFromAsyncQuery.Select( str => CreateRowFromString( str ) ) );
+        }
+
+        /// <summary>
+        /// Converts query result strings into Row objects, and adds them to the collection.
+        /// </summary>
+        internal void AddRows( Query2 query, IEnumerable<object> rowsFromSimpleQuery )
+        {
+            if( query.OrderBy == null || query.OrderBy.Count == 0 )
+            {
+                // We can access the enumerable in parallel, the order doesn't matter.
+                Rows.AddRange( rowsFromSimpleQuery.AsParallel().Select(
+                    obj => CreateRowFromObservableCollection( obj ) ) );
+
+                return;
+            }
+
+            // Access the enumerable in a series, because the order matters.
+            Rows.AddRange( rowsFromSimpleQuery.Select( obj => CreateRowFromObservableCollection( obj ) ) );
         }
 
         /// <summary>
@@ -96,12 +109,23 @@ namespace EmsApi.Client.V2.Model
         }
 
         /// <summary>
-        /// Parses a query row from a raw string to a Row object.
+        /// Parses a query row from a raw string to a Row object. This is the format used by the async
+        /// query routes.
         /// </summary>
         private Row CreateRowFromString( string jsonArray )
         {
             var result = JArray.Parse( jsonArray );
             return new Row( m_orderedColumnIds, m_orderedColumnNames, result.Values<object>().ToArray() );
+        }
+
+        /// <summary>
+        /// Converts the raw object to an observable collection of objects. This is the format used by
+        /// the simple query routes.
+        /// </summary>
+        private Row CreateRowFromObservableCollection( object collection )
+        {
+            var converted = (ObservableCollection<object>)collection;
+            return new Row( m_orderedColumnIds, m_orderedColumnNames, converted.ToArray() );
         }
 
         /// <summary>

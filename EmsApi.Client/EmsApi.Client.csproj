@@ -57,6 +57,7 @@
     <Compile Include="V2\IEmsApi.cs" />
     <Compile Include="V2\Model\DatabaseQueryResult.cs" />
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
+    <Compile Include="V2\Model\QueryWrapper.cs" />
     <Compile Include="V2\Service\ApiEventArgs.cs" />
     <Compile Include="V2\Service\Authentication.cs" />
     <Compile Include="V2\Service\EmsApiEndpoints.cs" />
