@@ -86,4 +86,3 @@
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI, authentication takes a long time to time out.
-* The get profile glossary route does not work, it's getting some unexpected return format from the API.

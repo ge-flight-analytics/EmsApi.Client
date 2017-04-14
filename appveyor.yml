@@ -22,7 +22,6 @@ before_build:
 build:
   project: EmsApi.sln
   verbosity: minimal
-test: off
 artifacts:
 - path: bin\*.nupkg
 - path: bin\*.dll
