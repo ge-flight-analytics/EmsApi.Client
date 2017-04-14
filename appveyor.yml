@@ -10,7 +10,7 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 environment:
-  EmsApiTestEndpoint: https://emsapibeta.ausdig.com/api
+  EmsApiTestEndpoint: https://emsapi.ausdig.com/api
   EmsApiTestUsername:
     secure: IpC7n4Gq5x7QPNSkY4FNrw==
   EmsApiTestPassword:
