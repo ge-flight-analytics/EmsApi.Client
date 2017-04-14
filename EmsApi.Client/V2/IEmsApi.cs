@@ -168,6 +168,35 @@ namespace EmsApi.Client.V2
         Task<string> GetTrajectoryKml( int emsSystemId, int flightId, string trajectoryId );
 
         /// <summary>
+        /// Returns information about the set of APM profiles on the given EMS system.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system that owns the profiles.
+        /// </param>
+        /// <param name="parentGroupId">
+        /// The optional parent profile group ID whose contents to search.
+        /// </param>
+        /// <param name="search">
+        /// An optional profile name search string used to match profiles to return.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/profiles" )]
+        Task<IEnumerable<Profile>> GetProfiles( int emsSystemId, string parentGroupId = null, string search = null );
+
+        /// <summary>
+        /// Returns a profile group with a matching ID containing only its immediate 
+        /// children in a hierarchical tree used to organize profiles.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <param name="groupId">
+        /// The unique identifier of the profile group whose contents to return. If 
+        /// not specified, the contents of the root group are returned.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/profile-groups" )]
+        Task<ProfileGroup> GetProfileGroup( int emsSystemId, string groupId = null );
+
+        /// <summary>
         /// Returns APM profile results for the given flight and profile id.
         /// </summary>
         /// <param name="emsSystemId">
@@ -180,38 +209,27 @@ namespace EmsApi.Client.V2
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/ems-profiles/{profileId}" )]
+        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/profiles/{profileId}/query" )]
         Task<ProfileResults> GetProfileResults( int emsSystemId, int flightId, string profileId );
 
         /// <summary>
-        /// Returns information about the set of APM profiles on the given EMS system.
+        /// Returns a "glossary" for a specific profile and version, which helps define the 
+        /// results that can be returned in a profile.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the profiles.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/ems-profiles" )]
-        Task<IEnumerable<EmsProfile>> GetProfiles( int emsSystemId );
-
-        /// <summary>
-        /// Returns the file content of the APM profile glossary for the given profile id.
-        /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the profile.
+        /// The unique identifier of the system containing the EMS data.
         /// </param>
         /// <param name="profileId">
-        /// The APM profile guid to return the glossary for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
-        /// for the library flight safety events profile.
+        /// The unique identifier of the profile whose glossary to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
         /// <param name="profileVersionNumber">
-        /// The optional version number of the profile glossary to return. If this is not specified,
-        /// the current version will be returned.
+        /// Integer version of the profile to return. If not specified the current version of the profile is used by default.
         /// </param>
         /// <param name="format">
-        /// The format that the glossary should be returned in ("csv" or "json"), defaults to CSV.
+        /// The format of the returned glossary. Options are "json" or "csv". Defaults to JSON.
         /// </param>
-        /// <returns></returns>
-        [Get( "/v2/ems-systems/{emsSystemId}/ems-profiles/{profileId}/glossary" )]
-        Task<EmsProfileGlossary> GetProfileGlossary( int emsSystemId, string profileId, int? profileVersionNumber = null, string format = null );
+        [Get( "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/glossary" )]
+        Task<ProfileGlossary> GetProfileGlossary( int emsSystemId, string profileId, int? profileVersionNumber = null, string format = null );
 
         /// <summary>
         /// Returns information about the parameter sets on the given EMS system.
