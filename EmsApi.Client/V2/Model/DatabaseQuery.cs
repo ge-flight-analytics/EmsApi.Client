@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace EmsApi.Dto.V2
@@ -7,22 +6,22 @@ namespace EmsApi.Dto.V2
     /// <summary>
     /// Object used to define a database query.
     /// </summary>
-    public class QueryWrapper
+    public class DatabaseQuery
     {
         /// <summary>
         /// Constructs a new query wrapper.
         /// </summary>
-        public QueryWrapper()
+        public DatabaseQuery()
         {
-            Raw = new Query2();
+            Raw = new DbQuery();
             Raw.Select = new ObservableCollection<SelectColumn>();
-            ValueFormat = Query2Format.Display;
+            ValueFormat = DbQueryFormat.Display;
         }
 
         /// <summary>
         /// The raw query object.
         /// </summary>
-        public Query2 Raw { get; set; }
+        public DbQuery Raw { get; set; }
 
         /// <summary>
         /// Returns the JSON for the query.
@@ -33,11 +32,11 @@ namespace EmsApi.Dto.V2
         }
 
         /// <summary>
-        /// The format to return values in. The default value is <seealso cref="Query2Format.Display"/>.
+        /// The format to return values in. The default value is <seealso cref="DbQueryFormat.Display"/>.
         /// When this is set to display, discrete type database fields will return their string display
         /// name instead of their underlying id.
         /// </summary>
-        public Query2Format? ValueFormat
+        public DbQueryFormat? ValueFormat
         {
             get { return Raw.Format; }
             set { Raw.Format = value; }

@@ -53,9 +53,31 @@
   <Import Project="$(SolutionDir)EmsApi.targets" />
   <Target Name="BeforeBuild">
     <Exec Command="$(NSwagExe) swagger2csclient /input:$(ProjectDir)ems-api.json /namespace:EmsApi.Dto.V2 /output:$(ProjectDir)Generated/EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
+    <ItemGroup>
+      <!-- Both the analytics and database query objects get put in the same namespace here -->
+      <RegexTransform Include="$(ProjectDir)Generated\EmsApi.Dto.V2.cs">
+        <Find><![CDATA[Query2]]></Find>
+        <ReplaceWith><![CDATA[DbQuery]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="$(ProjectDir)Generated\EmsApi.Dto.V2.cs">
+        <Find><![CDATA[QueryResult2]]></Find>
+        <ReplaceWith><![CDATA[DbQueryResult]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="$(ProjectDir)Generated\EmsApi.Dto.V2.cs">
+        <Find><![CDATA[QueryResultHeader]]></Find>
+        <ReplaceWith><![CDATA[DbQueryResultHeader]]></ReplaceWith>
+      </RegexTransform>
+      <!-- Make the async-query return rows the same as the non-async query verison. -->
+      <!-- The default implementation does not deserialize correctly in json.net  -->
+      <RegexTransform Include="$(ProjectDir)Generated\EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.ObjectModel.ObservableCollection<string> Rows { get; set; }]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>> Rows { get; set; }]]></ReplaceWith>
+      </RegexTransform>
+    </ItemGroup>
+    <RegexTransform Items="@(RegexTransform)" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>echo Copy generated output to csharp\bin
+    <PostBuildEvent>echo Copy generated output to ..\bin
 mkdir "$(SolutionBin)"
 copy "$(ProjectDir)Generated\EmsApi.Dto.V2.cs" "$(SolutionBin)"
 echo copy "$(ProjectDir)Generated\ems-api-v2.d.ts" "$(SolutionBin)"</PostBuildEvent>

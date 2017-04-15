@@ -471,7 +471,7 @@ namespace EmsApi.Client.V2
         /// The information used to construct a query for which results are returned.
         /// </param>
         [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/query" )]
-        Task<QueryResult2> QueryDatabase( int emsSystemId, string databaseId, Query2 query );
+        Task<DbQueryResult> QueryDatabase( int emsSystemId, string databaseId, DbQuery query );
 
         /// <summary>
         /// Creates a query on a database using the provided query structure and returns an ID that 
@@ -487,7 +487,7 @@ namespace EmsApi.Client.V2
         /// The information used to construct a query for which results are returned.
         /// </param>
         [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query" )]
-        Task<AsyncQueryInfo> StartAsyncDatabaseQuery( int emsSystemId, string databaseId, Query2 query );
+        Task<AsyncQueryInfo> StartAsyncDatabaseQuery( int emsSystemId, string databaseId, DbQuery query );
 
         /// <summary>
         /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID.

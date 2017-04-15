@@ -62,7 +62,7 @@
 * Finish implementing non-admin routes, the following still need to be completed:
 	* Transfer APIs: /v2/ems-systems/{emsSystemId}/uploads/...
 * Add specflow tests for Analytics routes.
-* The Database routes use QueryResult2 and Query2 classes from EmsApi.Dto. These are conflated with the Query Really these should come from different namespaces, but since everything gets jammed in one namespace in the EmsApi.Dto.V2.cs file, it appends the 2. It would be nice to fix this with some sort of transformation for nswag.
+* Add tests for async query pagination.
 * Copy doc comments from IEmsApi to the access classes, since those are used directly by clients.
 * Make release process, have releases push to nuget.org
 * Implement trusted service authentication, only user / pass works currently.
