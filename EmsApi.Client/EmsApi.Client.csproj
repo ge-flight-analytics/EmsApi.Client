@@ -55,6 +55,7 @@
     <Compile Include="V2\Access\SwaggerAccess.cs" />
     <Compile Include="V2\Access\TrajectoriesAccess.cs" />
     <Compile Include="V2\IEmsApi.cs" />
+    <Compile Include="V2\Model\AnalyticQuery.cs" />
     <Compile Include="V2\Model\DatabaseQueryResult.cs" />
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
     <Compile Include="V2\Model\DatabaseQuery.cs" />

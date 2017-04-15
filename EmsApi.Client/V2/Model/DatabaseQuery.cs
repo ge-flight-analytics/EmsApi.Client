@@ -24,11 +24,12 @@ namespace EmsApi.Dto.V2
         public DbQuery Raw { get; set; }
 
         /// <summary>
-        /// Returns the JSON for the query.
+        /// Gets or sets the raw JSON for the query.
         /// </summary>
         public string Json
         {
             get { return Raw.ToJson(); }
+            set { Raw = DbQuery.FromJson( value ); }
         }
 
         /// <summary>

@@ -252,7 +252,7 @@ namespace EmsApi.Client.V2
         /// <param name="text">
         /// The search terms used to find a list of analytics by name.
         /// </param>
-        /// <param name="groupId">
+        /// <param name="group">
         /// An optional group ID to specify where to limit the search. If not specified, all groups are searched.
         /// </param>
         /// <param name="maxResults">
@@ -264,7 +264,7 @@ namespace EmsApi.Client.V2
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/analytics" )]
-        Task<IEnumerable<AnalyticInfo>> GetAnalytics( int emsSystemId, string text, string groupId = null, int? maxResults = null, string category = null );
+        Task<IEnumerable<AnalyticInfo>> GetAnalytics( int emsSystemId, string text, string group = null, int? maxResults = null, Category category = Category.Full );
 
         /// <summary>
         /// Searches for analytics by name for a specific flight.
@@ -278,7 +278,7 @@ namespace EmsApi.Client.V2
         /// <param name="text">
         /// The search terms used to find a list of analytics by name.
         /// </param>
-        /// <param name="groupId">
+        /// <param name="group">
         /// An optional group ID to specify where to limit the search. If not specified, all groups are searched.
         /// </param>
         /// <param name="maxResults">
@@ -290,7 +290,7 @@ namespace EmsApi.Client.V2
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
-        Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFlight( int emsSystemId, int flightId, string text, string groupId = null, int? maxResults = null, string category = null );
+        Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFlight( int emsSystemId, int flightId, string text, string group = null, int? maxResults = null, Category category = Category.Full );
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
@@ -333,7 +333,7 @@ namespace EmsApi.Client.V2
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroup( int emsSystemId, string analyticGroupId = null, string category = null );
+        Task<AnalyticGroupContents> GetAnalyticGroup( int emsSystemId, string analyticGroupId = null, Category category = Category.Full );
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
@@ -352,7 +352,7 @@ namespace EmsApi.Client.V2
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int emsSystemId, int flightId, string analyticGroupId = null, string category = null );
+        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int emsSystemId, int flightId, string analyticGroupId = null, Category category = Category.Full );
 
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.

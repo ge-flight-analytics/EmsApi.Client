@@ -50,14 +50,6 @@ namespace EmsApi.Client.V2.Access
         internal event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
 
         /// <summary>
-        /// Converts an enum value into a string suitable for an API method call.
-        /// </summary>
-        protected static string MakeEnumString<TEnum>( Enum value )
-        {
-            return Enum.GetName( typeof( TEnum ), value ).ToLower();
-        }
-
-        /// <summary>
         /// Checks the input enumerable for null, and returns an empty enumerable instead
         /// if it is null.
         /// </summary>

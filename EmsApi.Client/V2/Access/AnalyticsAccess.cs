@@ -29,8 +29,7 @@ namespace EmsApi.Client.V2.Access
         public Task<IEnumerable<AnalyticInfo>> SearchAsync( string text, string groupId = null, int? maxResults = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            string rawCategory = MakeEnumString<Category>( category );
-            return CallApiTask( api => api.GetAnalytics( ems, text, groupId, maxResults, rawCategory ) );
+            return CallApiTask( api => api.GetAnalytics( ems, text, groupId, maxResults, category ) );
         }
 
         /// <summary>
@@ -84,8 +83,7 @@ namespace EmsApi.Client.V2.Access
         public Task<IEnumerable<AnalyticInfo>> SearchAsync( int flightId, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            string rawCategory = MakeEnumString<Category>( category );
-            return CallApiTask( api => api.GetAnalyticsWithFlight( ems, flightId, text, groupId, maxResults, rawCategory ) );
+            return CallApiTask( api => api.GetAnalyticsWithFlight( ems, flightId, text, groupId, maxResults, category ) );
         }
 
         /// <summary>
@@ -125,10 +123,11 @@ namespace EmsApi.Client.V2.Access
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public Task<AnalyticInfo> GetInfoAsync( AnalyticId analyticId, int emsSystem = NoEmsServerSpecified )
+        public Task<AnalyticInfo> GetInfoAsync( string analyticId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticInfo( ems, analyticId ) );
+            var analyticIdObj = new AnalyticId { Id = analyticId };
+            return CallApiTask( api => api.GetAnalyticInfo( ems, analyticIdObj ) );
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public AnalyticInfo GetInfo( AnalyticId analyticId, int emsSystem = NoEmsServerSpecified )
+        public AnalyticInfo GetInfo( string analyticId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetInfoAsync( analyticId, emsSystem ) );
         }
@@ -157,10 +156,11 @@ namespace EmsApi.Client.V2.Access
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public Task<AnalyticInfo> GetInfoAsync( int flightId, AnalyticId analyticId, int emsSystem = NoEmsServerSpecified )
+        public Task<AnalyticInfo> GetInfoAsync( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticInfoWithFlight( ems, flightId, analyticId ) );
+            var analyticIdObj = new AnalyticId { Id = analyticId };
+            return CallApiTask( api => api.GetAnalyticInfoWithFlight( ems, flightId, analyticIdObj ) );
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public AnalyticInfo GetInfo( int flightId, AnalyticId analyticId, int emsSystem = NoEmsServerSpecified )
+        public AnalyticInfo GetInfo( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetInfoAsync( flightId, analyticId, emsSystem ) );
         }
@@ -196,8 +196,7 @@ namespace EmsApi.Client.V2.Access
         public Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            string rawCategory = MakeEnumString<Category>( category );
-            return CallApiTask( api => api.GetAnalyticGroup( ems, analyticGroupId, rawCategory ) );
+            return CallApiTask( api => api.GetAnalyticGroup( ems, analyticGroupId, category ) );
         }
 
         /// <summary>
@@ -237,8 +236,7 @@ namespace EmsApi.Client.V2.Access
         public Task<AnalyticGroupContents> GetGroupAsync( int flightId, string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            string rawCategory = MakeEnumString<Category>( category );
-            return CallApiTask( api => api.GetAnalyticGroupWithFlight( ems, flightId, analyticGroupId, rawCategory ) );
+            return CallApiTask( api => api.GetAnalyticGroupWithFlight( ems, flightId, analyticGroupId, category ) );
         }
 
         /// <summary>
@@ -274,10 +272,10 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        public Task<QueryResult> QueryResultsAsync( int flightId, Query query, int emsSystem = NoEmsServerSpecified )
+        public Task<QueryResult> QueryResultsAsync( int flightId, AnalyticQuery query, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticResults( ems, flightId, query ) );
+            return CallApiTask( api => api.GetAnalyticResults( ems, flightId, query.Raw ) );
         }
 
         /// <summary>
@@ -292,7 +290,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        public QueryResult QueryResults( int flightId, Query query, int emsSystem = NoEmsServerSpecified )
+        public QueryResult QueryResults( int flightId, AnalyticQuery query, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( QueryResultsAsync( flightId, query, emsSystem ) );
         }

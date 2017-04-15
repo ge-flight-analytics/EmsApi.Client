@@ -192,6 +192,7 @@
     <Compile Include="CallbackTests.cs" />
     <Compile Include="DatabaseTests.cs" />
     <Compile Include="ErrorHandlingTests.cs" />
+    <Compile Include="Features\AnalyticsSteps.cs" />
     <Compile Include="Features\Assets.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,6 +218,11 @@
       <DependentUpon>Profiles.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\ProfilesSteps.cs" />
+    <Compile Include="Features\Analytics.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Analytics.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\Swagger.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -252,6 +258,10 @@
     <None Include="Features\Profiles.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Profiles.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Analytics.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Analytics.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Swagger.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -63,6 +63,9 @@
 	* Transfer APIs: /v2/ems-systems/{emsSystemId}/uploads/...
 * Add specflow tests for Analytics routes.
 * Add tests for async query pagination.
+* Finish AnalyticQuery object
+* Fix analytic metadata test
+* Add an anlytic test that pulls a parameter instead of a constant.
 * Copy doc comments from IEmsApi to the access classes, since those are used directly by clients.
 * Make release process, have releases push to nuget.org
 * Implement trusted service authentication, only user / pass works currently.
