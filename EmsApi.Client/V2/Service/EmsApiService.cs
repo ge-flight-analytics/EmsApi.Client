@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using Refit;
+using Newtonsoft.Json.Linq;
 
 using EmsApi.Client.V2.Access;
 
@@ -262,17 +263,20 @@ namespace EmsApi.Client.V2
             foreach( var callback in m_exceptionCallbacks )
                 callback( args.Message );
 
-            if( m_config.ThrowExceptionOnApiFailure )
-            {
-                throw new EmsApiException( "An EMS API access exception occurred, and the ThrowExceptionOnApiFailure setting is true.",
-                    args.Exception );
-            }
+            if( !m_config.ThrowExceptionOnApiFailure )
+                return;
 
-            if( args.ApiException != null )
-            {
-                System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
-                    args.ApiException.ReasonPhrase, args.ApiException.Message );
-            }
+            var apiEx = args.Exception as ApiException;
+            if( apiEx == null )
+                throw new EmsApiException( args.Exception.Message, args.Exception );
+
+            JObject details = JObject.Parse( apiEx.Content );
+            string message = details.GetValue( "messageDetail" ).ToString();
+
+            System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
+                args.ApiException.ReasonPhrase, message );
+
+            throw new EmsApiException( message, args.Exception );
         }
 
         /// <summary>
@@ -285,11 +289,7 @@ namespace EmsApi.Client.V2
                 callback( args.Message );
 
             if( m_config.ThrowExceptionOnAuthFailure )
-            {
-                throw new EmsApiAuthenticationException( string.Format(
-                    "An EMS API authentication exception occurred, and the ThrowExceptionOnAuthFailure setting is true: {0}",
-                    args.Message ) );
-            }
+                throw new EmsApiAuthenticationException( args.Message );
 
             System.Diagnostics.Debug.WriteLine( "EMS API client encountered authentication failure: {0}", args.Message );
         }
