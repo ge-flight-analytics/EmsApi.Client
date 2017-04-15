@@ -190,6 +190,7 @@
   <ItemGroup>
     <Compile Include="AuthenticationTests.cs" />
     <Compile Include="CallbackTests.cs" />
+    <Compile Include="DatabaseTests.cs" />
     <Compile Include="ErrorHandlingTests.cs" />
     <Compile Include="Features\Assets.feature.cs">
       <AutoGen>True</AutoGen>

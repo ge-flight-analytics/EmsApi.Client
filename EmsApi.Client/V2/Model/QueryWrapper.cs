@@ -16,6 +16,7 @@ namespace EmsApi.Dto.V2
         {
             Raw = new Query2();
             Raw.Select = new ObservableCollection<SelectColumn>();
+            ValueFormat = Query2Format.Display;
         }
 
         /// <summary>
@@ -24,7 +25,17 @@ namespace EmsApi.Dto.V2
         public Query2 Raw { get; set; }
 
         /// <summary>
-        /// The format to return values in.
+        /// Returns the JSON for the query.
+        /// </summary>
+        public string Json
+        {
+            get { return Raw.ToJson(); }
+        }
+
+        /// <summary>
+        /// The format to return values in. The default value is <seealso cref="Query2Format.Display"/>.
+        /// When this is set to display, discrete type database fields will return their string display
+        /// name instead of their underlying id.
         /// </summary>
         public Query2Format? ValueFormat
         {
@@ -137,6 +148,15 @@ namespace EmsApi.Dto.V2
             args.Add( new FilterArgument { Type = FilterArgumentType.Field, Value = field } );
             args.Add( new FilterArgument { Type = FilterArgumentType.Constant, Value = constant } );
             AddFilter( op, args.ToArray() );
+        }
+
+        /// <summary>
+        /// Adds a filter which compares a boolean field to true or false.
+        /// </summary>
+        public void AddBooleanFilter( string field, bool matchState )
+        {
+            AddFilter( matchState ? FilterOperator.IsTrue : FilterOperator.IsFalse,
+                new FilterArgument { Type = FilterArgumentType.Field, Value = field } );
         }
 
         private void EnsureFilterExists()

@@ -145,7 +145,7 @@ namespace EmsApi.Dto.V2
             /// </summary>
             public object this[int index]
             {
-                get { return m_values[index]; }
+                get { return ScrubReturnValue( index ); }
             }
 
             /// <summary>
@@ -156,33 +156,33 @@ namespace EmsApi.Dto.V2
                 get
                 {
                     int index = m_columnIds.IndexOf( columnId );
-                    return m_values[index];
+                    return ScrubReturnValue( index );
                 }
             }
 
             /// <summary>
-            /// Returns the value at the given index, cast to a specific type.
+            /// Returns the value with the given column name.
             /// </summary>
-            public TRet GetValueByIndex<TRet>( int index )
-            {
-                return (TRet)this[index];
-            }
-
-            /// <summary>
-            /// Returns the value with the given column id, cast to a specific type.
-            /// </summary>
-            public TRet GetValueByColumnId<TRet>( string columnId )
-            {
-                return (TRet)this[columnId];
-            }
-
-            /// <summary>
-            /// Returns the value with the given column name, cast to a specific type.
-            /// </summary>
-            public TRet GetValueByColumnName<TRet>( string columnName )
+            public object GetValueByColumnName( string columnName )
             {
                 int index = m_columnNames.IndexOf( columnName );
-                return GetValueByIndex<TRet>( index );
+                return ScrubReturnValue( index );
+            }
+
+            /// <summary>
+            /// Handles formatting for well-known value types.
+            /// </summary>
+            private object ScrubReturnValue( int columnIndex )
+            {
+                object raw = m_values[columnIndex];
+
+                // Trim strings, some database fields are fixed width.
+                if( raw is string )
+                {
+                    return ((string)raw).Trim();
+                }
+
+                return raw;
             }
 
             // Note: These are lists of strings so we only keep a pointer to them.
