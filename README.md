@@ -7,7 +7,6 @@
 ## Prerequisites
 * Visual Studio 2015 with Update 3
 	* Community edition is supported, but not C# Express, because it does not contain all the necessary portable project types.
-* With the [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
 * And the EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
 	* Spaces for indentation (4 spaces per indentation).
 	* Lines must end in crlf with no trailing whitespace.
@@ -61,8 +60,6 @@
 ## Todo
 * Finish implementing non-admin routes, the following still need to be completed:
 	* Transfer APIs: /v2/ems-systems/{emsSystemId}/uploads/...
-* Add specflow tests for Analytics routes.
-* Add tests for async query pagination.
 * Finish AnalyticQuery object
 * Fix analytic metadata test
 * Add an anlytic test that pulls a parameter instead of a constant.
@@ -71,11 +68,6 @@
 * Implement trusted service authentication, only user / pass works currently.
 * Make authentication properly async, and figure out if there are other authentication threading issues with respect to getting a new token.
 	* The only implementation is synchronous right now.
-* Write some async tests, none of the async code has been used / tested currently
-	* Although the synchronous methods actually call the async methods and await the result, error handling might not work correctly when using the async methods directly from client code.
-* Create a script for building library and example with dotnet.exe
-* Create a dotnet core docker example.
-* Create a dotnet framework docker example.
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI, authentication takes a long time to time out.

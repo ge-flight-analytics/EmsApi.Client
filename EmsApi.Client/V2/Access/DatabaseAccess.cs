@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using EmsApi.Dto.V2;
 
+using RowCallback = System.Action<EmsApi.Dto.V2.DatabaseQueryResult.Row>;
+
 namespace EmsApi.Client.V2.Access
 {
     public class DatabaseAccess : CachedEmsIdRouteAccess
@@ -213,12 +215,63 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
+        /// <param name="callback">
+         /// A callback to execute for each row of data received.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+            return CallApiTask( api => api.QueryDatabase( ems, databaseId, query.Raw ) ).ContinueWith( task =>
+            {
+                // Callback for each row.
+                DbQueryResult queryResult = task.Result;
+                var result = new DatabaseQueryResult( queryResult.Header );
+                result.CallbackRows( query, queryResult.Rows, callback );
+            } );
+        }
+
+        /// <summary>
+        /// Queries a database for information, composing the query with information provided in the 
+        /// specified query structure. This query uses a single request and as such cannot be used
+        /// with large data sets.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
         public DatabaseQueryResult SimpleQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( SimpleQueryAsync( databaseId, query, emsSystem ) );
+        }
+
+        /// <summary>
+        /// Queries a database for information, composing the query with information provided in the 
+        /// specified query structure. This query uses a single request and as such cannot be used
+        /// with large data sets.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
+        /// <param name="callback">
+        /// A callback to execute for each row of data received.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public void SimpleQuery( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
+        {
+            SimpleQueryAsync( databaseId, query, callback, emsSystem ).Wait();
         }
 
         /// <summary>
@@ -249,6 +302,7 @@ namespace EmsApi.Client.V2.Access
             {
                 AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, emsSystem );
                 result.AddRows( query, data.Rows );
+                startingRow = startingRow + rowsPerCall;
                 moreToRead = data.HasMoreRows;
             }
 
@@ -267,7 +321,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        /// <param name="rowCallback">
+        /// <param name="callback">
         /// A callback to execute for each row of data received.
         /// </param>
         /// <param name="rowsPerCall">
@@ -276,7 +330,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public async Task QueryAsync( string databaseId, DatabaseQuery query, Action<DatabaseQueryResult.Row> rowCallback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
             var result = new DatabaseQueryResult( info.Header );
@@ -286,7 +340,8 @@ namespace EmsApi.Client.V2.Access
             while( moreToRead )
             {
                 AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, emsSystem );
-                result.CallbackRows( query, data.Rows, rowCallback );
+                result.CallbackRows( query, data.Rows, callback );
+                startingRow = startingRow + rowsPerCall;
                 moreToRead = data.HasMoreRows;
             }
 
@@ -326,7 +381,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        /// <param name="rowCallback">
+        /// <param name="callback">
         /// A callback to execute for each row of data received.
         /// </param>
         /// <param name="rowsPerCall">
@@ -335,9 +390,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public void Query( string databaseId, DatabaseQuery query, Action<DatabaseQueryResult.Row> rowCallback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
-            QueryAsync( databaseId, query, rowCallback, rowsPerCall, emsSystem ).Wait();
+            QueryAsync( databaseId, query, callback, rowsPerCall, emsSystem ).Wait();
         }
 
         /// <summary>

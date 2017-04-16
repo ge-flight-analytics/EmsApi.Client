@@ -20,6 +20,30 @@ namespace EmsApi.Tests
             TestSimple( orderResults: false );
         }
 
+        [Fact( DisplayName = "A simple query should fire callbacks" )]
+        public void Simple_query_should_fire_callbacks()
+        {
+            using( var api = NewService() )
+            {
+                api.CachedEmsSystem = 1;
+                var query = CreateQuery( orderResults: true );
+
+                // Limit the result set to 10 items and make sure we get 10 callbacks.
+                const int numItems = 10;
+                query.Top = numItems;
+
+                int numCallbacks = 0;
+                Action<DatabaseQueryResult.Row> callback = row =>
+                {
+                    TestRow( row );
+                    numCallbacks++;
+                };
+
+                api.Databases.SimpleQuery( Monikers.FlightDatabase, query, callback );
+                numCallbacks.ShouldBeEquivalentTo( numItems );
+            }
+        }
+
         [Fact( DisplayName = "An advanced query should return rows" )]
         public void Advanced_query_should_return_rows()
         {
@@ -52,6 +76,32 @@ namespace EmsApi.Tests
                 };
 
                 api.Databases.Query( Monikers.FlightDatabase, query, callback );
+                numCallbacks.ShouldBeEquivalentTo( numItems );
+            }
+        }
+
+        [Fact( DisplayName = "An advanced query should handle pagination" )]
+        public void Advanced_query_should_handle_pagination()
+        {
+            using( var api = NewService() )
+            {
+                api.CachedEmsSystem = 1;
+
+                // Note: To be deterministic, we have to use ordered results so the
+                // callbacks fire in order.
+                var query = CreateQuery( orderResults: true );
+
+                const int numItems = 30;
+                query.Top = numItems;
+
+                int numCallbacks = 0;
+                Action<DatabaseQueryResult.Row> callback = row =>
+                {
+                    TestRow( row );
+                    numCallbacks++;
+                };
+
+                api.Databases.Query( Monikers.FlightDatabase, query, callback, rowsPerCall: 10 );
                 numCallbacks.ShouldBeEquivalentTo( numItems );
             }
         }

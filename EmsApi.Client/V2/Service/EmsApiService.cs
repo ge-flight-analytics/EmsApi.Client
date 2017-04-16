@@ -271,7 +271,15 @@ namespace EmsApi.Client.V2
                 throw new EmsApiException( args.Exception.Message, args.Exception );
 
             JObject details = JObject.Parse( apiEx.Content );
-            string message = details.GetValue( "messageDetail" ).ToString();
+
+            // We want the details if available.
+            string message = details.GetValue( "messageDetail" )?.ToString();
+
+            if( message == null )
+                message = details.GetValue( "message" )?.ToString();
+
+            if( message == null )
+                message = "An unknown API exception occurred.";
 
             System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
                 args.ApiException.ReasonPhrase, message );
