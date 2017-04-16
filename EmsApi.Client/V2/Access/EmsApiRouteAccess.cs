@@ -21,32 +21,30 @@ namespace EmsApi.Client.V2.Access
         internal EmsApiRouteAccess() { }
 
         /// <summary>
-        /// Sets the interface instance used by the access class. This must
+        /// Sets the service that this access class is working for. This must
         /// be called before accessing methods on the class.
         /// </summary>
-        /// <param name="api">
-        /// The API interface to call into.
+        /// <param name="service">
+        /// The service through which we call the raw API.
         /// </param>
         /// <remarks>
-        /// This is here so that the service class can use the default constructor,
-        /// then set the interface afterwards.
+        /// This is here so we don't have to implement a constructor for each
+        /// dervied access class.
         /// </remarks>
-        internal void SetInterface( IEmsApi api )
+        internal void SetService( EmsApiService service )
         {
-            m_api = api;
+            m_service = service;
         }
 
-        /// The reference to the raw api interface. This is private get so that derived classes
-        /// are required to call <seealso cref="CallApiTask{TRet}(Func{IEmsApi, Task{TRet}})"/>
-        /// in order to access the interface.
-        private IEmsApi m_api;
+        /// <summary>
+        /// The service instance we are working for, which exposes the raw refit
+        /// interface used to send requests.
+        /// </summary>
+        private EmsApiService m_service;
 
         /// <summary>
         /// Event that is fired whenever a low level API exception occurs.
         /// </summary>
-        /// <remarks>
-        /// This is static so that this same event will fire for all derived wrapper classes.
-        /// </remarks>
         internal event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace EmsApi.Client.V2.Access
         /// </remarks>
         protected Task<TRet> CallApiTask<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
         {
-            return apiFunc( m_api ).ContinueWith( HandleApiException );
+            return apiFunc( m_service.RefitApi ).ContinueWith( HandleApiException );
         }
 
         /// <summary>
@@ -111,7 +109,7 @@ namespace EmsApi.Client.V2.Access
         /// </remarks>
         protected Task CallApiTask( Func<IEmsApi, Task> apiFunc )
         {
-            return apiFunc( m_api ).ContinueWith( HandleApiException );
+            return apiFunc( m_service.RefitApi ).ContinueWith( HandleApiException );
         }
 
         /// <summary>

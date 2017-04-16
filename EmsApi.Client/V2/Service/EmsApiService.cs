@@ -24,8 +24,9 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            m_config = new EmsApiServiceConfiguration();
+            InstanceId = Guid.NewGuid();
             Initialize();
+            ServiceConfig = new EmsApiServiceConfiguration();
         }
 
         /// <summary>
@@ -34,9 +35,10 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService( EmsApiServiceConfiguration config )
         {
+            InstanceId = Guid.NewGuid();
             ValidateConfigOrThrow( config );
-            m_config = config;
             Initialize();
+            ServiceConfig = config;
         }
 
         /// <summary>
@@ -80,6 +82,21 @@ namespace EmsApi.Client.V2
         public DatabaseAccess Databases { get; private set; }
 
         /// <summary>
+        /// A unique id for this instance of the EMS API service.
+        /// </summary>
+        public Guid InstanceId { get; private set; }
+
+        /// <summary>
+        /// The HTTP client used by the API. This is normally not access directly, but
+        /// can be used to let the library handle headers and authentication while sending
+        /// your own requests manually.
+        /// </summary>
+        public HttpClient HttpClient
+        {
+            get; private set;
+        }
+
+        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -90,11 +107,14 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// The HTTP client used by the API. This is normally not access directly, but
-        /// can be used to let the library handle headers and authentication while sending
-        /// your own requests manually.
+        /// The raw refit interface. This is internal and private set so that the
+        /// access classes can use it without having to hold their own references,
+        /// because this can change when the endpoint changes.
         /// </summary>
-        public HttpClient HttpClient { get; private set; }
+        internal IEmsApi RefitApi
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Sets up our API interface and access properties.
@@ -105,8 +125,9 @@ namespace EmsApi.Client.V2
             m_authCallbacks = new List<Action<string>>();
             m_exceptionCallbacks = new List<Action<string>>();
 
-            // Set up all the client services we need to use.
-            AllocateClients();
+            // Set up the services we need to use.
+            m_clientHandler = new EmsApiClientHandler();
+            HttpClient = new HttpClient( m_clientHandler );
 
             // Set up access properties for extenal clients to use.
             InitializeAccessProperties();
@@ -114,20 +135,6 @@ namespace EmsApi.Client.V2
             // Subscribe to authentication failure events.
             m_clientHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
             m_cleanup.Add( () => m_clientHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
-        }
-
-        /// <summary>
-        /// Allocates all of the background clients and services needed to function. Thsi will instantiate
-        /// a new authentication handler, use that to create a new HttpClient, set some default headers, and
-        /// then allocate a new Refit interface implementation.
-        /// </summary>
-        private void AllocateClients()
-        {
-            m_clientHandler = new EmsApiClientHandler( m_config );
-            HttpClient = new HttpClient( m_clientHandler );
-            HttpClient.BaseAddress = new Uri( m_config.Endpoint );
-            m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
-            m_api = RestService.For<IEmsApi>( HttpClient );
         }
 
         /// <summary>
@@ -150,7 +157,7 @@ namespace EmsApi.Client.V2
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
         {
             EmsApiRouteAccess access = new TAccess();
-            access.SetInterface( m_api );
+            access.SetService( this );
             access.ApiMethodFailedEvent += ApiExceptionHandler;
             m_cleanup.Add( () => access.ApiMethodFailedEvent -= ApiExceptionHandler );
             m_accessors.Add( access );
@@ -180,7 +187,22 @@ namespace EmsApi.Client.V2
             {
                 ValidateConfigOrThrow( value );
                 m_config = value;
-                AllocateClients();
+                m_clientHandler.ServiceConfig = value;
+
+                // Reset the default headers, they may have changed with the config.
+                HttpClient.DefaultRequestHeaders.Clear();
+                m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
+
+                // See if the endpoint has changed.
+                if( m_config.Endpoint != m_endpoint )
+                {
+                    m_endpoint = m_config.Endpoint;
+
+                    // Reset the BaseAddress, and create a new refit service stub.
+                    // It's bound to the HttpClient's base address when it's constructed.
+                    HttpClient.BaseAddress = new Uri( m_config.Endpoint );
+                    RefitApi = RestService.For<IEmsApi>( HttpClient );
+                }
             }
         }
 
@@ -352,5 +374,13 @@ namespace EmsApi.Client.V2
         /// The client handler, which handles authentication and compression.
         /// </summary>
         private EmsApiClientHandler m_clientHandler;
+
+        /// <summary>
+        /// The last API endpoint specified. This is used to track when the
+        /// endpoint changes, since we need to do a more thorough reset when
+        /// that happens, due to the fact that the refit implementation gets
+        /// bound to the endpoint url.
+        /// </summary>
+        private string m_endpoint = string.Empty;
     }
 }

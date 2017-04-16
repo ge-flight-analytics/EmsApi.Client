@@ -20,21 +20,57 @@ namespace EmsApi.Client.V2
     /// </remarks>
     internal class EmsApiClientHandler : HttpClientHandler, IDisposable
     {
-        public EmsApiClientHandler( EmsApiServiceConfiguration serviceConfig )
+        public EmsApiClientHandler()
         {
-            m_serviceConfig = serviceConfig;
             AutomaticDecompression = System.Net.DecompressionMethods.GZip;
+
+            m_endpoint = string.Empty;
+            m_userName = string.Empty;
+            m_pass = string.Empty;
         }
 
         private string m_authToken;
         private DateTime m_tokenExpiration;
         private EmsApiServiceConfiguration m_serviceConfig;
+        private string m_endpoint, m_userName, m_pass;
 
         /// <summary>
         /// Returns true if the client is currently authenticated.
         /// </summary>
         public bool Authenticated { get; private set; }
 
+        /// <summary>
+        /// Sets the current service configuration, causing the authentication
+        /// to become invalid if the endpoint, username, or password changed.
+        /// </summary>
+        public EmsApiServiceConfiguration ServiceConfig
+        {
+            set
+            {
+                bool deAuth = false;
+                if( value.Endpoint != m_endpoint )
+                {
+                    m_endpoint = value.Endpoint;
+                    deAuth = true;
+                }
+                if( value.UserName != m_userName )
+                {
+                    m_userName = value.UserName;
+                    deAuth = true;
+                }
+                if( value.Password != m_pass )
+                {
+                    m_pass = value.Password;
+                    deAuth = true;
+                }
+
+                if( deAuth )
+                    InvalidateAuthentication();
+
+                m_serviceConfig = value;
+            }
+        }
+        
         /// <summary>
         /// Fired to signal that authentication has failed for the current request.
         /// </summary>
@@ -70,6 +106,13 @@ namespace EmsApi.Client.V2
             // Apply our auth token to the header.
             request.Headers.Authorization = new AuthenticationHeaderValue( SecurityConstants.Scheme, m_authToken );
             return base.SendAsync( request, cancellationToken );
+        }
+
+        private void InvalidateAuthentication()
+        {
+            Authenticated = false;
+            m_authToken = string.Empty;
+            m_tokenExpiration = DateTime.MinValue;
         }
 
         private bool IsTokenValid()
