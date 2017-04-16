@@ -60,7 +60,7 @@
     <Compile Include="V2\Model\EmsSystemInfo.cs" />
     <Compile Include="V2\Model\DatabaseQuery.cs" />
     <Compile Include="V2\Service\ApiEventArgs.cs" />
-    <Compile Include="V2\Service\Authentication.cs" />
+    <Compile Include="V2\Service\EmsApiClientHandler.cs" />
     <Compile Include="V2\Service\EmsApiEndpoints.cs" />
     <Compile Include="V2\Service\EmsApiService.cs" />
     <Compile Include="V2\Service\EmsApiServiceConfiguration.cs" />

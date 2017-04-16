@@ -112,8 +112,8 @@ namespace EmsApi.Client.V2
             InitializeAccessProperties();
 
             // Subscribe to authentication failure events.
-            m_authHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
-            m_cleanup.Add( () => m_authHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
+            m_clientHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
+            m_cleanup.Add( () => m_clientHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace EmsApi.Client.V2
         /// </summary>
         private void AllocateClients()
         {
-            m_authHandler = new Authentication.EmsApiTokenHandler( m_config );
-            HttpClient = new HttpClient( m_authHandler );
+            m_clientHandler = new EmsApiClientHandler( m_config );
+            HttpClient = new HttpClient( m_clientHandler );
             HttpClient.BaseAddress = new Uri( m_config.Endpoint );
             m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
             m_api = RestService.For<IEmsApi>( HttpClient );
@@ -189,7 +189,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public bool Authenticated
         {
-            get { return m_authHandler.Authenticated; }
+            get { return m_clientHandler.Authenticated; }
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public bool Authenticate()
         {
-            return m_authHandler.Authenticate();
+            return m_clientHandler.Authenticate();
         }
 
         /// <summary>
@@ -250,8 +250,8 @@ namespace EmsApi.Client.V2
                     action();
             }
 
-            if( m_authHandler != null )
-                m_authHandler.Dispose();
+            if( m_clientHandler != null )
+                m_clientHandler.Dispose();
         }
 
         /// <summary>
@@ -338,8 +338,19 @@ namespace EmsApi.Client.V2
         /// </summary>
         private int m_cachedEmsSystemId;
 
+        /// <summary>
+        /// The raw refit interface.
+        /// </summary>
         private IEmsApi m_api;
+
+        /// <summary>
+        /// The configuration for the service.
+        /// </summary>
         private EmsApiServiceConfiguration m_config;
-        private Authentication.EmsApiTokenHandler m_authHandler;
+
+        /// <summary>
+        /// The client handler, which handles authentication and compression.
+        /// </summary>
+        private EmsApiClientHandler m_clientHandler;
     }
 }

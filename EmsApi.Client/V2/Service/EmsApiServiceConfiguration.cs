@@ -26,6 +26,7 @@ namespace EmsApi.Client.V2
         public EmsApiServiceConfiguration( string endpoint = EmsApiEndpoints.Default, bool useEnvVars = true )
         {
             Endpoint = endpoint;
+            UseCompression = true;
             ThrowExceptionOnAuthFailure = true;
             ThrowExceptionOnApiFailure = true;
 
@@ -61,6 +62,14 @@ namespace EmsApi.Client.V2
         /// The user agent header to pass along to the EMS API. 
         /// </summary>
         public string UserAgent { get { return "ems-api-sdk Dotnet v0.1"; } }
+
+        /// <summary>
+        /// When true, gzip compression will be used for responses on routes that support it.
+        /// This is enabled by default. Responses are automatically decompressed by the library,
+        /// so there's no advantage to disabling this unless you are running in a CPU constrained
+        /// scenario.
+        /// </summary>
+        public bool UseCompression { get; set; }
 
         /// <summary>
         /// The trusted token to use for authentication.
@@ -104,6 +113,10 @@ namespace EmsApi.Client.V2
             // Optional application name.
             if( !string.IsNullOrEmpty( ApplicationName ) )
                 headerCollection.Add( HttpHeaderNames.ApplicationName, ApplicationName );
+
+            // Optional compression header.
+            if( UseCompression )
+                headerCollection.Add( HttpHeaderNames.AcceptEncoding, "gzip" );
         }
 
         /// <summary>
