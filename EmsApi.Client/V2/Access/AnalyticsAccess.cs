@@ -314,7 +314,7 @@ namespace EmsApi.Client.V2.Access
         public Task<Metadata> GetMetadataAsync( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticMetadata( ems, flightId, analyticId ) );
+            return CallApiTask( api => api.GetAnalyticMetadata( ems, flightId, new AnalyticId { Id = analyticId } ) );
         }
 
         /// <summary>

@@ -214,9 +214,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 46
  testRunner.And("The cached EMS system id of 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
- testRunner.When(@"I run GetMetadata and enter a flight id of 1 and an analytic id of 'H4sIAAAAAAAEAG2QTwuCQBDF70HfQby7u5oQiApBHQS7FELXbd10YF1td80+fkuy/aHmMDyY+fHeTHrguhc3eha8qLk0cAGuvHsnpE4g81tjhgTjaZrQtEK9anBESIhP+/LIWt7RAKQ2VDLuz8yL0M+xRjU1lPXSKMqM42NM1nhTA6oU9fPlwvPSOQVXRZ07qdGu02XfAKMixR8LX8Bx4MxmZlvr40EiQWS+UaPNg/8vVhKuo701J3OFAYmiMIitDIhrrt6+P/hy4Ybfv8sf/fX2pVIBAAA='", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(@"I run GetMetadata and enter a flight id of 1 and an analytic id of 'H4sIAAAAAAAEAG2QQQuCQBCF74H/Qby7qyUUokJQB8EuidB1WzcdWFfbXbOf35ZYSb3DY2DmY95MdGSq5Tdy5iwtmdBwASbte8OFCiF2aq27EONhGNCwQq2s8NLzfHw6ZDmtWUNcEEoTQZkzMm9CvdoKlUQT2gotCdUTH2BvjbcloEISJ7EWth2NKZhMy2QqFdo3KmsroIRH+GtgBuQdoyYz3Zk9NoQCeOxo2Zs8+P9gIeDam1sTb5TvGtu4gfFnNdqkz94f3FpMzfnvkgfLSh/6UgEAAA=='", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
- testRunner.Then("a Metadata object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("A Metadata object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 49
+ testRunner.And("It contains an item with the key \'DataType\' and the value \'Real\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+ testRunner.And("It contains an item with the key \'Information\\Internal Description\' and the value" +
+                    " \'Radio Altitude\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

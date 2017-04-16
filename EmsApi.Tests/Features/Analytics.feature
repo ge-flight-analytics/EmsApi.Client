@@ -44,5 +44,7 @@ Scenario: Get analytic results
 Scenario: Get analytic metadata
 	Given A valid API endpoint
 	And The cached EMS system id of 1
-	When I run GetMetadata and enter a flight id of 1 and an analytic id of 'H4sIAAAAAAAEAG2QTwuCQBDF70HfQby7u5oQiApBHQS7FELXbd10YF1td80+fkuy/aHmMDyY+fHeTHrguhc3eha8qLk0cAGuvHsnpE4g81tjhgTjaZrQtEK9anBESIhP+/LIWt7RAKQ2VDLuz8yL0M+xRjU1lPXSKMqM42NM1nhTA6oU9fPlwvPSOQVXRZ07qdGu02XfAKMixR8LX8Bx4MxmZlvr40EiQWS+UaPNg/8vVhKuo701J3OFAYmiMIitDIhrrt6+P/hy4Ybfv8sf/fX2pVIBAAA='
-	Then a Metadata object is returned
+	When I run GetMetadata and enter a flight id of 1 and an analytic id of 'H4sIAAAAAAAEAG2QQQuCQBCF74H/Qby7qyUUokJQB8EuidB1WzcdWFfbXbOf35ZYSb3DY2DmY95MdGSq5Tdy5iwtmdBwASbte8OFCiF2aq27EONhGNCwQq2s8NLzfHw6ZDmtWUNcEEoTQZkzMm9CvdoKlUQT2gotCdUTH2BvjbcloEISJ7EWth2NKZhMy2QqFdo3KmsroIRH+GtgBuQdoyYz3Zk9NoQCeOxo2Zs8+P9gIeDam1sTb5TvGtu4gfFnNdqkz94f3FpMzfnvkgfLSh/6UgEAAA=='
+	Then A Metadata object is returned
+	And It contains an item with the key 'DataType' and the value 'Real'
+	And It contains an item with the key 'Information\Internal Description' and the value 'Radio Altitude'

@@ -384,7 +384,7 @@ namespace EmsApi.Client.V2
         /// These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
         [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/metadata" )]
-        Task<Metadata> GetAnalyticMetadata( int emsSystemId, int flightId, string analyticId );
+        Task<Metadata> GetAnalyticMetadata( int emsSystemId, int flightId, AnalyticId analyticId );
 
         /// <summary>
         /// Returns a database group with a matching ID containing only its immediate children 

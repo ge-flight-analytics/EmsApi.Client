@@ -361,11 +361,6 @@ namespace EmsApi.Client.V2
         private int m_cachedEmsSystemId;
 
         /// <summary>
-        /// The raw refit interface.
-        /// </summary>
-        private IEmsApi m_api;
-
-        /// <summary>
         /// The configuration for the service.
         /// </summary>
         private EmsApiServiceConfiguration m_config;

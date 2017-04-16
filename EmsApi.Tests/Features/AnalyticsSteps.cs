@@ -97,11 +97,19 @@ namespace EmsApi.Tests.Features
             m_result.Object = m_api.Analytics.GetMetadata( p0, p1 );
         }
 
-        [Then( @"a Metadata object is returned" )]
+        [Then( @"A Metadata object is returned" )]
         public void ThenAMetadataObjectIsReturned()
         {
             m_result.Object.ShouldNotBeNullOfType<Metadata>();
         }
 
+        [Then( @"It contains an item with the key '(.*)' and the value '(.*)'" )]
+        public void ThenItContainsAnItemWithTheKeyAndTheValue( string p0, string p1 )
+        {
+            Metadata md = (Metadata)m_result.Object;
+            md.Values.ShouldNotBeNullOrEmptyOfType<MetadataItem>();
+            var item = md.Values.Where( v => v.Key == p0 ).FirstOrDefault();
+            item.Value.ToString().ShouldBeEquivalentTo( p1 );
+        }
     }
 }
