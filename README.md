@@ -60,7 +60,6 @@
 ## Todo
 * Finish implementing non-admin routes, the following still need to be completed:
 	* Transfer APIs: /v2/ems-systems/{emsSystemId}/uploads/...
-* Finish AnalyticQuery object
 * Fix analytic metadata test
 * Add an anlytic test that pulls a parameter instead of a constant.
 * Copy doc comments from IEmsApi to the access classes, since those are used directly by clients.
