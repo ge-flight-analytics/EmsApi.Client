@@ -119,6 +119,11 @@
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.1.1\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
       <Private>True</Private>
@@ -185,7 +190,9 @@
   <ItemGroup>
     <Compile Include="AuthenticationTests.cs" />
     <Compile Include="CallbackTests.cs" />
+    <Compile Include="DatabaseTests.cs" />
     <Compile Include="ErrorHandlingTests.cs" />
+    <Compile Include="Features\AnalyticsSteps.cs" />
     <Compile Include="Features\Assets.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -211,6 +218,11 @@
       <DependentUpon>Profiles.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\ProfilesSteps.cs" />
+    <Compile Include="Features\Analytics.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Analytics.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\Swagger.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -246,6 +258,10 @@
     <None Include="Features\Profiles.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Profiles.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Analytics.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Analytics.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Swagger.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

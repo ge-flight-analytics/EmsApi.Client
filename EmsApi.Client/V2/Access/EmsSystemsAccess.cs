@@ -6,7 +6,7 @@ using EmsApi.Dto.V2;
 namespace EmsApi.Client.V2.Access
 {
     /// <summary>
-    /// Provides a .NET friendly wrapper around the ems-systems API routes.
+    /// Provides access to EMS API "ems-systems" routes.
     /// </summary>
     public class EmsSystemsAccess : EmsApiRouteAccess
     {

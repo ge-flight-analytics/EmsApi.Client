@@ -7,7 +7,6 @@
 ## Prerequisites
 * Visual Studio 2015 with Update 3
 	* Community edition is supported, but not C# Express, because it does not contain all the necessary portable project types.
-* With the [Latest version of .NET core tooling (preview 2)](https://marketplace.visualstudio.com/items?itemName=JacquesEloff.MicrosoftASPNETandWebTools-9689)
 * And the EditorConfig extension, to load the project .editorconfig file (this is natively supported in VS2017). This will enforce the code formatting rules:
 	* Spaces for indentation (4 spaces per indentation).
 	* Lines must end in crlf with no trailing whitespace.
@@ -51,41 +50,21 @@
 # Details
 
 ## Current Status
-* Only the following sections of the API are implemented (see TODO for the remaining list):
-	* Asset API
-	* EMS System API
-	* Profile API
-	* Trajectory API
-	* Swagger API
-* Most all of the common code has been written.
-* More examples are already welcomed.
-
-## How to implement new routes
-* Add the route definitions to IEmsApi.cs.
-	* Note: All of the objects that need to be returned from IEmsApi should be found in the EmsApi.Dto.V2 namespace already. These objects are automatically generated using the EMS API swagger specification, to exactly match the JSON structures that the API returns. **DO NOT** rewrite them in the Models namespace, unless it really doesn't exist in EmsApi.Dto.
-* Implement an access class for the route.
-*	Deriving from EmsApi.Client.V2.Access.EmsApiRouteAccess (or CachedEmsIdRouteAccess if the routes your implementing require an EMS system to be specified).
-*	Use one of the existing ones as an example.
-* Add a public property for the access class to EmsApiService, and add it to the InitializeAccessProperties function.
-* Add a SpecFlow test for the new routes.
+* All of the routes have been implemented. 
+* Now the focus is on 
+	* Building more .NET friendly ways of using the routes, through the Access classes.
+	* Updating documentation
+	* Building examples
 
 ## Todo
 * Finish implementing non-admin routes, the following still need to be completed:
-	* Analytic API: /v2/ems-systems/{emsSystemId}/analytics/...
-	* Database API: /v2/ems-systems/{emsSystemId}/databases/...
-	* Parameter Set APIs: /v2/ems-systems/{emsSystemId}/parameter-sets
-	* Tableau APIs?: /v2/tableau/...
 	* Transfer APIs: /v2/ems-systems/{emsSystemId}/uploads/...
+* Fix analytic metadata test
+* Add an anlytic test that pulls a parameter instead of a constant.
+* Make release process, have releases push to nuget.org
 * Implement trusted service authentication, only user / pass works currently.
 * Make authentication properly async, and figure out if there are other authentication threading issues with respect to getting a new token.
 	* The only implementation is synchronous right now.
-* Test to see if everything builds on VS2015 community edition.
-* Write some async tests, none of the async code has been used / tested currently
-	* Although the synchronous methods actually call the async methods and await the result, error handling might not work correctly when using the async methods directly from client code.
-* Create a script for building library and example with dotnet.exe
-* Create a dotnet core docker example.
-* Create a dotnet framework docker example.
 
 ## Bugs
 * If DNS cannot resolve the endpoint URI, authentication takes a long time to time out.
-* The get profile glossary route does not work, it's getting some unexpected return format from the API.

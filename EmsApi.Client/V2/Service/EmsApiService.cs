@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using Refit;
+using Newtonsoft.Json.Linq;
 
 using EmsApi.Client.V2.Access;
 
@@ -23,8 +24,9 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            m_config = new EmsApiServiceConfiguration();
+            InstanceId = Guid.NewGuid();
             Initialize();
+            ServiceConfig = new EmsApiServiceConfiguration();
         }
 
         /// <summary>
@@ -33,9 +35,10 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService( EmsApiServiceConfiguration config )
         {
+            InstanceId = Guid.NewGuid();
             ValidateConfigOrThrow( config );
-            m_config = config;
             Initialize();
+            ServiceConfig = config;
         }
 
         /// <summary>
@@ -74,6 +77,26 @@ namespace EmsApi.Client.V2
         public AnalyticsAccess Analytics { get; private set; }
 
         /// <summary>
+        /// Access to database routes.
+        /// </summary>
+        public DatabaseAccess Databases { get; private set; }
+
+        /// <summary>
+        /// A unique id for this instance of the EMS API service.
+        /// </summary>
+        public Guid InstanceId { get; private set; }
+
+        /// <summary>
+        /// The HTTP client used by the API. This is normally not access directly, but
+        /// can be used to let the library handle headers and authentication while sending
+        /// your own requests manually.
+        /// </summary>
+        public HttpClient HttpClient
+        {
+            get; private set;
+        }
+
+        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -84,11 +107,14 @@ namespace EmsApi.Client.V2
         }
 
         /// <summary>
-        /// The HTTP client used by the API. This is normally not access directly, but
-        /// can be used to let the library handle headers and authentication while sending
-        /// your own requests manually.
+        /// The raw refit interface. This is internal and private set so that the
+        /// access classes can use it without having to hold their own references,
+        /// because this can change when the endpoint changes.
         /// </summary>
-        public HttpClient HttpClient { get; private set; }
+        internal IEmsApi RefitApi
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Sets up our API interface and access properties.
@@ -99,29 +125,16 @@ namespace EmsApi.Client.V2
             m_authCallbacks = new List<Action<string>>();
             m_exceptionCallbacks = new List<Action<string>>();
 
-            // Set up all the client services we need to use.
-            AllocateClients();
+            // Set up the services we need to use.
+            m_clientHandler = new EmsApiClientHandler();
+            HttpClient = new HttpClient( m_clientHandler );
 
             // Set up access properties for extenal clients to use.
             InitializeAccessProperties();
 
             // Subscribe to authentication failure events.
-            m_authHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
-            m_cleanup.Add( () => m_authHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
-        }
-
-        /// <summary>
-        /// Allocates all of the background clients and services needed to function. Thsi will instantiate
-        /// a new authentication handler, use that to create a new HttpClient, set some default headers, and
-        /// then allocate a new Refit interface implementation.
-        /// </summary>
-        private void AllocateClients()
-        {
-            m_authHandler = new Authentication.EmsApiTokenHandler( m_config );
-            HttpClient = new HttpClient( m_authHandler );
-            HttpClient.BaseAddress = new Uri( m_config.Endpoint );
-            m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
-            m_api = RestService.For<IEmsApi>( HttpClient );
+            m_clientHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
+            m_cleanup.Add( () => m_clientHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
         }
 
         /// <summary>
@@ -138,12 +151,13 @@ namespace EmsApi.Client.V2
             Profiles = InitializeAccessClass<ProfilesAccess>();
             ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
             Analytics = InitializeAccessClass<AnalyticsAccess>();
+            Databases = InitializeAccessClass<DatabaseAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
         {
             EmsApiRouteAccess access = new TAccess();
-            access.SetInterface( m_api );
+            access.SetService( this );
             access.ApiMethodFailedEvent += ApiExceptionHandler;
             m_cleanup.Add( () => access.ApiMethodFailedEvent -= ApiExceptionHandler );
             m_accessors.Add( access );
@@ -173,7 +187,22 @@ namespace EmsApi.Client.V2
             {
                 ValidateConfigOrThrow( value );
                 m_config = value;
-                AllocateClients();
+                m_clientHandler.ServiceConfig = value;
+
+                // Reset the default headers, they may have changed with the config.
+                HttpClient.DefaultRequestHeaders.Clear();
+                m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
+
+                // See if the endpoint has changed.
+                if( m_config.Endpoint != m_endpoint )
+                {
+                    m_endpoint = m_config.Endpoint;
+
+                    // Reset the BaseAddress, and create a new refit service stub.
+                    // It's bound to the HttpClient's base address when it's constructed.
+                    HttpClient.BaseAddress = new Uri( m_config.Endpoint );
+                    RefitApi = RestService.For<IEmsApi>( HttpClient );
+                }
             }
         }
 
@@ -182,7 +211,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public bool Authenticated
         {
-            get { return m_authHandler.Authenticated; }
+            get { return m_clientHandler.Authenticated; }
         }
 
         /// <summary>
@@ -192,7 +221,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public bool Authenticate()
         {
-            return m_authHandler.Authenticate();
+            return m_clientHandler.Authenticate();
         }
 
         /// <summary>
@@ -243,8 +272,8 @@ namespace EmsApi.Client.V2
                     action();
             }
 
-            if( m_authHandler != null )
-                m_authHandler.Dispose();
+            if( m_clientHandler != null )
+                m_clientHandler.Dispose();
         }
 
         /// <summary>
@@ -256,17 +285,28 @@ namespace EmsApi.Client.V2
             foreach( var callback in m_exceptionCallbacks )
                 callback( args.Message );
 
-            if( m_config.ThrowExceptionOnApiFailure )
-            {
-                throw new EmsApiException( "An EMS API access exception occurred, and the ThrowExceptionOnApiFailure setting is true.",
-                    args.Exception );
-            }
+            if( !m_config.ThrowExceptionOnApiFailure )
+                return;
 
-            if( args.ApiException != null )
-            {
-                System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
-                    args.ApiException.ReasonPhrase, args.ApiException.Message );
-            }
+            var apiEx = args.Exception as ApiException;
+            if( apiEx == null )
+                throw new EmsApiException( args.Exception.Message, args.Exception );
+
+            JObject details = JObject.Parse( apiEx.Content );
+
+            // We want the details if available.
+            string message = details.GetValue( "messageDetail" )?.ToString();
+
+            if( message == null )
+                message = details.GetValue( "message" )?.ToString();
+
+            if( message == null )
+                message = "An unknown API exception occurred.";
+
+            System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
+                args.ApiException.ReasonPhrase, message );
+
+            throw new EmsApiException( message, args.Exception );
         }
 
         /// <summary>
@@ -279,11 +319,7 @@ namespace EmsApi.Client.V2
                 callback( args.Message );
 
             if( m_config.ThrowExceptionOnAuthFailure )
-            {
-                throw new EmsApiAuthenticationException( string.Format(
-                    "An EMS API authentication exception occurred, and the ThrowExceptionOnAuthFailure setting is true: {0}",
-                    args.Message ) );
-            }
+                throw new EmsApiAuthenticationException( args.Message );
 
             System.Diagnostics.Debug.WriteLine( "EMS API client encountered authentication failure: {0}", args.Message );
         }
@@ -324,8 +360,22 @@ namespace EmsApi.Client.V2
         /// </summary>
         private int m_cachedEmsSystemId;
 
-        private IEmsApi m_api;
+        /// <summary>
+        /// The configuration for the service.
+        /// </summary>
         private EmsApiServiceConfiguration m_config;
-        private Authentication.EmsApiTokenHandler m_authHandler;
+
+        /// <summary>
+        /// The client handler, which handles authentication and compression.
+        /// </summary>
+        private EmsApiClientHandler m_clientHandler;
+
+        /// <summary>
+        /// The last API endpoint specified. This is used to track when the
+        /// endpoint changes, since we need to do a more thorough reset when
+        /// that happens, due to the fact that the refit implementation gets
+        /// bound to the endpoint url.
+        /// </summary>
+        private string m_endpoint = string.Empty;
     }
 }

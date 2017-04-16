@@ -72,12 +72,12 @@ namespace EmsApi.Tests.Features
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Get all APM profiles")]
+        [Xunit.FactAttribute(DisplayName="Get APM profile definitions")]
         [Xunit.TraitAttribute("FeatureTitle", "Profiles")]
-        [Xunit.TraitAttribute("Description", "Get all APM profiles")]
-        public virtual void GetAllAPMProfiles()
+        [Xunit.TraitAttribute("Description", "Get APM profile definitions")]
+        public virtual void GetAPMProfileDefinitions()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all APM profiles", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get APM profile definitions", ((string[])(null)));
 #line 5
 this.ScenarioSetup(scenarioInfo);
 #line 6
@@ -85,9 +85,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.And("The cached EMS system id of 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 8
- testRunner.When("I run GetAll", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run GetDefinitions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
- testRunner.Then("EmsProfile objects are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Profile objects are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -129,7 +129,27 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I run GetGlossary and enter a profile id of \'A7483C44-9DB9-4A44-9EB5-F67681EE52B0" +
                     "\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 21
- testRunner.Then("An EmsProfileGlossary object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("A ProfileGlossary object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Get an APM profile group")]
+        [Xunit.TraitAttribute("FeatureTitle", "Profiles")]
+        [Xunit.TraitAttribute("Description", "Get an APM profile group")]
+        public virtual void GetAnAPMProfileGroup()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get an APM profile group", ((string[])(null)));
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+ testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+ testRunner.And("The cached EMS system id of 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.When("I run GetGroup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+ testRunner.Then("A ProfileGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

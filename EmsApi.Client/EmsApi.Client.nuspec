@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>EmsApi.Client</id>
     <version>0.1.0</version>
@@ -11,10 +11,11 @@
       <dependency id="refit" version="3.0.1" />
       <dependency id="System.Net.Http" version="4.3" />
       <dependency id="EmsApi.Dto" version="0.1" />
+      <dependency id="System.Linq.Parallel" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>
-      <file src="bin\EmsApi.Client.dll" target="lib\netstandard1.4\EmsApi.Client.dll" />
-      <file src="bin\EmsApi.Client.xml" target="lib\netstandard1.4\EmsApi.Client.xml" />
+      <file src="bin\EmsApi.Client.dll" target="lib\netstandard1.6\EmsApi.Client.dll" />
+      <file src="bin\EmsApi.Client.xml" target="lib\netstandard1.6\EmsApi.Client.xml" />
   </files>
 </package>

@@ -33,6 +33,8 @@ namespace EmsApi.Tests
 
                 // Change the configuration.
                 var newConfig = m_config.Clone();
+                newConfig.Password = "somethingElse";
+
                 Action setConfig = () => service.ServiceConfig = newConfig;
                 setConfig.ShouldNotThrow();
 

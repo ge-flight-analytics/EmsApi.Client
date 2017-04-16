@@ -21,41 +21,31 @@ namespace EmsApi.Client.V2.Access
         internal EmsApiRouteAccess() { }
 
         /// <summary>
-        /// Sets the interface instance used by the access class. This must
+        /// Sets the service that this access class is working for. This must
         /// be called before accessing methods on the class.
         /// </summary>
-        /// <param name="api">
-        /// The API interface to call into.
+        /// <param name="service">
+        /// The service through which we call the raw API.
         /// </param>
         /// <remarks>
-        /// This is here so that the service class can use the default constructor,
-        /// then set the interface afterwards.
+        /// This is here so we don't have to implement a constructor for each
+        /// dervied access class.
         /// </remarks>
-        internal void SetInterface( IEmsApi api )
+        internal void SetService( EmsApiService service )
         {
-            m_api = api;
+            m_service = service;
         }
 
-        /// The reference to the raw api interface. This is private get so that derived classes
-        /// are required to call <seealso cref="CallApiTask{TRet}(Func{IEmsApi, Task{TRet}})"/>
-        /// in order to access the interface.
-        private IEmsApi m_api;
+        /// <summary>
+        /// The service instance we are working for, which exposes the raw refit
+        /// interface used to send requests.
+        /// </summary>
+        private EmsApiService m_service;
 
         /// <summary>
         /// Event that is fired whenever a low level API exception occurs.
         /// </summary>
-        /// <remarks>
-        /// This is static so that this same event will fire for all derived wrapper classes.
-        /// </remarks>
         internal event EventHandler<ApiExceptionEventArgs> ApiMethodFailedEvent;
-
-        /// <summary>
-        /// Converts an enum value into a string suitable for an API method call.
-        /// </summary>
-        protected static string MakeEnumString<TEnum>( Enum value )
-        {
-            return Enum.GetName( typeof( TEnum ), value ).ToLower();
-        }
 
         /// <summary>
         /// Checks the input enumerable for null, and returns an empty enumerable instead
@@ -101,9 +91,25 @@ namespace EmsApi.Client.V2.Access
         /// </remarks>
         protected Task<TRet> CallApiTask<TRet>( Func<IEmsApi, Task<TRet>> apiFunc )
         {
-            var api = apiFunc( m_api );
-            var safeTask = api.ContinueWith( HandleApiException );
-            return safeTask;
+            return apiFunc( m_service.RefitApi ).ContinueWith( HandleApiException );
+        }
+
+        /// <summary>
+        /// Must be used by derived classes to access methods on the <seealso cref="IEmsApi"/>
+        /// interface. This method adds continuation onto the task that automatically handles API
+        /// interface exceptions. The exceptions are handled by forwarding all exceptions as events
+        /// to the <seealso cref="ApiMethodFailedEvent"/>.
+        /// </summary>
+        /// <param name="apiFunc">
+        /// The delegate that needs to be run with exception safety.
+        /// </param>
+        /// <remarks>
+        /// The point of this is to make sure all tasks from Refit automatically convert exceptions
+        /// into the API failed event when they are evaluated.
+        /// </remarks>
+        protected Task CallApiTask( Func<IEmsApi, Task> apiFunc )
+        {
+            return apiFunc( m_service.RefitApi ).ContinueWith( HandleApiException );
         }
 
         /// <summary>
@@ -133,21 +139,31 @@ namespace EmsApi.Client.V2.Access
             if( task.Exception == null )
                 return task.Result;
 
-            task.Exception.Handle( ex =>
-            {
-                // We don't handle task cancelled.
-                if( ex is TaskCanceledException )
-                    return false;
-
-                // We handle all other exceptions by firing the API exception event here. Depending
-                // on the configuration, the EmsApiService class might swallow it, or it might get
-                // unpackaged and thrown.
-                OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
-                return true;
-            } );
+            task.Exception.Handle( HandleTaskException );
 
             // This will normally return null, the caller can handle null if it wants.
             return default( TRet );
+        }
+
+        private void HandleApiException( Task task )
+        {
+            if( task.Exception == null )
+                return;
+
+            task.Exception.Handle( HandleTaskException );
+        }
+
+        private bool HandleTaskException( Exception ex )
+        {
+            // We don't handle task cancelled.
+            if( ex is TaskCanceledException )
+                return false;
+
+            // We handle all other exceptions by firing the API exception event here. Depending
+            // on the configuration, the EmsApiService class might swallow it, or it might get
+            // unpackaged and thrown.
+            OnApiMethodFailed( new ApiExceptionEventArgs( ex ) );
+            return true;
         }
 
         private void OnApiMethodFailed( ApiExceptionEventArgs args )
