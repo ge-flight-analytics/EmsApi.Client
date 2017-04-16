@@ -3,7 +3,7 @@
 namespace EmsApi.Client.V2.Access
 {
     /// <summary>
-    /// Provides access to the swagger specification.
+    /// Provides access to the EMS API swagger specification.
     /// </summary>
     public class SwaggerAccess : EmsApiRouteAccess
     {

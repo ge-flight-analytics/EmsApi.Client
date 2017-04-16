@@ -8,6 +8,9 @@ using RowCallback = System.Action<EmsApi.Dto.V2.DatabaseQueryResult.Row>;
 
 namespace EmsApi.Client.V2.Access
 {
+    /// <summary>
+    /// Provides access to EMS API "databases" routes.
+    /// </summary>
     public class DatabaseAccess : CachedEmsIdRouteAccess
     {
         /// <summary>

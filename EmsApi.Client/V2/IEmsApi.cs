@@ -48,6 +48,9 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Returns the list of fleets the user has access to in their security context.
         /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/assets/fleets" )]
         Task<IEnumerable<Fleet>> GetFleets( int emsSystemId );
 
@@ -55,7 +58,7 @@ namespace EmsApi.Client.V2
         /// Returns information for a fleet on the system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="fleetId">
         /// The unique identifier of the fleet.
@@ -67,7 +70,7 @@ namespace EmsApi.Client.V2
         /// Returns the list of aircraft the user has access to in their security context.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="fleetId">
         /// The fleet id to filter by, if any.
@@ -76,10 +79,10 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<Aircraft>> GetAllAircraft( int emsSystemId, [AliasAs("fleetId")] int? fleetId = null );
 
         /// <summary>
-        /// Returns info for an aircraft on the system,.
+        /// Returns info for an aircraft on the system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="aircraftId">
         /// The unique identifier of the aircraft.
@@ -91,7 +94,7 @@ namespace EmsApi.Client.V2
         /// Returns the list of flight phases.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/assets/flight-phases" )]
         Task<IEnumerable<FlightPhase>> GetFlightPhases( int emsSystemId );
@@ -100,7 +103,7 @@ namespace EmsApi.Client.V2
         /// Retruns information for a flight phase on the system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="flightPhaseId">
         /// The unique identifier of the flight phase.
@@ -112,7 +115,7 @@ namespace EmsApi.Client.V2
         /// Returns the list of airports that have been visited by the EMS system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/assets/airports" )]
         Task<IEnumerable<Airport>> GetAirports( int emsSystemId );
@@ -121,12 +124,11 @@ namespace EmsApi.Client.V2
         /// Returns information for an airport on the system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the fleet.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="airportId">
         /// The unique identifier for the airport.
         /// </param>
-        /// <returns></returns>
         [Get( "/v2/ems-systems/{emsSystemId}/assets/airports/{airportId}" )]
         Task<Airport> GetAirport( int emsSystemId, int airportId );
 
@@ -134,7 +136,7 @@ namespace EmsApi.Client.V2
         /// Returns the current trajectory configuration.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the trajectories.
+        /// The unique identifier of the EMS system.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/trajectory-configurations" )]
         Task<IEnumerable<TrajectoryConfiguration>> GetTrajectoryConfigurations( int emsSystemId );
@@ -143,7 +145,7 @@ namespace EmsApi.Client.V2
         /// Returns a trajectory path for the given flight.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the trajectories.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="flightId">
         /// The flight id to return trajectories for.
@@ -152,10 +154,10 @@ namespace EmsApi.Client.V2
         Task<TrajectoryValueArray> GetTrajectory( int emsSystemId, int flightId );
 
         /// <summary>
-        /// Returns a KML document XML for the given flight and trajectory id.
+        /// Returns a KML document XML for the given flight and trajectory id, as a raw string.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the trajectories.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="flightId">
         /// The flight id to return a trajectory for.
@@ -163,7 +165,6 @@ namespace EmsApi.Client.V2
         /// <param name="trajectoryId">
         /// The string identifier for the trajectory type to return.
         /// </param>
-        /// <returns></returns>
         [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/kml-trajectories/{trajectoryId}" )]
         Task<string> GetTrajectoryKml( int emsSystemId, int flightId, string trajectoryId );
 
@@ -171,7 +172,7 @@ namespace EmsApi.Client.V2
         /// Returns information about the set of APM profiles on the given EMS system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the profiles.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="parentGroupId">
         /// The optional parent profile group ID whose contents to search.
@@ -187,7 +188,7 @@ namespace EmsApi.Client.V2
         /// children in a hierarchical tree used to organize profiles.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="groupId">
         /// The unique identifier of the profile group whose contents to return. If 
@@ -200,7 +201,7 @@ namespace EmsApi.Client.V2
         /// Returns APM profile results for the given flight and profile id.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the profile.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="flightId">
         /// The flight id to return APM results for.
@@ -217,7 +218,7 @@ namespace EmsApi.Client.V2
         /// results that can be returned in a profile.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="profileId">
         /// The unique identifier of the profile whose glossary to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
@@ -235,7 +236,7 @@ namespace EmsApi.Client.V2
         /// Returns information about the parameter sets on the given EMS system.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system that owns the parameter sets.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="groupId">
         /// The optional ID of the parameter set group to return.
@@ -390,7 +391,7 @@ namespace EmsApi.Client.V2
         /// in a hierarchical tree used to organize databases.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="groupId">
         /// The unique identifier of the EMS database group whose contents to return. If not specified, 
@@ -404,7 +405,7 @@ namespace EmsApi.Client.V2
         /// hierarchical tree used to organize fields.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database containing a field group to return.
@@ -420,7 +421,7 @@ namespace EmsApi.Client.V2
         /// Returns information about a database field matching the specified ID.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database containing a field to return.
@@ -435,7 +436,7 @@ namespace EmsApi.Client.V2
         /// Returns all the fields matching the specified search options.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the database containing fields to return.
@@ -462,7 +463,7 @@ namespace EmsApi.Client.V2
         /// specified query structure.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
@@ -478,7 +479,7 @@ namespace EmsApi.Client.V2
         /// can be used to fetch result data through other async-query routes.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
@@ -493,7 +494,7 @@ namespace EmsApi.Client.V2
         /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
@@ -514,7 +515,7 @@ namespace EmsApi.Client.V2
         /// Stops the async query with the given ID.
         /// </summary>
         /// <param name="emsSystemId">
-        /// The unique identifier of the system containing the EMS data.
+        /// The unique identifier of the EMS system.
         /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.

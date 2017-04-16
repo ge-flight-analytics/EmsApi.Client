@@ -4,6 +4,9 @@ using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.V2.Access
 {
+    /// <summary>
+    /// Provides access to EMS API "analytics" routes.
+    /// </summary>
     public class AnalyticsAccess : CachedEmsIdRouteAccess
     {
         /// <summary>
