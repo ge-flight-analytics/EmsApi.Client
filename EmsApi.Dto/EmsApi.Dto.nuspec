@@ -2,14 +2,13 @@
 <package >
   <metadata>
     <id>EmsApi.Dto</id>
-    <version>0.1.0</version>
+    <version>$EmsApiVersion$</version>
     <authors>Cody Owens</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET data transfer objects generated from the EMS API swagger specification</description>
     <releaseNotes>First release.</releaseNotes>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />
-      <dependency id="System.Runtime.Serialization.Primitives" version="4.1.1" />
     </dependencies>
   </metadata>
   <files>
