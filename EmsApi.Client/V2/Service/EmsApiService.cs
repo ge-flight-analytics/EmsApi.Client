@@ -24,7 +24,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            InstanceId = Guid.NewGuid();
             Initialize();
             ServiceConfig = new EmsApiServiceConfiguration();
         }
@@ -35,7 +34,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService( EmsApiServiceConfiguration config )
         {
-            InstanceId = Guid.NewGuid();
             ValidateConfigOrThrow( config );
             Initialize();
             ServiceConfig = config;
@@ -87,21 +85,6 @@ namespace EmsApi.Client.V2
         public TransfersAccess Transfers { get; private set; }
 
         /// <summary>
-        /// A unique id for this instance of the EMS API service.
-        /// </summary>
-        public Guid InstanceId { get; private set; }
-
-        /// <summary>
-        /// The HTTP client used by the API. This is normally not access directly, but
-        /// can be used to let the library handle headers and authentication while sending
-        /// your own requests manually.
-        /// </summary>
-        public HttpClient HttpClient
-        {
-            get; private set;
-        }
-
-        /// <summary>
         /// The current EMS system that the service is operating on. This value may
         /// be set to exclude it from access methods that need an EMS system specified.
         /// </summary>
@@ -132,7 +115,7 @@ namespace EmsApi.Client.V2
 
             // Set up the services we need to use.
             m_clientHandler = new EmsApiClientHandler();
-            HttpClient = new HttpClient( m_clientHandler );
+            m_httpClient = new HttpClient( m_clientHandler );
 
             // Set up access properties for extenal clients to use.
             InitializeAccessProperties();
@@ -196,8 +179,8 @@ namespace EmsApi.Client.V2
                 m_clientHandler.ServiceConfig = value;
 
                 // Reset the default headers, they may have changed with the config.
-                HttpClient.DefaultRequestHeaders.Clear();
-                m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
+                m_httpClient.DefaultRequestHeaders.Clear();
+                m_config.AddDefaultRequestHeaders( m_httpClient.DefaultRequestHeaders );
 
                 // See if the endpoint has changed.
                 if( m_config.Endpoint != m_endpoint )
@@ -206,8 +189,8 @@ namespace EmsApi.Client.V2
 
                     // Reset the BaseAddress, and create a new refit service stub.
                     // It's bound to the HttpClient's base address when it's constructed.
-                    HttpClient.BaseAddress = new Uri( m_config.Endpoint );
-                    RefitApi = RestService.For<IEmsApi>( HttpClient );
+                    m_httpClient.BaseAddress = new Uri( m_config.Endpoint );
+                    RefitApi = RestService.For<IEmsApi>( m_httpClient );
                 }
             }
         }
@@ -387,6 +370,11 @@ namespace EmsApi.Client.V2
         /// The client handler, which handles authentication and compression.
         /// </summary>
         private EmsApiClientHandler m_clientHandler;
+
+        /// <summary>
+        /// The current http client.
+        /// </summary>
+        private HttpClient m_httpClient;
 
         /// <summary>
         /// The last API endpoint specified. This is used to track when the
