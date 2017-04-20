@@ -3,10 +3,12 @@
   <metadata>
     <id>EmsApi.Client</id>
     <version>$EmsApiVersion$</version>
-    <authors>Cody Owens</authors>
+    <authors>c-owens</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>C# client library for the EMS API</description>
-    <releaseNotes>First release.</releaseNotes>
+    <description>.NET client library for the EMS API</description>
+    <releaseNotes>Alpha release.</releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/ge-flight-analytics/EmsApi.Client/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ge-flight-analytics/EmsApi.Client</projectUrl>
     <dependencies>
       <group targetFramework="netstandard1.4">
         <dependency id="refit" version="3.0.1" />

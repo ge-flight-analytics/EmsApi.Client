@@ -3,10 +3,12 @@
   <metadata>
     <id>EmsApi.Dto</id>
     <version>$EmsApiVersion$</version>
-    <authors>Cody Owens</authors>
+    <authors>c-owens</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET data transfer objects generated from the EMS API swagger specification</description>
-    <releaseNotes>First release.</releaseNotes>
+    <releaseNotes>Alpha release.</releaseNotes>
+    <licenseUrl>https://raw.githubusercontent.com/ge-flight-analytics/EmsApi.Client/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ge-flight-analytics/EmsApi.Client</projectUrl>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
