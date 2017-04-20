@@ -20,33 +20,33 @@ using EmsApi.Client.V2;
 
 namespace TestApp
 {
-	class Program
+class Program
+{
+	static void Main( string[] args )
 	{
-		static void Main( string[] args )
+		var config = new EmsApiServiceConfiguration()
 		{
-			var config = new EmsApiServiceConfiguration()
-			{
-				// If this is not set, it will be retrieved from the "EmsApiEndpoint" environemnt variable.
-				// If neither are set, it will default to EmsApiEndpoints.Default.
-				Endpoint = "https://myapiserver/api",
-				
-				// If this is not set, it will be retrieved from the "EmsApiUsername" environment variable.
-				UserName = "my-username",
+			// If this is not set, it will be retrieved from the "EmsApiEndpoint" environemnt variable.
+			// If neither are set, it will default to EmsApiEndpoints.Default.
+			Endpoint = "https://myapiserver/api",
+			
+			// If this is not set, it will be retrieved from the "EmsApiUsername" environment variable.
+			UserName = "my-username",
 
-				// If this is not set, it will be retrieved from the "EmsApiPassword" environment variable.
-				// The environment variable must be a base64 encoded UTF-8 string containing the password.
-				Password = "p@ssw0rd",
+			// If this is not set, it will be retrieved from the "EmsApiPassword" environment variable.
+			// The environment variable must be a base64 encoded UTF-8 string containing the password.
+			Password = "p@ssw0rd",
 
-				// Optional application name to use, this is passed to the API server to assist in debugging
-				ApplicationName = "MyCoolApp"
-			};
+			// Optional application name to use, this is passed to the API server to assist in debugging
+			ApplicationName = "MyCoolApp"
+		};
 
-			using( EmsApiService api = new EmsApiService( config ) )
-			{
-				// Your code goes here, call functions on the EmsApiService object...
-			}
+		using( EmsApiService api = new EmsApiService( config ) )
+		{
+			// Your code goes here, call functions on the EmsApiService object...
 		}
 	}
+}
 }
 ```
 
@@ -90,61 +90,61 @@ using EmsApi.Dto.V2;
 
 namespace TestApp
 {
-    class Program
-    {
-        static void Main( string[] args )
-        {
-            using( EmsApiService api = new EmsApiService() )
-            {
-                var query = new DatabaseQuery();
+class Program
+{
+	static void Main( string[] args )
+	{
+		using( EmsApiService api = new EmsApiService() )
+		{
+			var query = new DatabaseQuery();
 
-                // Select some fields in the query.
-                query.SelectField( Monikers.FlightId );
-                query.SelectField( Monikers.TailNumber );
-                query.SelectField( Monikers.CityPair );
-                query.SelectField( Monikers.TakeoffAirportName );
-                query.SelectField( Monikers.LandingAirportName );
+			// Select some fields in the query.
+			query.SelectField( Monikers.FlightId );
+			query.SelectField( Monikers.TailNumber );
+			query.SelectField( Monikers.CityPair );
+			query.SelectField( Monikers.TakeoffAirportName );
+			query.SelectField( Monikers.LandingAirportName );
 
-                // Filter for takeoff and landing valid.
-                query.AddBooleanFilter( Monikers.TakeoffValid, true );
-                query.AddBooleanFilter( Monikers.LandingValid, true );
+			// Filter for takeoff and landing valid.
+			query.AddBooleanFilter( Monikers.TakeoffValid, true );
+			query.AddBooleanFilter( Monikers.LandingValid, true );
 
-                // Order by flight id.
-                query.OrderByField( Monikers.FlightId );
+			// Order by flight id.
+			query.OrderByField( Monikers.FlightId );
 
-                // Limit to first 100 flights.
-                query.Top = 100;
+			// Limit to first 100 flights.
+			query.Top = 100;
 
-                // Execute the query and receive the result.
-                DatabaseQueryResult result = api.Databases.Query( Monikers.FlightDatabase, query, emsSystem: 1 );
-                foreach( DatabaseQueryResult.Row row in result.Rows )
-                {
-                    // Go through each result row and print out the information.
-                    int flightId = Convert.ToInt32( row[Monikers.FlightId] );
-                    string tail = row[Monikers.TailNumber].ToString();
-                    string cityPair = row[Monikers.CityPair].ToString();
-                    string takeoffAirport = row[Monikers.TakeoffAirportName].ToString();
-                    string landingAirport = row[Monikers.LandingAirportName].ToString();
+			// Execute the query and receive the result.
+			DatabaseQueryResult result = api.Databases.Query( Monikers.FlightDatabase, query, emsSystem: 1 );
+			foreach( DatabaseQueryResult.Row row in result.Rows )
+			{
+				// Go through each result row and print out the information.
+				int flightId = Convert.ToInt32( row[Monikers.FlightId] );
+				string tail = row[Monikers.TailNumber].ToString();
+				string cityPair = row[Monikers.CityPair].ToString();
+				string takeoffAirport = row[Monikers.TakeoffAirportName].ToString();
+				string landingAirport = row[Monikers.LandingAirportName].ToString();
 
-                    string msg = string.Format( "Flight {0} with tail number {1} from {2} to {3} ({4}).",
-                        flightId, tail, takeoffAirport, landingAirport, cityPair );
-                    Console.WriteLine( msg );
-                }
-            }
-        }
+				string msg = string.Format( "Flight {0} with tail number {1} from {2} to {3} ({4}).",
+					flightId, tail, takeoffAirport, landingAirport, cityPair );
+				Console.WriteLine( msg );
+			}
+		}
+	}
 
-        private static class Monikers
-        {
-            public static string FlightDatabase = "[ems-core][entity-type][foqa-flights]";
-            public static string FlightId = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
-            public static string TailNumber = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.aircraft]]]";
-            public static string CityPair = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][city-pair.pair]]]";
-            public static string TakeoffAirportName = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[[nav][type-link][airport-takeoff * foqa-flights]]][[nav][base-field][nav-airport.name]]]";
-            public static string LandingAirportName = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[[nav][type-link][airport-landing * foqa-flights]]][[nav][base-field][nav-airport.name]]]";
-            public static string TakeoffValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-takeoff]]]";
-            public static string LandingValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-landing]]]";
-        }
-    }
+	private static class Monikers
+	{
+		public static string FlightDatabase = "[ems-core][entity-type][foqa-flights]";
+		public static string FlightId = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
+		public static string TailNumber = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.aircraft]]]";
+		public static string CityPair = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][city-pair.pair]]]";
+		public static string TakeoffAirportName = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[[nav][type-link][airport-takeoff * foqa-flights]]][[nav][base-field][nav-airport.name]]]";
+		public static string LandingAirportName = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[[nav][type-link][airport-landing * foqa-flights]]][[nav][base-field][nav-airport.name]]]";
+		public static string TakeoffValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-takeoff]]]";
+		public static string LandingValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-landing]]]";
+	}
+}
 }
 ```
 
@@ -160,39 +160,39 @@ using EmsApi.Dto.V2;
 
 namespace TestApp
 {
-    class Program
-    {
-        static void Main( string[] args )
-        {
-            using( EmsApiService api = new EmsApiService() )
-            {
-                var query = new AnalyticQuery();
+class Program
+{
+	static void Main( string[] args )
+	{
+		using( EmsApiService api = new EmsApiService() )
+		{
+			var query = new AnalyticQuery();
 
-                // Include radio altitude id in the time-series query.
-                query.SelectAnalytic( RadioAltitudeId );
+			// Include radio altitude id in the time-series query.
+			query.SelectAnalytic( RadioAltitudeId );
 
-                // Execute the query.
-                QueryResult result = api.Analytics.QueryResults( flightId: 1, query: query, emsSystem: 1 );
+			// Execute the query.
+			QueryResult result = api.Analytics.QueryResults( flightId: 1, query: query, emsSystem: 1 );
 
-                // Access the results.
+			// Access the results.
 
-                double[] offsets = result.Offsets.ToArray();
+			double[] offsets = result.Offsets.ToArray();
 
-                // Note: The Results array contains one object per parameter in the query, but we only
-                // added one parameter so we take the first one here.
-                object[] values = result.Results.First().Values.ToArray();
-                for( int i = 0; i < offsets.Length; ++i )
-                {
-                    int offset = Convert.ToInt32( offsets[i] );
-                    double value = Convert.ToDouble( values[i] );
+			// Note: The Results array contains one object per parameter in the query, but we only
+			// added one parameter so we take the first one here.
+			object[] values = result.Results.First().Values.ToArray();
+			for( int i = 0; i < offsets.Length; ++i )
+			{
+				int offset = Convert.ToInt32( offsets[i] );
+				double value = Convert.ToDouble( values[i] );
 
-                    Console.WriteLine( "{0}: {1}", offset, value );
-                }
-            }
-        }
+				Console.WriteLine( "{0}: {1}", offset, value );
+			}
+		}
+	}
 
-        private const string RadioAltitudeId = "H4sIAAAAAAAEAG2QQQuCQBCF74H/Qby7qyUUokJQB8EuidB1WzcdWFfbXbOf35ZYSb3DY2DmY95MdGSq5Tdy5iwtmdBwASbte8OFCiF2aq27EONhGNCwQq2s8NLzfHw6ZDmtWUNcEEoTQZkzMm9CvdoKlUQT2gotCdUTH2BvjbcloEISJ7EWth2NKZhMy2QqFdo3KmsroIRH+GtgBuQdoyYz3Zk9NoQCeOxo2Zs8+P9gIeDam1sTb5TvGtu4gfFnNdqkz94f3FpMzfnvkgfLSh/6UgEAAA==";
-    }
+	private const string RadioAltitudeId = "H4sIAAAAAAAEAG2QQQuCQBCF74H/Qby7qyUUokJQB8EuidB1WzcdWFfbXbOf35ZYSb3DY2DmY95MdGSq5Tdy5iwtmdBwASbte8OFCiF2aq27EONhGNCwQq2s8NLzfHw6ZDmtWUNcEEoTQZkzMm9CvdoKlUQT2gotCdUTH2BvjbcloEISJ7EWth2NKZhMy2QqFdo3KmsroIRH+GtgBuQdoyYz3Zk9NoQCeOxo2Zs8+P9gIeDam1sTb5TvGtu4gfFnNdqkz94f3FpMzfnvkgfLSh/6UgEAAA==";
+}
 }
 ```
 
