@@ -82,6 +82,11 @@ namespace EmsApi.Client.V2
         public DatabaseAccess Databases { get; private set; }
 
         /// <summary>
+        /// Access to transfer (uploads) routes.
+        /// </summary>
+        public TransfersAccess Transfers { get; private set; }
+
+        /// <summary>
         /// A unique id for this instance of the EMS API service.
         /// </summary>
         public Guid InstanceId { get; private set; }
@@ -152,6 +157,7 @@ namespace EmsApi.Client.V2
             ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
             Analytics = InitializeAccessClass<AnalyticsAccess>();
             Databases = InitializeAccessClass<DatabaseAccess>();
+            Transfers = InitializeAccessClass<TransfersAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
@@ -292,16 +298,28 @@ namespace EmsApi.Client.V2
             if( apiEx == null )
                 throw new EmsApiException( args.Exception.Message, args.Exception );
 
-            JObject details = JObject.Parse( apiEx.Content );
+            // Note: This object is a Dto.V2.Error, but in that class the messageDetail
+            // field is marked as required, so it will not deserialize if the details
+            // are not there. In many casses the details are empty, so we parse the json
+            // manually instead.
+            JObject details = null;
+            try
+            {
+                details = JObject.Parse( apiEx.Content );
+            }
+            catch( Exception ) { }
 
             // We want the details if available.
-            string message = details.GetValue( "messageDetail" )?.ToString();
+            string message = null;
+            if( details != null )
+            {
+                message = details.GetValue( "messageDetail" )?.ToString();
+                if( string.IsNullOrEmpty( message ) )
+                    message = details.GetValue( "message" )?.ToString();
+            }
 
-            if( message == null )
-                message = details.GetValue( "message" )?.ToString();
-
-            if( message == null )
-                message = "An unknown API exception occurred.";
+            if( string.IsNullOrEmpty( message ) )
+                message = apiEx.Message;
 
             System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
                 args.ApiException.ReasonPhrase, message );

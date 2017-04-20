@@ -527,6 +527,114 @@ namespace EmsApi.Client.V2
         Task StopAsyncDatabaseQuery( int emsSystemId, string databaseId, string queryId );
 
         /// <summary>
+        /// Starts a new upload.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="request">
+        /// The parameters for the upload.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/uploads" )]
+        Task<UploadParameters> StartUpload( int emsSystemId, [Body] UploadRequest request );
+
+        /// <summary>
+        /// Uploads a chunk of a file. This will fail if any chunks have been skipped in the specified file.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="transferId">
+        /// The ID of the upload, returned originally by the upload start call.
+        /// </param>
+        /// <param name="first">
+        /// The byte index of the first byte that will be uploaded.
+        /// </param>
+        /// <param name="last">
+        /// The byte index of the last byte that will be uploaded.
+        /// </param>
+        /// <param name="chunk">
+        /// The bytes to upload with the chunk.
+        /// </param>
+        /// <remarks>
+        /// The practical limit for a single chunk is less than 4MB or so, dependent on the web server's configuration. 
+        /// If you receive 500 responses, try smaller chunk sizes.
+        /// </remarks>
+        [Put( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}/{first}/{last}" )]
+        Task<UploadResult> UploadChunk( int emsSystemId, string transferId, long first, long last, [Body] byte[] chunk );
+
+        /// <summary>
+        /// Gets the status of an upload in progress.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="transferId">
+        /// The ID of the upload, returned originally by the upload start call.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}" )]
+        Task<UploadStatus> GetUploadStatus( int emsSystemId, string transferId );
+
+        /// <summary>
+        /// Gets the list of upload records from the server.
+        /// </summary>
+        /// <param name="maxEntries">
+        /// The maximum number of entries to return; this is capped at 50, and 50 
+        /// will be used if it's not specified.
+        /// </param>
+        [Get( "/v2/uploads" )]
+        Task<IEnumerable<UploadRecord>> GetUploads( int maxEntries = 50 );
+
+        /// <summary>
+        /// Completes an existing upload in progress.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="transferId">
+        /// The ID of the upload, returned originally by the upload start call.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}/finish" )]
+        Task<UploadRecord> FinishUpload( int emsSystemId, string transferId );
+
+        /// <summary>
+        /// Cancels an existing upload in progress.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="transferId">
+        /// The ID of the upload, returned originally by the upload start call.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}/cancel" )]
+        Task<UploadRecord> CancelUpload( int emsSystemId, string transferId );
+
+        /// <summary>
+        /// Gets the EMS processing status for a single upload.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="uploadId">
+        /// The ID of the upload for which to return status information.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/uploads/processing-status/{uploadId}" )]
+        Task<UploadProcessingStatus> GetProcessingStatusSingle( int emsSystemId, string uploadId );
+
+        /// <summary>
+        /// Gets the EMS processing status for a set of uploads.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="ids">
+        /// An array of upload ids for which to return information.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/uploads/processing-status" )]
+        Task<IEnumerable<UploadProcessingStatus>> GetProcessingStatusMultiple( int emsSystemId, string[] ids );
+
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">
