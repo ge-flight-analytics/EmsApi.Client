@@ -46,7 +46,7 @@
   <PropertyGroup>
 
     <!-- The canonical build version to use -->
-    <EmsApiVersion>0.1.41</EmsApiVersion>
+    <EmsApiVersion>1.0.0</EmsApiVersion>
 
     <!-- Define some directories to use -->
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>

@@ -15,12 +15,14 @@
         <dependency id="EmsApi.Dto" version="$EmsApiVersion$" />
         <dependency id="System.Linq.Parallel" version="4.3.0" />
         <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="System.Runtime.Serialization.Primitives" version="4.3.0" />
       </group>
       <group targetFramework="net46">
         <dependency id="refit" version="3.0.1" />
         <dependency id="EmsApi.Dto" version="$EmsApiVersion$" />
         <dependency id="System.Linq.Parallel" version="4.3.0" />
         <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="System.Runtime.Serialization.Primitives" version="4.3.0" />
       </group>
     </dependencies>
   </metadata>
