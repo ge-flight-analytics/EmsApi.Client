@@ -83,10 +83,10 @@
   <!-- Appveyor sets this environment variable -->
   <PropertyGroup Condition="'$(APPVEYOR)' == 'True'" >
 
-    <!-- Add a suffix matching the branch name if it isn't master (temporarily disabled while working on nuget package) -->
-    <!-- <Branch Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">-Suffix $(APPVEYOR_REPO_BRANCH)</Branch>
+    <!-- Add a suffix matching the branch name if it isn't master -->
+    <Branch Condition="'$(APPVEYOR_REPO_BRANCH)' != 'master'">-Suffix $(APPVEYOR_REPO_BRANCH)</Branch>
     <SafeBranch Condition="'$(Branch)' != ''">$(Branch.Replace('/', '-').Replace('\', '-'))</SafeBranch>
-    <PackCommand>$(PackCommand) -Verbosity Quiet $(SafeBranch)</PackCommand> -->
+    <PackCommand>$(PackCommand) -Verbosity Quiet $(SafeBranch)</PackCommand>
 
   </PropertyGroup>
 
