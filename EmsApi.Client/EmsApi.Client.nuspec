@@ -6,7 +6,7 @@
     <authors>c-owens</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET client library for the EMS API</description>
-    <releaseNotes>Alpha release.</releaseNotes>
+    <releaseNotes>First release</releaseNotes>
     <licenseUrl>https://raw.githubusercontent.com/ge-flight-analytics/EmsApi.Client/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/ge-flight-analytics/EmsApi.Client</projectUrl>
     <dependencies>

@@ -24,7 +24,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            InstanceId = Guid.NewGuid();
             Initialize();
             ServiceConfig = new EmsApiServiceConfiguration();
         }
@@ -35,7 +34,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService( EmsApiServiceConfiguration config )
         {
-            InstanceId = Guid.NewGuid();
             ValidateConfigOrThrow( config );
             Initialize();
             ServiceConfig = config;
@@ -82,19 +80,9 @@ namespace EmsApi.Client.V2
         public DatabaseAccess Databases { get; private set; }
 
         /// <summary>
-        /// A unique id for this instance of the EMS API service.
+        /// Access to transfer (uploads) routes.
         /// </summary>
-        public Guid InstanceId { get; private set; }
-
-        /// <summary>
-        /// The HTTP client used by the API. This is normally not access directly, but
-        /// can be used to let the library handle headers and authentication while sending
-        /// your own requests manually.
-        /// </summary>
-        public HttpClient HttpClient
-        {
-            get; private set;
-        }
+        public TransfersAccess Transfers { get; private set; }
 
         /// <summary>
         /// The current EMS system that the service is operating on. This value may
@@ -127,7 +115,7 @@ namespace EmsApi.Client.V2
 
             // Set up the services we need to use.
             m_clientHandler = new EmsApiClientHandler();
-            HttpClient = new HttpClient( m_clientHandler );
+            m_httpClient = new HttpClient( m_clientHandler );
 
             // Set up access properties for extenal clients to use.
             InitializeAccessProperties();
@@ -152,6 +140,7 @@ namespace EmsApi.Client.V2
             ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
             Analytics = InitializeAccessClass<AnalyticsAccess>();
             Databases = InitializeAccessClass<DatabaseAccess>();
+            Transfers = InitializeAccessClass<TransfersAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
@@ -190,8 +179,8 @@ namespace EmsApi.Client.V2
                 m_clientHandler.ServiceConfig = value;
 
                 // Reset the default headers, they may have changed with the config.
-                HttpClient.DefaultRequestHeaders.Clear();
-                m_config.AddDefaultRequestHeaders( HttpClient.DefaultRequestHeaders );
+                m_httpClient.DefaultRequestHeaders.Clear();
+                m_config.AddDefaultRequestHeaders( m_httpClient.DefaultRequestHeaders );
 
                 // See if the endpoint has changed.
                 if( m_config.Endpoint != m_endpoint )
@@ -200,8 +189,8 @@ namespace EmsApi.Client.V2
 
                     // Reset the BaseAddress, and create a new refit service stub.
                     // It's bound to the HttpClient's base address when it's constructed.
-                    HttpClient.BaseAddress = new Uri( m_config.Endpoint );
-                    RefitApi = RestService.For<IEmsApi>( HttpClient );
+                    m_httpClient.BaseAddress = new Uri( m_config.Endpoint );
+                    RefitApi = RestService.For<IEmsApi>( m_httpClient );
                 }
             }
         }
@@ -292,16 +281,28 @@ namespace EmsApi.Client.V2
             if( apiEx == null )
                 throw new EmsApiException( args.Exception.Message, args.Exception );
 
-            JObject details = JObject.Parse( apiEx.Content );
+            // Note: This object is a Dto.V2.Error, but in that class the messageDetail
+            // field is marked as required, so it will not deserialize if the details
+            // are not there. In many casses the details are empty, so we parse the json
+            // manually instead.
+            JObject details = null;
+            try
+            {
+                details = JObject.Parse( apiEx.Content );
+            }
+            catch( Exception ) { }
 
             // We want the details if available.
-            string message = details.GetValue( "messageDetail" )?.ToString();
+            string message = null;
+            if( details != null )
+            {
+                message = details.GetValue( "messageDetail" )?.ToString();
+                if( string.IsNullOrEmpty( message ) )
+                    message = details.GetValue( "message" )?.ToString();
+            }
 
-            if( message == null )
-                message = details.GetValue( "message" )?.ToString();
-
-            if( message == null )
-                message = "An unknown API exception occurred.";
+            if( string.IsNullOrEmpty( message ) )
+                message = apiEx.Message;
 
             System.Diagnostics.Debug.WriteLine( "EMS API client encountered Refit.ApiException ({0}): {1}",
                 args.ApiException.ReasonPhrase, message );
@@ -369,6 +370,11 @@ namespace EmsApi.Client.V2
         /// The client handler, which handles authentication and compression.
         /// </summary>
         private EmsApiClientHandler m_clientHandler;
+
+        /// <summary>
+        /// The current http client.
+        /// </summary>
+        private HttpClient m_httpClient;
 
         /// <summary>
         /// The last API endpoint specified. This is used to track when the
