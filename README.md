@@ -209,30 +209,35 @@ The library supports using environment variables for configuration instead of sp
 
 # Build from source and try out the examples
 
-## Prerequisites 
-* Visual Studio 2015 with Update 3
-	* Community edition is supported, but not C# Express, because it does not contain all the necessary portable project types.
-* And the EditorConfig extension, to load the project .editorconfig file. This will enforce the code formatting rules:
+## Build Prerequisites
+* Dotnetcore 2.0+
+
+## Compilation targets
+The project is built as a .netstandard2.0 library, which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+
+
+## Editor Prerequisites
+* Text editor or IDE of your choice
+* An EditorConfig extension, to enforce the following rules:
 	* Spaces for indentation (4 spaces per indentation).
 	* Lines must end in crlf with no trailing whitespace.
-* And the Specflow extension, if you are writing or running tests.
+* The SpecFlow extension for writing unit tests.
 
 ## Build the repository
-* Open `EmsApi.sln` and build the whole solution, or run the `build.ps1` file.
+* Open `EmsApi.sln` and build the whole solution, or run `dotnet build` in the root directory.
 
 ## Try out the examples
 * Clone the repository.
-* Open `Examples\EmsApi.Example.sln`
-* Rebuild the solution.
-* Right click one of the examples in the Solution Explorer and select "Set as StartUp Project". Use the Debug > Start Debugging menu item to run the example.
+* Change directories to `Examples\DotnetCoreConsole`
+* Run `dotnet run`.
+* Open the other examples in the appropriate editor (Winforms / WPF requires Visual Studio)
 
 ## Create a new example project
-* Add a new project in the `Examples\EmsApi.Example.sln` solution. Choose your desired flavor of .NET and add the project to the Examples directory.
+* Choose your desired flavor of .NET and add the project to the `Example`s directory.
 	* *Note:* If you're using .NET framework, the target framework of the project needs to be updated to at least ".NET Framework 4.6.1".
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
 * Select Browse, select `bin\EmsApi.Client.dll`
 	* Make sure the checkbox next to the file is checked in visual studio, and press OK.
-* Add nuget references for `Refit 3.0.1` in your project.
+* Add a nuget reference for `Refit 4.6.30` to your project.
 
 ## Include the library in your own project (using source)
 * Download this repository and build `EmsApi.sln`
@@ -240,5 +245,5 @@ The library supports using environment variables for configuration instead of sp
 * In the Solution Explorer, right click the References entry under the project and choose Add Reference...
 * Select Browse, locate `bin` under this directory.
 	* Check the checkbox for `EmsApi.Client.dll` and `EmsApi.Dto.dll`
-* Add nuget references for `Refit 3.0.1` and `Newtonsoft JSON 9.0.1` in your project.
-* The library has a compilation target of .NET standard 1.4, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 1.1, and some other stuff like UWP and Xamarin.
+* Add nuget references for `Refit 4.6.30` and `Newtonsoft JSON 11.0.2` to your project.
+* The library has a compilation target of .NET standard 1.6, which means it can be used directly from .NET Framework 4.6.1+ and .NET Core 2.0 and some other stuff like UWP and Xamarin.
