@@ -7,7 +7,7 @@
     <ProjectGuid>{4E34536D-89FB-4B1D-B47D-95DAE73EF66B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>EmsApi.Example.DotnetFrameworkConsole</RootNamespace>
-    <AssemblyName>EmsApi.Example.DotnetFrameworkConsole</AssemblyName>
+    <AssemblyName>DotnetFrameworkConsole</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
