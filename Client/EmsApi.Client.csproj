@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmsApi.Dto\EmsApi.Dto.csproj" />
+    <ProjectReference Include="..\Dto\EmsApi.Dto.csproj" />
   </ItemGroup>
 
   <ItemGroup>
