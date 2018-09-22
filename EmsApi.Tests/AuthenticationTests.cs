@@ -21,7 +21,7 @@ namespace EmsApi.Tests
             using( var service = NewInvalidLoginService() )
             {
                 Action auth = () => service.Authenticate();
-                auth.ShouldThrowExactly<EmsApiAuthenticationException>();
+                auth.Should().ThrowExactly<EmsApiAuthenticationException>();
             }
         }
     }

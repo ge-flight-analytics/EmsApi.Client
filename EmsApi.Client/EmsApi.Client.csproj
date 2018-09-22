@@ -1,5 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>EmsApi.Client</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>c-owens</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\EmsApi.Dto\EmsApi.Dto.csproj" />
   </ItemGroup>
@@ -8,14 +16,9 @@
     <PackageReference Include="refit" Version="4.6.30" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
   <Target Name="CopyToBin" AfterTargets="Build">
-    <Delete Files="..\bin" />
     <MakeDir Directories="..\bin" />
-    <Copy SourceFiles="$(OutDir)EmsApi.Dto.dll;$(OutDir)EmsApi.Client.dll" DestinationFolder="..\bin" />
+    <Copy SourceFiles="$(OutDir)EmsApi.Client.dll" DestinationFolder="..\bin" />
   </Target>
 
 </Project>

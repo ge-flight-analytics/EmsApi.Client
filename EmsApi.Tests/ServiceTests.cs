@@ -19,7 +19,7 @@ namespace EmsApi.Tests
             };
 
             Action setConfig = () => service.ServiceConfig = badConfig;
-            setConfig.ShouldThrowExactly<EmsApiConfigurationException>();
+            setConfig.Should().ThrowExactly<EmsApiConfigurationException>();
         }
 
         [Fact( DisplayName = "Valid configuration should change service state" )]
@@ -36,7 +36,7 @@ namespace EmsApi.Tests
                 newConfig.Password = "somethingElse";
 
                 Action setConfig = () => service.ServiceConfig = newConfig;
-                setConfig.ShouldNotThrow();
+                setConfig.Should().NotThrow();
 
                 // Make sure we are no longer authenticated.
                 service.Authenticated.Should().BeFalse();

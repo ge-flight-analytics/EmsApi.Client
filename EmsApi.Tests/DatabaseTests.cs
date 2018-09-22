@@ -40,7 +40,7 @@ namespace EmsApi.Tests
                 };
 
                 api.Databases.SimpleQuery( Monikers.FlightDatabase, query, callback );
-                numCallbacks.ShouldBeEquivalentTo( numItems );
+                numCallbacks.Should().Be( numItems );
             }
         }
 
@@ -76,7 +76,7 @@ namespace EmsApi.Tests
                 };
 
                 api.Databases.Query( Monikers.FlightDatabase, query, callback );
-                numCallbacks.ShouldBeEquivalentTo( numItems );
+                numCallbacks.Should().Be( numItems );
             }
         }
 
@@ -102,7 +102,7 @@ namespace EmsApi.Tests
                 };
 
                 api.Databases.Query( Monikers.FlightDatabase, query, callback, rowsPerCall: 10 );
-                numCallbacks.ShouldBeEquivalentTo( numItems );
+                numCallbacks.Should().Be( numItems );
             }
         }
 
@@ -119,7 +119,7 @@ namespace EmsApi.Tests
 
                 // The simple query uses the non-async database route.
                 DatabaseQueryResult result = api.Databases.SimpleQuery( Monikers.FlightDatabase, query );
-                result.Rows.Count.ShouldBeEquivalentTo( numRows );
+                result.Rows.Count.Should().Be( numRows );
 
                 foreach( DatabaseQueryResult.Row row in result.Rows )
                     TestRow( row );

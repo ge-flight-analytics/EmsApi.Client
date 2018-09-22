@@ -32,7 +32,7 @@ namespace EmsApi.Tests
                 service.ServiceConfig.ThrowExceptionOnApiFailure = true;
 
                 Action causeFailure = () => service.EmsSystems.GetAll();
-                causeFailure.ShouldThrowExactly<EmsApiException>();
+                causeFailure.Should().ThrowExactly<EmsApiException>();
             }
         }
 
