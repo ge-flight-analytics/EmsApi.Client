@@ -1,6 +1,6 @@
 ﻿using System;
 using EmsApi.Client.V2;
-using EmsApi.Client.V2.Model;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Example.DotnetCoreConsole
 {
@@ -37,7 +37,7 @@ namespace EmsApi.Example.DotnetCoreConsole
                 foreach( EmsSystem ems in api.EmsSystems.GetAll() )
                 {
                     // Retrieve server details about the system.
-                    EmsSystemInfo server = api.EmsSystems.GetSystemInfo( ems.Id );
+                    EmsSystemInfo server = api.EmsSystems.GetSystemInfo( ems.Id.Value );
                     Console.WriteLine( string.Format( "{0} - {1} - {2} - EMS version {3} - {4}", ems.Id, ems.Name, ems.Description, server.ServerVersion, server.UtcTimeStamp ) );
                 }
             }
