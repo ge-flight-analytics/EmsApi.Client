@@ -5,10 +5,16 @@
 # Getting started
 
 ## Include the nuget package in your project
+
+### .NET Framework
 * Start a new project or solution in Visual Studio.
 	* *Note:* If you're using .NET framework, the target framework of the project needs to be updated to at least ".NET Framework 4.6.1".
 * In the Solution Explorer, right click the References entry under the project and select Manage Nuget Packages...
 * Search for "EmsApi", select and install "EmsApi.Client".
+
+### .NET Core
+* Create a new library or console project using `dotnet new classlib` or `dotnet new console`.
+* Add a referece to the EmsApi package with `dotnet add package EmsApi`.
 
 ## Connect to the api
 
@@ -213,7 +219,7 @@ The library supports using environment variables for configuration instead of sp
 * Dotnetcore 2.0+
 
 ## Compilation targets
-The project is built as a .netstandard2.0 library, which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+
+The project is built as a .netstandard2.0 library, which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+. Supported frameworks can be found [here](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md).
 
 ## Editor Prerequisites
 * Text editor or IDE of your choice

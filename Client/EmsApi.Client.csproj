@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dto\EmsApi.Dto.csproj" />
+    <ProjectReference Include="../Dto/EmsApi.Dto.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <Target Name="CopyToBin" AfterTargets="Build">
-    <MakeDir Directories="..\bin" />
-    <Copy SourceFiles="$(OutDir)EmsApi.Client.dll" DestinationFolder="..\bin" />
+    <MakeDir Directories="../bin" />
+    <Copy SourceFiles="$(OutDir)EmsApi.Client.dll" DestinationFolder="../bin" />
   </Target>
 
 </Project>

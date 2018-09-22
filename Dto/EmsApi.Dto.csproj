@@ -23,9 +23,9 @@
 </Target>
 
   <Target Name="CopyToBin" AfterTargets="Build">
-    <Delete Files="..\bin" />
-    <MakeDir Directories="..\bin" />
-    <Copy SourceFiles="$(OutDir)EmsApi.Dto.dll" DestinationFolder="..\bin" />
+    <Delete Files="../bin" />
+    <MakeDir Directories="../bin" />
+    <Copy SourceFiles="$(OutDir)EmsApi.Dto.dll" DestinationFolder="../bin" />
   </Target>
 
 <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(RoslynCodeTaskFactory)" Condition=" '$(RoslynCodeTaskFactory)' != '' ">
