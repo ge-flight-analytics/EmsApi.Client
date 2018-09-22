@@ -9,4 +9,4 @@ project.lock.json
 *.nupkg
 *.nuget.targets
 *.nuget.props
-EmsApi.Dto/Generated/*
+EmsApi.Dto/EmsApi.Dto.V2.cs
