@@ -16,7 +16,7 @@
     <Compile Include="EmsApi.Dto.V2.cs" />
   </ItemGroup>
 
-<Target Name="NSwag" BeforeTargets="Compile">
+<Target Name="NSwag" BeforeTargets="BeforeBuild">
   <Delete Files="EmsApi.Dto.V2.cs" />
   <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:ems-api.json /namespace:EmsApi.Dto.V2 /output:EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
   <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="Query2" ReplacementText="DbQuery" />
@@ -24,7 +24,7 @@
   <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="QueryResultHeader" ReplacementText="DbQueryResultHeader" />
 </Target>
 
-  <Target Name="CopyToBin" AfterTargets="Link">
+  <Target Name="CopyToBin" AfterTargets="AfterBuild">
     <Delete Files="../bin" />
     <MakeDir Directories="../bin" />
     <Copy SourceFiles="$(OutDir)EmsApi.Dto.dll" DestinationFolder="../bin" />

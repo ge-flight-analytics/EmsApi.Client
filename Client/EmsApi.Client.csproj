@@ -16,7 +16,7 @@
     <PackageReference Include="refit" Version="4.6.30" />
   </ItemGroup>
 
-  <Target Name="CopyToBin" AfterTargets="Build">
+  <Target Name="CopyToBin" AfterTargets="AfterBuild">
     <MakeDir Directories="../bin" />
     <Copy SourceFiles="$(OutDir)EmsApi.Client.dll" DestinationFolder="../bin" />
   </Target>
