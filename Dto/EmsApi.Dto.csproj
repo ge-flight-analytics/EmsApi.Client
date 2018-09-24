@@ -5,6 +5,7 @@
     <PackageId>EmsApi.Dto</PackageId>
     <Version>1.0.0</Version>
     <Authors>c-owens</Authors>
+    <EnableDefaultItems>false</EnableDefaultItems>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -12,9 +13,10 @@
     <PackageReference Include="Newtonsoft.JSon" Version="11.0.2" />
     <PackageReference Include="NSwag.MSBuild" Version="11.19.2" />
     <PackageReference Include="RoslynCodeTaskFactory" Version="2.0.7" />
+    <Compile Include="EmsApi.Dto.V2.cs" />
   </ItemGroup>
 
-<Target Name="NSwag" BeforeTargets="Build">
+<Target Name="NSwag" BeforeTargets="Compile">
   <Delete Files="EmsApi.Dto.V2.cs" />
   <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:ems-api.json /namespace:EmsApi.Dto.V2 /output:EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
   <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="Query2" ReplacementText="DbQuery" />
@@ -22,7 +24,7 @@
   <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="QueryResultHeader" ReplacementText="DbQueryResultHeader" />
 </Target>
 
-  <Target Name="CopyToBin" AfterTargets="Build">
+  <Target Name="CopyToBin" AfterTargets="Link">
     <Delete Files="../bin" />
     <MakeDir Directories="../bin" />
     <Copy SourceFiles="$(OutDir)EmsApi.Dto.dll" DestinationFolder="../bin" />
