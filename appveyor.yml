@@ -19,4 +19,4 @@ build:
 test: off
 artifacts:
 - path: '**/*.nupkg'
-- path: 'Client/bin/Release/*.dll'
+- path: 'Client/bin/Release/**/*.dll'
