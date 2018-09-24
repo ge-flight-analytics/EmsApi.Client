@@ -18,7 +18,5 @@ build:
   verbosity: minimal
 test: off
 artifacts:
-- path: Dto\bin\Release\*.nupkg
-- path: Dto\bin\Release\*.dll
-- path: Client\bin\Release\*.nupkg
-- path: Client\bin\Release\*.dll
+- path: '**/*.nupkg'
+- path: '**/*.dll'
