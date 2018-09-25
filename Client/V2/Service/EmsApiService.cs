@@ -25,7 +25,7 @@ namespace EmsApi.Client.V2
         public EmsApiService()
         {
             Initialize();
-            ServiceConfig = new EmsApiServiceConfiguration();
+            SetServiceConfigInternal( new EmsApiServiceConfiguration() );
         }
 
         /// <summary>
@@ -175,23 +175,34 @@ namespace EmsApi.Client.V2
             set
             {
                 ValidateConfigOrThrow( value );
-                m_config = value;
-                m_clientHandler.ServiceConfig = value;
+                SetServiceConfigInternal( value );
+            }
+        }
 
-                // Reset the default headers, they may have changed with the config.
-                m_httpClient.DefaultRequestHeaders.Clear();
-                m_config.AddDefaultRequestHeaders( m_httpClient.DefaultRequestHeaders );
+        /// <summary>
+        /// Internally sets the current service configuration without validation. This is used
+        /// with the default constructor so that the user can specify a configuration using the
+        /// ServiceConfig property without forcing a validation (because the default config is
+        /// invalid without a credential).
+        /// </summary>
+        private void SetServiceConfigInternal( EmsApiServiceConfiguration config )
+        {
+            m_config = config;
+            m_clientHandler.ServiceConfig = config;
 
-                // See if the endpoint has changed.
-                if( m_config.Endpoint != m_endpoint )
-                {
-                    m_endpoint = m_config.Endpoint;
+            // Reset the default headers, they may have changed with the config.
+            m_httpClient.DefaultRequestHeaders.Clear();
+            m_config.AddDefaultRequestHeaders( m_httpClient.DefaultRequestHeaders );
 
-                    // Reset the BaseAddress, and create a new refit service stub.
-                    // It's bound to the HttpClient's base address when it's constructed.
-                    m_httpClient.BaseAddress = new Uri( m_config.Endpoint );
-                    RefitApi = RestService.For<IEmsApi>( m_httpClient );
-                }
+            // See if the endpoint has changed.
+            if( m_config.Endpoint != m_endpoint )
+            {
+                m_endpoint = m_config.Endpoint;
+
+                // Reset the BaseAddress, and create a new refit service stub.
+                // It's bound to the HttpClient's base address when it's constructed.
+                m_httpClient.BaseAddress = new Uri( m_config.Endpoint );
+                RefitApi = RestService.For<IEmsApi>( m_httpClient );
             }
         }
 
