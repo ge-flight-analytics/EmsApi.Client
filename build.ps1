@@ -13,16 +13,11 @@ if( -not $Version ) {
         $Version = $tag
     }
     else {
-        if( $env:APPVEYOR_BUILD_VERSION ) { 
-            $baseVersion = $env:APPVEYOR_BUILD_VERSION 
-        }
-        else {
-            $baseVersion = (Get-Content "$PSScriptRoot/appveyor.yml" | Select-Object -First 1).Replace( 'version: ', '' )
-        }
-
-        $b = $env:APPVEYOR_BUILD_NUMBER
-        $stamp = (Get-Date).ToString( 'yyyyMMddTHHmmssfff' )
-        $Version = "$baseVersion-rc$stamp$b"
+        # Even when running under appveyor we grab the version from the yml. We don't care about the build number appveyor assigns,
+        # we just want to store the canonical version there, but each build in appveyor must have a unique version number.
+        $baseVersion = (Get-Content "$PSScriptRoot/appveyor.yml" | Select-Object -First 1).Replace( 'version: ', '' ).Replace( '.{build}', '' )
+        $stamp = (Get-Date).ToUniversalTime().ToString( 'yyyyMMddTHHmmssfff' )
+        $Version = "$baseVersion-rc$stamp$($env:APPVEYOR_BUILD_NUMBER)"
     }
 }
 
