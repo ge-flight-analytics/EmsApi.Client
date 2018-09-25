@@ -124,7 +124,7 @@
             "get": {
                 "tags": ["Analytic APIs"],
                 "summary": "Searches for analytics by name for a specific flight.",
-                "operationId": "Analytic_SearchForAnalytics",
+                "operationId": "Analytic_SearchForFlightAnalytics",
                 "consumes": [],
                 "produces": ["application/json", "text/json"],
                 "parameters": [{
@@ -196,7 +196,7 @@
             "post": {
                 "tags": ["Analytic APIs"],
                 "summary": "Retrieves metadata information associated with an analytic such as a description or units.",
-                "operationId": "Analytic_GetAnalyticInfo",
+                "operationId": "Analytic_GetFlightAnalyticInfo",
                 "consumes": ["application/json", "text/json"],
                 "produces": ["application/json", "text/json"],
                 "parameters": [{
@@ -302,7 +302,7 @@
                 "tags": ["Analytic APIs"],
                 "summary": "Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.",
                 "description": "<p>The contents of a group includes both subgroups and analytics.</p>\r\n<p>In this resource a flight is specified which will enumerate analytics specific to the flight such as \r\n            physical parameters in addition to the analytics and groups which apply to all flights.</p>",
-                "operationId": "Analytic_GetAnalyticGroupContents",
+                "operationId": "Analytic_GetFlightAnalyticGroupContents",
                 "consumes": [],
                 "produces": ["application/json", "text/json"],
                 "parameters": [{
@@ -758,7 +758,7 @@
             "get": {
                 "tags": ["Asset APIs"],
                 "summary": "Returns information for an aircraft on the system.",
-                "operationId": "Asset_GetAircraft",
+                "operationId": "Asset_GetAircraftById",
                 "consumes": [],
                 "produces": ["application/json", "text/json"],
                 "parameters": [{
@@ -3348,7 +3348,7 @@
                 "tags": ["Transfer APIs"],
                 "summary": "Gets the EMS processing status for a set of uploads.",
                 "description": "When using this route, make sure to use EMS system and upload IDs that match. Results for IDs that do not \r\n            exist will still return valid results, but will indicate that the uploading processing is incomplete, \r\n            which, while true, may be misleading.",
-                "operationId": "Transfer_GetUploadProcessingStatus",
+                "operationId": "Transfer_GetUploadProcessingStatusMultiple",
                 "consumes": ["application/json", "text/json"],
                 "produces": ["application/json", "text/json"],
                 "parameters": [{
@@ -3829,7 +3829,7 @@
                 "tags": ["Upload APIs"],
                 "summary": "Gets the EMS processing status for a set of uploads.",
                 "description": "When using this route, make sure to use a bucket and upload IDs that match. Results for IDs that do not \r\n            exist will still return valid results, but will indicate that the uploading processing is incomplete, \r\n            which, while true, may be misleading.",
-                "operationId": "Upload_GetUploadProcessingStatus",
+                "operationId": "Upload_GetUploadProcessingStatusMultiple",
                 "consumes": ["application/json", "text/json"],
                 "produces": ["application/json", "text/json"],
                 "parameters": [{
