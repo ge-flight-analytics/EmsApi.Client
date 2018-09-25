@@ -7,7 +7,7 @@ param(
 )
 
 if( -not $Version ) {
-    if( $env:APPVEYOR_REPO_TAG ) {
+    if( $env:APPVEYOR_REPO_TAG -eq 'true' ) {
         $tag = $env:APPVEYOR_REPO_TAG_NAME
         $tag = $tag.TrimStart( 'v' )
         $Version = $tag
