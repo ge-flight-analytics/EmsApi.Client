@@ -4,15 +4,15 @@ pull_requests:
 image: Ubuntu
 configuration: Release
 environment:
-  EmsApiTestEndpoint: https://emsapi.ausdig.com/api
+  EmsApiTestEndpoint: https://ems.efoqa.com/api
   EmsApiTestUsername:
-    secure: IpC7n4Gq5x7QPNSkY4FNrw==
+    secure: CKE0VKVpiKUfLFsWiIam/Q==
   EmsApiTestPassword:
-    secure: qTDOVAxHa2DdMrpU276vMQ==
+    secure: Qqu8CaKv6EfIreKL0TEGK6O2q9luub4ihBkJtWIsp/zdLONDKa4cDqfybCE9i7XU
 nuget:
   project_feed: true
-#before_build:
-#- ps: '& EmsApi.Dto\Update-EmsApiSwaggerSpecAuto.ps1'
+before_build:
+- ps: '& Dto\Update-EmsApiSwaggerSpecAuto.ps1'
 build:
   project: EmsApi.sln
   verbosity: minimal
