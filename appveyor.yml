@@ -22,7 +22,7 @@ deploy:
     secure: X2rGbJmq0+BmshFLvgrVZaJZvGBab2JZNeb0ajpDZJdJMlOTYRVL8U7rkcsYo9NkLOkrgHqHb0ei8i4bfKJ0yXKLldAVqugN6KxvCPoN1A0=
   skip_symbols: true
   on:
-    branch: master
+    appveyor_repo_tag: true
   artifact: /.*\.nupkg/
 artifacts:
 - path: '**/*.nupkg'
