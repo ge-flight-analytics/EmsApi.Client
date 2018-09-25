@@ -34,7 +34,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService( EmsApiServiceConfiguration config )
         {
-            ValidateConfigOrThrow( config );
             Initialize();
             ServiceConfig = config;
         }
