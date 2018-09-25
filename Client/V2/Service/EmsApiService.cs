@@ -293,7 +293,7 @@ namespace EmsApi.Client.V2
 
             // Note: This object is a Dto.V2.Error, but in that class the messageDetail
             // field is marked as required, so it will not deserialize if the details
-            // are not there. In many casses the details are empty, so we parse the json
+            // are not there. In many cases the details are empty, so we parse the json
             // manually instead.
             JObject details = null;
             try
