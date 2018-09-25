@@ -25,7 +25,6 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                api.CachedEmsSystem = 1;
                 var query = CreateQuery( orderResults: true );
 
                 // Limit the result set to 10 items and make sure we get 10 callbacks.
@@ -61,7 +60,6 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                api.CachedEmsSystem = 1;
                 var query = CreateQuery( orderResults: true );
 
                 // Limit the result set to 20 items and make sure we get 20 callbacks.
@@ -85,8 +83,6 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                api.CachedEmsSystem = 1;
-
                 // Note: To be deterministic, we have to use ordered results so the
                 // callbacks fire in order.
                 var query = CreateQuery( orderResults: true );
@@ -110,7 +106,6 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                api.CachedEmsSystem = 1;
                 var query = CreateQuery( orderResults );
 
                 // Limit the number of flights returned for the simple query test.
@@ -130,7 +125,6 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                api.CachedEmsSystem = 1;
                 var query = CreateQuery( orderResults );
 
                 // Limit to 100 rows to save bandwidth.

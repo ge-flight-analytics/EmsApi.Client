@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using EmsApi.Client.V2;
+using EmsApi.Dto.V2;
 
 namespace EmsApi.Tests
 {
@@ -31,13 +34,48 @@ namespace EmsApi.Tests
             };
         }
 
+        private static int CachedEmsSystem = 0;
+        private static object m_getEmsSystemLock = new object();
+
         /// <summary>
         /// Returns a new instance of the EMS API service with a valid configuration
-        /// (set by the EmsApiTest* environment variables).
+        /// (set by the EmsApiTest* environment variables) and a valid cached ems system
+        /// id.
         /// </summary>
         protected static EmsApiService NewService()
         {
-            return new EmsApiService( m_config.Clone() );
+            var service = new EmsApiService( m_config.Clone() );
+            if( CachedEmsSystem != 0 )
+            {
+                service.CachedEmsSystem = CachedEmsSystem;
+                return service;
+            }
+
+            lock( m_getEmsSystemLock )
+            {
+                if( CachedEmsSystem != 0 )
+                {
+                    // Return early if someone else was waiting on the lock.
+                    service.CachedEmsSystem = CachedEmsSystem;
+                    return service;
+                }
+
+                IEnumerable<EmsSystem> servers = service.EmsSystems.GetAll();
+                if (servers.Count() == 3)
+                {
+                    CachedEmsSystem = servers.First().Id.Value;
+                }
+                else
+                {
+                    EmsSystem ems7 = servers.Where( s => s.Name.ToUpper() == "EMS7-APP" ).FirstOrDefault();
+                    CachedEmsSystem = ems7 == null
+                        ? servers.First().Id.Value
+                        : ems7.Id.Value;
+                }
+            }
+
+            service.CachedEmsSystem = CachedEmsSystem;
+            return service;
         }
 
         /// <summary>
