@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace EmsApi.Dto.V2
@@ -90,7 +90,7 @@ namespace EmsApi.Dto.V2
         /// <summary>
         /// Adds a field to order results by.
         /// </summary>
-        public void OrderByField( string fieldId, OrderByColumnAggregate? aggregate = null, OrderByColumnOrder? order = null  )
+        public void OrderByField( string fieldId, OrderByColumnAggregate? aggregate = null, OrderByColumnOrder? order = null )
         {
             if( Raw.OrderBy == null )
                 Raw.OrderBy = new ObservableCollection<OrderByColumn>();
@@ -125,13 +125,18 @@ namespace EmsApi.Dto.V2
 
             if( filter.Args == null )
                 filter.Args = new ObservableCollection<FilterArgument>();
-            
-            FilterArgument wrapper = new FilterArgument();
-            wrapper.Type = FilterArgumentType.Filter;
 
-            Filter inner = new Filter();
-            inner.Operator = op;
-            inner.Args = new ObservableCollection<FilterArgument>();
+            var wrapper = new FilterArgument
+            {
+                Type = FilterArgumentType.Filter
+            };
+
+            var inner = new Filter
+            {
+                Operator = op,
+                Args = new ObservableCollection<FilterArgument>()
+            };
+
             foreach( var arg in arguments )
                 inner.Args.Add( arg );
 
@@ -144,9 +149,12 @@ namespace EmsApi.Dto.V2
         /// </summary>
         public void AddConstantFilter( FilterOperator op, string field, object constant )
         {
-            var args = new List<FilterArgument>();
-            args.Add( new FilterArgument { Type = FilterArgumentType.Field, Value = field } );
-            args.Add( new FilterArgument { Type = FilterArgumentType.Constant, Value = constant } );
+            var args = new List<FilterArgument>
+            {
+                new FilterArgument { Type = FilterArgumentType.Field, Value = field },
+                new FilterArgument { Type = FilterArgumentType.Constant, Value = constant }
+            };
+
             AddFilter( op, args.ToArray() );
         }
 
@@ -163,8 +171,10 @@ namespace EmsApi.Dto.V2
         {
             if( Raw.Filter == null )
             {
-                Raw.Filter = new Filter();
-                Raw.Filter.Operator = FilterOperator.And;
+                Raw.Filter = new Filter
+                {
+                    Operator = FilterOperator.And
+                };
             }
         }
     }

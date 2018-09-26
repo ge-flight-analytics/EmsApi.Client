@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 using FluentAssertions;
 
@@ -8,7 +8,7 @@ namespace EmsApi.Tests
 {
     public class ServiceTests : TestBase
     {
-        [Fact( DisplayName = "Invalid configuration should throw an exception" ) ]
+        [Fact( DisplayName = "Invalid configuration should throw an exception" )]
         public void Invalid_configuration_should_throw_exception()
         {
             var service = new EmsApiService();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace EmsApi.Client.V2
 {
@@ -61,7 +61,8 @@ namespace EmsApi.Client.V2
         /// The reason for the authentication failure.
         /// </param>
         public EmsApiAuthenticationException( string why )
-            : base( string.Format( "The EMS API service authentication failed: {0}", why ), innerException: null ) {
+            : base( string.Format( "The EMS API service authentication failed: {0}", why ), innerException: null )
+        {
         }
     }
 }

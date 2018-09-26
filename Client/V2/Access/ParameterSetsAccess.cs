@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using EmsApi.Dto.V2;
 
 namespace EmsApi.Client.V2.Access

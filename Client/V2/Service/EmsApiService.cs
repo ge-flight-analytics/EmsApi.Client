@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -119,7 +119,7 @@ namespace EmsApi.Client.V2
             m_clientHandler = new EmsApiClientHandler();
 #endif
 
-            m_httpClient = new HttpClient(m_clientHandler);
+            m_httpClient = new HttpClient( m_clientHandler );
 
             // Set up access properties for extenal clients to use.
             InitializeAccessProperties();
@@ -292,8 +292,7 @@ namespace EmsApi.Client.V2
             if( !m_config.ThrowExceptionOnApiFailure )
                 return;
 
-            var apiEx = args.Exception as ApiException;
-            if( apiEx == null )
+            if( !(args.Exception is ApiException apiEx) )
                 throw new EmsApiException( args.Exception.Message, args.Exception );
 
             // Note: This object is a Dto.V2.Error, but in that class the messageDetail
@@ -345,8 +344,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         private void ValidateConfigOrThrow( EmsApiServiceConfiguration config )
         {
-            string error;
-            if( !config.Validate( out error ) )
+            if( !config.Validate( out string error ) )
                 throw new EmsApiConfigurationException( error );
         }
 

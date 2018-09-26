@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -328,7 +328,7 @@ namespace EmsApi.Client.V2.Access
             int bytesRead = 0, totalBytesRead = 0;
             byte[] buffer = new byte[chunkSizeBytes];
 
-            while( ( bytesRead = await stream.ReadAsync( buffer, 0, chunkSizeBytes ) ) > 0 )
+            while( (bytesRead = await stream.ReadAsync( buffer, 0, chunkSizeBytes )) > 0 )
             {
                 // The start and end byte indexes for our upload call.
                 int uploadStart = totalBytesRead;

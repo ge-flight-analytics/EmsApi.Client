@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Refit;
@@ -76,7 +76,7 @@ namespace EmsApi.Client.V2
         /// The fleet id to filter by, if any.
         /// </param>
         [Get( "/v2/ems-systems/{emsSystemId}/assets/aircraft" )]
-        Task<IEnumerable<Aircraft>> GetAllAircraft( int emsSystemId, [AliasAs("fleetId")] int? fleetId = null );
+        Task<IEnumerable<Aircraft>> GetAllAircraft( int emsSystemId, [AliasAs( "fleetId" )] int? fleetId = null );
 
         /// <summary>
         /// Returns info for an aircraft on the system.

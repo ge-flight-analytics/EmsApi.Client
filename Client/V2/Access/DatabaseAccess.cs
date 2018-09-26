@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -176,7 +176,7 @@ namespace EmsApi.Client.V2.Access
         public IEnumerable<Field> SearchFields( string databaseId, string search = null, string fieldGroupId = null,
             bool includeProfiles = false, int maxResults = 200, int emsSystem = NoEmsServerSpecified )
         {
-            return SafeAccessEnumerableTask( SearchFieldsAsync( 
+            return SafeAccessEnumerableTask( SearchFieldsAsync(
                 databaseId, search, fieldGroupId, includeProfiles, maxResults, emsSystem ) );
         }
 
@@ -219,7 +219,7 @@ namespace EmsApi.Client.V2.Access
         /// The information used to construct a query for which results are returned.
         /// </param>
         /// <param name="callback">
-         /// A callback to execute for each row of data received.
+        /// A callback to execute for each row of data received.
         /// </param>
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.

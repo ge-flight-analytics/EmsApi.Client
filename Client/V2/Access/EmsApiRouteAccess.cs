@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +63,7 @@ namespace EmsApi.Client.V2.Access
         /// </param>
         protected static IEnumerable<T> SafeAccessEnumerable<T>( IEnumerable<T> input )
         {
-            return input == null ? Enumerable.Empty<T>() : input;
+            return input ?? Enumerable.Empty<T>();
         }
 
         /// <summary>
@@ -168,8 +168,7 @@ namespace EmsApi.Client.V2.Access
 
         private void OnApiMethodFailed( ApiExceptionEventArgs args )
         {
-            if( ApiMethodFailedEvent != null )
-                ApiMethodFailedEvent( this, args );
+            ApiMethodFailedEvent?.Invoke( this, args );
         }
     }
 

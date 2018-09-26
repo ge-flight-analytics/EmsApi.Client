@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 using FluentAssertions;
 
@@ -67,11 +67,11 @@ namespace EmsApi.Tests
                 query.Top = numItems;
 
                 int numCallbacks = 0;
-                Action<DatabaseQueryResult.Row> callback = row =>
+                void callback( DatabaseQueryResult.Row row )
                 {
                     TestRow( row );
                     numCallbacks++;
-                };
+                }
 
                 api.Databases.Query( Monikers.FlightDatabase, query, callback );
                 numCallbacks.Should().Be( numItems );
@@ -91,11 +91,11 @@ namespace EmsApi.Tests
                 query.Top = numItems;
 
                 int numCallbacks = 0;
-                Action<DatabaseQueryResult.Row> callback = row =>
+                void callback( DatabaseQueryResult.Row row )
                 {
                     TestRow( row );
                     numCallbacks++;
-                };
+                }
 
                 api.Databases.Query( Monikers.FlightDatabase, query, callback, rowsPerCall: 10 );
                 numCallbacks.Should().Be( numItems );
