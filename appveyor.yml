@@ -15,12 +15,11 @@ before_build:
   - ps: ./Dto/Update-EmsApiSwaggerSpecAuto.ps1
 build_script:
   - ps: ./build.ps1
-test: off
 deploy:
 - provider: NuGet
   api_key:
     secure: X2rGbJmq0+BmshFLvgrVZaJZvGBab2JZNeb0ajpDZJdJMlOTYRVL8U7rkcsYo9NkLOkrgHqHb0ei8i4bfKJ0yXKLldAVqugN6KxvCPoN1A0=
-  skip_symbols: true
+  skip_symbols: false
   on:
     appveyor_repo_tag: true
   artifact: /.*\.nupkg/
