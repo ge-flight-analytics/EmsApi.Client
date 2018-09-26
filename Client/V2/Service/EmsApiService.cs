@@ -113,8 +113,13 @@ namespace EmsApi.Client.V2
             m_exceptionCallbacks = new List<Action<string>>();
 
             // Set up the services we need to use.
+#if DEBUG
+            m_clientHandler = new DebugClientHandler();
+#else
             m_clientHandler = new EmsApiClientHandler();
-            m_httpClient = new HttpClient( m_clientHandler );
+#endif
+
+            m_httpClient = new HttpClient(m_clientHandler);
 
             // Set up access properties for extenal clients to use.
             InitializeAccessProperties();

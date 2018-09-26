@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -19,31 +19,68 @@
   <Target Name="NSwag" BeforeTargets="BeforeBuild">
     <Delete Files="EmsApi.Dto.V2.cs" />
     <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:ems-api.json /namespace:EmsApi.Dto.V2 /output:EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
-    <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="Query2" ReplacementText="DbQuery" />
-    <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="QueryResult2" ReplacementText="DbQueryResult" />
-    <ReplaceFileText FileName="EmsApi.Dto.V2.cs" MatchExpression="QueryResultHeader" ReplacementText="DbQueryResultHeader" />
+    <ItemGroup>
+      <!-- Both the analytics and database query objects get put in the same namespace here -->
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[Query2]]></Find>
+        <ReplaceWith><![CDATA[DbQuery]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[QueryResult2]]></Find>
+        <ReplaceWith><![CDATA[DbQueryResult]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[QueryResultHeader]]></Find>
+        <ReplaceWith><![CDATA[DbQueryResultHeader]]></ReplaceWith>
+      </RegexTransform>
+      <!-- Make the async-query return rows the same as the non-async query verison. -->
+      <!-- The default implementation does not deserialize correctly in json.net  -->
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.ObjectModel.ObservableCollection<string> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<string>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>>]]></ReplaceWith>
+      </RegexTransform>
+    </ItemGroup>
+    <RegexTransform Items="@(RegexTransform)" />
   </Target>
 
-  <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(RoslynCodeTaskFactory)" Condition=" '$(RoslynCodeTaskFactory)' != '' ">
+  <UsingTask TaskName="RegexTransform" TaskFactory="CodeTaskFactory" AssemblyFile="$(RoslynCodeTaskFactory)" Condition=" '$(RoslynCodeTaskFactory)' != '' ">
     <ParameterGroup>
-      <FileName ParameterType="System.String" Required="true" />
-      <MatchExpression ParameterType="System.String" Required="true" />
-      <ReplacementText ParameterType="System.String" Required="true" />
+        <Items ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
     </ParameterGroup>
     <Task>
-      <Reference Include="System.Core" />
-      <Using Namespace="System" />
-      <Using Namespace="System.IO" />
-      <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
-              Log.LogMessage( "Replacing {0} with {1}", MatchExpression, ReplacementText );
+        <Using Namespace="System.IO" />
+        <Using Namespace="System.Text.RegularExpressions" />
+        <Using Namespace="Microsoft.Build.Framework" />
+        <Code Type="Fragment" Language="cs">
+          <![CDATA[
+            foreach(var item in Items)
+            {
+              string fileName = item.GetMetadata("FullPath");
+              string find = item.GetMetadata("Find");
+              string replaceWith = item.GetMetadata("ReplaceWith");
+              string optionsValue = item.GetMetadata("Options") ?? "";
+  
+              var options = string.IsNullOrWhiteSpace(optionsValue) ?
+                  RegexOptions.None : (RegexOptions)Enum.Parse(typeof(RegexOptions), optionsValue.Replace('|', ','));
+  
+              if(!File.Exists(fileName))
+              {
+                Log.LogError("Could not find file: {0}", fileName);
+                return false;
+              }
+              string content = File.ReadAllText(fileName);
               File.WriteAllText(
-                  FileName,
-                  Regex.Replace(File.ReadAllText(FileName), MatchExpression, ReplacementText)
-                  );
-            ]]>
-      </Code>
+                fileName,
+                Regex.Replace(
+                  content,
+                  find,
+                  replaceWith,
+                  options
+                )
+              );
+            }
+          ]]>
+        </Code>
     </Task>
   </UsingTask>
 

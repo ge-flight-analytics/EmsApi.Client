@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="refit" Version="4.6.30" />
+    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

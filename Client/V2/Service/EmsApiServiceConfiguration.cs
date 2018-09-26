@@ -61,7 +61,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// The user agent header to pass along to the EMS API. 
         /// </summary>
-        public string UserAgent { get { return "ems-api-sdk Dotnet v0.1"; } }
+        public string UserAgent { get { return "EmsApi.Client v1.1"; } } // TODO: Get this from the assembly version.
 
         /// <summary>
         /// When true, gzip compression will be used for responses on routes that support it.

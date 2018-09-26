@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -70,7 +72,7 @@ namespace EmsApi.Client.V2
                 m_serviceConfig = value;
             }
         }
-        
+
         /// <summary>
         /// Fired to signal that authentication has failed for the current request.
         /// </summary>
@@ -81,8 +83,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public bool Authenticate( CancellationToken? cancel = null )
         {
-            string error;
-            if( GetNewBearerToken( out error ) )
+            if( GetNewBearerToken( out string error ) )
             {
                 Authenticated = true;
                 return true;
@@ -124,7 +125,7 @@ namespace EmsApi.Client.V2
         {
             error = null;
 
-            HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, string.Format( "{0}/token", m_serviceConfig.Endpoint ) );
+            var request = new HttpRequestMessage( HttpMethod.Post, string.Format( "{0}/token", m_serviceConfig.Endpoint ) );
             m_serviceConfig.AddDefaultRequestHeaders( request.Headers );
 
             request.Content = new FormUrlEncodedContent( new Dictionary<string, string>
@@ -134,12 +135,12 @@ namespace EmsApi.Client.V2
                 { "password", m_serviceConfig.Password }
             } );
 
-            CancellationToken cancelToken = cancel.HasValue ? cancel.Value : new CancellationToken();
+            CancellationToken cancelToken = cancel ?? new CancellationToken();
             HttpResponseMessage response = base.SendAsync( request, cancelToken ).Result;
 
             // Regardless of if we succeed or fail the call, the returned structure will be a chunk of JSON.
             string rawResult = response.Content.ReadAsStringAsync().Result;
-            JObject result = JObject.Parse( rawResult );
+            var result = JObject.Parse( rawResult );
 
             if( !response.IsSuccessStatusCode )
             {
@@ -159,8 +160,7 @@ namespace EmsApi.Client.V2
 
         private void OnAuthenticationFailed( AuthenticationFailedEventArgs e )
         {
-            if( AuthenticationFailedEvent != null )
-                AuthenticationFailedEvent( this, e );
+            AuthenticationFailedEvent?.Invoke( this, e );
         }
 
         protected override void Dispose( bool disposing )
@@ -175,4 +175,90 @@ namespace EmsApi.Client.V2
         public const string GrantTypeTrusted = "trusted";
         public const string Scheme = "Bearer";
     }
+
+#if DEBUG
+    internal class DebugClientHandler : EmsApiClientHandler, IDisposable
+    {
+        protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+        {
+            DateTime start = DateTime.Now;
+            var resp = await base.SendAsync( request, cancellationToken );
+            DateTime end = DateTime.Now;
+
+            string id;
+            var adiRequestId = resp.Headers.Where( h => h.Key == "X-Adi-Unique-Id" );
+            if( adiRequestId.Count() == 1 )
+                id = adiRequestId.First().Value.First();
+            else
+                id = Guid.NewGuid().ToString();
+
+            var req = request;
+            var msg = $"[{id} - Request]";
+
+            Debug.WriteLine( $"{msg}========Start==========" );
+            Debug.WriteLine( $"{msg} {req.Method} {req.RequestUri.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}" );
+            Debug.WriteLine( $"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}" );
+
+            foreach( var header in req.Headers )
+                Debug.WriteLine( $"{msg} {header.Key}: {string.Join( ", ", header.Value )}" );
+
+            if( req.Content != null )
+            {
+                foreach( var header in req.Content.Headers )
+                    Debug.WriteLine( $"{msg} {header.Key}: {string.Join( ", ", header.Value )}" );
+
+                if( req.Content is StringContent || IsTextBasedContentType( req.Headers ) || IsTextBasedContentType( req.Content.Headers ) )
+                {
+                    var result = await req.Content.ReadAsStringAsync();
+                    Debug.WriteLine( $"{msg} Content:" );
+                    Debug.WriteLine( $"{msg} {string.Join( "", result.Cast<char>().Take( 255 ) )}..." );
+
+                }
+            }
+
+            Debug.WriteLine( $"{msg} Duration: {end - start}" );
+            Debug.WriteLine( $"{msg}==========End==========" );
+
+            msg = $"[{id} - Response]";
+            Debug.WriteLine( $"{msg}=========Start=========" );
+
+            Debug.WriteLine( $"{msg} {req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}" );
+
+            foreach( var header in resp.Headers )
+                Debug.WriteLine( $"{msg} {header.Key}: {string.Join( ", ", header.Value )}" );
+
+            if( resp.Content != null )
+            {
+                foreach( var header in resp.Content.Headers )
+                    Debug.WriteLine( $"{msg} {header.Key}: {string.Join( ", ", header.Value )}" );
+
+                if( resp.Content is StringContent || IsTextBasedContentType( resp.Headers ) || IsTextBasedContentType( resp.Content.Headers ) )
+                {
+                    start = DateTime.Now;
+                    var result = await resp.Content.ReadAsStringAsync();
+                    end = DateTime.Now;
+
+                    Debug.WriteLine( $"{msg} Content:" );
+                    Debug.WriteLine( $"{msg} {string.Join( "", result.Cast<char>().Take( 255 ) )}..." );
+                    Debug.WriteLine( $"{msg} Duration: {end - start}" );
+                }
+            }
+
+            Debug.WriteLine( $"{msg}==========End==========" );
+            return resp;
+        }
+
+        private readonly string[] m_types = new[] { "html", "text", "xml", "json", "txt", "x-www-form-urlencoded" };
+
+        private bool IsTextBasedContentType( HttpHeaders headers )
+        {
+            if( !headers.TryGetValues( "Content-Type", out IEnumerable<string> values ) )
+                return false;
+
+            var header = string.Join( " ", values ).ToLowerInvariant();
+            return m_types.Any( t => header.Contains( t ) );
+        }
+    }
+#endif
+
 }
