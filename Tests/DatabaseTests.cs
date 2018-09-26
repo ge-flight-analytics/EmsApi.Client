@@ -46,8 +46,7 @@ namespace EmsApi.Tests
         [Fact( DisplayName = "An advanced query should return rows" )]
         public void Advanced_query_should_return_rows()
         {
-            throw new InvalidOperationException();
-            //TestAdvanced( orderResults: false );
+            TestAdvanced( orderResults: false );
         }
 
         [Fact( DisplayName = "An advanced query with ordered results should return rows" )]
