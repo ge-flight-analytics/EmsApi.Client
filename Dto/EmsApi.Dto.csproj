@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>EmsApi.Dto</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>c-owens</Authors>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -59,10 +59,10 @@
               string find = item.GetMetadata("Find");
               string replaceWith = item.GetMetadata("ReplaceWith");
               string optionsValue = item.GetMetadata("Options") ?? "";
-  
+
               var options = string.IsNullOrWhiteSpace(optionsValue) ?
                   RegexOptions.None : (RegexOptions)Enum.Parse(typeof(RegexOptions), optionsValue.Replace('|', ','));
-  
+
               if(!File.Exists(fileName))
               {
                 Log.LogError("Could not find file: {0}", fileName);
