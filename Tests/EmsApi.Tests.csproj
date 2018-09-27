@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\**" />
+    <Compile Remove="SpecFlow/**" />
     <PackageReference Include="FluentAssertions" Version="5.4.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <!--<PackageReference Include="SpecFlow" Version="2.4.0" />-->
@@ -17,6 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="../Client/EmsApi.Client.csproj" />
+    <CopyToBinFiles Include="$(TargetDir)EmsApi.Tests.dll"/>
   </ItemGroup>
+
+  <Target Name="Copy" BeforeTargets="AfterBuild">
+    <Copy
+      SourceFiles="@(CopyToBinFiles)"
+      DestinationFolder="$(ProjectDir)bin" />
+  </Target>
 
 </Project>

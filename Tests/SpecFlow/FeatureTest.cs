@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using EmsApi.Client.V2;
 using FluentAssertions;
+using EmsApi.Client.V2;
 using TechTalk.SpecFlow;
 
 namespace EmsApi.Tests
@@ -28,13 +28,13 @@ namespace EmsApi.Tests
         public void GivenTheCachedEMSSystemIdOf( int p0 )
         {
             m_api.CachedEmsSystem = p0;
-            m_api.CachedEmsSystem.ShouldBeEquivalentTo( p0 );
+            m_api.CachedEmsSystem.Should().Be( p0 );
         }
 
         [Then( @"The Id property is (.*)" )]
         public void ThenTheIdPropertyIs( int p0 )
         {
-            m_result.GetPropertyValue<int>( "Id" ).ShouldBeEquivalentTo( p0 );
+            m_result.GetPropertyValue<int>( "Id" ).Should().Be( p0 );
         }
 
         [Then( @"The Description is not empty" )]

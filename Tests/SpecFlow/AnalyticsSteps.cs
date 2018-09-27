@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -51,7 +51,7 @@ namespace EmsApi.Tests.Features
         [Then( @"It has the name '(.*)'" )]
         public void ThenItHasTheName( string p0 )
         {
-            m_result.GetPropertyValue<string>( "Name" ).ShouldBeEquivalentTo( p0 );
+            m_result.GetPropertyValue<string>( "Name" ).Should().Be( p0 );
         }
 
         [When( @"I run GetGroup and enter an an analytic group id of '(.*)'" )]
@@ -88,7 +88,7 @@ namespace EmsApi.Tests.Features
             var queryResult = (QueryResult)m_result.Object;
 
             // This is the local id for the dimension value.
-            queryResult.Results.First().Values.First().ShouldBeEquivalentTo( 38 );
+            queryResult.Results.First().Values.First().Should().Be( 38 );
         }
 
         [When( @"I run GetMetadata and enter a flight id of (.*) and an analytic id of '(.*)'" )]
@@ -106,10 +106,10 @@ namespace EmsApi.Tests.Features
         [Then( @"It contains an item with the key '(.*)' and the value '(.*)'" )]
         public void ThenItContainsAnItemWithTheKeyAndTheValue( string p0, string p1 )
         {
-            Metadata md = (Metadata)m_result.Object;
+            var md = (Metadata)m_result.Object;
             md.Values.ShouldNotBeNullOrEmptyOfType<MetadataItem>();
             var item = md.Values.Where( v => v.Key == p0 ).FirstOrDefault();
-            item.Value.ToString().ShouldBeEquivalentTo( p1 );
+            item.Value.ToString().Should().Be( p1 );
         }
     }
 }
