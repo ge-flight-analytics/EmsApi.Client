@@ -27,8 +27,10 @@ namespace EmsApi.Tests
         [Given( @"The cached EMS system id of (.*)" )]
         public void GivenTheCachedEMSSystemIdOf( int p0 )
         {
-            m_api.CachedEmsSystem = p0;
-            m_api.CachedEmsSystem.Should().Be( p0 );
+            // Note: The NewService() call above will find us a valid EMS system to test
+            // against, so we don't really want to set the system ID here.
+            //m_api.CachedEmsSystem = p0;
+            //m_api.CachedEmsSystem.Should().Be( p0 );
         }
 
         [Then( @"The Id property is (.*)" )]
