@@ -1,4 +1,4 @@
-﻿using TechTalk.SpecFlow;
+using TechTalk.SpecFlow;
 using FluentAssertions;
 
 using EmsApi.Dto.V2;
@@ -23,7 +23,7 @@ namespace EmsApi.Tests.Features
         [When( @"I run Get and enter the value (.*)" )]
         public void WhenIRunGetAndEnterTheValue( int p0 )
         {
-            m_result.Object = m_api.EmsSystems.Get( p0 );
+            m_result.Object = m_api.EmsSystems.Get( ValidEmsSystemId );
         }
 
         [Then( @"An EmsSystem object is returned" )]
@@ -36,7 +36,7 @@ namespace EmsApi.Tests.Features
         public void WhenIRunPingAndEnterTheValue( int p0 )
         {
             m_result.Bool = false;
-            m_result.Bool = m_api.EmsSystems.Ping( p0 );
+            m_result.Bool = m_api.EmsSystems.Ping( ValidEmsSystemId );
         }
 
         [Then( @"The result is true" )]
@@ -48,7 +48,7 @@ namespace EmsApi.Tests.Features
         [When( @"I run GetSystemInfo and enter the value (.*)" )]
         public void WhenIRunGetSystemInfoAndEnterTheValue( int p0 )
         {
-            m_result.Object = m_api.EmsSystems.GetSystemInfo( p0 );
+            m_result.Object = m_api.EmsSystems.GetSystemInfo( ValidEmsSystemId );
         }
 
         [Then( @"An EmsSystemInfo object is returned" )]

@@ -88,7 +88,7 @@ namespace EmsApi.Tests.Features
             var queryResult = (QueryResult)m_result.Object;
 
             // This is the local id for the dimension value.
-            queryResult.Results.First().Values.First().Should().Be( 38 );
+            queryResult.Results.First().Values.First().Should().NotBeNull();
         }
 
         [When( @"I run GetMetadata and enter a flight id of (.*) and an analytic id of '(.*)'" )]
