@@ -3,7 +3,10 @@ param(
     [string] $Version,
 
     [Parameter()]
-    [string] $Configuration
+    [string] $Configuration,
+
+    [Parameter()]
+    [switch] $ForceDotnetCore
 )
 
 if( -not $Version ) {
@@ -26,4 +29,12 @@ if( -not $Configuration ) {
     else { $Configuration = 'Debug' }
 }
 
-dotnet build /p:Configuration=$Configuration /p:Version=$Version
+if( $IsWindows -eq $false -or $ForceDotnetCore.IsPresent ) {
+    dotnet build /p:Configuration=$Configuration /p:Version=$Version
+}
+else {
+    # We have to do some special stuff until SpecFlow supports .net core. We build the specflow
+    # test project under .net framework which will also rebuild the libraries in .net core.
+    $msbuild = & $PSScriptRoot\Find-MsBuild.ps1
+    & $msbuild $PSScriptRoot\Tests\SpecFlow\EmsApi.Tests.SpecFlow.csproj /target:Restore,Build /p:Configuration=$Configuration
+}
