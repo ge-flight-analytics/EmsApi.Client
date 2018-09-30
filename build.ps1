@@ -36,5 +36,6 @@ else {
     # We have to do some special stuff until SpecFlow supports .net core. We build the specflow
     # test project under .net framework which will also rebuild the libraries in .net core.
     $msbuild = & $PSScriptRoot\Find-MsBuild.ps1
+    & $msbuild $PSScriptRoot\Tests\EmsApi.Tests.csproj /target:Restore,Build /p:Configuration=$Configuration
     & $msbuild $PSScriptRoot\Tests\SpecFlow\EmsApi.Tests.SpecFlow.csproj /target:Restore,Build /p:Configuration=$Configuration
 }
