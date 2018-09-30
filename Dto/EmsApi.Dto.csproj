@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>EmsApi.Dto</PackageId>
+    <Version>1.1.0</Version>
+    <Authors>c-owens</Authors>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.JSon" Version="11.0.2" />
+    <PackageReference Include="NSwag.MSBuild" Version="11.19.2" />
+    <PackageReference Include="RoslynCodeTaskFactory" Version="2.0.7" />
+    <Compile Include="EmsApi.Dto.V2.cs" />
+  </ItemGroup>
+
+  <Target Name="NSwag" BeforeTargets="BeforeBuild">
+    <Delete Files="EmsApi.Dto.V2.cs" />
+    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:ems-api.json /namespace:EmsApi.Dto.V2 /output:EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
+    <ItemGroup>
+      <!-- Both the analytics and database query objects get put in the same namespace here -->
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[Query2]]></Find>
+        <ReplaceWith><![CDATA[DbQuery]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[QueryResult2]]></Find>
+        <ReplaceWith><![CDATA[DbQueryResult]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[QueryResultHeader]]></Find>
+        <ReplaceWith><![CDATA[DbQueryResultHeader]]></ReplaceWith>
+      </RegexTransform>
+      <!-- Make the async-query return rows the same as the non-async query verison. -->
+      <!-- The default implementation does not deserialize correctly in json.net  -->
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.ObjectModel.ObservableCollection<string> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<string>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>>]]></ReplaceWith>
+      </RegexTransform>
+    </ItemGroup>
+    <RegexTransform Items="@(RegexTransform)" />
+  </Target>
+
+  <UsingTask TaskName="RegexTransform" TaskFactory="CodeTaskFactory" AssemblyFile="$(RoslynCodeTaskFactory)" Condition=" '$(RoslynCodeTaskFactory)' != '' ">
+    <ParameterGroup>
+        <Items ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+    </ParameterGroup>
+    <Task>
+        <Using Namespace="System.IO" />
+        <Using Namespace="System.Text.RegularExpressions" />
+        <Using Namespace="Microsoft.Build.Framework" />
+        <Code Type="Fragment" Language="cs">
+          <![CDATA[
+            foreach(var item in Items)
+            {
+              string fileName = item.GetMetadata("FullPath");
+              string find = item.GetMetadata("Find");
+              string replaceWith = item.GetMetadata("ReplaceWith");
+              string optionsValue = item.GetMetadata("Options") ?? "";
+
+              var options = string.IsNullOrWhiteSpace(optionsValue) ?
+                  RegexOptions.None : (RegexOptions)Enum.Parse(typeof(RegexOptions), optionsValue.Replace('|', ','));
+
+              if(!File.Exists(fileName))
+              {
+                Log.LogError("Could not find file: {0}", fileName);
+                return false;
+              }
+              string content = File.ReadAllText(fileName);
+              File.WriteAllText(
+                fileName,
+                Regex.Replace(
+                  content,
+                  find,
+                  replaceWith,
+                  options
+                )
+              );
+            }
+          ]]>
+        </Code>
+    </Task>
+  </UsingTask>
+
+</Project>
