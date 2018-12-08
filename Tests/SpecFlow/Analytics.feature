@@ -1,4 +1,4 @@
-﻿Feature: Analytics
+Feature: Analytics
 	As an application developer
 	I want to be able to access EMS analytic definitions and values
 
@@ -47,4 +47,4 @@ Scenario: Get analytic metadata
 	When I run GetMetadata and enter a flight id of 1 and an analytic id of 'H4sIAAAAAAAEAG2QQQuCQBCF74H/Qby7qyUUokJQB8EuidB1WzcdWFfbXbOf35ZYSb3DY2DmY95MdGSq5Tdy5iwtmdBwASbte8OFCiF2aq27EONhGNCwQq2s8NLzfHw6ZDmtWUNcEEoTQZkzMm9CvdoKlUQT2gotCdUTH2BvjbcloEISJ7EWth2NKZhMy2QqFdo3KmsroIRH+GtgBuQdoyYz3Zk9NoQCeOxo2Zs8+P9gIeDam1sTb5TvGtu4gfFnNdqkz94f3FpMzfnvkgfLSh/6UgEAAA=='
 	Then A Metadata object is returned
 	And It contains an item with the key 'DataType' and the value 'Real'
-	And It contains an item with the key 'Information\Internal Description' and the value 'Radio Altitude'
+	And It contains an item with the key 'Information\Internal Description' and the value 'Radio Altitude (second fastest)'
