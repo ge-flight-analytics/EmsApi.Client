@@ -121,7 +121,14 @@ namespace EmsApi.Client.V2
 
             m_httpClient = new HttpClient( m_clientHandler );
 
-            // Set up access properties for extenal clients to use.
+            // The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
+            // instance a gnarly database query can take longer than that to return on query creation or first result
+            // extraction time, especially if the SQL server is already busy.
+            // The value we opted for here is the value used for timeouts at the application gateway level and
+            // therefore seems like a reasonable default to use.
+            m_httpClient.Timeout = TimeSpan.FromSeconds(600);
+
+            // Set up access properties for external clients to use.
             InitializeAccessProperties();
 
             // Subscribe to authentication failure events.
