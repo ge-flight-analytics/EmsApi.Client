@@ -1,0 +1,49 @@
+trigger:
+- refs/tags/v* # Build release tags
+
+pr:
+- master # Build pull requests to master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: Release
+  isRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/v')]
+  emsApiTestEndpoint: https://d1mo-api.us.efoqa.com/api
+  emsApiTestUsername: emsapitest
+
+steps:
+- pwsh: |
+    # Determine the release suffix
+    if( $env:isRelease ) { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]" }
+    else { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]prerelease" }
+
+    # Write our test password secret to os environment variables for use in the dotnet test step
+    [System.Environment]::SetEnvironmentVariable( "EmsApiTestPassword", "$(emsApiTestPassword)", [System.EnvironmentVariableTarget]::User )
+  displayName: Prepare
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    arguments: --configuration $(buildConfiguration) -p:VersionSuffix=$(versionSuffix)
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    arguments: --configuration $(buildConfiguration) --no-build
+
+- task: CopyFiles@2
+  displayName: Copy artifacts
+  inputs:
+    contents: |
+      src/**/*.nupkg
+      src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.*
+      src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.*
+      src/Dto/EmsAi.Dto.V2.cs
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish artifacts

@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+        <!-- 
+            This applies the version number to all projects under this folder. It's updated by using
+            the scripts\release.ps1 script and specifying a version part to increment.
+        -->
+        <VersionPrefix>1.1.1</VersionPrefix>
+        
+        <!-- This suffix is used for all builds except for release builds performed by Azure DevOps -->
+        <VersionSuffix>prerelease</VersionSuffix>
+
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Authors>c-owens</Authors>
+    </PropertyGroup>
+</Project>

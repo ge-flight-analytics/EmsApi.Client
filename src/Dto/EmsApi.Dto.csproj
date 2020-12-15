@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>EmsApi.Dto</PackageId>
-    <Version>1.1.1</Version>
-    <Authors>c-owens</Authors>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
