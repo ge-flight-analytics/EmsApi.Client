@@ -12,12 +12,12 @@ variables:
   isRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/v')]
   emsApiTestEndpoint: https://d1mo-api.us.efoqa.com/api
   emsApiTestUsername: emsapitest
+  versionSuffix: ''
 
 steps:
 - pwsh: |
-    # Determine the release suffix
-    if( $env:isRelease ) { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]" }
-    else { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]prerelease" }
+    # Determine the version suffix
+    if( $env:isRelease -ne 'True' ) { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]prerelease" }
 
     # Write our test password secret to os environment variables for use in the dotnet test step
     [System.Environment]::SetEnvironmentVariable( "EmsApiTestPassword", "$(emsApiTestPassword)", [System.EnvironmentVariableTarget]::User )
