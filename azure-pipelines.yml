@@ -28,12 +28,14 @@ steps:
   inputs:
     command: build
     arguments: --configuration $(buildConfiguration) -p:VersionSuffix=$(versionSuffix)
+    workingDirectory: src
 
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
     arguments: --configuration $(buildConfiguration) --no-build
+    workingDirectory: src
 
 - task: CopyFiles@2
   displayName: Copy artifacts
