@@ -17,10 +17,10 @@ variables:
 steps:
 - pwsh: |
     # Determine the version suffix
-    if( $env:isRelease -ne 'True' ) { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]prerelease" }
+    if( "$(isRelease)" -eq 'False' ) { Write-Host "##vso[task.setvariable variable=versionSuffix;isOutput=true]prerelease" }
 
     # Write our test password secret to os environment variables for use in the dotnet test step
-    [System.Environment]::SetEnvironmentVariable( "EmsApiTestPassword", "$(emsApiTestPassword)", [System.EnvironmentVariableTarget]::User )
+    [System.Environment]::SetEnvironmentVariable( "EmsApiTestPassword", "$(emsApiTestPassword)", [System.EnvironmentVariableTarget]::Machine )
   displayName: Prepare
 
 - task: DotNetCoreCLI@2
