@@ -1,4 +1,6 @@
+# Do not automatically trigger
 trigger: none
+pr: none
 
 variables:
   sourceBranch: master

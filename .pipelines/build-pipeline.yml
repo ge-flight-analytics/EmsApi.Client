@@ -1,8 +1,6 @@
-trigger:
-- master # Build the master branch
-
-pr:
-- master # Build pull requests to master
+# Build the master branch and pull requests for master
+trigger: master
+pr: master
 
 pool:
   vmImage: 'windows-latest'
