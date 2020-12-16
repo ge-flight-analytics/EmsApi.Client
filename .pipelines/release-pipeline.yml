@@ -8,11 +8,11 @@ variables:
 
 jobs:
 
-- deployment: GitHub Release
+- deployment: github
   displayName: Github Release
   pool:
-    vmImage: 'windows-latest'
-  environment: 'github'
+    vmImage: windows-latest
+  environment: github
   strategy:
     runOnce:
       deploy:
@@ -50,11 +50,11 @@ jobs:
             title: 'Version $(releaseVersion)'
             releaseNotesFile: ReleaseNotes.md
 
-- deployment: NuGet.org
+- deployment: nuget
   displayName: NuGet.org
   pool:
-    vmImage: 'windows-latest'
-  environment: 'nuget'
+    vmImage: windows-latest
+  environment: nuget
   strategy:
     runOnce:
       deploy:

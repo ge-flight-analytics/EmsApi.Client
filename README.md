@@ -232,9 +232,12 @@ Run `dotnet build` in the `src` directory or build with Visual Studio.
 Run `dotnet test` in the `src` directory or use the Visual Studio test explorer. Many tests will talk to a real API endpoint and require the `EmsApiTestEndpoint`, `EmsApiTestUsername`, and `EmsApiTestPassword` environment variables to be set.
 
 ## Automated build and test
-The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary). Pull requests to the master branch are built and the nuget packages are attached to the pipeline run. Version number tags (e.g. `v1.2.3`) are built and also pushed to nuget.org.
+The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary). Pull requests to the `master` branch are built and the nuget packages are attached to the pipeline run. The `master` branch is also built once the pull request is completed.
 
 ## Releases
-* Prior to a release, the version number should be updated in `src/Build.Directory.props` as part of a pull request.
-* Once the [build pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary) for the `master` branch succeeds, run the [release pipeline](https://example.com).
-	* The release pipeline will create a new Github release and push the packages to NuGet.org
+* Prior to a release, as part of a pull request:
+	* The version number should be updated in `src/Build.Directory.props`
+	* The [release notes](ReleaseNotes.md) file in the root should be updated
+* Once the pull request completes and the [build pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary) for the `master` branch succeeds, run the [release pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=2). Using the latest master branch build this will:
+	* Create a new GitHub release and tag the commit with `vX.X.X`
+	* Push the nupkg files to NuGet.org
