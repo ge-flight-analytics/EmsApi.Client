@@ -46,9 +46,10 @@ jobs:
           inputs:
             gitHubConnection: $(githubServiceConnection)
             tagSource: manual
-            tag: 'v$(releaseVersion)'
-            title: 'Version $(releaseVersion)'
+            tag: v$(releaseVersion)
+            title: Version $(releaseVersion)
             releaseNotesFile: ReleaseNotes.md
+            assets: $(Build.ArtifactStagingDirectory)/drop/*
 
 - deployment: nuget
   displayName: NuGet.org
