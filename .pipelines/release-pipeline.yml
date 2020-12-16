@@ -1,0 +1,63 @@
+trigger: none
+
+variables:
+  sourceBranch: azure-devops
+  sourcePipelineId: 1
+  sourceProjectName: EmsApi.Client
+  githubServiceConnection: ge-flight-analytics
+
+jobs:
+
+- deployment: GitHub Release
+  displayName: Github Release
+  pool:
+    vmImage: 'windows-latest'
+  environment: 'github'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: self
+
+        - task: DownloadPipelineArtifact@2
+          displayName: Download artifacts
+          inputs:
+            source: specific
+            project: $(sourceProjectName)
+            pipeline: $(sourcePipelineId)
+            runVersion: latestFromBranch
+            runBranch: refs/heads/$(sourceBranch)
+            path: $(Build.ArtifactStagingDirectory)
+
+        - pwsh: |
+            $versionFile = Get-Content "src/Directory.Build.props"
+            $exp = "<VersionPrefix>(?<version>[\d]\.[\d]\.[\d])<\/VersionPrefix>"
+            $matchInfo = $versionFile | Select-String $exp
+            if( -not $matchInfo.Matches.Success ) {
+              throw "The regular expression $exp did not match anything in the Directory.Build.props file."
+            }
+            
+            $version = $matchInfo.Matches.Groups | Where Name -eq "version" | Select-Object -ExpandProperty Value
+            Write-Host "##vso[task.setvariable variable=releaseVersion]$version"
+          displayName: Determine tag
+
+        - task: GitHubRelease@0
+          displayName: Create GitHub release
+          inputs:
+            gitHubConnection: $(githubServiceConnection)
+            tagSource: manual
+            tag: 'v$(releaseVersion)'
+            title: 'Version $(releaseVersion)'
+            releaseNotesFile: ReleaseNotes.md
+
+- deployment: NuGet.org
+  displayName: NuGet.org
+  pool:
+    vmImage: 'windows-latest'
+  environment: 'nuget'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: none
+        - script: echo my first deployment

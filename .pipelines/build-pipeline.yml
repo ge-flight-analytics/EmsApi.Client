@@ -1,5 +1,5 @@
 trigger:
-- refs/tags/v* # Build release tags
+- master # Build the master branch
 
 pr:
 - master # Build pull requests to master
@@ -9,7 +9,7 @@ pool:
 
 variables:
   buildConfiguration: Release
-  isRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/v')]
+  isMaster: $[startsWith(variables['Build.SourceBranchName'], 'master')]
   emsApiTestEndpoint: https://d1mo-api.us.efoqa.com/api
   emsApiTestUsername: emsapitest
   versionSuffix: ''
@@ -17,7 +17,7 @@ variables:
 steps:
 - pwsh: |
     # Determine the version suffix
-    if( "$(isRelease)" -eq "False" ) { Write-Host "##vso[task.setvariable variable=versionSuffix]prerelease" }
+    if( "$(isMaster)" -eq "False" ) { Write-Host "##vso[task.setvariable variable=versionSuffix]prerelease" }
 
     # Write our test password secret to a variable that can be used in the dotnet test step
     Write-Host "##vso[task.setvariable variable=emsApiTestPassword]$(emsApiTestPass)"
@@ -42,8 +42,10 @@ steps:
   inputs:
     contents: |
       src/**/*.nupkg
-      src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.*
-      src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.*
+      src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.dll
+      src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.pdb
+      src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.dll
+      src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.pdb
       src/Dto/EmsAi.Dto.V2.cs
     targetFolder: $(Build.ArtifactStagingDirectory)
     flattenFolders: true
