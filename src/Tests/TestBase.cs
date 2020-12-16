@@ -40,8 +40,7 @@ namespace EmsApi.Tests
         /// </summary>
         protected static int ValidEmsSystemId
         {
-            get;
-            private set;
+            get { return 1; }
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace EmsApi.Tests
         {
             return new EmsApiService( m_config.Clone() )
             {
-                CachedEmsSystem = 1
+                CachedEmsSystem = ValidEmsSystemId
             };
         }
 
