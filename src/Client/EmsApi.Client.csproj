@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>EmsApi.Client</PackageId>
-    <Version>1.1.1</Version>
-    <Authors>c-owens</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>.NET client library for the Event Measurement System API</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="refit" Version="4.6.30" />
+    <PackageReference Include="refit" Version="5.2.4" />
     <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
   </ItemGroup>
 

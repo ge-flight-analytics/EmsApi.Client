@@ -34,16 +34,13 @@ namespace EmsApi.Tests
             };
         }
 
-        private static object m_getEmsSystemLock = new object();
-
         /// <summary>
         /// A valid EMS system ID for the current test run that will be automatically applied
         /// to the CachedEmsSystem property when a new service instance is created.
         /// </summary>
         protected static int ValidEmsSystemId
         {
-            get;
-            private set;
+            get { return 1; }
         }
 
         /// <summary>
@@ -53,38 +50,10 @@ namespace EmsApi.Tests
         /// </summary>
         protected static EmsApiService NewService()
         {
-            var service = new EmsApiService( m_config.Clone() );
-            if( ValidEmsSystemId != 0 )
+            return new EmsApiService( m_config.Clone() )
             {
-                service.CachedEmsSystem = ValidEmsSystemId;
-                return service;
-            }
-
-            lock( m_getEmsSystemLock )
-            {
-                if( ValidEmsSystemId != 0 )
-                {
-                    // Return early if someone else was waiting on the lock.
-                    service.CachedEmsSystem = ValidEmsSystemId;
-                    return service;
-                }
-                
-                IEnumerable<EmsSystem> servers = service.EmsSystems.GetAll();
-                if( servers.Count() == 3 )
-                {
-                    ValidEmsSystemId = servers.First().Id.Value;
-                }
-                else
-                {
-                    EmsSystem ems7 = servers.Where( s => s.Name.ToUpper() == "EMS7-APP" ).FirstOrDefault();
-                    ValidEmsSystemId = ems7 == null
-                        ? servers.First().Id.Value
-                        : ems7.Id.Value;
-                }
-            }
-
-            service.CachedEmsSystem = ValidEmsSystemId;
-            return service;
+                CachedEmsSystem = ValidEmsSystemId
+            };
         }
 
         /// <summary>

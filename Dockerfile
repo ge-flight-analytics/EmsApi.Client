@@ -1,6 +1,6 @@
 FROM microsoft/dotnet:2.1-sdk-alpine as build
 WORKDIR /src
-COPY . ./
+COPY ./src ./
 RUN dotnet build -c Release
 RUN dotnet publish -c Release
 
