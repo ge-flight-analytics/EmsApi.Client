@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.JSon" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.JSon" Version="12.0.3" />
     <PackageReference Include="NSwag.MSBuild" Version="11.19.2" />
     <PackageReference Include="RoslynCodeTaskFactory" Version="2.0.7" />
     <Compile Include="EmsApi.Dto.V2.cs" />
