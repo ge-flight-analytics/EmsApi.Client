@@ -1,7 +1,7 @@
 trigger: none
 
 variables:
-  sourceBranch: azure-devops
+  sourceBranch: master
   sourcePipelineId: 1
   sourceProjectName: EmsApi.Client
   githubServiceConnection: ge-flight-analytics-pat
