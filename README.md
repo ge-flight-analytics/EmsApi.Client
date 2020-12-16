@@ -239,5 +239,7 @@ The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-f
 	* The version number should be updated in `src/Build.Directory.props`
 	* The [release notes](ReleaseNotes.md) file in the root should be updated
 * Once the pull request completes and the [build pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary) for the `master` branch succeeds, run the [release pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=2). Using the latest master branch build this will:
-	* Create a new GitHub release and tag the commit with `vX.X.X`
+	* Create a new GitHub release and tag the commit with `vX.X.X`, where the version number matches the contents of the Build.Directory.props file
 	* Push the nupkg files to NuGet.org
+
+Note that the latest commit to `master` will be tagged with the release, so a release should not be created unless the latest commit to `master` has succeeded the build pipeline.

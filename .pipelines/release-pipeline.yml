@@ -5,11 +5,12 @@ variables:
   sourcePipelineId: 1
   sourceProjectName: EmsApi.Client
   githubServiceConnection: ge-flight-analytics-pat
+  nugetServiceConnection: nuget-public
 
 jobs:
 
 - deployment: github
-  displayName: Github Release
+  displayName: GitHub.com
   pool:
     vmImage: windows-latest
   environment: github
@@ -61,4 +62,21 @@ jobs:
       deploy:
         steps:
         - checkout: none
-        - script: echo my first deployment
+
+        - task: DownloadPipelineArtifact@2
+          displayName: Download artifacts
+          inputs:
+            source: specific
+            project: $(sourceProjectName)
+            pipeline: $(sourcePipelineId)
+            runVersion: latestFromBranch
+            runBranch: refs/heads/$(sourceBranch)
+            path: $(Build.ArtifactStagingDirectory)
+
+        - task: NuGetCommand@2
+          displayName: Push to NuGet.org
+          inputs:
+            command: push
+            packagesToPush: $(Build.ArtifactStagingDirectory)/drop/*.nupkg
+            nuGetFeedType: external
+            publishFeedCredentials: $(nugetServiceConnection)

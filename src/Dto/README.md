@@ -2,8 +2,6 @@
 
 This project generates DTO objects for the EMS API. It uses the NSwag library, along with the EMS API swagger specification, to produce some code files (csharp and typescript) and a .NET assembly.
 
-The appveyor builds automatically download a new version of the swagger spec from the API (specified in the `EmsApiTestEndpoint`, `EmsApiTestUser`, and `EmsApiTestPassword` environment variables) before building.
-
 ## Steps
 
 When this project is built, the following steps occur:

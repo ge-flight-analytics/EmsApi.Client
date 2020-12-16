@@ -4,6 +4,7 @@
     <PackageId>EmsApi.Dto</PackageId>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>.NET data transfer objects for the Event Measurement System API</Description>
   </PropertyGroup>
 
   <ItemGroup>

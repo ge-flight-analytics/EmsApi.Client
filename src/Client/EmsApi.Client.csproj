@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageId>EmsApi.Client</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>.NET client library for the Event Measurement System API</Description>
   </PropertyGroup>
 
   <ItemGroup>
