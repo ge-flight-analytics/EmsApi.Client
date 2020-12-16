@@ -539,6 +539,14 @@ namespace EmsApi.Dto.V2
         [Newtonsoft.Json.JsonProperty("isApproved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsApproved { get; set; }
     
+        /// <summary>Whether this aircraft is enabled for FDW or not</summary>
+        [Newtonsoft.Json.JsonProperty("fdwEnabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FdwEnabled { get; set; }
+    
+        /// <summary>Whether this aircraft is enabled for ODW or not</summary>
+        [Newtonsoft.Json.JsonProperty("odwEnabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OdwEnabled { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -684,6 +692,10 @@ namespace EmsApi.Dto.V2
         [Newtonsoft.Json.JsonProperty("singularName", Required = Newtonsoft.Json.Required.Always)]
         public string SingularName { get; set; }
     
+        /// <summary>The list of primary key fields for the database</summary>
+        [Newtonsoft.Json.JsonProperty("primaryKeyFields", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<PrimaryKeyField> PrimaryKeyFields { get; set; } = new System.Collections.ObjectModel.ObservableCollection<PrimaryKeyField>();
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -692,6 +704,30 @@ namespace EmsApi.Dto.V2
         public static Database FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Database>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents a primary key field for a database type exposed by an EMS installation.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class PrimaryKeyField 
+    {
+        /// <summary>The unique string identifier for the primary key</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public string Id { get; set; }
+    
+        /// <summary>Suggested name for the primary key field when stored in a column format (if any)</summary>
+        [Newtonsoft.Json.JsonProperty("suggestedColumnName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SuggestedColumnName { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static PrimaryKeyField FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PrimaryKeyField>(data);
         }
     
     }
@@ -1037,7 +1073,7 @@ namespace EmsApi.Dto.V2
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AsyncQueryData 
     {
-        /// <summary>An array of JSON string arrays, where each entry is a row in the results set</summary>
+        /// <summary>An array of arrays representing the resulting data rows of a query. Each inner array represents a single results row</summary>
         [Newtonsoft.Json.JsonProperty("rows", Required = Newtonsoft.Json.Required.Always)]
         public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>>();
     
@@ -1053,6 +1089,155 @@ namespace EmsApi.Dto.V2
         public static AsyncQueryData FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<AsyncQueryData>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents the options used to make up a data entity creation.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Create 
+    {
+        /// <summary>An array specifying the fields to set during the creation (and their values). This should always include primary key fields.</summary>
+        [Newtonsoft.Json.JsonProperty("createColumns", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<Column>> CreateColumns { get; set; } = new System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<Column>>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Create FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Create>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents a column to be modified.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Column 
+    {
+        /// <summary>The unique string identifier of the field to modify.</summary>
+        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.Always)]
+        public string FieldId { get; set; }
+    
+        /// <summary>The value for the field.</summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        public object Value { get; set; } = new object();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Column FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Column>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents the result of an update.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CreateResult 
+    {
+        /// <summary>The number of rows added by the creation.</summary>
+        [Newtonsoft.Json.JsonProperty("rowsAdded", Required = Newtonsoft.Json.Required.Always)]
+        public int RowsAdded { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static CreateResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateResult>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents the options used to make up an update.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Update 
+    {
+        /// <summary>An array specifying the fields to update (and their values).</summary>
+        [Newtonsoft.Json.JsonProperty("updateColumns", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<Column> UpdateColumns { get; set; } = new System.Collections.ObjectModel.ObservableCollection<Column>();
+    
+        /// <summary>A filter used to narrow the update results.</summary>
+        [Newtonsoft.Json.JsonProperty("filter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Filter Filter { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Update FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Update>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents the result of an update.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class UpdateResult 
+    {
+        /// <summary>The number of rows affected by the update.</summary>
+        [Newtonsoft.Json.JsonProperty("rowsUpdated", Required = Newtonsoft.Json.Required.Always)]
+        public int RowsUpdated { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static UpdateResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateResult>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents the options used to make up a data entity deletion.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Delete 
+    {
+        /// <summary>A collection of arrays (one for each data entity being deleted) which contains the primary
+        ///             key column and value pairs for the data entity to delete.</summary>
+        [Newtonsoft.Json.JsonProperty("deleteColumns", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<Column>> DeleteColumns { get; set; } = new System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<Column>>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Delete FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Delete>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents the result of an update.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class DeleteResult 
+    {
+        /// <summary>The number of rows deleted</summary>
+        [Newtonsoft.Json.JsonProperty("rowsDeleted", Required = Newtonsoft.Json.Required.Always)]
+        public int RowsDeleted { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static DeleteResult FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DeleteResult>(data);
         }
     
     }
@@ -2139,6 +2324,10 @@ namespace EmsApi.Dto.V2
         [Newtonsoft.Json.JsonProperty("events", Required = Newtonsoft.Json.Required.Always)]
         public System.Collections.ObjectModel.ObservableCollection<ProfileResultsEventRecord2> Events { get; set; } = new System.Collections.ObjectModel.ObservableCollection<ProfileResultsEventRecord2>();
     
+        /// <summary>The processing information of the flight</summary>
+        [Newtonsoft.Json.JsonProperty("processingInformation", Required = Newtonsoft.Json.Required.Always)]
+        public ProcessingInformation ProcessingInformation { get; set; } = new ProcessingInformation();
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -2248,6 +2437,58 @@ namespace EmsApi.Dto.V2
     
     }
     
+    /// <summary>Encapsulates information about processing.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ProcessingInformation 
+    {
+        /// <summary>The state of the processing.</summary>
+        [Newtonsoft.Json.JsonProperty("processingState", Required = Newtonsoft.Json.Required.Always)]
+        public string ProcessingState { get; set; }
+    
+        /// <summary>The date and time that the processing occured (UTC).</summary>
+        [Newtonsoft.Json.JsonProperty("processedDate", Required = Newtonsoft.Json.Required.Always)]
+        public System.DateTime ProcessedDate { get; set; }
+    
+        /// <summary>The retry count.</summary>
+        [Newtonsoft.Json.JsonProperty("retryCount", Required = Newtonsoft.Json.Required.Always)]
+        public int RetryCount { get; set; }
+    
+        /// <summary>The worker cpu time of the processing in seconds.</summary>
+        [Newtonsoft.Json.JsonProperty("workerCpuTime", Required = Newtonsoft.Json.Required.Always)]
+        public double WorkerCpuTime { get; set; }
+    
+        /// <summary>The worker wall time of the processing in seconds.</summary>
+        [Newtonsoft.Json.JsonProperty("workerWallTime", Required = Newtonsoft.Json.Required.Always)]
+        public double WorkerWallTime { get; set; }
+    
+        /// <summary>The total wall time of the processing in seconds.</summary>
+        [Newtonsoft.Json.JsonProperty("totalWallTime", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalWallTime { get; set; }
+    
+        /// <summary>Whether it is a failure.</summary>
+        [Newtonsoft.Json.JsonProperty("isFailure", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFailure { get; set; }
+    
+        /// <summary>The failure type.</summary>
+        [Newtonsoft.Json.JsonProperty("failureType", Required = Newtonsoft.Json.Required.Always)]
+        public int FailureType { get; set; }
+    
+        /// <summary>The failure name.</summary>
+        [Newtonsoft.Json.JsonProperty("failureName", Required = Newtonsoft.Json.Required.Always)]
+        public string FailureName { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ProcessingInformation FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProcessingInformation>(data);
+        }
+    
+    }
+    
     /// <summary>Encapsulates information about a comment.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class ProfileResultComment2 
@@ -2327,6 +2568,11 @@ namespace EmsApi.Dto.V2
         /// <summary>The display name of the profile</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
         public string Name { get; set; }
+    
+        /// <summary>The current location of this profile in the tree as a root-first
+        ///             array of profile groups (only IDs and Names will be filled out)</summary>
+        [Newtonsoft.Json.JsonProperty("treeLocation", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<ProfileGroup> TreeLocation { get; set; } = new System.Collections.ObjectModel.ObservableCollection<ProfileGroup>();
     
         /// <summary>Indicates whether the profile is a "library" profile</summary>
         [Newtonsoft.Json.JsonProperty("library", Required = Newtonsoft.Json.Required.Always)]
@@ -2454,6 +2700,10 @@ namespace EmsApi.Dto.V2
         /// <summary>The item id of the second associated item</summary>
         [Newtonsoft.Json.JsonProperty("secondAssociatedItemId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? SecondAssociatedItemId { get; set; }
+    
+        /// <summary>A flag describing if a measurement is saved to the database</summary>
+        [Newtonsoft.Json.JsonProperty("isSavedToDatabase", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsSavedToDatabase { get; set; }
     
         public string ToJson() 
         {
@@ -4752,14 +5002,14 @@ namespace EmsApi.Dto.V2
         [System.Runtime.Serialization.EnumMember(Value = "blowing")]
         Blowing = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = "freezing")]
-        Freezing = 6,
-    
         [System.Runtime.Serialization.EnumMember(Value = "showers")]
-        Showers = 7,
+        Showers = 6,
     
         [System.Runtime.Serialization.EnumMember(Value = "thunderstorms")]
-        Thunderstorms = 8,
+        Thunderstorms = 7,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "freezing")]
+        Freezing = 8,
     
     }
     

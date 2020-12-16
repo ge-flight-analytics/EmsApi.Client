@@ -1,7 +1,5 @@
 # C\# EMS API Tools and Documentation
 
-[![Build status](https://ci.appveyor.com/api/projects/status/396p7tm0hfyeyd98?svg=true)](https://ci.appveyor.com/project/GEAviationFlightAnalytics/emsapi-client)
-
 # Getting started
 
 ## Include the nuget package in your project
@@ -211,52 +209,28 @@ The library supports using environment variables for configuration instead of sp
 | EmsApiUsername | The username to use for authentication with the api. |
 | EmsApiPassword | The base64 encoded password for the user. |
 
-# Building from source
-
-## Build Prerequisites
-* Dotnetcore 2.0+
-
-## Compilation targets
-The project is built as a .netstandard2.0 library, which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+. Supported frameworks can be found [here](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md).
-
-## Build the repository
-* Open `EmsApi.sln` and build the whole solution, or run `dotnet build` in the root directory.
-
-## Try out the examples
-* Clone the repository.
-* Change directories to `Examples\DotnetCoreConsole`
-* Run `dotnet run`.
-* Open the other examples in the appropriate editor (Winforms / WPF requires Visual Studio)
-
-## Include the library in your own project (using source)
-* Download this repository and build `EmsApi.sln`
-* Start a new project or solution in Visual Studio.
-* In the Solution Explorer, right click the References entry under the project and choose Add Reference...
-* Select Browse, locate the output directory under `.\Client\bin`
-	* Check the checkbox for `EmsApi.Client.dll` and `EmsApi.Dto.dll`
-* Add nuget references for `Refit 4.6.30` and `Newtonsoft JSON 11.0.2` to your project.
-
 # Developing
 
-## Editor Prerequisites
+## Build prerequisites
+* .NET 5
+* Visual Studio 2019 >= 16.8 (Optional)
+
+## Editor prerequisites
 * Text editor or IDE of your choice
 * An EditorConfig extension, to enforce code style rules
-* The SpecFlow extension for writing unit tests.
+* The SpecFlow extension for writing unit tests
+
+## Compilation targets
+The project is built as a .netstandard2.0 library, which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+. Supported frameworks can be found [here](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md). The unit test project targets .NET 5.
 
 ## Build
-The library can be built using any of the following options:
-* Running `dotnet build` in the `src` directory of the repository
-* Opening the `src/EmsApi.sln` file with visual studio and building
+Run `dotnet build` in the `src` directory or build with Visual Studio.
 
 ## Test
-Tests can be run in the following manner:
-* Running `dotnet test` in the `src` directory to run xunit tests
-* Opening the `.\src\Tests\SpecFlow\EmsApi.Tests.SpecFlow.sln` file with visual studio and using the test runner to run xunit and specflow tests
+Run `dotnet test` in the `src` directory or use the Visual Studio test explorer. Many tests will talk to a real API endpoint and require the `EmsApiTestEndpoint`, `EmsApiTestUsername`, and `EmsApiTestPassword` environment variables to be set.
 
-Currently tests are split between two projects, one for regular xunit tests and one for SpecFlow tests. Once SpecFlow supports .net core everything can be done with dotnet test and a single project. SpecFlow tests must be run on Windows and should be run before a release.
-
-## Pipeline
-The project is built using an Azure DevOps pipeline. Pull requests to the master branch are built and the nuget packages are attached to the pipeline run. Version number tags (e.g. `v1.2.3`) are built and also pushed to nuget.org.
+## Automated build and test
+The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary). Pull requests to the master branch are built and the nuget packages are attached to the pipeline run. Version number tags (e.g. `v1.2.3`) are built and also pushed to nuget.org.
 
 ## Releases
 * Prior to a release, the version number should be updated in `src/Build.Directory.props` as part of a pull request.
