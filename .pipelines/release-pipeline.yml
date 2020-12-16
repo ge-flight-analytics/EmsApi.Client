@@ -4,7 +4,7 @@ variables:
   sourceBranch: azure-devops
   sourcePipelineId: 1
   sourceProjectName: EmsApi.Client
-  githubServiceConnection: ge-flight-analytics
+  githubServiceConnection: ge-flight-analytics-pat
 
 jobs:
 
