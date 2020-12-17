@@ -1,18 +1,13 @@
 <Project>
     <PropertyGroup>
-        <!-- This applies the version number to all projects under this folder. -->
-        <VersionPrefix>1.2.1</VersionPrefix>
-        
-        <!-- This suffix is used for all builds except for release builds performed by Azure DevOps -->
+        <VersionPrefix>1.2.2</VersionPrefix>
         <VersionSuffix>prerelease</VersionSuffix>
-
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>c-owens</Authors>
-
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>
         <EmbedAllSources>true</EmbedAllSources>
         <DebugType>portable</DebugType>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Authors>c-owens</Authors>
     </PropertyGroup>
 </Project>

@@ -20,7 +20,7 @@ jobs:
   displayName: GitHub.com
   pool:
     vmImage: windows-latest
-  condition: $(doGithubRelease)
+  condition: eq(variables['doGithubRelease'], True)
   environment: github
   strategy:
     runOnce:
@@ -64,7 +64,7 @@ jobs:
   displayName: NuGet.org
   pool:
     vmImage: windows-latest
-  condition: $(doNugetRelease)
+  condition: eq(variables['doNugetRelease'], True)
   environment: nuget
   strategy:
     runOnce:
