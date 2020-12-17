@@ -10,11 +10,12 @@ pool:
 
 variables:
   # The following default variables need to be defined in the pipeline:
-  # versionSuffix = '' (no default)
+  # emsApiTestEndpoint = https://d1mo-api.us.efoqa.com/api
+  # emsApiTestUsername = emsapitest
+  # emsApiTestPass = (hidden)
+  # versionSuffix = (no default)
   buildConfiguration: Release
   isMaster: $[startsWith(variables['Build.SourceBranchName'], 'master')]
-  emsApiTestEndpoint: https://d1mo-api.us.efoqa.com/api
-  emsApiTestUsername: emsapitest
 
 steps:
 - pwsh: |
