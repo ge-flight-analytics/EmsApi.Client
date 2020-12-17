@@ -8,5 +8,9 @@
 
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>c-owens</Authors>
+
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 </Project>

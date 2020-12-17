@@ -43,6 +43,7 @@ steps:
   inputs:
     contents: |
       src/**/*.nupkg
+      src/**/*.snupkg
       src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.dll
       src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.pdb
       src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.dll

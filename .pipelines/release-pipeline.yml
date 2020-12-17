@@ -76,9 +76,17 @@ jobs:
             path: $(Build.ArtifactStagingDirectory)
 
         - task: NuGetCommand@2
-          displayName: Push to NuGet.org
+          displayName: Push packages to NuGet.org
           inputs:
             command: push
             packagesToPush: $(Build.ArtifactStagingDirectory)/drop/*.nupkg
+            nuGetFeedType: external
+            publishFeedCredentials: $(nugetServiceConnection)
+
+        - task: NuGetCommand@2
+          displayName: Push symbols to NuGet.org
+          inputs:
+            command: push
+            packagesToPush: $(Build.ArtifactStagingDirectory)/drop/*.snupkg
             nuGetFeedType: external
             publishFeedCredentials: $(nugetServiceConnection)
