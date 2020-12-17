@@ -9,16 +9,20 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  # The following default variables need to be defined in the pipeline:
+  # emsApiTestEndpoint = https://d1mo-api.us.efoqa.com/api
+  # emsApiTestUsername = emsapitest
+  # emsApiTestPass = (hidden)
+  # versionSuffix = (no default)
   buildConfiguration: Release
   isMaster: $[startsWith(variables['Build.SourceBranchName'], 'master')]
-  emsApiTestEndpoint: https://d1mo-api.us.efoqa.com/api
-  emsApiTestUsername: emsapitest
-  versionSuffix: ''
 
 steps:
 - pwsh: |
-    # Determine the version suffix
-    if( "$(isMaster)" -eq "False" ) { Write-Host "##vso[task.setvariable variable=versionSuffix]prerelease" }
+    # Determine the version suffix if not specified
+    if( -not "$(versionSuffix)" -and ("$(isMaster)" -eq "False") ) {
+      Write-Host "##vso[task.setvariable variable=versionSuffix]prerelease"
+    }
 
     # Write our test password secret to a variable that can be used in the dotnet test step
     Write-Host "##vso[task.setvariable variable=emsApiTestPassword]$(emsApiTestPass)"
@@ -43,6 +47,7 @@ steps:
   inputs:
     contents: |
       src/**/*.nupkg
+      src/**/*.snupkg
       src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.dll
       src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.pdb
       src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.dll
