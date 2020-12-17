@@ -3,11 +3,16 @@ trigger: none
 pr: none
 
 variables:
-  sourceBranch: master
+  # The following default variables need to be defined in the pipeline:
+  # sourceBranch = master
+  # githubRelease = true
+  # nugetRelease = true
   sourcePipelineId: 1
   sourceProjectName: EmsApi.Client
   githubServiceConnection: ge-flight-analytics-pat
   nugetServiceConnection: nuget-public
+  doGithubRelease: $[in(variables['githubRelease'], 'true', 'True', 'TRUE')]
+  doNugetRelease: $[in(variables['nugetRelease'], 'true', 'True', 'TRUE')]
 
 jobs:
 
@@ -15,6 +20,7 @@ jobs:
   displayName: GitHub.com
   pool:
     vmImage: windows-latest
+  condition: $(doGithubRelease)
   environment: github
   strategy:
     runOnce:
@@ -58,6 +64,7 @@ jobs:
   displayName: NuGet.org
   pool:
     vmImage: windows-latest
+  condition: $(doNugetRelease)
   environment: nuget
   strategy:
     runOnce:
