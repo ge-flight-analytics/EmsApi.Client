@@ -1,4 +1,4 @@
-﻿
+
 using TechTalk.SpecFlow;
 using EmsApi.Dto.V2;
 
@@ -55,5 +55,35 @@ namespace EmsApi.Tests
             m_result.Object.ShouldNotBeNullOfType<ProfileGroup>();
         }
 
+        [When( @"I run GetEvents and enter a profile id of '(.*)'" )]
+        public void WhenIRunGetEventsAndEnterAProfileIdOf(string p0)
+        {
+            m_result.Enumerable = m_api.Profiles.GetEvents( p0 );
+        }
+
+        [Then( @"Event objects are returned" )]
+        public void ThenEventObjectsAreReturned()
+        {
+            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<Event>();
+        }
+
+        [When( @"I run GetEvent and enter a profile id of '(.*)' and an event id of (.*)" )]
+        public void WhenIRunGetEventAndEnterAProfileIdOfAndAnEventIdOf(string p0, int p1)
+        {
+            m_result.Object = m_api.Profiles.GetEvent( p0, p1 );
+        }
+
+        [Then( @"An Event object is returned" )]
+        public void ThenAnEventObjectIsReturned()
+        {
+            m_result.Object.ShouldNotBeNullOfType<Event>();
+        }
+
+        [Then( @"The ParameterSet is not null" )]
+        public void ThenTheParameterSetIsNotNull()
+        {
+            var ev = m_result.Object as Event;
+            ev.ParameterSet.ShouldNotBeNullOfType<ParameterSet>();
+        }
     }
 }

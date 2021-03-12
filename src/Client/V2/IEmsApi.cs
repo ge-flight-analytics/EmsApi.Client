@@ -233,6 +233,33 @@ namespace EmsApi.Client.V2
         Task<ProfileGlossary> GetProfileGlossary( int emsSystemId, string profileId, int? profileVersionNumber = null, string format = null );
 
         /// <summary>
+        /// Returns the events for a specific profile.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="profileId">
+        /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/events" )]
+        Task<IEnumerable<Event>> GetProfileEvents( int emsSystemId, string profileId );
+
+        /// <summary>
+        /// Returns an event for a specific profile.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="profileId">
+        /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
+        /// </param>
+        /// <param name="eventId">
+        /// The integer ID for the event.
+        /// </param>
+        [Get( "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/events/{eventId}" )]
+        Task<Event> GetProfileEvent( int emsSystemId, string profileId, int eventId );
+
+        /// <summary>
         /// Returns information about the parameter sets on the given EMS system.
         /// </summary>
         /// <param name="emsSystemId">

@@ -156,5 +156,69 @@ namespace EmsApi.Client.V2.Access
         {
             return AccessTaskResult( GetGlossaryAsync( profileId, profileVersionNumber, format, emsSystem ) );
         }
+
+        /// <summary>
+        /// Returns the events for a specific profile.
+        /// </summary>
+        /// <param name="profileId">
+        /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        public Task<IEnumerable<Event>> GetEventsAsync( string profileId, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+            return CallApiTask( api => api.GetProfileEvents( ems, profileId ) );
+        }
+
+        /// <summary>
+        /// Returns the events for a specific profile.
+        /// </summary>
+        /// <param name="profileId">
+        /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        public IEnumerable<Event> GetEvents( string profileId, int emsSystem = NoEmsServerSpecified )
+        {
+            return AccessTaskResult( GetEventsAsync( profileId, emsSystem ) );
+        }
+
+        /// <summary>
+        /// Returns an event for a specific profile.
+        /// </summary>
+        /// <param name="profileId">
+        /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
+        /// </param>
+        /// <param name="eventId">
+        /// The integer ID for the event.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        public Task<Event> GetEventAsync( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+            return CallApiTask( api => api.GetProfileEvent( ems, profileId, eventId ) );
+        }
+
+        /// <summary>
+        /// Returns an event for a specific profile.
+        /// </summary>
+        /// <param name="profileId">
+        /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
+        /// </param>
+        /// <param name="eventId">
+        /// The integer ID for the event.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        public Event GetEvent( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
+        {
+            return AccessTaskResult( GetEventAsync( profileId, eventId, emsSystem ) );
+        }
     }
 }
