@@ -516,5 +516,110 @@ namespace EmsApi.Client.V2.Access
         {
             StopQueryAsync( databaseId, queryId, emsSystem ).Wait();
         }
+
+        /// <summary>
+        /// Creates one or more new data entities in the database.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to add data entities to.
+        /// </param>
+        /// <param name="createQuery">
+        /// The information used to create one or more new data entities.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public Task<CreateResult> CreateEntityAsync( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+            return CallApiTask( api => api.CreateDatabaseEntity( ems, databaseId, createQuery ) );
+        }
+
+        /// <summary>
+        /// Creates one or more new data entities in the database.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to add data entities to.
+        /// </param>
+        /// <param name="createQuery">
+        /// The information used to create one or more new data entities.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public CreateResult CreateEntity( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
+        {
+            return AccessTaskResult( CreateEntityAsync( databaseId, createQuery, emsSystem ) );
+        }
+
+        /// <summary>
+        /// Runs an update query on one or more rows of data in the database.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to update.
+        /// </param>
+        /// <param name="updateQuery">
+        /// The information used to construct an update query.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public Task<UpdateResult> UpdateAsync( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+            return CallApiTask( api => api.UpdateDatabase( ems, databaseId, updateQuery ) );
+        }
+
+        /// <summary>
+        /// Runs an update query on one or more rows of data in the database.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to update.
+        /// </param>
+        /// <param name="updateQuery">
+        /// The information used to construct an update query.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public UpdateResult Update( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
+        {
+            return AccessTaskResult( UpdateAsync( databaseId, updateQuery, emsSystem ) );
+        }
+
+        /// <summary>
+        /// Deletes one or more existing data entities in the database.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to delete data entities from.
+        /// </param>
+        /// <param name="deleteQuery">
+        /// The information used to delete one or more data entities.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public Task<DeleteResult> DeleteEntityAsync( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+            return CallApiTask( api => api.DeleteDatabaseEntity( ems, databaseId, deleteQuery ) );
+        }
+
+        /// <summary>
+        /// Deletes one or more existing data entities in the database.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to delete data entities from.
+        /// </param>
+        /// <param name="deleteQuery">
+        /// The information used to delete one or more data entities.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public DeleteResult DeleteEntity( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
+        {
+            return AccessTaskResult( DeleteEntityAsync( databaseId, deleteQuery, emsSystem ) );
+        }
     }
 }

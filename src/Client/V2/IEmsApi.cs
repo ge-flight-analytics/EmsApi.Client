@@ -554,6 +554,51 @@ namespace EmsApi.Client.V2
         Task StopAsyncDatabaseQuery( int emsSystemId, string databaseId, string queryId );
 
         /// <summary>
+        /// Creates one or more new data entities in the database.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to add data entities to.
+        /// </param>
+        /// <param name="create">
+        /// The information used to create one or more new data entities.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/create" )]
+        Task<CreateResult> CreateDatabaseEntity( int emsSystemId, string databaseId, Create create );
+
+        /// <summary>
+        /// Runs an update query on one or more rows of data in the database.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to update.
+        /// </param>
+        /// <param name="update">
+        /// The information used to construct an update query.
+        /// </param>
+        [Put( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/update" )]
+        Task<UpdateResult> UpdateDatabase( int emsSystemId, string databaseId, Update update );
+
+        /// <summary>
+        /// Deletes one or more existing data entities in the database.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to delete data entities from.
+        /// </param>
+        /// <param name="delete">
+        /// The information used to delete one or more data entities.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/delete" )]
+        Task<DeleteResult> DeleteDatabaseEntity( int emsSystemId, string databaseId, Delete delete );
+
+        /// <summary>
         /// Starts a new upload.
         /// </summary>
         /// <param name="emsSystemId">
