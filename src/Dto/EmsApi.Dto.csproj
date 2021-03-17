@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PackageId>EmsApi.Dto</PackageId>
@@ -15,6 +15,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <Compile Include="EmsApi.Dto.V2.cs" />
+    <Compile Include="Field.cs" />
   </ItemGroup>
 
   <Target Name="NSwag" BeforeTargets="BeforeBuild">

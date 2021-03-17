@@ -8,6 +8,21 @@ namespace EmsApi.Tests
 {
     public class DatabaseTests : TestBase
     {
+        [Fact( DisplayName = "Get field should return discrete values" )]
+        public void Get_field_should_return_discrete_values()
+        {
+            using( var api = NewService() )
+            {
+                string flightRecordField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
+                Field noDiscrete = api.Databases.GetField( "[ems-core][entity-type][foqa-flights]", flightRecordField );
+                noDiscrete.DiscreteValues.Should().BeNull();
+
+                string eventStatusField = "[-hub-][field][[[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]][[ems-apm][event-field][event-status:profile-a7483c449db94a449eb5f67681ee52b0]]]";
+                Field withDiscrete = api.Databases.GetField( "[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]", eventStatusField );
+                withDiscrete.DiscreteValues.Should().NotBeNull();
+            }
+        }
+
         [Fact( DisplayName = "A simple query with ordered results should return rows" )]
         public void Simple_query_with_ordered_results_should_return_rows()
         {
