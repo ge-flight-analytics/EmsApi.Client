@@ -1,1 +1,1 @@
-* Add profile event routes
+* Add DiscreteValues property to the GetField routes
