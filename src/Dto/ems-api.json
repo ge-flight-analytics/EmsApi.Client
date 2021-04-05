@@ -1471,7 +1471,7 @@
                     "Database APIs"
                 ],
                 "summary": "Queries a database for information, composing the query with information provided in the specified \r\n            query structure.",
-                "description": "<p>The advantage of this query route over async-query is its simplicity. This route executes a query and\r\n            returns the results in a single API call. Due to memory and network resource limitations, this route cannot\r\n            be used to fetch large result sets. The route limits the maximum number of result rows that can be returned\r\n            for a single query. If you do not specify a \"top\" limit to the results and the number of rows queried \r\n            exceeds the maximum allowed, the partial result boolean flag included in the response will be set to true.\r\n            If you need to access larger result sets, use the async-query route instead.</p>\r\n<p>Queries can contain reference to one or more fields and can include more complex querying operations \r\n            including: filtering, grouping, and sorting (by value). These operations are specified by the query model \r\n            you provide the API.</p>",
+                "description": "<p>The advantage of this query route over async-query is its simplicity. This route executes a query and\r\n            returns the results in a single API call. Due to memory and network resource limitations, this route cannot\r\n            be used to fetch large result sets. The route limits the maximum number of result rows that can be returned\r\n            for a single query. If you do not specify a \"top\" limit to the results and the number of rows queried \r\n            exceeds the maximum allowed, the partial result boolean flag included in the response will be set to true.\r\n            If you need to access larger result sets, use the async-query route instead.</p>\r\n<p>Queries can contain reference to one or more fields and can include more complex querying operations \r\n            including: filtering, grouping, and sorting (by value). These operations are specified by the query model \r\n            you provide the API.</p>\r\n<p>One thing to be aware of when creating a query and choosing the fields is that there are special fields\r\n            for comment logs. These fields' results are represented as strings, but are more complex under the covers in \r\n            that they represent a 1-to-many relationship. Thus the single string result is a concatenation of the many results. \r\n            Also in order for this type of query to execute it must meet certain criteria or it will return a 400 Bad Request.\r\n            First the comment log field must be associated with the entity type of the database being queried. For example \r\n            if you are querying for the Data Quality Comment field which is a flight-based field the database has to be the\r\n            FDW flight database. Second the query must include the primary key field(s) for the database that is being queried.\r\n            The primary key field(s) can be found using the database-groups endpoint. \r\n            </p>",
                 "operationId": "Database_GetQueryResults",
                 "consumes": [
                     "application/json",
@@ -1542,7 +1542,7 @@
                     "Database APIs"
                 ],
                 "summary": "Creates a query on a database using the provided query structure and returns an ID that can be used to\r\n            fetch result data through other async-query routes.",
-                "description": "<p>The advantage of the async-query routes over the basic query route is their ability to return very large\r\n            result sets, split across many API calls. For queries with small result sets, you may prefer to use the\r\n            basic query route, as it provides the simplicity of executing a query and returning the results in one call.\r\n            </p>\r\n<p>Use the <b>GET v2/ems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}</b>\r\n            route to read rows from the async-query result set.</p>\r\n<p>Use the <b>DELETE v2/ems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}</b> route to stop\r\n            an async query.</p>\r\n<p>Queries can contain reference to one or more fields and can include more complex querying operations \r\n            including: filtering, grouping, and sorting (by value). These operations are specified by the query model \r\n            you provide the API.</p>",
+                "description": "<p>The advantage of the async-query routes over the basic query route is their ability to return very large\r\n            result sets, split across many API calls. For queries with small result sets, you may prefer to use the\r\n            basic query route, as it provides the simplicity of executing a query and returning the results in one call.\r\n            </p>\r\n<p>Use the <b>GET v2/ems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}</b>\r\n            route to read rows from the async-query result set.</p>\r\n<p>Use the <b>DELETE v2/ems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}</b> route to stop\r\n            an async query.</p>\r\n<p>Queries can contain reference to one or more fields and can include more complex querying operations \r\n            including: filtering, grouping, and sorting (by value). These operations are specified by the query model \r\n            you provide the API.</p>\r\n<p>One thing to be aware of when creating a query and choosing the fields is that there are special fields\r\n            for comment logs. These fields' results are represented as strings, but are more complex under-the-covers in \r\n            that they represent a 1-to-many relationship. Thus the single string result is a concatenation of the many results. \r\n            Also in order for this type of query to execute it must meet certain criteria or it will return a 400 Bad Request.\r\n            First the comment log field must be associated with the entity type of the database being queried. For example \r\n            if you are querying for the Data Quality Comment field which is a flight-based field the database has to be the\r\n            FDW flight database. Second the query must include the primary key field(s) for the database that is being queried.\r\n            The primary key field(s) can be found using the database-groups endpoint. \r\n            </p>",
                 "operationId": "Database_StartAsyncQuery",
                 "consumes": [
                     "application/json",
@@ -1947,6 +1947,78 @@
                     },
                     "400": {
                         "description": "If the specified delete structure is invalid or incorrectly configured. In particular the content of deleteColumns must be a JSON array containing one JSON array for each data entity, and all the primary key columns must be provided for each data entity being deleted.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/comments/{commentFieldId}": {
+            "post": {
+                "tags": [
+                    "Database APIs"
+                ],
+                "summary": "Adds a new comment to the provided comment field.",
+                "description": "The field identifier must be a comment log field (e.g. Event Review Comments) and the field must exist on the database. \r\n            This means that to add an Event Review Comment the database ID must match the APM profile database for the Event you \r\n            are adding the comment to. The EntityIds provided in the query body are used to identify which entity (e.g. Event) the\r\n            comment should be added to and these EntityIds must match the order of the primary keys and should uniquely identify a \r\n            single entity.",
+                "operationId": "Database_CreateComment",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the EMS system.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "databaseId",
+                        "in": "path",
+                        "description": "The unique identifier of the EMS database that the comment field is on.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "commentFieldId",
+                        "in": "path",
+                        "description": "The unique identifier of a comment field where the comment will be added.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "newComment",
+                        "in": "body",
+                        "description": "The new comment context.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.NewComment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "If the comment field or the entity IDs provided are invalid or incompatible. Also if no comment was added and we had no other errors.",
                         "schema": {
                             "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
                         }
@@ -2695,7 +2767,7 @@
                 "tags": [
                     "Parameter Set APIs"
                 ],
-                "summary": "Returns a collection of parameter sets' information.",
+                "summary": "[DEPRECATED] Returns a collection of parameter sets' information.",
                 "operationId": "ParameterSet_GetParameterSets",
                 "consumes": [],
                 "produces": [
@@ -5185,6 +5257,44 @@
         }
     },
     "definitions": {
+        "Adi.Ems.Web.Api.Model.Error": {
+            "required": [
+                "message",
+                "messageDetail",
+                "unexpected"
+            ],
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "messageDetail": {
+                    "type": "string"
+                },
+                "unexpected": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Model.ApiMessage": {
+            "description": "Represents a message used to provide information to users about an action that took place in an API request.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "A categorization of the message.",
+                    "enum": [
+                        "warning",
+                        "error",
+                        "success"
+                    ],
+                    "type": "string"
+                },
+                "message": {
+                    "description": "A string message describing an event that occurred in an API action or event.",
+                    "type": "string"
+                }
+            }
+        },
         "Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticId": {
             "description": "Provides an identifier for an individual analytic.",
             "required": [
@@ -5217,25 +5327,6 @@
                 "units": {
                     "description": "The units of the analytic",
                     "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.Model.Error": {
-            "required": [
-                "message",
-                "messageDetail",
-                "unexpected"
-            ],
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "messageDetail": {
-                    "type": "string"
-                },
-                "unexpected": {
-                    "type": "boolean"
                 }
             }
         },
@@ -6289,6 +6380,27 @@
                     "format": "int32",
                     "description": "The number of rows deleted",
                     "type": "integer"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Schema.NewComment": {
+            "description": "The model representing a new comment to be added.",
+            "required": [
+                "comment",
+                "entityIds"
+            ],
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "description": "The comment text to be added",
+                    "type": "string"
+                },
+                "entityIds": {
+                    "description": "The unique identifiers of the entity (flight, event, etc.) that the comment is associated with.\r\n            These should be primary key values on the entity's database and should be in order. These should \r\n            uniquely identify a single entity",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/System.Object"
+                    }
                 }
             }
         },
@@ -7534,7 +7646,7 @@
                 },
                 "processedDate": {
                     "format": "date-time",
-                    "description": "The date and time that the processing occured (UTC).",
+                    "description": "The date and time that the processing occurred (UTC).",
                     "type": "string"
                 },
                 "retryCount": {

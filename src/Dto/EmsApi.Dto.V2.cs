@@ -10,6 +10,55 @@ namespace EmsApi.Dto.V2
 
     
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Error 
+    {
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
+        public string Message { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("messageDetail", Required = Newtonsoft.Json.Required.Always)]
+        public string MessageDetail { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("unexpected", Required = Newtonsoft.Json.Required.Always)]
+        public bool Unexpected { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Error FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Error>(data);
+        }
+    
+    }
+    
+    /// <summary>Represents a message used to provide information to users about an action that took place in an API request.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ApiMessage 
+    {
+        /// <summary>A categorization of the message.</summary>
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ApiMessageType? Type { get; set; }
+    
+        /// <summary>A string message describing an event that occurred in an API action or event.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ApiMessage FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiMessage>(data);
+        }
+    
+    }
+    
     /// <summary>Provides an identifier for an individual analytic.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AnalyticId 
@@ -58,30 +107,6 @@ namespace EmsApi.Dto.V2
         public static AnalyticInfo FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<AnalyticInfo>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Error 
-    {
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
-        public string Message { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("messageDetail", Required = Newtonsoft.Json.Required.Always)]
-        public string MessageDetail { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("unexpected", Required = Newtonsoft.Json.Required.Always)]
-        public bool Unexpected { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static Error FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Error>(data);
         }
     
     }
@@ -1238,6 +1263,32 @@ namespace EmsApi.Dto.V2
         public static DeleteResult FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<DeleteResult>(data);
+        }
+    
+    }
+    
+    /// <summary>The model representing a new comment to be added.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class NewComment 
+    {
+        /// <summary>The comment text to be added</summary>
+        [Newtonsoft.Json.JsonProperty("comment", Required = Newtonsoft.Json.Required.Always)]
+        public string Comment { get; set; }
+    
+        /// <summary>The unique identifiers of the entity (flight, event, etc.) that the comment is associated with.
+        ///             These should be primary key values on the entity's database and should be in order. These should 
+        ///             uniquely identify a single entity</summary>
+        [Newtonsoft.Json.JsonProperty("entityIds", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<object> EntityIds { get; set; } = new System.Collections.ObjectModel.ObservableCollection<object>();
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static NewComment FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewComment>(data);
         }
     
     }
@@ -2445,7 +2496,7 @@ namespace EmsApi.Dto.V2
         [Newtonsoft.Json.JsonProperty("processingState", Required = Newtonsoft.Json.Required.Always)]
         public string ProcessingState { get; set; }
     
-        /// <summary>The date and time that the processing occured (UTC).</summary>
+        /// <summary>The date and time that the processing occurred (UTC).</summary>
         [Newtonsoft.Json.JsonProperty("processedDate", Required = Newtonsoft.Json.Required.Always)]
         public System.DateTime ProcessedDate { get; set; }
     
@@ -4255,6 +4306,20 @@ namespace EmsApi.Dto.V2
     
         [System.Runtime.Serialization.EnumMember(Value = "csv")]
         Csv = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.73.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum ApiMessageType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "warning")]
+        Warning = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "error")]
+        Error = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "success")]
+        Success = 2,
     
     }
     
