@@ -1,1 +1,1 @@
-* Add DiscreteValues property to the GetField routes
+* Add the new "add comment" route
