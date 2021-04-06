@@ -1275,11 +1275,12 @@ namespace EmsApi.Dto.V2
         [Newtonsoft.Json.JsonProperty("comment", Required = Newtonsoft.Json.Required.Always)]
         public string Comment { get; set; }
     
-        /// <summary>The unique identifiers of the entity (flight, event, etc.) that the comment is associated with.
+        /// <summary>The unique identifier of the entity (flight, event, etc.) that the comment is associated with.
+        ///             This is an array since some entity types have compound primary keys (multiple fields).
         ///             These should be primary key values on the entity's database and should be in order. These should 
         ///             uniquely identify a single entity</summary>
-        [Newtonsoft.Json.JsonProperty("entityIds", Required = Newtonsoft.Json.Required.Always)]
-        public System.Collections.ObjectModel.ObservableCollection<object> EntityIds { get; set; } = new System.Collections.ObjectModel.ObservableCollection<object>();
+        [Newtonsoft.Json.JsonProperty("entityIdentifier", Required = Newtonsoft.Json.Required.Always)]
+        public System.Collections.ObjectModel.ObservableCollection<object> EntityIdentifier { get; set; } = new System.Collections.ObjectModel.ObservableCollection<object>();
     
         public string ToJson() 
         {

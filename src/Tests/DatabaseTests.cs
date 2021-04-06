@@ -117,6 +117,21 @@ namespace EmsApi.Tests
             }
         }
 
+        [Fact( DisplayName = "A create comment query should add a new comment", Skip = ("We don't want to add a new comment every time the tests are run.") )]
+        public void Create_Comment_should_add_comment()
+        {
+            using( var api = NewService() )
+            {
+                var newComment = new NewComment
+                {
+                    Comment = "look at that data quality",
+                    // This value will depend on the EMS system. It should be a flight record number.
+                    EntityIdentifier = { 3135409 }
+                };
+                api.Databases.CreateComment( Monikers.FlightDatabase, Monikers.FlightDataQualityField, newComment );
+            }
+        }
+
         private void TestSimple( bool orderResults )
         {
             using( var api = NewService() )
@@ -201,6 +216,7 @@ namespace EmsApi.Tests
             public static string LandingAirportName = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[[nav][type-link][airport-landing * foqa-flights]]][[nav][base-field][nav-airport.name]]]";
             public static string TakeoffValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-takeoff]]]";
             public static string LandingValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-landing]]]";
+            public static string FlightDataQualityField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[data-quality][base-field][data-quality-comments]]]";
         }
     }
 }

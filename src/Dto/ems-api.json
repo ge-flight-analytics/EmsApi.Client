@@ -1973,7 +1973,7 @@
                     "Database APIs"
                 ],
                 "summary": "Adds a new comment to the provided comment field.",
-                "description": "The field identifier must be a comment log field (e.g. Event Review Comments) and the field must exist on the database. \r\n            This means that to add an Event Review Comment the database ID must match the APM profile database for the Event you \r\n            are adding the comment to. The EntityIds provided in the query body are used to identify which entity (e.g. Event) the\r\n            comment should be added to and these EntityIds must match the order of the primary keys and should uniquely identify a \r\n            single entity.",
+                "description": "The field identifier must be a comment log field (e.g. Event Review Comments) and the field must exist on the database. \r\n            This means that to add an Event Review Comment the database ID must match the APM profile database for the Event you \r\n            are adding the comment to. The EntityIdentifier values provided in the query body are used to identify which entity (e.g. Event) the\r\n            comment should be added to and these EntityIdentifier values must match the order of the primary keys and should uniquely identify a \r\n            single entity. The EntityIdentifier is an array since some entity types have compound primary keys (multiple values). This field will\r\n            only ever represent a single entity.",
                 "operationId": "Database_CreateComment",
                 "consumes": [
                     "application/json",
@@ -2018,7 +2018,7 @@
                         "description": "No Content"
                     },
                     "400": {
-                        "description": "If the comment field or the entity IDs provided are invalid or incompatible. Also if no comment was added and we had no other errors.",
+                        "description": "If the comment field or the entity IDs provided are invalid or incompatible.",
                         "schema": {
                             "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
                         }
@@ -6387,7 +6387,7 @@
             "description": "The model representing a new comment to be added.",
             "required": [
                 "comment",
-                "entityIds"
+                "entityIdentifier"
             ],
             "type": "object",
             "properties": {
@@ -6395,8 +6395,8 @@
                     "description": "The comment text to be added",
                     "type": "string"
                 },
-                "entityIds": {
-                    "description": "The unique identifiers of the entity (flight, event, etc.) that the comment is associated with.\r\n            These should be primary key values on the entity's database and should be in order. These should \r\n            uniquely identify a single entity",
+                "entityIdentifier": {
+                    "description": "The unique identifier of the entity (flight, event, etc.) that the comment is associated with.\r\n            This is an array since some entity types have compound primary keys (multiple fields).\r\n            These should be primary key values on the entity's database and should be in order. These should \r\n            uniquely identify a single entity",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/System.Object"
