@@ -599,6 +599,24 @@ namespace EmsApi.Client.V2
         Task<DeleteResult> DeleteDatabaseEntity( int emsSystemId, string databaseId, Delete delete );
 
         /// <summary>
+        /// Adds a comment to a specific comment field.
+        /// </summary>
+        /// <param name="emsSystemId">
+        /// The unique identifier of the EMS system.
+        /// </param>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database the comment field exists on.
+        /// </param>
+        /// <param name="commentFieldId">
+        /// The unique identifier of the comment field to add a comment to.
+        /// </param>
+        /// <param name="newComment">
+        /// The context and information of the new comment.
+        /// </param>
+        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/comments/{commentFieldId}" )]
+        Task CreateComment( int emsSystemId, string databaseId, string commentFieldId, NewComment newComment );
+
+        /// <summary>
         /// Starts a new upload.
         /// </summary>
         /// <param name="emsSystemId">

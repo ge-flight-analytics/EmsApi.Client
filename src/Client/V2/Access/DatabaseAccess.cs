@@ -621,5 +621,55 @@ namespace EmsApi.Client.V2.Access
         {
             return AccessTaskResult( DeleteEntityAsync( databaseId, deleteQuery, emsSystem ) );
         }
+
+        /// <summary>
+        /// Adds a new comment to a comment field on an specific entity.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the field exists on.
+        /// </param>
+        /// <param name="commentFieldId">
+        /// The unique identifier of the EMS comment field where the comment will be added.
+        /// </param>
+        /// <param name="newComment">
+        /// The information and context for the new comment to be added.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        /// <returns>
+        /// The resulting task object. Note this is wrapped in a bool generic task
+        /// for interoperability and the bool value does not indicate anything.
+        /// </returns>
+        public async Task<bool> CreateCommentAsync( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
+        {
+            int ems = GetEmsSystemForMethodCall( emsSystem );
+
+            // Wrap the Task in a Task<bool> for handling the response later using AccessTaskResult.
+            // We don't actually care about the bool response.
+            await CallApiTask( api => api.CreateComment( ems, databaseId, commentFieldId, newComment ) ).ConfigureAwait( false );
+            return false;
+
+        }
+
+        /// <summary>
+        /// Adds a new comment to a comment field on an specific entity.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the field exists on.
+        /// </param>
+        /// <param name="commentFieldId">
+        /// The unique identifier of the EMS comment field where the comment will be added.
+        /// </param>
+        /// <param name="newComment">
+        /// The information and context for the new comment to be added.
+        /// </param>
+        /// <param name="emsSystem">
+        /// The unique identifier of the system containing the EMS data.
+        /// </param>
+        public void CreateComment( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
+        {
+            AccessTaskResult<bool>( CreateCommentAsync( databaseId, commentFieldId, newComment, emsSystem ) );
+        }
     }
 }
