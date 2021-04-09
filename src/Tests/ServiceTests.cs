@@ -3,6 +3,7 @@ using Xunit;
 using FluentAssertions;
 
 using EmsApi.Client.V2;
+using System.Collections.Generic;
 
 namespace EmsApi.Tests
 {
@@ -49,6 +50,31 @@ namespace EmsApi.Tests
             var service = NewService();
             service.Dispose();
             service = null;
+        }
+
+        [Fact( DisplayName = "Requests should have custom headers set from service configuration" )]
+        public void Api_Requests_Should_Append_Custom_Headers()
+        {
+            using( var api = NewService() )
+            {
+                api.ServiceConfig.CustomHeaders = new Dictionary<string, string>
+                {
+                    { HttpHeaderNames.ClientUsername, "test-user" },
+                    { HttpHeaderNames.CorrelationId, new Guid().ToString() }
+                };
+                api.EmsSystems.GetAll();
+
+                api.ServiceConfig.CustomHeaders = new Dictionary<string, string>
+                {
+                    { "X-Custom-Header", "custom header" }
+                };
+                api.EmsSystems.GetAll();
+
+                // Since we are adding the headers to the HttpRequest and we don't currently
+                // have a way to mock or intercept those requests we can't assert against the
+                // headers. However since this is actively hitting the EMS API, you can
+                // check the headers are set in the logs.
+            }
         }
     }
 }

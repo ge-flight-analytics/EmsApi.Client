@@ -1,7 +1,7 @@
 
 namespace EmsApi.Client.V2
 {
-    internal class HttpHeaderNames
+    public class HttpHeaderNames
     {
         public const string UserAgent = "User-Agent";
         public const string AcceptEncoding = "Accept-Encoding";
