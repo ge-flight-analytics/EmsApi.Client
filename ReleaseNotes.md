@@ -1,1 +1,1 @@
-* Add the new "add comment" route
+* Add a CustomHeaders property to the service configuration
