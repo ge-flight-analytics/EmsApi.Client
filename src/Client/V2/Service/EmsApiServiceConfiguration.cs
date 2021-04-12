@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 
 namespace EmsApi.Client.V2
@@ -61,7 +62,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// The user agent header to pass along to the EMS API. 
         /// </summary>
-        public string UserAgent { get { return "EmsApi.Client v1.1"; } } // TODO: Get this from the assembly version.
+        public string UserAgent { get { return "EmsApi.Client v1.4"; } } // TODO: Get this from the assembly version.
 
         /// <summary>
         /// When true, gzip compression will be used for responses on routes that support it.
@@ -94,6 +95,15 @@ namespace EmsApi.Client.V2
         /// are always executed regardless of this setting.
         /// </summary>
         public bool ThrowExceptionOnApiFailure { get; set; }
+
+        /// <summary>
+        /// Any customer headers that should be appended to a request. These are appended
+        /// at the time of making the request so they can be altered on a per request basis.
+        /// This is a good place to set the "X-Adi-Client-Username" and "X-Adi-Correlation-Id"
+        /// headers. It's up to the application performing the requests to add and remove these
+        /// headers.
+        /// </summary>
+        public Dictionary<string, string> CustomHeaders { get; set; }
 
         /// <summary>
         /// Returns true if authentication should use the trusted token, false otherwise.
@@ -192,7 +202,8 @@ namespace EmsApi.Client.V2
                 ApplicationName = this.ApplicationName,
                 TrustedToken = this.TrustedToken,
                 ThrowExceptionOnApiFailure = this.ThrowExceptionOnApiFailure,
-                ThrowExceptionOnAuthFailure = this.ThrowExceptionOnAuthFailure
+                ThrowExceptionOnAuthFailure = this.ThrowExceptionOnAuthFailure,
+                CustomHeaders = this.CustomHeaders
             };
         }
 

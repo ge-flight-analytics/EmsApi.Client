@@ -89,7 +89,7 @@ namespace EmsApi.Client.V2
                 return true;
             }
 
-            // Notify listerners of authentication failure.
+            // Notify listeners of authentication failure.
             Authenticated = false;
             OnAuthenticationFailed( new AuthenticationFailedEventArgs( error ) );
             return false;
@@ -99,6 +99,8 @@ namespace EmsApi.Client.V2
         {
             // Todo: How do we account for race conditions when retrieving a token?
 
+            AddCustomHeaders( request.Headers );
+            
             // Even if we fail to authenticate, we need to send the request or other code might
             // be stuck awaiting the send.
             if( !IsTokenValid() && !Authenticate( cancellationToken ) )
@@ -107,6 +109,17 @@ namespace EmsApi.Client.V2
             // Apply our auth token to the header.
             request.Headers.Authorization = new AuthenticationHeaderValue( SecurityConstants.Scheme, m_authToken );
             return base.SendAsync( request, cancellationToken );
+        }
+
+        /// <summary>
+        /// Adds any custom headers configured in the <see cref="EmsApiServiceConfiguration"/> to the request.
+        /// This will add the custom headers to any existing headers (not overwriting them).
+        /// </summary>
+        /// <param name="headers">The existing request headers to add the custom headers to.</param>
+        private void AddCustomHeaders( HttpRequestHeaders headers )
+        {
+            if( m_serviceConfig.CustomHeaders != null )
+                m_serviceConfig.CustomHeaders.ToList().ForEach( keyValue => headers.Add( keyValue.Key, keyValue.Value ) );
         }
 
         private void InvalidateAuthentication()
