@@ -22,7 +22,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<ProfileResults> GetResultsAsync( int flightId, string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ProfileResults> GetResultsAsync( int flightId, string profileId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProfileResults( ems, flightId, profileId ) );
@@ -41,7 +41,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public ProfileResults GetResults( int flightId, string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual ProfileResults GetResults( int flightId, string profileId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetResultsAsync( flightId, profileId, emsSystem ) );
         }
@@ -58,7 +58,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<Profile>> GetDefinitionsAsync( string parentGroupId = null, string search = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Profile>> GetDefinitionsAsync( string parentGroupId = null, string search = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProfiles( ems, parentGroupId, search ) );
@@ -76,7 +76,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<Profile> GetDefinitions( string parentGroupId = null, string search = null, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Profile> GetDefinitions( string parentGroupId = null, string search = null, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetDefinitionsAsync( parentGroupId, search, emsSystem ) );
         }
@@ -92,7 +92,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<ProfileGroup> GetGroupAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ProfileGroup> GetGroupAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProfileGroup( ems, groupId ) );
@@ -109,7 +109,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public ProfileGroup GetGroup( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual ProfileGroup GetGroup( string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetGroupAsync( groupId, emsSystem ) );
         }
@@ -130,7 +130,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<ProfileGlossary> GetGlossaryAsync( string profileId, int? profileVersionNumber = null, string format = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ProfileGlossary> GetGlossaryAsync( string profileId, int? profileVersionNumber = null, string format = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProfileGlossary( ems, profileId, profileVersionNumber, format ) );
@@ -152,7 +152,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public ProfileGlossary GetGlossary( string profileId, int? profileVersionNumber = null, string format = null, int emsSystem = NoEmsServerSpecified )
+        public virtual ProfileGlossary GetGlossary( string profileId, int? profileVersionNumber = null, string format = null, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetGlossaryAsync( profileId, profileVersionNumber, format, emsSystem ) );
         }
@@ -166,7 +166,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<Event>> GetEventsAsync( string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Event>> GetEventsAsync( string profileId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProfileEvents( ems, profileId ) );
@@ -181,7 +181,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<Event> GetEvents( string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Event> GetEvents( string profileId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetEventsAsync( profileId, emsSystem ) );
         }
@@ -198,7 +198,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<Event> GetEventAsync( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Event> GetEventAsync( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProfileEvent( ems, profileId, eventId ) );
@@ -216,7 +216,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Event GetEvent( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
+        public virtual Event GetEvent( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetEventAsync( profileId, eventId, emsSystem ) );
         }

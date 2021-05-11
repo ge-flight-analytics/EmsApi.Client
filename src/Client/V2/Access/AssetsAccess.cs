@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmsApi.Dto.V2;
 
@@ -15,7 +15,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<Fleet>> GetAllFleetsAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Fleet>> GetAllFleetsAsync( int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetFleets( ems ) );
@@ -27,7 +27,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<Fleet> GetAllFleets( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Fleet> GetAllFleets( int emsSystem = NoEmsServerSpecified )
         {
             return SafeAccessEnumerableTask( GetAllFleetsAsync( emsSystem ) );
         }
@@ -41,7 +41,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<Fleet> GetFleetAsync( int fleetId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Fleet> GetFleetAsync( int fleetId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetFleet( ems, fleetId ) );
@@ -56,7 +56,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Fleet GetFleet( int fleetId, int emsSystem = NoEmsServerSpecified )
+        public virtual Fleet GetFleet( int fleetId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetFleetAsync( fleetId, emsSystem ) );
         }
@@ -70,7 +70,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<Aircraft>> GetAllAircraftAsync( int? fleetId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Aircraft>> GetAllAircraftAsync( int? fleetId = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetAllAircraft( ems, fleetId ) );
@@ -85,7 +85,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<Aircraft> GetAllAircraft( int? fleetId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Aircraft> GetAllAircraft( int? fleetId = null, int emsSystem = NoEmsServerSpecified )
         {
             return SafeAccessEnumerableTask( GetAllAircraftAsync( fleetId, emsSystem ) );
         }
@@ -99,7 +99,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<Aircraft> GetAircraftAsync( int aircraftId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Aircraft> GetAircraftAsync( int aircraftId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetSingleAircraft( ems, aircraftId ) );
@@ -114,7 +114,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Aircraft GetAircraft( int aircraftId, int emsSystem = NoEmsServerSpecified )
+        public virtual Aircraft GetAircraft( int aircraftId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetAircraftAsync( aircraftId, emsSystem ) );
         }
@@ -125,7 +125,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<Airport>> GetAllAirportsAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Airport>> GetAllAirportsAsync( int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetAirports( ems ) );
@@ -137,7 +137,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<Airport> GetAllAirports( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Airport> GetAllAirports( int emsSystem = NoEmsServerSpecified )
         {
             return SafeAccessEnumerableTask( GetAllAirportsAsync( emsSystem ) );
         }
@@ -151,7 +151,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<Airport> GetAirportAsync( int airportId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Airport> GetAirportAsync( int airportId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetAirport( ems, airportId ) );
@@ -166,7 +166,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Airport GetAirport( int airportId, int emsSystem = NoEmsServerSpecified )
+        public virtual Airport GetAirport( int airportId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetAirportAsync( airportId, emsSystem ) );
         }
@@ -177,7 +177,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<FlightPhase>> GetAllFlightPhasesAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<FlightPhase>> GetAllFlightPhasesAsync( int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetFlightPhases( ems ) );
@@ -189,7 +189,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<FlightPhase> GetAllFlightPhases( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<FlightPhase> GetAllFlightPhases( int emsSystem = NoEmsServerSpecified )
         {
             return SafeAccessEnumerableTask( GetAllFlightPhasesAsync( emsSystem ) );
         }
@@ -203,7 +203,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<FlightPhase> GetFlightPhaseAsync( int phaseId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<FlightPhase> GetFlightPhaseAsync( int phaseId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetFlightPhase( ems, phaseId ) );
@@ -218,7 +218,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public FlightPhase GetFlightPhase( int phaseId, int emsSystem = NoEmsServerSpecified )
+        public virtual FlightPhase GetFlightPhase( int phaseId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetFlightPhaseAsync( phaseId, emsSystem ) );
         }

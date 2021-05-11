@@ -13,7 +13,7 @@ namespace EmsApi.Client.V2.Access
         /// <summary>
         /// Returns all EMS systems connected to the API endpoint that the user has access to.
         /// </summary>
-        public Task<IEnumerable<EmsSystem>> GetAllAsync()
+        public virtual Task<IEnumerable<EmsSystem>> GetAllAsync()
         {
             return CallApiTask( api => api.GetEmsSystems() );
         }
@@ -24,7 +24,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="id">
         /// The EMS system id to return.
         /// </param>
-        public Task<EmsSystem> GetAsync( int id )
+        public virtual Task<EmsSystem> GetAsync( int id )
         {
             return GetAllAsync().ContinueWith( t =>
             {
@@ -38,7 +38,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="id">
         /// The EMS system id to return information for.
         /// </param>
-        public Task<EmsSystemInfo> GetSystemInfoAsync( int id )
+        public virtual Task<EmsSystemInfo> GetSystemInfoAsync( int id )
         {
             return CallApiTask( api => api.GetEmsSystemInfo( id ) );
         }
@@ -46,7 +46,7 @@ namespace EmsApi.Client.V2.Access
         /// <summary>
         /// Returns all EMS systems connected to the API endpoint that the user has access to.
         /// </summary>
-        public IEnumerable<EmsSystem> GetAll()
+        public virtual IEnumerable<EmsSystem> GetAll()
         {
             return SafeAccessEnumerableTask( GetAllAsync() );
         }
@@ -57,7 +57,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="id">
         /// The EMS system id to return.
         /// </param>
-        public EmsSystem Get( int id )
+        public virtual EmsSystem Get( int id )
         {
             return AccessTaskResult( GetAsync( id ) );
         }
@@ -68,7 +68,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="id">
         /// The EMS system id to return information for.
         /// </param>
-        public EmsSystemInfo GetSystemInfo( int id )
+        public virtual EmsSystemInfo GetSystemInfo( int id )
         {
             return AccessTaskResult( GetSystemInfoAsync( id ) );
         }
@@ -79,7 +79,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="id">
         /// The EMS system id to check.
         /// </param>
-        public Task<bool> PingAsync( int id )
+        public virtual Task<bool> PingAsync( int id )
         {
             return CallApiTask( api => api.PingEmsSystem( id ) );
         }
@@ -90,7 +90,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="id">
         /// The EMS system id to check.
         /// </param>
-        public bool Ping( int id )
+        public virtual bool Ping( int id )
         {
             return AccessTaskResult( PingAsync( id ) );
         }

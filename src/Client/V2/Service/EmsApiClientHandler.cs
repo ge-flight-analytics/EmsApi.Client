@@ -100,7 +100,7 @@ namespace EmsApi.Client.V2
             // Todo: How do we account for race conditions when retrieving a token?
 
             AddCustomHeaders( request.Headers );
-            
+
             // Even if we fail to authenticate, we need to send the request or other code might
             // be stuck awaiting the send.
             if( !IsTokenValid() && !Authenticate( cancellationToken ) )

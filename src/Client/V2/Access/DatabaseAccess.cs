@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<DatabaseGroup> GetDatabaseGroupAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<DatabaseGroup> GetDatabaseGroupAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetDatabaseGroup( ems, groupId ) );
@@ -41,7 +40,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public DatabaseGroup GetDatabaseGroup( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual DatabaseGroup GetDatabaseGroup( string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetDatabaseGroupAsync( groupId, emsSystem ) );
         }
@@ -60,7 +59,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<FieldGroup> GetFieldGroupAsync( string databaseId, string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<FieldGroup> GetFieldGroupAsync( string databaseId, string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetDatabaseFieldGroup( ems, databaseId, groupId ) );
@@ -80,7 +79,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public FieldGroup GetFieldGroup( string databaseId, string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual FieldGroup GetFieldGroup( string databaseId, string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetFieldGroupAsync( databaseId, groupId, emsSystem ) );
         }
@@ -97,7 +96,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<Field> GetFieldAsync( string databaseId, string fieldId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Field> GetFieldAsync( string databaseId, string fieldId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetDatabaseFieldDefinition( ems, databaseId, fieldId ) );
@@ -115,7 +114,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Field GetField( string databaseId, string fieldId, int emsSystem = NoEmsServerSpecified )
+        public virtual Field GetField( string databaseId, string fieldId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetFieldAsync( databaseId, fieldId, emsSystem ) );
         }
@@ -143,7 +142,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<IEnumerable<Field>> SearchFieldsAsync( string databaseId, string search = null, string fieldGroupId = null,
+        public virtual Task<IEnumerable<Field>> SearchFieldsAsync( string databaseId, string search = null, string fieldGroupId = null,
             bool includeProfiles = false, int maxResults = 200, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
@@ -173,7 +172,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public IEnumerable<Field> SearchFields( string databaseId, string search = null, string fieldGroupId = null,
+        public virtual IEnumerable<Field> SearchFields( string databaseId, string search = null, string fieldGroupId = null,
             bool includeProfiles = false, int maxResults = 200, int emsSystem = NoEmsServerSpecified )
         {
             return SafeAccessEnumerableTask( SearchFieldsAsync(
@@ -194,7 +193,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<DatabaseQueryResult> SimpleQueryAsync( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<DatabaseQueryResult> SimpleQueryAsync( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.QueryDatabase( ems, databaseId, query.Raw ) ).ContinueWith( task =>
@@ -224,7 +223,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
+        public virtual Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.QueryDatabase( ems, databaseId, query.Raw ) ).ContinueWith( task =>
@@ -250,7 +249,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public DatabaseQueryResult SimpleQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual DatabaseQueryResult SimpleQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( SimpleQueryAsync( databaseId, query, emsSystem ) );
         }
@@ -272,7 +271,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public void SimpleQuery( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
+        public virtual void SimpleQuery( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
         {
             SimpleQueryAsync( databaseId, query, callback, emsSystem ).Wait();
         }
@@ -294,7 +293,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public async Task<DatabaseQueryResult> QueryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual async Task<DatabaseQueryResult> QueryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
             var result = new DatabaseQueryResult( info.Header );
@@ -333,7 +332,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
             var result = new DatabaseQueryResult( info.Header );
@@ -368,7 +367,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public DatabaseQueryResult Query( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual DatabaseQueryResult Query( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( QueryAsync( databaseId, query, rowsPerCall, emsSystem ) );
         }
@@ -393,7 +392,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
         {
             QueryAsync( databaseId, query, callback, rowsPerCall, emsSystem ).Wait();
         }
@@ -411,7 +410,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<AsyncQueryInfo> StartQueryAsync( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<AsyncQueryInfo> StartQueryAsync( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.StartAsyncDatabaseQuery( ems, databaseId, query.Raw ) );
@@ -430,7 +429,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public AsyncQueryInfo StartQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual AsyncQueryInfo StartQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( StartQueryAsync( databaseId, query, emsSystem ) );
         }
@@ -453,7 +452,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<AsyncQueryData> ReadQueryAsync( string databaseId, string queryId, int start, int end, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<AsyncQueryData> ReadQueryAsync( string databaseId, string queryId, int start, int end, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.ReadAsyncDatabaseQuery( ems, databaseId, queryId, start, end ) );
@@ -477,7 +476,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public AsyncQueryData ReadQuery( string databaseId, string queryId, int start, int end, int emsSystem = NoEmsServerSpecified )
+        public virtual AsyncQueryData ReadQuery( string databaseId, string queryId, int start, int end, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( ReadQueryAsync( databaseId, queryId, start, end, emsSystem ) );
         }
@@ -494,7 +493,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task StopQueryAsync( string databaseId, string queryId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task StopQueryAsync( string databaseId, string queryId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.StopAsyncDatabaseQuery( ems, databaseId, queryId ) );
@@ -512,7 +511,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public void StopQuery( string databaseId, string queryId, int emsSystem = NoEmsServerSpecified )
+        public virtual void StopQuery( string databaseId, string queryId, int emsSystem = NoEmsServerSpecified )
         {
             StopQueryAsync( databaseId, queryId, emsSystem ).Wait();
         }
@@ -529,7 +528,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<CreateResult> CreateEntityAsync( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<CreateResult> CreateEntityAsync( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.CreateDatabaseEntity( ems, databaseId, createQuery ) );
@@ -547,7 +546,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public CreateResult CreateEntity( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual CreateResult CreateEntity( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( CreateEntityAsync( databaseId, createQuery, emsSystem ) );
         }
@@ -564,7 +563,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<UpdateResult> UpdateAsync( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UpdateResult> UpdateAsync( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.UpdateDatabase( ems, databaseId, updateQuery ) );
@@ -582,7 +581,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public UpdateResult Update( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual UpdateResult Update( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( UpdateAsync( databaseId, updateQuery, emsSystem ) );
         }
@@ -599,7 +598,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public Task<DeleteResult> DeleteEntityAsync( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<DeleteResult> DeleteEntityAsync( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.DeleteDatabaseEntity( ems, databaseId, deleteQuery ) );
@@ -617,7 +616,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public DeleteResult DeleteEntity( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual DeleteResult DeleteEntity( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( DeleteEntityAsync( databaseId, deleteQuery, emsSystem ) );
         }
@@ -641,7 +640,7 @@ namespace EmsApi.Client.V2.Access
         /// The resulting task object. Note this is wrapped in a bool generic task
         /// for interoperability and the bool value does not indicate anything.
         /// </returns>
-        public async Task<bool> CreateCommentAsync( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
+        public async virtual Task<bool> CreateCommentAsync( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
 
@@ -667,7 +666,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the system containing the EMS data.
         /// </param>
-        public void CreateComment( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
+        public virtual void CreateComment( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
         {
             AccessTaskResult<bool>( CreateCommentAsync( databaseId, commentFieldId, newComment, emsSystem ) );
         }
