@@ -62,7 +62,14 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// The user agent header to pass along to the EMS API. 
         /// </summary>
-        public string UserAgent { get { return "EmsApi.Client v1.4"; } } // TODO: Get this from the assembly version.
+        public string UserAgent
+        {
+            get
+            {
+                Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return $"EmsApi.Client v{version.Major}.{version.Minor}.{version.Build}";
+            }
+        }
 
         /// <summary>
         /// When true, gzip compression will be used for responses on routes that support it.
