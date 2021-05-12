@@ -83,7 +83,7 @@ namespace EmsApi.Tests
             using( var api = NewService() )
             {
                 var mock = new Mock<Client.V2.Access.EmsSystemsAccess>();
-                mock.Setup( mk => mk.Get( 1 ) ).Returns( new Dto.V2.EmsSystem
+                mock.Setup( mk => mk.Get( It.IsAny<int>() ) ).Returns( new Dto.V2.EmsSystem
                 {
                     Id = 1,
                     Name = "Mocked EMS",
@@ -93,6 +93,7 @@ namespace EmsApi.Tests
 
                 api.EmsSystems = mock.Object;
                 Dto.V2.EmsSystem result = api.EmsSystems.Get( 1 );
+                api.Authenticated.Should().BeFalse();
                 result.Id.Should().Be( 1 );
                 result.Name.Should().Be( "Mocked EMS" );
                 result.Description.Should().Be( "Not a real system" );
@@ -105,7 +106,7 @@ namespace EmsApi.Tests
             using( var api = NewService() )
             {
                 var mock = new Mock<Client.V2.Access.EmsSystemsAccess>();
-                mock.Setup( mk => mk.GetAsync( 1 ) ).Returns( System.Threading.Tasks.Task.FromResult( new Dto.V2.EmsSystem
+                mock.Setup( mk => mk.GetAsync( It.IsAny<int>() ) ).Returns( System.Threading.Tasks.Task.FromResult( new Dto.V2.EmsSystem
                 {
                     Id = 1,
                     Name = "Mocked EMS",
@@ -114,7 +115,8 @@ namespace EmsApi.Tests
                 } ) );
 
                 api.EmsSystems = mock.Object;
-                Dto.V2.EmsSystem result = await api.EmsSystems.GetAsync( 1 );
+                Dto.V2.EmsSystem result = await api.EmsSystems.GetAsync( 2 );
+                api.Authenticated.Should().BeFalse();
                 result.Id.Should().Be( 1 );
                 result.Name.Should().Be( "Mocked EMS" );
                 result.Description.Should().Be( "Not a real system" );
