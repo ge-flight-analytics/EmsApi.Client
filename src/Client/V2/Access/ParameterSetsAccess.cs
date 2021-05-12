@@ -17,7 +17,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system that owns the parameter sets.
         /// </param>
-        public Task<ParameterSetGroup> GetSetsAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ParameterSetGroup> GetSetsAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetParameterSets( ems, groupId ) );
@@ -32,7 +32,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system that owns the parameter sets.
         /// </param>
-        public ParameterSetGroup GetSets( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual ParameterSetGroup GetSets( string groupId = null, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetSetsAsync( groupId, emsSystem ) );
         }

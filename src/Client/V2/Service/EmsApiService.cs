@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using Refit;
-using Newtonsoft.Json.Linq;
-
 using EmsApi.Client.V2.Access;
+using Newtonsoft.Json.Linq;
+using Refit;
 
 namespace EmsApi.Client.V2
 {
@@ -41,47 +40,47 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Access to the swagger specification.
         /// </summary>
-        public SwaggerAccess Swagger { get; private set; }
+        public SwaggerAccess Swagger { get; set; }
 
         /// <summary>
         /// Access to ems-system routes.
         /// </summary>
-        public EmsSystemsAccess EmsSystems { get; private set; }
+        public EmsSystemsAccess EmsSystems { get; set; }
 
         /// <summary>
         /// Access to assets routes.
         /// </summary>
-        public AssetsAccess Assets { get; private set; }
+        public AssetsAccess Assets { get; set; }
 
         /// <summary>
         /// Access to trajectory routes.
         /// </summary>
-        public TrajectoriesAccess Trajectories { get; private set; }
+        public TrajectoriesAccess Trajectories { get; set; }
 
         /// <summary>
         /// Access to APM profile routes.
         /// </summary>
-        public ProfilesAccess Profiles { get; private set; }
+        public ProfilesAccess Profiles { get; set; }
 
         /// <summary>
         /// Access to parameter-sets routes
         /// </summary>
-        public ParameterSetsAccess ParameterSets { get; private set; }
+        public ParameterSetsAccess ParameterSets { get; set; }
 
         /// <summary>
         /// Access to analytics routes.
         /// </summary>
-        public AnalyticsAccess Analytics { get; private set; }
+        public AnalyticsAccess Analytics { get; set; }
 
         /// <summary>
         /// Access to database routes.
         /// </summary>
-        public DatabaseAccess Databases { get; private set; }
+        public DatabaseAccess Databases { get; set; }
 
         /// <summary>
         /// Access to transfer (uploads) routes.
         /// </summary>
-        public TransfersAccess Transfers { get; private set; }
+        public TransfersAccess Transfers { get; set; }
 
         /// <summary>
         /// The current EMS system that the service is operating on. This value may
@@ -126,7 +125,7 @@ namespace EmsApi.Client.V2
             // extraction time, especially if the SQL server is already busy.
             // The value we opted for here is the value used for timeouts at the application gateway level and
             // therefore seems like a reasonable default to use.
-            m_httpClient.Timeout = TimeSpan.FromSeconds(600);
+            m_httpClient.Timeout = TimeSpan.FromSeconds( 600 );
 
             // Set up access properties for external clients to use.
             InitializeAccessProperties();
@@ -230,7 +229,7 @@ namespace EmsApi.Client.V2
         /// or false otherwise. Normally authentication is performed on the first API
         /// request or on the next request whenever the current token times out.
         /// </summary>
-        public bool Authenticate()
+        public virtual bool Authenticate()
         {
             return m_clientHandler.Authenticate();
         }

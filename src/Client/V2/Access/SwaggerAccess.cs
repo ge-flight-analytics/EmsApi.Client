@@ -12,7 +12,7 @@ namespace EmsApi.Client.V2.Access
         /// <summary>
         /// Returns the swagger specification as a raw chunk of JSON.
         /// </summary>
-        public string GetSpecificationJson( string apiVersion = DefaultSwaggerVersion )
+        public virtual string GetSpecificationJson( string apiVersion = DefaultSwaggerVersion )
         {
             var task = CallApiTask( api => api.GetSwaggerSpecification( apiVersion ) );
             return AccessTaskResult( task );
@@ -21,7 +21,7 @@ namespace EmsApi.Client.V2.Access
         /// <summary>
         /// Returns the swagger specification as a parsed <seealso cref="JObject"/>.
         /// </summary>
-        public JObject GetSpecification( string apiVersion = DefaultSwaggerVersion )
+        public virtual JObject GetSpecification( string apiVersion = DefaultSwaggerVersion )
         {
             return JObject.Parse( GetSpecificationJson( apiVersion ) );
         }

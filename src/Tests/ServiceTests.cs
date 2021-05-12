@@ -1,9 +1,9 @@
 using System;
-using Xunit;
-using FluentAssertions;
-
-using EmsApi.Client.V2;
 using System.Collections.Generic;
+using EmsApi.Client.V2;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace EmsApi.Tests
 {
@@ -74,6 +74,52 @@ namespace EmsApi.Tests
                 // have a way to mock or intercept those requests we can't assert against the
                 // headers. However since this is actively hitting the EMS API, you can
                 // check the headers are set in the logs.
+            }
+        }
+
+        [Fact( DisplayName = "Synchronous service methods can be mocked" )]
+        public void Service_Methods_Can_Be_Mocked()
+        {
+            using( var api = NewService() )
+            {
+                var mock = new Mock<Client.V2.Access.EmsSystemsAccess>();
+                mock.Setup( mk => mk.Get( It.IsAny<int>() ) ).Returns( new Dto.V2.EmsSystem
+                {
+                    Id = 1,
+                    Name = "Mocked EMS",
+                    Description = "Not a real system",
+                    DirAdi = @"\\mockems\adi"
+                } );
+
+                api.EmsSystems = mock.Object;
+                Dto.V2.EmsSystem result = api.EmsSystems.Get( 1 );
+                api.Authenticated.Should().BeFalse();
+                result.Id.Should().Be( 1 );
+                result.Name.Should().Be( "Mocked EMS" );
+                result.Description.Should().Be( "Not a real system" );
+            }
+        }
+
+        [Fact( DisplayName = "Async service methods can be mocked" )]
+        public async void Service_Methods_Can_Be_Mocked_Async()
+        {
+            using( var api = NewService() )
+            {
+                var mock = new Mock<Client.V2.Access.EmsSystemsAccess>();
+                mock.Setup( mk => mk.GetAsync( It.IsAny<int>() ) ).Returns( System.Threading.Tasks.Task.FromResult( new Dto.V2.EmsSystem
+                {
+                    Id = 1,
+                    Name = "Mocked EMS",
+                    Description = "Not a real system",
+                    DirAdi = @"\\mockems\adi"
+                } ) );
+
+                api.EmsSystems = mock.Object;
+                Dto.V2.EmsSystem result = await api.EmsSystems.GetAsync( 2 );
+                api.Authenticated.Should().BeFalse();
+                result.Id.Should().Be( 1 );
+                result.Name.Should().Be( "Mocked EMS" );
+                result.Description.Should().Be( "Not a real system" );
             }
         }
     }

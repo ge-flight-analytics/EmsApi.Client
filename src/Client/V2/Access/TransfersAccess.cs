@@ -20,7 +20,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<UploadParameters> StartUploadAsync( UploadRequest request, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UploadParameters> StartUploadAsync( UploadRequest request, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.StartUpload( ems, request ) );
@@ -35,7 +35,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadParameters StartUpload( UploadRequest request, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadParameters StartUpload( UploadRequest request, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( StartUploadAsync( request, emsSystem ) );
         }
@@ -62,7 +62,7 @@ namespace EmsApi.Client.V2.Access
         /// The practical limit for a single chunk is less than 4MB or so, dependent on the web server's configuration. 
         /// If you receive 500 responses, try smaller chunk sizes.
         /// </remarks>
-        public Task<UploadResult> UploadChunkAsync( string transferId, int first, int last, byte[] chunk, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UploadResult> UploadChunkAsync( string transferId, int first, int last, byte[] chunk, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.UploadChunk( ems, transferId, first, last, chunk ) );
@@ -90,7 +90,7 @@ namespace EmsApi.Client.V2.Access
         /// The practical limit for a single chunk is less than 4MB or so, dependent on the web server's configuration. 
         /// If you receive 500 responses, try smaller chunk sizes.
         /// </remarks>
-        public UploadResult UploadChunk( string transferId, int first, int last, byte[] chunk, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadResult UploadChunk( string transferId, int first, int last, byte[] chunk, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( UploadChunkAsync( transferId, first, last, chunk, emsSystem ) );
         }
@@ -104,7 +104,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<UploadStatus> GetUploadStatusAsync( string transferId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UploadStatus> GetUploadStatusAsync( string transferId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetUploadStatus( ems, transferId ) );
@@ -119,7 +119,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadStatus GetUploadStatus( string transferId, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadStatus GetUploadStatus( string transferId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetUploadStatusAsync( transferId, emsSystem ) );
         }
@@ -130,7 +130,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="maxEntries">
         /// The maximum number of entries to return; this is capped at 50, and 50 will be used if it's not specified.
         /// </param>
-        public Task<IEnumerable<UploadRecord>> GetUploadsAsync( int maxEntries = 50 )
+        public virtual Task<IEnumerable<UploadRecord>> GetUploadsAsync( int maxEntries = 50 )
         {
             return CallApiTask( api => api.GetUploads( maxEntries ) );
         }
@@ -141,7 +141,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="maxEntries">
         /// The maximum number of entries to return; this is capped at 50, and 50 will be used if it's not specified.
         /// </param>
-        public IEnumerable<UploadRecord> GetUploads( int maxEntries = 50 )
+        public virtual IEnumerable<UploadRecord> GetUploads( int maxEntries = 50 )
         {
             return AccessTaskResult( GetUploadsAsync( maxEntries ) );
         }
@@ -155,7 +155,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<UploadRecord> FinishUploadAsync( string transferId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UploadRecord> FinishUploadAsync( string transferId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.FinishUpload( ems, transferId ) );
@@ -170,7 +170,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadRecord FinishUpload( string transferId, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadRecord FinishUpload( string transferId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( FinishUploadAsync( transferId, emsSystem ) );
         }
@@ -184,7 +184,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<UploadRecord> CancelUploadAsync( string transferId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UploadRecord> CancelUploadAsync( string transferId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.CancelUpload( ems, transferId ) );
@@ -199,7 +199,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadRecord CancelUpload( string transferId, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadRecord CancelUpload( string transferId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( CancelUploadAsync( transferId, emsSystem ) );
         }
@@ -213,7 +213,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<UploadProcessingStatus> GetProcessingStatusAsync( string uploadId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UploadProcessingStatus> GetProcessingStatusAsync( string uploadId, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProcessingStatusSingle( ems, uploadId ) );
@@ -228,7 +228,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadProcessingStatus GetProcessingStatus( string uploadId, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadProcessingStatus GetProcessingStatus( string uploadId, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetProcessingStatusAsync( uploadId, emsSystem ) );
         }
@@ -242,7 +242,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public Task<IEnumerable<UploadProcessingStatus>> GetProcessingStatusAsync( string[] ids, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<UploadProcessingStatus>> GetProcessingStatusAsync( string[] ids, int emsSystem = NoEmsServerSpecified )
         {
             int ems = GetEmsSystemForMethodCall( emsSystem );
             return CallApiTask( api => api.GetProcessingStatusMultiple( emsSystem, ids ) );
@@ -257,7 +257,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public IEnumerable<UploadProcessingStatus> GetProcessingStatus( string[] ids, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<UploadProcessingStatus> GetProcessingStatus( string[] ids, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( GetProcessingStatusAsync( ids, emsSystem ) );
         }
@@ -277,7 +277,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public async Task<UploadRecord> UploadFileAsync( string path, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
+        public virtual async Task<UploadRecord> UploadFileAsync( string path, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
         {
             if( !File.Exists( path ) )
                 throw new FileNotFoundException( string.Format( "Could not upload file with path {0} because it does not exist.", path ) );
@@ -301,7 +301,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadRecord UploadFile( string path, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadRecord UploadFile( string path, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( UploadFileAsync( path, request, chunkSizeBytes, emsSystem ) );
         }
@@ -321,7 +321,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public async Task<UploadRecord> UploadStreamAsync( Stream stream, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
+        public virtual async Task<UploadRecord> UploadStreamAsync( Stream stream, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
         {
             UploadParameters info = await StartUploadAsync( request, emsSystem );
 
@@ -369,7 +369,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="emsSystem">
         /// The unique identifier of the EMS system.
         /// </param>
-        public UploadRecord UploadStream( Stream stream, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
+        public virtual UploadRecord UploadStream( Stream stream, UploadRequest request, int chunkSizeBytes = DefaultChunkSize, int emsSystem = NoEmsServerSpecified )
         {
             return AccessTaskResult( UploadStreamAsync( stream, request, chunkSizeBytes, emsSystem ) );
         }

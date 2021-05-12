@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using EmsApi.Client.V2;
-using EmsApi.Dto.V2;
 
 namespace EmsApi.Tests
 {
@@ -26,9 +23,8 @@ namespace EmsApi.Tests
             if( string.IsNullOrEmpty( pass ) )
                 throw new InvalidOperationException( "Test API Password not set" );
 
-            m_config = new EmsApiServiceConfiguration( useEnvVars: false )
+            m_config = new EmsApiServiceConfiguration( endpoint, useEnvVars: false )
             {
-                Endpoint = endpoint,
                 UserName = user,
                 Password = pass
             };
