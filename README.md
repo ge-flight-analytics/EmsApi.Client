@@ -31,7 +31,7 @@ class Program
 	{
 		var config = new EmsApiServiceConfiguration()
 		{
-			// If this is not set, it will be retrieved from the "EmsApiEndpoint" environemnt variable.
+			// If this is not set, it will be retrieved from the "EmsApiEndpoint" environment variable.
 			// If neither are set, it will default to EmsApiEndpoints.Default.
 			Endpoint = "https://myapiserver/api",
 			
@@ -77,7 +77,7 @@ using( EmsApiService api = new EmsApiService( config ) )
 }
 ```
 
-## Access different API functions through properties on the EmsApiService object.
+## Access different API functions through properties on the EmsApiService object
 
 Access to different API routes is exposed through various properties on the EmsApiService class. For instance,
 to query the database you would use the `api.Databases` property, and call one of the methods on that object.
