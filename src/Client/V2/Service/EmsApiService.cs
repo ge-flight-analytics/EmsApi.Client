@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using EmsApi.Client.V2.Access;
+using Microsoft.Extensions.Http;
 using Newtonsoft.Json.Linq;
+using Polly;
+using Polly.Extensions.Http;
 using Refit;
 
 namespace EmsApi.Client.V2
@@ -31,9 +34,9 @@ namespace EmsApi.Client.V2
         /// The first and last handlers, if provided, will be added to the standard HttpMessageHandler
         /// stack used. This can be useful for tracing or testing purposes.
         /// </summary>
-        public EmsApiService( EmsApiServiceConfiguration config, DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null )
+        public EmsApiService( EmsApiServiceConfiguration config, DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null, bool retryTransientFailures = true )
         {
-            Initialize( firstHandler, lastHandler );
+            Initialize( firstHandler, lastHandler, retryTransientFailures );
             ServiceConfig = config;
         }
 
@@ -92,20 +95,54 @@ namespace EmsApi.Client.V2
             get; private set;
         }
 
-        private void InitializeHttpClient( DelegatingHandler firstHandler, DelegatingHandler lastHandler )
+        private void InitializeHttpClient( DelegatingHandler firstHandler, DelegatingHandler lastHandler, bool retryTransientFailures )
         {
-            var clientHandler = new HttpClientHandler
+            // This builds up our message handler stack from back to front.
+            // The nextHandler variable is what to assign to the InnerHandler of the latest handler created.
+            HttpMessageHandler nextHandler = new HttpClientHandler
             {
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip
             };
-            if( lastHandler != null )
-                lastHandler.InnerHandler = clientHandler;
-            m_messageHandler = new MessageHandler( (HttpMessageHandler)lastHandler ?? clientHandler );
-            if( firstHandler != null )
-                firstHandler.InnerHandler = m_messageHandler;
-            m_httpClient = new HttpClient( firstHandler ?? m_messageHandler )
-            {
 
+            if( lastHandler != null )
+            {
+                lastHandler.InnerHandler = nextHandler;
+                nextHandler = lastHandler;
+            }
+
+            if( retryTransientFailures )
+            {
+                // If we are configured to retry transient failures set that up now.
+                // We add this *after* the MessageHandler in the stack so that we get retries on
+                // both token request calls as well as normal API calls.
+                // This will retry and 408 (request timeout), 5XX (server error), or network failures (HttpRequestException).
+                var policyBuilder = HttpPolicyExtensions.HandleTransientHttpError();
+                var policy = policyBuilder.WaitAndRetryAsync( new[]
+                {
+                    // Retry 3 times with slightly longer retry periods each time.
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(10)
+                } );
+                nextHandler = new PolicyHttpMessageHandler( policy )
+                {
+                    InnerHandler = nextHandler
+                };
+            }
+
+            nextHandler = m_messageHandler = new MessageHandler
+            {
+                InnerHandler = nextHandler
+            };
+
+            if( firstHandler != null )
+            {
+                firstHandler.InnerHandler = nextHandler;
+                nextHandler = firstHandler;
+            }
+
+            m_httpClient = new HttpClient( nextHandler )
+            {
                 // The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
                 // instance a gnarly database query can take longer than that to return on query creation or first result
                 // extraction time, especially if the SQL server is already busy.
@@ -118,7 +155,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
-        private void Initialize( DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null )
+        private void Initialize( DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null, bool retryTransientFailures = true )
         {
             m_cleanup = new List<Action>();
             m_authCallbacks = new List<Action<string>>();
@@ -126,7 +163,7 @@ namespace EmsApi.Client.V2
 
             // Set up the HTTP client. This includes enabling automatic GZip decompression as the
             // EMS API will use that if requested.
-            InitializeHttpClient( firstHandler, lastHandler );
+            InitializeHttpClient( firstHandler, lastHandler, retryTransientFailures );
 
             // Set up access properties for external clients to use.
             InitializeAccessProperties();

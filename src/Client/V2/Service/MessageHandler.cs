@@ -21,9 +21,6 @@ namespace EmsApi.Client.V2
     /// </remarks>
     internal class MessageHandler : DelegatingHandler
     {
-        public MessageHandler( HttpMessageHandler innerHandler ) : base( innerHandler )
-        { }
-
         private EmsApiServiceConfiguration m_serviceConfig;
 
         // We store copies of some service config variables to determine if a change to the service
