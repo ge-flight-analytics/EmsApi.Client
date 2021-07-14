@@ -7,29 +7,28 @@ namespace EmsApi.Client.V2.Access
     /// <summary>
     /// Provides access to EMS API "assets" routes.
     /// </summary>
-    public class AssetsAccess : CachedEmsIdRouteAccess
+    public class AssetsAccess : RouteAccess
     {
         /// <summary>
         /// Returns the list of fleets the user has access to in their security context.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<Fleet>> GetAllFleetsAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Fleet>> GetAllFleetsAsync( CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetFleets( ems ) );
+            return CallApiTask( api => api.GetFleets( context ) );
         }
 
         /// <summary>
         /// Returns the list of fleets the user has access to in their security context.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<Fleet> GetAllFleets( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Fleet> GetAllFleets( CallContext context = null )
         {
-            return SafeAccessEnumerableTask( GetAllFleetsAsync( emsSystem ) );
+            return SafeAccessEnumerableTask( GetAllFleetsAsync( context ) );
         }
 
         /// <summary>
@@ -38,13 +37,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fleetId">
         /// The unique identifier of the fleet.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<Fleet> GetFleetAsync( int fleetId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Fleet> GetFleetAsync( int fleetId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetFleet( ems, fleetId ) );
+            return CallApiTask( api => api.GetFleet( fleetId, context ) );
         }
 
         /// <summary>
@@ -53,12 +51,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fleetId">
         /// The unique identifier of the fleet.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Fleet GetFleet( int fleetId, int emsSystem = NoEmsServerSpecified )
+        public virtual Fleet GetFleet( int fleetId, CallContext context = null )
         {
-            return AccessTaskResult( GetFleetAsync( fleetId, emsSystem ) );
+            return AccessTaskResult( GetFleetAsync( fleetId, context ) );
         }
 
         /// <summary>
@@ -67,13 +65,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fleetId">
         /// The fleet id to filter by, if any.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<Aircraft>> GetAllAircraftAsync( int? fleetId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Aircraft>> GetAllAircraftAsync( int? fleetId = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAllAircraft( ems, fleetId ) );
+            return CallApiTask( api => api.GetAllAircraft( fleetId, context ) );
         }
 
         /// <summary>
@@ -82,12 +79,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fleetId">
         /// The fleet id to filter by, if any.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<Aircraft> GetAllAircraft( int? fleetId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Aircraft> GetAllAircraft( int? fleetId = null, CallContext context = null )
         {
-            return SafeAccessEnumerableTask( GetAllAircraftAsync( fleetId, emsSystem ) );
+            return SafeAccessEnumerableTask( GetAllAircraftAsync( fleetId, context ) );
         }
 
         /// <summary>
@@ -96,13 +93,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="aircraftId">
         /// The unique identifier of the aircraft.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<Aircraft> GetAircraftAsync( int aircraftId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Aircraft> GetAircraftAsync( int aircraftId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetSingleAircraft( ems, aircraftId ) );
+            return CallApiTask( api => api.GetSingleAircraft( aircraftId, context ) );
         }
 
         /// <summary>
@@ -111,35 +107,34 @@ namespace EmsApi.Client.V2.Access
         /// <param name="aircraftId">
         /// The unique identifier of the aircraft.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Aircraft GetAircraft( int aircraftId, int emsSystem = NoEmsServerSpecified )
+        public virtual Aircraft GetAircraft( int aircraftId, CallContext context = null )
         {
-            return AccessTaskResult( GetAircraftAsync( aircraftId, emsSystem ) );
+            return AccessTaskResult( GetAircraftAsync( aircraftId, context ) );
         }
 
         /// <summary>
         /// Returns the list of airports that have been visited by the EMS system.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<Airport>> GetAllAirportsAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Airport>> GetAllAirportsAsync( CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAirports( ems ) );
+            return CallApiTask( api => api.GetAirports( context ) );
         }
 
         /// <summary>
         /// Returns the list of airports that have been visited by the EMS system.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<Airport> GetAllAirports( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Airport> GetAllAirports( CallContext context = null )
         {
-            return SafeAccessEnumerableTask( GetAllAirportsAsync( emsSystem ) );
+            return SafeAccessEnumerableTask( GetAllAirportsAsync( context ) );
         }
 
         /// <summary>
@@ -148,13 +143,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="airportId">
         /// The unique identifier for the airport.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<Airport> GetAirportAsync( int airportId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Airport> GetAirportAsync( int airportId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAirport( ems, airportId ) );
+            return CallApiTask( api => api.GetAirport( airportId, context ) );
         }
 
         /// <summary>
@@ -163,35 +157,34 @@ namespace EmsApi.Client.V2.Access
         /// <param name="airportId">
         /// The unique identifier for the airport.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Airport GetAirport( int airportId, int emsSystem = NoEmsServerSpecified )
+        public virtual Airport GetAirport( int airportId, CallContext context = null )
         {
-            return AccessTaskResult( GetAirportAsync( airportId, emsSystem ) );
+            return AccessTaskResult( GetAirportAsync( airportId, context ) );
         }
 
         /// <summary>
         /// Returns the list of flight phases.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<FlightPhase>> GetAllFlightPhasesAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<FlightPhase>> GetAllFlightPhasesAsync( CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetFlightPhases( ems ) );
+            return CallApiTask( api => api.GetFlightPhases( context ) );
         }
 
         /// <summary>
         /// Returns the list of flight phases.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<FlightPhase> GetAllFlightPhases( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<FlightPhase> GetAllFlightPhases( CallContext context = null )
         {
-            return SafeAccessEnumerableTask( GetAllFlightPhasesAsync( emsSystem ) );
+            return SafeAccessEnumerableTask( GetAllFlightPhasesAsync( context ) );
         }
 
         /// <summary>
@@ -200,13 +193,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="phaseId">
         /// The unique identifier of the flight phase.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<FlightPhase> GetFlightPhaseAsync( int phaseId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<FlightPhase> GetFlightPhaseAsync( int phaseId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetFlightPhase( ems, phaseId ) );
+            return CallApiTask( api => api.GetFlightPhase( phaseId, context ) );
         }
 
         /// <summary>
@@ -215,12 +207,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="phaseId">
         /// The unique identifier of the flight phase.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual FlightPhase GetFlightPhase( int phaseId, int emsSystem = NoEmsServerSpecified )
+        public virtual FlightPhase GetFlightPhase( int phaseId, CallContext context = null )
         {
-            return AccessTaskResult( GetFlightPhaseAsync( phaseId, emsSystem ) );
+            return AccessTaskResult( GetFlightPhaseAsync( phaseId, context ) );
         }
     }
 }

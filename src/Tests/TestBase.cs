@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 using EmsApi.Client.V2;
 
@@ -23,20 +24,21 @@ namespace EmsApi.Tests
             if( string.IsNullOrEmpty( pass ) )
                 throw new InvalidOperationException( "Test API Password not set" );
 
+            string apiClientId = Environment.GetEnvironmentVariable( "EmsApiTestClientId" );
+            if( string.IsNullOrEmpty( apiClientId ) )
+                throw new InvalidOperationException( "Test API Client Id not set" );
+
+            string apiClientSecret = Environment.GetEnvironmentVariable( "EmsApiTestClientSecret" );
+            if( string.IsNullOrEmpty( apiClientSecret ) )
+                throw new InvalidOperationException( "Test API Client Secret not set" );
+
             m_config = new EmsApiServiceConfiguration( endpoint, useEnvVars: false )
             {
                 UserName = user,
-                Password = pass
+                Password = pass,
+                ApiClientId = apiClientId,
+                ApiClientSecret = apiClientSecret
             };
-        }
-
-        /// <summary>
-        /// A valid EMS system ID for the current test run that will be automatically applied
-        /// to the CachedEmsSystem property when a new service instance is created.
-        /// </summary>
-        protected static int ValidEmsSystemId
-        {
-            get { return 1; }
         }
 
         /// <summary>
@@ -44,12 +46,9 @@ namespace EmsApi.Tests
         /// (set by the EmsApiTest* environment variables) and a valid cached ems system
         /// id.
         /// </summary>
-        protected static EmsApiService NewService()
+        protected static EmsApiService NewService( DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null )
         {
-            return new EmsApiService( m_config.Clone() )
-            {
-                CachedEmsSystem = ValidEmsSystemId
-            };
+            return new EmsApiService( m_config.Clone(), firstHandler, lastHandler );
         }
 
         /// <summary>

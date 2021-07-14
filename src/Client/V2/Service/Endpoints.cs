@@ -4,7 +4,7 @@ namespace EmsApi.Client.V2
     /// <summary>
     /// Well-known API endpoints.
     /// </summary>
-    public static class EmsApiEndpoints
+    public static class Endpoints
     {
         /// <summary>
         /// The default endpoint.

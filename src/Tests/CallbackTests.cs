@@ -25,7 +25,7 @@ namespace EmsApi.Tests
             using( var service = NewNoThrowInvalidLoginService() )
             {
                 service.RegisterApiExceptionCallback( err => message = err );
-                service.EmsSystems.GetAll();
+                service.EmsSystem.Get();
             }
 
             message.Should().NotBeNullOrEmpty();

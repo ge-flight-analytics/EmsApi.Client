@@ -6,7 +6,7 @@ namespace EmsApi.Client.V2.Access
     /// <summary>
     /// Provides access to EMS API "parameter-sets" routes.
     /// </summary>
-    public class ParameterSetsAccess : CachedEmsIdRouteAccess
+    public class ParameterSetsAccess : RouteAccess
     {
         /// <summary>
         /// Returns information about the parameter sets on the given EMS system.
@@ -14,13 +14,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="groupId">
         /// The optional ID of the parameter set group to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system that owns the parameter sets.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<ParameterSetGroup> GetSetsAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ParameterSetGroup> GetSetsAsync( string groupId = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetParameterSets( ems, groupId ) );
+            return CallApiTask( api => api.GetParameterSets( groupId, context ) );
         }
 
         /// <summary>
@@ -29,12 +28,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="groupId">
         /// The optional ID of the parameter set group to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system that owns the parameter sets.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual ParameterSetGroup GetSets( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual ParameterSetGroup GetSets( string groupId = null, CallContext context = null )
         {
-            return AccessTaskResult( GetSetsAsync( groupId, emsSystem ) );
+            return AccessTaskResult( GetSetsAsync( groupId, context ) );
         }
     }
 }

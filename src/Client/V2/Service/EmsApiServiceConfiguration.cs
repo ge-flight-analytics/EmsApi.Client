@@ -24,7 +24,7 @@ namespace EmsApi.Client.V2
         /// </param>
         /// <remarks>
         /// </remarks>
-        public EmsApiServiceConfiguration( string endpoint = EmsApiEndpoints.Default, bool useEnvVars = true )
+        public EmsApiServiceConfiguration( string endpoint = Endpoints.Default, bool useEnvVars = true )
         {
             Endpoint = endpoint;
             UseCompression = true;
@@ -54,6 +54,32 @@ namespace EmsApi.Client.V2
         public string Password { get; set; }
 
         /// <summary>
+        /// The API Client id to use for trusted authentication.
+        /// 
+        /// You will need to also set ApiClientSecret and a TrustedAuthName and TrustedAuthValue in the CallContext
+        /// (although TrustedAuthName can be set here in config if it is the same for this service configuration).
+        ///
+        /// You can set BOTH UserName+Password AND ApiClientId+ApiClientSecret. If you do that then any CallContexts
+        /// which do NOT include TrustedAuthValue being set will use the Password Authentication path (and the
+        /// username and password). Any CallContexts which DO include TrustedAuthValue being set will use the Trusted
+        /// Authentication path.
+        /// </summary>
+        public string ApiClientId { get; set; }
+
+        /// <summary>
+        /// The API Client secret to use for trusted authentication.
+        /// See <seealso cref="ApiClientId"/> for other trusted authentication requirements.
+        /// </summary>
+        public string ApiClientSecret { get; set; }
+
+        /// <summary>
+        /// The property name to search in EFOQA classic AD as part of trusted authentication.
+        /// This can instead be set in the <seealso cref="CallContext.TrustedAuthName"/> if you wish to make it a
+        /// per-call setting. That setting will override whatever is set here.
+        /// </summary>
+        public string TrustedAuthName { get; set; }
+
+        /// <summary>
         /// The application name to pass along to the EMS API. This is used for logging on the
         /// server side.
         /// </summary>
@@ -80,14 +106,6 @@ namespace EmsApi.Client.V2
         public bool UseCompression { get; set; }
 
         /// <summary>
-        /// The trusted token to use for authentication.
-        /// </summary>
-        /// <remarks>
-        /// This will always be overridden by the username / password.
-        /// </remarks>
-        public string TrustedToken { get; set; }
-
-        /// <summary>
         /// When true, the <seealso cref="EmsApiService"/> will throw an exception for
         /// authentication failures. This is the default behavior, because opting out 
         /// of exceptions requires implementing additional callback functions. Callbacks
@@ -111,14 +129,6 @@ namespace EmsApi.Client.V2
         /// headers.
         /// </summary>
         public Dictionary<string, string> CustomHeaders { get; set; }
-
-        /// <summary>
-        /// Returns true if authentication should use the trusted token, false otherwise.
-        /// </summary>
-        public bool UseTrustedToken()
-        {
-            return string.IsNullOrEmpty( UserName );
-        }
 
         /// <summary>
         /// Adds the default headers into the given header collection.
@@ -153,21 +163,32 @@ namespace EmsApi.Client.V2
                 return false;
             }
 
-            // Make sure we have a username / password OR token.
-            if( !string.IsNullOrEmpty( UserName ) )
+            // Make sure if we have a username we have a password.
+            bool usernameSet = !string.IsNullOrEmpty( UserName );
+            if( usernameSet )
             {
                 if( string.IsNullOrEmpty( Password ) )
                 {
                     error = "A password was not provided for the given username.";
                     return false;
                 }
-
-                return true;
             }
 
-            if( string.IsNullOrEmpty( TrustedToken ) )
+            // Make sure if we have a client id that we have a client secret.
+            bool clientIdSet = !string.IsNullOrEmpty( ApiClientId );
+            if( clientIdSet )
             {
-                error = "Either a username and password or a trusted token must be provided.";
+                if( string.IsNullOrEmpty( ApiClientSecret ) )
+                {
+                    error = "An API client secret was not provided for the given API client id.";
+                    return false;
+                }
+            }
+
+            // Validate we have some form of authentication specified.
+            if( !usernameSet && !clientIdSet )
+            {
+                error = "Either a username and password or API client id and secret must be provided.";
                 return false;
             }
 
@@ -182,6 +203,9 @@ namespace EmsApi.Client.V2
             string endpoint = Environment.GetEnvironmentVariable( "EmsApiEndpoint" );
             string user = Environment.GetEnvironmentVariable( "EmsApiUsername" );
             string base64pass = Environment.GetEnvironmentVariable( "EmsApiPassword" );
+            string clientId = Environment.GetEnvironmentVariable( "EmsApiClientId" );
+            string base64ClientSecret = Environment.GetEnvironmentVariable( "EmsApiClientSecret" );
+            string clientTrustedAuthName = Environment.GetEnvironmentVariable( "EmsApiTrustedAuthName" );
 
             if( !string.IsNullOrWhiteSpace( endpoint ) )
                 Endpoint = endpoint.Trim();
@@ -194,6 +218,18 @@ namespace EmsApi.Client.V2
                 byte[] passBytes = Convert.FromBase64String( base64pass.Trim() );
                 Password = System.Text.Encoding.UTF8.GetString( passBytes );
             }
+
+            if( !string.IsNullOrWhiteSpace( clientId ) )
+                ApiClientId = user.Trim();
+
+            if( !string.IsNullOrWhiteSpace( base64ClientSecret ) )
+            {
+                byte[] secretBytes = Convert.FromBase64String( base64ClientSecret.Trim() );
+                ApiClientSecret = System.Text.Encoding.UTF8.GetString( secretBytes );
+            }
+
+            if( !string.IsNullOrWhiteSpace( clientTrustedAuthName ) )
+                TrustedAuthName = clientTrustedAuthName.Trim();
         }
 
         /// <summary>
@@ -206,8 +242,10 @@ namespace EmsApi.Client.V2
                 Endpoint = this.Endpoint,
                 UserName = this.UserName,
                 Password = this.Password,
+                ApiClientId = this.ApiClientId,
+                ApiClientSecret = this.ApiClientSecret,
+                TrustedAuthName = this.TrustedAuthName,
                 ApplicationName = this.ApplicationName,
-                TrustedToken = this.TrustedToken,
                 ThrowExceptionOnApiFailure = this.ThrowExceptionOnApiFailure,
                 ThrowExceptionOnAuthFailure = this.ThrowExceptionOnAuthFailure,
                 CustomHeaders = this.CustomHeaders

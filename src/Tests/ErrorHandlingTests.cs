@@ -7,13 +7,6 @@ namespace EmsApi.Tests
 {
     public class ErrorHandlingTests : TestBase
     {
-        [Fact( DisplayName = "Enabling auth exceptions should throw an exception" )]
-        public void Enabling_auth_exceptions_should_throw_an_exception()
-        {
-            using( var service = NewInvalidLoginService() )
-                Assert.Throws<EmsApiAuthenticationException>( () => service.Authenticate() );
-        }
-
         [Fact( DisplayName = "Disabling auth exceptions should not throw an exception" )]
         public void Disabling_auth_exceptions_should_not_throw_an_exception()
         {
@@ -31,8 +24,8 @@ namespace EmsApi.Tests
                 service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
                 service.ServiceConfig.ThrowExceptionOnApiFailure = true;
 
-                Action causeFailure = () => service.EmsSystems.GetAll();
-                causeFailure.Should().ThrowExactly<EmsApiException>();
+                Action causeFailure = () => service.EmsSystem.GetSystemInfo();
+                causeFailure.Should().Throw<EmsApiException>();
             }
         }
 
@@ -43,7 +36,7 @@ namespace EmsApi.Tests
             {
                 service.ServiceConfig.ThrowExceptionOnApiFailure = false;
                 service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
-                service.EmsSystems.GetAll();
+                service.EmsSystem.Get();
             }
         }
     }

@@ -7,14 +7,11 @@ namespace EmsApi.Client.V2.Access
     /// <summary>
     /// Provides access to EMS API "analytics" routes.
     /// </summary>
-    public class AnalyticsAccess : CachedEmsIdRouteAccess
+    public class AnalyticsAccess : RouteAccess
     {
         /// <summary>
         /// Searches for analytics by name.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="text">
         /// The search terms used to find a list of analytics by name.
         /// </param>
@@ -29,18 +26,17 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual Task<IEnumerable<AnalyticInfo>> SearchAsync( string text, string groupId = null, int? maxResults = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<IEnumerable<AnalyticInfo>> SearchAsync( string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalytics( ems, text, groupId, maxResults, category ) );
+            return CallApiTask( api => api.GetAnalytics( text, groupId, maxResults, category, context ) );
         }
 
         /// <summary>
         /// Searches for analytics by name.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="text">
         /// The search terms used to find a list of analytics by name.
         /// </param>
@@ -55,17 +51,17 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual IEnumerable<AnalyticInfo> Search( string text, string groupId = null, int? maxResults = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual IEnumerable<AnalyticInfo> Search( string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
         {
-            return SafeAccessEnumerableTask( SearchAsync( text, groupId, maxResults, category, emsSystem ) );
+            return SafeAccessEnumerableTask( SearchAsync( text, groupId, maxResults, category, context ) );
         }
 
         /// <summary>
         /// Searches for analytics by name for a specific flight.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when searching analytics.
         /// </param>
@@ -83,18 +79,17 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual Task<IEnumerable<AnalyticInfo>> SearchAsync( int flightId, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<IEnumerable<AnalyticInfo>> SearchAsync( int flightId, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticsWithFlight( ems, flightId, text, groupId, maxResults, category ) );
+            return CallApiTask( api => api.GetAnalyticsWithFlight( flightId, text, groupId, maxResults, category, context ) );
         }
 
         /// <summary>
         /// Searches for analytics by name.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when searching analytics.
         /// </param>
@@ -112,83 +107,81 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual IEnumerable<AnalyticInfo> Search( int flightId, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual IEnumerable<AnalyticInfo> Search( int flightId, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
         {
-            return SafeAccessEnumerableTask( SearchAsync( flightId, text, groupId, maxResults, category, emsSystem ) );
+            return SafeAccessEnumerableTask( SearchAsync( flightId, text, groupId, maxResults, category, context ) );
         }
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public virtual Task<AnalyticInfo> GetInfoAsync( string analyticId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<AnalyticInfo> GetInfoAsync( string analyticId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
             var analyticIdObj = new AnalyticId { Id = analyticId };
-            return CallApiTask( api => api.GetAnalyticInfo( ems, analyticIdObj ) );
+            return CallApiTask( api => api.GetAnalyticInfo( analyticIdObj, context ) );
         }
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public virtual AnalyticInfo GetInfo( string analyticId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual AnalyticInfo GetInfo( string analyticId, CallContext context = null )
         {
-            return AccessTaskResult( GetInfoAsync( analyticId, emsSystem ) );
+            return AccessTaskResult( GetInfoAsync( analyticId, context ) );
         }
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when retrieving the analytic information.
         /// </param>
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public virtual Task<AnalyticInfo> GetInfoAsync( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<AnalyticInfo> GetInfoAsync( int flightId, string analyticId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
             var analyticIdObj = new AnalyticId { Id = analyticId };
-            return CallApiTask( api => api.GetAnalyticInfoWithFlight( ems, flightId, analyticIdObj ) );
+            return CallApiTask( api => api.GetAnalyticInfoWithFlight( flightId, analyticIdObj, context ) );
         }
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when retrieving the analytic information.
         /// </param>
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public virtual AnalyticInfo GetInfo( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual AnalyticInfo GetInfo( int flightId, string analyticId, CallContext context = null )
         {
-            return AccessTaskResult( GetInfoAsync( flightId, analyticId, emsSystem ) );
+            return AccessTaskResult( GetInfoAsync( flightId, analyticId, context ) );
         }
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="analyticGroupId">
         /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
         /// </param>
@@ -196,18 +189,17 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticGroup( ems, analyticGroupId, category ) );
+            return CallApiTask( api => api.GetAnalyticGroup( analyticGroupId, category, context ) );
         }
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="analyticGroupId">
         /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
         /// </param>
@@ -215,17 +207,17 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual AnalyticGroupContents GetGroup( string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual AnalyticGroupContents GetGroup( string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
         {
-            return AccessTaskResult( GetGroupAsync( analyticGroupId, category, emsSystem ) );
+            return AccessTaskResult( GetGroupAsync( analyticGroupId, category, context ) );
         }
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when retrieving the analytic information.
         /// </param>
@@ -236,18 +228,17 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual Task<AnalyticGroupContents> GetGroupAsync( int flightId, string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<AnalyticGroupContents> GetGroupAsync( int flightId, string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticGroupWithFlight( ems, flightId, analyticGroupId, category ) );
+            return CallApiTask( api => api.GetAnalyticGroupWithFlight( flightId, analyticGroupId, category, context ) );
         }
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when retrieving the analytic information.
         /// </param>
@@ -258,52 +249,51 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        public virtual AnalyticGroupContents GetGroup( int flightId, string analyticGroupId = null, Category category = Category.Full, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual AnalyticGroupContents GetGroup( int flightId, string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
         {
-            return AccessTaskResult( GetGroupAsync( flightId, analyticGroupId, category, emsSystem ) );
+            return AccessTaskResult( GetGroupAsync( flightId, analyticGroupId, category, context ) );
         }
 
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record for which to query data.
         /// </param>
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        public virtual Task<QueryResult> QueryResultsAsync( int flightId, AnalyticQuery query, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<QueryResult> QueryResultsAsync( int flightId, AnalyticQuery query, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticResults( ems, flightId, query.Raw ) );
+            return CallApiTask( api => api.GetAnalyticResults( flightId, query.Raw, context ) );
         }
 
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record for which to query data.
         /// </param>
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        public virtual QueryResult QueryResults( int flightId, AnalyticQuery query, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual QueryResult QueryResults( int flightId, AnalyticQuery query, CallContext context = null )
         {
-            return AccessTaskResult( QueryResultsAsync( flightId, query, emsSystem ) );
+            return AccessTaskResult( QueryResultsAsync( flightId, query, context ) );
         }
 
         /// <summary>
         /// Returns the analytic metadata for a flight.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record for which to retrieve data.
         /// </param>
@@ -311,18 +301,17 @@ namespace EmsApi.Client.V2.Access
         /// The analytic ID (wrapped in double quotes) for which metadata is retrieved.
         /// These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public virtual Task<Metadata> GetMetadataAsync( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<Metadata> GetMetadataAsync( int flightId, string analyticId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetAnalyticMetadata( ems, flightId, new AnalyticId { Id = analyticId } ) );
+            return CallApiTask( api => api.GetAnalyticMetadata( flightId, new AnalyticId { Id = analyticId }, context ) );
         }
 
         /// <summary>
         /// Returns the analytic metadata for a flight.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record for which to retrieve data.
         /// </param>
@@ -330,9 +319,12 @@ namespace EmsApi.Client.V2.Access
         /// The analytic ID (wrapped in double quotes) for which metadata is retrieved.
         /// These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        public virtual Metadata GetMetadata( int flightId, string analyticId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Metadata GetMetadata( int flightId, string analyticId, CallContext context = null )
         {
-            return AccessTaskResult( GetMetadataAsync( flightId, analyticId, emsSystem ) );
+            return AccessTaskResult( GetMetadataAsync( flightId, analyticId, context ) );
         }
     }
 }

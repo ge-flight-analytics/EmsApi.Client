@@ -19,7 +19,7 @@ namespace EmsApi.Tests.SpecFlow
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.5.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class EmsSystemsFeature : object, Xunit.IClassFixture<EmsSystemsFeature.FixtureData>, System.IDisposable
+    public partial class EmsSystemFeature : object, Xunit.IClassFixture<EmsSystemFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace EmsApi.Tests.SpecFlow
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "EmsSystems.feature"
+#line 1 "EmsSystem.feature"
 #line hidden
         
-        public EmsSystemsFeature(EmsSystemsFeature.FixtureData fixtureData, EmsApi_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public EmsSystemFeature(EmsSystemFeature.FixtureData fixtureData, EmsApi_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,8 +40,8 @@ namespace EmsApi.Tests.SpecFlow
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SpecFlow", "EmsSystems", "\tAs an application developer\r\n\tI want to be able to list and query EMS systems\r\n\t" +
-                    "So that I can use the information in other queries, and build my application", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SpecFlow", "EmsSystem", "\tAs an application developer\r\n\tI want to be able to query the EMS system\r\n\tSo tha" +
+                    "t I can use the information in other queries, and build my application", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,14 +81,14 @@ namespace EmsApi.Tests.SpecFlow
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get all EMS systems")]
-        [Xunit.TraitAttribute("FeatureTitle", "EmsSystems")]
-        [Xunit.TraitAttribute("Description", "Get all EMS systems")]
-        public virtual void GetAllEMSSystems()
+        [Xunit.SkippableFactAttribute(DisplayName="Get a single EMS system")]
+        [Xunit.TraitAttribute("FeatureTitle", "EmsSystem")]
+        [Xunit.TraitAttribute("Description", "Get a single EMS system")]
+        public virtual void GetASingleEMSSystem()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all EMS systems", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a single EMS system", null, tagsOfScenario, argumentsOfScenario);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -113,23 +113,23 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.When("I run GetAll", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run Get", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.Then("EmsSystem objects are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("An EmsSystem object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get a single EMS system")]
-        [Xunit.TraitAttribute("FeatureTitle", "EmsSystems")]
-        [Xunit.TraitAttribute("Description", "Get a single EMS system")]
-        public virtual void GetASingleEMSSystem()
+        [Xunit.SkippableFactAttribute(DisplayName="Ping an EMS system")]
+        [Xunit.TraitAttribute("FeatureTitle", "EmsSystem")]
+        [Xunit.TraitAttribute("Description", "Ping an EMS system")]
+        public virtual void PingAnEMSSystem()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get a single EMS system", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ping an EMS system", null, tagsOfScenario, argumentsOfScenario);
 #line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -154,23 +154,23 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 13
- testRunner.When("I run Get and enter the value 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run ping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 14
- testRunner.Then("An EmsSystem object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The result is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Ping an EMS system")]
-        [Xunit.TraitAttribute("FeatureTitle", "EmsSystems")]
-        [Xunit.TraitAttribute("Description", "Ping an EMS system")]
-        public virtual void PingAnEMSSystem()
+        [Xunit.SkippableFactAttribute(DisplayName="Get EMS system information")]
+        [Xunit.TraitAttribute("FeatureTitle", "EmsSystem")]
+        [Xunit.TraitAttribute("Description", "Get EMS system information")]
+        public virtual void GetEMSSystemInformation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ping an EMS system", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get EMS system information", null, tagsOfScenario, argumentsOfScenario);
 #line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -195,50 +195,9 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
- testRunner.When("I run ping and enter the value 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run GetSystemInfo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.Then("The result is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Get EMS system information")]
-        [Xunit.TraitAttribute("FeatureTitle", "EmsSystems")]
-        [Xunit.TraitAttribute("Description", "Get EMS system information")]
-        public virtual void GetEMSSystemInformation()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get EMS system information", null, tagsOfScenario, argumentsOfScenario);
-#line 21
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 22
- testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 23
- testRunner.When("I run GetSystemInfo and enter the value 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 24
  testRunner.Then("An EmsSystemInfo object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -252,12 +211,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                EmsSystemsFeature.FeatureSetup();
+                EmsSystemFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                EmsSystemsFeature.FeatureTearDown();
+                EmsSystemFeature.FeatureTearDown();
             }
         }
     }

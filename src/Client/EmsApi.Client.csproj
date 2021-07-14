@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="refit" Version="5.2.4" />
+    <PackageReference Include="Refit" Version="6.0.38" />
+    <PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.38" />
   </ItemGroup>
 
 </Project>

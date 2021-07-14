@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EmsApi.Client.V2;
 using FluentAssertions;
 using Moq;
@@ -20,7 +21,7 @@ namespace EmsApi.Tests
             };
 
             Action setConfig = () => service.ServiceConfig = badConfig;
-            setConfig.Should().ThrowExactly<EmsApiConfigurationException>();
+            setConfig.Should().Throw<EmsApiConfigurationException>();
         }
 
         [Fact( DisplayName = "Valid configuration should change service state" )]
@@ -55,25 +56,37 @@ namespace EmsApi.Tests
         [Fact( DisplayName = "Requests should have custom headers set from service configuration" )]
         public void Api_Requests_Should_Append_Custom_Headers()
         {
-            using( var api = NewService() )
+            var lastHandler = new TestMessageHandler();
+
+            using( var api = NewService( null, lastHandler ) )
             {
+                const string username = "test-user";
+                string correlationId = new Guid().ToString();
                 api.ServiceConfig.CustomHeaders = new Dictionary<string, string>
                 {
-                    { HttpHeaderNames.ClientUsername, "test-user" },
-                    { HttpHeaderNames.CorrelationId, new Guid().ToString() }
+                    { HttpHeaderNames.ClientUsername, username },
+                    { HttpHeaderNames.CorrelationId, correlationId }
                 };
-                api.EmsSystems.GetAll();
+                api.EmsSystem.Get();
 
+                lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
+                var reqHeaders = lastHandler.LastRequest.Headers;
+                reqHeaders.Contains( HttpHeaderNames.ClientUsername ).Should().BeTrue();
+                reqHeaders.GetValues( HttpHeaderNames.ClientUsername ).First().Should().BeEquivalentTo( username );
+                reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeTrue();
+                reqHeaders.GetValues( HttpHeaderNames.CorrelationId ).First().Should().BeEquivalentTo( correlationId );
+
+                const string customHeader = "X-Custom-Header";
+                const string customValue = "custom header";
                 api.ServiceConfig.CustomHeaders = new Dictionary<string, string>
                 {
-                    { "X-Custom-Header", "custom header" }
+                    { customHeader, customValue }
                 };
-                api.EmsSystems.GetAll();
+                api.EmsSystem.Get();
 
-                // Since we are adding the headers to the HttpRequest and we don't currently
-                // have a way to mock or intercept those requests we can't assert against the
-                // headers. However since this is actively hitting the EMS API, you can
-                // check the headers are set in the logs.
+                reqHeaders = lastHandler.LastRequest.Headers;
+                reqHeaders.Contains( customHeader ).Should().BeTrue();
+                reqHeaders.GetValues( customHeader ).First().Should().BeEquivalentTo( customValue );
             }
         }
 
@@ -82,8 +95,8 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                var mock = new Mock<Client.V2.Access.EmsSystemsAccess>();
-                mock.Setup( mk => mk.Get( It.IsAny<int>() ) ).Returns( new Dto.V2.EmsSystem
+                var mock = new Mock<Client.V2.Access.EmsSystemAccess>();
+                mock.Setup( mk => mk.Get( It.IsAny<CallContext>() ) ).Returns( new Dto.V2.EmsSystem
                 {
                     Id = 1,
                     Name = "Mocked EMS",
@@ -91,8 +104,8 @@ namespace EmsApi.Tests
                     DirAdi = @"\\mockems\adi"
                 } );
 
-                api.EmsSystems = mock.Object;
-                Dto.V2.EmsSystem result = api.EmsSystems.Get( 1 );
+                api.EmsSystem = mock.Object;
+                Dto.V2.EmsSystem result = api.EmsSystem.Get();
                 api.Authenticated.Should().BeFalse();
                 result.Id.Should().Be( 1 );
                 result.Name.Should().Be( "Mocked EMS" );
@@ -105,8 +118,8 @@ namespace EmsApi.Tests
         {
             using( var api = NewService() )
             {
-                var mock = new Mock<Client.V2.Access.EmsSystemsAccess>();
-                mock.Setup( mk => mk.GetAsync( It.IsAny<int>() ) ).Returns( System.Threading.Tasks.Task.FromResult( new Dto.V2.EmsSystem
+                var mock = new Mock<Client.V2.Access.EmsSystemAccess>();
+                mock.Setup( mk => mk.GetAsync( It.IsAny<CallContext>() ) ).Returns( System.Threading.Tasks.Task.FromResult( new Dto.V2.EmsSystem
                 {
                     Id = 1,
                     Name = "Mocked EMS",
@@ -114,12 +127,37 @@ namespace EmsApi.Tests
                     DirAdi = @"\\mockems\adi"
                 } ) );
 
-                api.EmsSystems = mock.Object;
-                Dto.V2.EmsSystem result = await api.EmsSystems.GetAsync( 2 );
+                api.EmsSystem = mock.Object;
+                Dto.V2.EmsSystem result = await api.EmsSystem.GetAsync();
                 api.Authenticated.Should().BeFalse();
                 result.Id.Should().Be( 1 );
                 result.Name.Should().Be( "Mocked EMS" );
                 result.Description.Should().Be( "Not a real system" );
+            }
+        }
+
+        [Fact( DisplayName = "Test basic call context" )]
+        public void Use_Call_Context()
+        {
+            var lastHandler = new TestMessageHandler(); 
+
+            using( var api = NewService( null, lastHandler ) )
+            {
+                string username = "bob@burgers.com";
+                string correlationId = "123456";
+                var ctx = new CallContext
+                {
+                    ClientUsername = username,
+                    CorrelationId = correlationId,
+                };
+                api.EmsSystem.Get( ctx );
+
+                lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
+                var reqHeaders = lastHandler.LastRequest.Headers;
+                reqHeaders.Contains( HttpHeaderNames.ClientUsername ).Should().BeTrue();
+                reqHeaders.GetValues( HttpHeaderNames.ClientUsername ).First().Should().BeEquivalentTo( username );
+                reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeTrue();
+                reqHeaders.GetValues( HttpHeaderNames.CorrelationId ).First().Should().BeEquivalentTo( correlationId );
             }
         }
     }

@@ -55,25 +55,36 @@ class Program
 }
 ```
 
-## Set a cached ems system
+## Set per call context with the CallContext object
 
-Most method calls have an emsSystem argument to indicate which ems system to talk to. This may be omitted by setting the CachedEmsSystem property on the service object.
+Most method calls take in an optional CallContext argument that includes various per-call configuration.
+
+This is used to enable Trusted Authentication by setting the TrustedAuthValue and (optionally) TrustedAuthName settings.
 
 ```cs
-// This pattern passes the EMS system to every method call:
-using( EmsApiService api = new EmsApiService( config ) )
-{
-	var fleets = api.Assets.GetAllFleets( emsSystem: 1 );
-	var aircraft = api.Assets.GetAllAircraft( emsSystem: 1 );
-}
-
-// This pattern sets a cached EMS system to use instead:
+// This pattern passes the trusted authentication name and value to every method call:
 using( EmsApiService api = new EmsApiService( config ) )
 {
 	// Send all requests to the ems system with the id 1.
-	api.CachedEmsSystem = 1;
-	var fleets = api.Assets.GetAllFleets();
-	var aircraft = api.Assets.GetAllAircraft();
+	var ctx = new CallContext
+	{
+		TrustedAuthName = "SAMAccountName",
+		TrustedAuthValue = "bob.burgers"
+	};
+	var fleets = api.Assets.GetAllFleets( ctx );
+	var aircraft = api.Assets.GetAllAircraft( ctx );
+}
+
+// This pattern sets the trusted authentication name in the config and passes the value to every method call:
+config.TrustedAuthName = "SAMAccountName";
+using( EmsApiService api = new EmsApiService( config ) )
+{
+	var ctx = new CallContext
+	{
+		TrustedAuthValue = "bob.burgers"
+	};
+	var fleets = api.Assets.GetAllFleets( ctx );
+	var aircraft = api.Assets.GetAllAircraft( ctx );
 }
 ```
 
@@ -210,6 +221,9 @@ The library supports using environment variables for configuration instead of sp
 | EmsApiEndpoint | The API url to communicate with. This url must include the /api portion, such as "https://localhost/api". |
 | EmsApiUsername | The username to use for authentication with the api. |
 | EmsApiPassword | The base64 encoded password for the user. |
+| EmsApiClientId | The client id to use for trusted authentication with the api. |
+| EmsApiClientSecret | The base64 encoded client secret for the client id. |
+| EmsApiTrustedAuthName | The name of the property to use when locating a trusted user at token creation time. This can be provided in the CallContext as well. |
 
 # Developing
 
@@ -229,7 +243,7 @@ The project is built as a .netstandard2.0 library, which will allow it to work w
 Run `dotnet build` in the `src` directory or build with Visual Studio.
 
 ## Test
-Run `dotnet test` in the `src` directory or use the Visual Studio test explorer. Many tests will talk to a real API endpoint and require the `EmsApiTestEndpoint`, `EmsApiTestUsername`, and `EmsApiTestPassword` environment variables to be set.
+Run `dotnet test` in the `src` directory or use the Visual Studio test explorer. Many tests will talk to a real API endpoint and require the `EmsApiTestEndpoint`, `EmsApiTestUsername`, `EmsApiTestPassword`, `EmsApiTestClientId`, and `EmsApiTestClientSecret` environment variables to be set.
 
 ## Automated build and test
 The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary). Pull requests to the `master` branch are built and the nuget packages are attached to the pipeline run. The `master` branch is also built once the pull request is completed.
