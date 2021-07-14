@@ -239,16 +239,16 @@ namespace EmsApi.Client.V2
         {
             return new EmsApiServiceConfiguration
             {
-                Endpoint = this.Endpoint,
-                UserName = this.UserName,
-                Password = this.Password,
-                ApiClientId = this.ApiClientId,
-                ApiClientSecret = this.ApiClientSecret,
-                TrustedAuthName = this.TrustedAuthName,
-                ApplicationName = this.ApplicationName,
-                ThrowExceptionOnApiFailure = this.ThrowExceptionOnApiFailure,
-                ThrowExceptionOnAuthFailure = this.ThrowExceptionOnAuthFailure,
-                CustomHeaders = this.CustomHeaders
+                Endpoint = Endpoint,
+                UserName = UserName,
+                Password = Password,
+                ApiClientId = ApiClientId,
+                ApiClientSecret = ApiClientSecret,
+                TrustedAuthName = TrustedAuthName,
+                ApplicationName = ApplicationName,
+                ThrowExceptionOnApiFailure = ThrowExceptionOnApiFailure,
+                ThrowExceptionOnAuthFailure = ThrowExceptionOnAuthFailure,
+                CustomHeaders = CustomHeaders
             };
         }
 

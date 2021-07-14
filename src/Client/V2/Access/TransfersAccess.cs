@@ -324,7 +324,7 @@ namespace EmsApi.Client.V2.Access
         {
             UploadParameters info = await StartUploadAsync( request, context );
 
-            int bytesRead = 0, totalBytesRead = 0;
+            int bytesRead, totalBytesRead = 0;
             byte[] buffer = new byte[chunkSizeBytes];
 
             while( (bytesRead = await stream.ReadAsync( buffer, 0, chunkSizeBytes )) > 0 )

@@ -35,7 +35,7 @@ namespace EmsApi.Client.V2
         /// The keys to this dictionary are defined by <seealso cref="AuthConfig"/>.
         /// Note: Tokens in the cache may have expired.
         /// </summary>
-        private ConcurrentDictionary<string, AuthToken> m_tokens = new ConcurrentDictionary<string, AuthToken>();
+        private readonly ConcurrentDictionary<string, AuthToken> m_tokens = new ConcurrentDictionary<string, AuthToken>();
 
         /// <summary>
         /// Sets the current service configuration, causing the authentication

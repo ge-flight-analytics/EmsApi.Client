@@ -13,8 +13,10 @@ namespace EmsApi.Dto.V2
         /// </summary>
         public DatabaseQuery()
         {
-            Raw = new DbQuery();
-            Raw.Select = new ObservableCollection<SelectColumn>();
+            Raw = new DbQuery
+            {
+                Select = new ObservableCollection<SelectColumn>()
+            };
             ValueFormat = DbQueryFormat.Display;
         }
 

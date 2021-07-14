@@ -11,18 +11,16 @@ namespace EmsApi.Tests
         [Fact( DisplayName = "A valid login should be authenticated" )]
         public void Valid_login_should_be_authenticated()
         {
-            using( var service = NewService() )
-                service.Authenticate().Should().BeTrue();
+            using var service = NewService();
+            service.Authenticate().Should().BeTrue();
         }
 
         [Fact( DisplayName = "An invalid login should not be authenticated" )]
         public void Invalid_login_should_not_be_authenticated()
         {
-            using( var service = NewInvalidLoginService() )
-            {
-                Action auth = () => service.Authenticate();
-                auth.Should().Throw<EmsApiAuthenticationException>();
-            }
+            using var service = NewInvalidLoginService();
+            Action auth = () => service.Authenticate();
+            auth.Should().Throw<EmsApiAuthenticationException>();
         }
 
         [Fact( DisplayName = "Not setting Trusted or Password auth config should fail" )]
@@ -33,7 +31,7 @@ namespace EmsApi.Tests
             config.Password = null;
             config.ApiClientId = null;
             config.ApiClientSecret = null;
-            Action create = () => new EmsApiService( config );
+            Action create = () => _ = new EmsApiService( config );
             create.Should().Throw<EmsApiConfigurationException>();
         }
 
@@ -45,7 +43,7 @@ namespace EmsApi.Tests
             config.Password = null;
             config.ApiClientId = "foobarbaz";
             config.ApiClientSecret = null;
-            Action create = () => new EmsApiService( config );
+            Action create = () => _ = new EmsApiService( config );
             create.Should().Throw<EmsApiConfigurationException>();
         }
     }

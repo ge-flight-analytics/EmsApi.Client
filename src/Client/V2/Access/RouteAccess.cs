@@ -131,7 +131,7 @@ namespace EmsApi.Client.V2.Access
                     throw inner;
             }
 
-            return default( TRet );
+            return default;
         }
 
         private TRet HandleApiException<TRet>( Task<TRet> task )
@@ -142,7 +142,7 @@ namespace EmsApi.Client.V2.Access
             task.Exception.Handle( HandleTaskException );
 
             // This will normally return null, the caller can handle null if it wants.
-            return default( TRet );
+            return default;
         }
 
         private void HandleApiException( Task task )

@@ -11,16 +11,15 @@ namespace EmsApi.Tests
         [Fact( DisplayName = "Get field should return discrete values" )]
         public void Get_field_should_return_discrete_values()
         {
-            using( var api = NewService() )
-            {
-                string flightRecordField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
-                Field noDiscrete = api.Databases.GetField( "[ems-core][entity-type][foqa-flights]", flightRecordField );
-                noDiscrete.DiscreteValues.Should().BeNull();
+            using var api = NewService();
 
-                string eventStatusField = "[-hub-][field][[[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]][[ems-apm][event-field][event-status:profile-a7483c449db94a449eb5f67681ee52b0]]]";
-                Field withDiscrete = api.Databases.GetField( "[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]", eventStatusField );
-                withDiscrete.DiscreteValues.Should().NotBeNull();
-            }
+            string flightRecordField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
+            Field noDiscrete = api.Databases.GetField( "[ems-core][entity-type][foqa-flights]", flightRecordField );
+            noDiscrete.DiscreteValues.Should().BeNull();
+
+            string eventStatusField = "[-hub-][field][[[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]][[ems-apm][event-field][event-status:profile-a7483c449db94a449eb5f67681ee52b0]]]";
+            Field withDiscrete = api.Databases.GetField( "[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]", eventStatusField );
+            withDiscrete.DiscreteValues.Should().NotBeNull();
         }
 
         [Fact( DisplayName = "A simple query with ordered results should return rows" )]
@@ -38,24 +37,23 @@ namespace EmsApi.Tests
         [Fact( DisplayName = "A simple query should fire callbacks" )]
         public void Simple_query_should_fire_callbacks()
         {
-            using( var api = NewService() )
+            using var api = NewService();
+
+            var query = CreateQuery( orderResults: true );
+
+            // Limit the result set to 10 items and make sure we get 10 callbacks.
+            const int numItems = 10;
+            query.Top = numItems;
+
+            int numCallbacks = 0;
+            void callback( DatabaseQueryResult.Row row )
             {
-                var query = CreateQuery( orderResults: true );
-
-                // Limit the result set to 10 items and make sure we get 10 callbacks.
-                const int numItems = 10;
-                query.Top = numItems;
-
-                int numCallbacks = 0;
-                Action<DatabaseQueryResult.Row> callback = row =>
-                {
-                    TestRow( row );
-                    numCallbacks++;
-                };
-
-                api.Databases.SimpleQuery( Monikers.FlightDatabase, query, callback );
-                numCallbacks.Should().Be( numItems );
+                TestRow( row );
+                numCallbacks++;
             }
+
+            api.Databases.SimpleQuery( Monikers.FlightDatabase, query, callback );
+            numCallbacks.Should().Be( numItems );
         }
 
         [Fact( DisplayName = "An advanced query should return rows" )]
@@ -73,101 +71,97 @@ namespace EmsApi.Tests
         [Fact( DisplayName = "An advanced query should fire callbacks" )]
         public void Advanced_query_should_fire_callbacks()
         {
-            using( var api = NewService() )
+            using var api = NewService();
+
+            var query = CreateQuery( orderResults: true );
+
+            // Limit the result set to 20 items and make sure we get 20 callbacks.
+            const int numItems = 20;
+            query.Top = numItems;
+
+            int numCallbacks = 0;
+            void callback( DatabaseQueryResult.Row row )
             {
-                var query = CreateQuery( orderResults: true );
-
-                // Limit the result set to 20 items and make sure we get 20 callbacks.
-                const int numItems = 20;
-                query.Top = numItems;
-
-                int numCallbacks = 0;
-                void callback( DatabaseQueryResult.Row row )
-                {
-                    TestRow( row );
-                    numCallbacks++;
-                }
-
-                api.Databases.Query( Monikers.FlightDatabase, query, callback );
-                numCallbacks.Should().Be( numItems );
+                TestRow( row );
+                numCallbacks++;
             }
+
+            api.Databases.Query( Monikers.FlightDatabase, query, callback );
+            numCallbacks.Should().Be( numItems );
         }
 
         [Fact( DisplayName = "An advanced query should handle pagination" )]
         public void Advanced_query_should_handle_pagination()
         {
-            using( var api = NewService() )
+            using var api = NewService();
+
+            // Note: To be deterministic, we have to use ordered results so the
+            // callbacks fire in order.
+            var query = CreateQuery( orderResults: true );
+
+            const int numItems = 30;
+            query.Top = numItems;
+
+            int numCallbacks = 0;
+            void callback( DatabaseQueryResult.Row row )
             {
-                // Note: To be deterministic, we have to use ordered results so the
-                // callbacks fire in order.
-                var query = CreateQuery( orderResults: true );
-
-                const int numItems = 30;
-                query.Top = numItems;
-
-                int numCallbacks = 0;
-                void callback( DatabaseQueryResult.Row row )
-                {
-                    TestRow( row );
-                    numCallbacks++;
-                }
-
-                api.Databases.Query( Monikers.FlightDatabase, query, callback, rowsPerCall: 10 );
-                numCallbacks.Should().Be( numItems );
+                TestRow( row );
+                numCallbacks++;
             }
+
+            api.Databases.Query( Monikers.FlightDatabase, query, callback, rowsPerCall: 10 );
+            numCallbacks.Should().Be( numItems );
         }
 
-        [Fact( DisplayName = "A create comment query should add a new comment", Skip = ("We don't want to add a new comment every time the tests are run.") )]
+#pragma warning disable xUnit1004 // Test methods should not be skipped
+        [Fact( DisplayName = "A create comment query should add a new comment", Skip = "We don't want to add a new comment every time the tests are run." )]
+#pragma warning restore xUnit1004 // Test methods should not be skipped
         public void Create_Comment_should_add_comment()
         {
-            using( var api = NewService() )
+            using var api = NewService();
+            var newComment = new NewComment
             {
-                var newComment = new NewComment
-                {
-                    Comment = "look at that data quality",
-                    // This value will depend on the EMS system. It should be a flight record number.
-                    EntityIdentifier = { 3135409 }
-                };
-                api.Databases.CreateComment( Monikers.FlightDatabase, Monikers.FlightDataQualityField, newComment );
-            }
+                Comment = "look at that data quality",
+                // This value will depend on the EMS system. It should be a flight record number.
+                EntityIdentifier = { 3135409 }
+            };
+            api.Databases.CreateComment( Monikers.FlightDatabase, Monikers.FlightDataQualityField, newComment );
         }
 
-        private void TestSimple( bool orderResults )
+        private static void TestSimple( bool orderResults )
         {
-            using( var api = NewService() )
-            {
-                var query = CreateQuery( orderResults );
+            using var api = NewService();
 
-                // Limit the number of flights returned for the simple query test.
-                const int numRows = 10;
-                query.Top = numRows;
+            var query = CreateQuery( orderResults );
 
-                // The simple query uses the non-async database route.
-                DatabaseQueryResult result = api.Databases.SimpleQuery( Monikers.FlightDatabase, query );
-                result.Rows.Count.Should().Be( numRows );
+            // Limit the number of flights returned for the simple query test.
+            const int numRows = 10;
+            query.Top = numRows;
 
-                foreach( DatabaseQueryResult.Row row in result.Rows )
-                    TestRow( row );
-            }
+            // The simple query uses the non-async database route.
+            DatabaseQueryResult result = api.Databases.SimpleQuery( Monikers.FlightDatabase, query );
+            result.Rows.Count.Should().Be( numRows );
+
+            foreach( DatabaseQueryResult.Row row in result.Rows )
+                TestRow( row );
         }
 
-        private void TestAdvanced( bool orderResults )
+        private static void TestAdvanced( bool orderResults )
         {
-            using( var api = NewService() )
-            {
-                var query = CreateQuery( orderResults );
+            using var api = NewService();
 
-                // Limit to 100 rows to save bandwidth.
-                query.Top = 100;
+            var query = CreateQuery( orderResults );
 
-                // The regular query uses async-query under the covers and handles pagination.
-                DatabaseQueryResult result = api.Databases.Query( Monikers.FlightDatabase, query );
-                foreach( DatabaseQueryResult.Row row in result.Rows )
-                    TestRow( row );
-            }
+            // Limit to 100 rows to save bandwidth.
+            query.Top = 100;
+
+            // The regular query uses async-query under the covers and handles pagination.
+            DatabaseQueryResult result = api.Databases.Query( Monikers.FlightDatabase, query );
+            foreach( DatabaseQueryResult.Row row in result.Rows )
+                TestRow( row );
         }
 
-        private void TestRow( DatabaseQueryResult.Row row )
+        private static void TestRow( DatabaseQueryResult.Row row )
         {
             int flightId = Convert.ToInt32( row[Monikers.FlightId] );
             string tail = row[Monikers.TailNumber].ToString();
@@ -182,7 +176,7 @@ namespace EmsApi.Tests
             landingAirport.Should().NotBeNullOrEmpty();
         }
 
-        private DatabaseQuery CreateQuery( bool orderResults )
+        private static DatabaseQuery CreateQuery( bool orderResults )
         {
             var query = new DatabaseQuery();
 

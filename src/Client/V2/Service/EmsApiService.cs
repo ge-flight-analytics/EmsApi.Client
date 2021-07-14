@@ -92,6 +92,29 @@ namespace EmsApi.Client.V2
             get; private set;
         }
 
+        private void InitializeHttpClient( DelegatingHandler firstHandler, DelegatingHandler lastHandler )
+        {
+            var clientHandler = new HttpClientHandler
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip
+            };
+            if( lastHandler != null )
+                lastHandler.InnerHandler = clientHandler;
+            m_messageHandler = new MessageHandler( (HttpMessageHandler)lastHandler ?? clientHandler );
+            if( firstHandler != null )
+                firstHandler.InnerHandler = m_messageHandler;
+            m_httpClient = new HttpClient( firstHandler ?? m_messageHandler )
+            {
+
+                // The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
+                // instance a gnarly database query can take longer than that to return on query creation or first result
+                // extraction time, especially if the SQL server is already busy.
+                // The value we opted for here is the value used for timeouts at the application gateway level and
+                // therefore seems like a reasonable default to use.
+                Timeout = TimeSpan.FromSeconds( 600 )
+            };
+        }
+
         /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
@@ -103,23 +126,7 @@ namespace EmsApi.Client.V2
 
             // Set up the HTTP client. This includes enabling automatic GZip decompression as the
             // EMS API will use that if requested.
-            var clientHandler = new HttpClientHandler
-            {
-                AutomaticDecompression = System.Net.DecompressionMethods.GZip
-            };
-            if( lastHandler != null )
-                lastHandler.InnerHandler = clientHandler;
-            m_messageHandler = new MessageHandler( (HttpMessageHandler)lastHandler ?? clientHandler );
-            if( firstHandler != null )
-                firstHandler.InnerHandler = m_messageHandler;
-            m_httpClient = new HttpClient( firstHandler ?? m_messageHandler );
-
-            // The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
-            // instance a gnarly database query can take longer than that to return on query creation or first result
-            // extraction time, especially if the SQL server is already busy.
-            // The value we opted for here is the value used for timeouts at the application gateway level and
-            // therefore seems like a reasonable default to use.
-            m_httpClient.Timeout = TimeSpan.FromSeconds( 600 );
+            InitializeHttpClient( firstHandler, lastHandler );
 
             // Set up access properties for external clients to use.
             InitializeAccessProperties();

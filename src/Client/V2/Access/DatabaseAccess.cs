@@ -298,7 +298,7 @@ namespace EmsApi.Client.V2.Access
             {
                 AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
                 result.AddRows( query, data.Rows );
-                startingRow = startingRow + rowsPerCall;
+                startingRow += rowsPerCall;
                 moreToRead = data.HasMoreRows;
             }
 
@@ -337,7 +337,7 @@ namespace EmsApi.Client.V2.Access
             {
                 AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
                 result.CallbackRows( query, data.Rows, callback );
-                startingRow = startingRow + rowsPerCall;
+                startingRow += rowsPerCall;
                 moreToRead = data.HasMoreRows;
             }
 

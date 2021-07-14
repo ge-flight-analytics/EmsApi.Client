@@ -16,7 +16,7 @@ namespace EmsApi.Tests
             config.Password = null;
             config.ApiClientId = "foobarbaz";
             config.ApiClientSecret = null;
-            Action create = () => new EmsApiService( config );
+            Action create = () => _ = new EmsApiService( config );
             create.Should().Throw<EmsApiConfigurationException>();
         }
 
@@ -28,19 +28,17 @@ namespace EmsApi.Tests
             config.Password = null;
             config.ApiClientId = null;
             config.ApiClientSecret = "not so secret";
-            Action create = () => new EmsApiService( config );
+            Action create = () => _ = new EmsApiService( config );
             create.Should().Throw<EmsApiConfigurationException>();
         }
 
         [Fact( DisplayName = "Trusted value but no name should fail" )]
         public void Trusted_value_but_no_name()
         {
-            using( var service = NewService() )
-            {
-                var ctx = new CallContext { TrustedAuthValue = "ksk" };
-                Action getSystem = () => service.EmsSystem.Get( ctx );
-                getSystem.Should().Throw<EmsApiException>();
-            }
+            using var service = NewService();
+            var ctx = new CallContext { TrustedAuthValue = "ksk" };
+            Action getSystem = () => service.EmsSystem.Get( ctx );
+            getSystem.Should().Throw<EmsApiException>();
         }
 
         [Fact( DisplayName = "Trusted info but no client id should fail" )]
@@ -49,44 +47,39 @@ namespace EmsApi.Tests
             EmsApiServiceConfiguration config = m_config.Clone();
             config.ApiClientId = null;
             config.ApiClientSecret = null;
-            using( var service = new EmsApiService( config ) )
+            using var service = new EmsApiService( config );
+            var ctx = new CallContext
             {
-                var ctx = new CallContext
-                {
-                    TrustedAuthName = "SAMAccountName",
-                    TrustedAuthValue = "ksk"
-                };
-                Action getSystem = () => service.EmsSystem.Get( ctx );
-                getSystem.Should().Throw<EmsApiException>();
-            }
+                TrustedAuthName = "SAMAccountName",
+                TrustedAuthValue = "ksk"
+            };
+            Action getSystem = () => service.EmsSystem.Get( ctx );
+            getSystem.Should().Throw<EmsApiException>();
         }
 
         [Fact( DisplayName = "Trusted name but no value should fail" )]
         public void Trusted_name_but_no_value()
         {
-            using( var service = NewService() )
-            {
-                var ctx = new CallContext { TrustedAuthName = "propertyX" };
-                Action getSystem = () => service.EmsSystem.Get( ctx );
-                getSystem.Should().Throw<EmsApiException>();
-            }
+            using var service = NewService();
+            var ctx = new CallContext { TrustedAuthName = "propertyX" };
+            Action getSystem = () => service.EmsSystem.Get( ctx );
+            getSystem.Should().Throw<EmsApiException>();
         }
 
         [Fact( DisplayName = "Trusted info in context should succeed" )]
         public void Trusted_info_in_context()
         {
-            using( var service = NewService() )
+            using var service = NewService();
+
+            var ctx = new CallContext
             {
-                var ctx = new CallContext
-                {
-                    TrustedAuthName = "SAMAccountName",
-                    TrustedAuthValue = "ksk"
-                };
-                var system = service.EmsSystem.Get( ctx );
-                system.Id.Should().Be( 1 );
-                service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
-                service.Authenticated.Should().BeFalse();
-            }
+                TrustedAuthName = "SAMAccountName",
+                TrustedAuthValue = "ksk"
+            };
+            var system = service.EmsSystem.Get( ctx );
+            system.Id.Should().Be( 1 );
+            service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
+            service.Authenticated.Should().BeFalse();
         }
 
         [Fact( DisplayName = "Trusted value in context and name in config should succeed" )]
@@ -94,126 +87,120 @@ namespace EmsApi.Tests
         {
             EmsApiServiceConfiguration config = m_config.Clone();
             config.TrustedAuthName = "SAMAccountName";
-            using( var service = new EmsApiService( config ) )
+            using var service = new EmsApiService( config );
+            var ctx = new CallContext
             {
-                var ctx = new CallContext
-                {
-                    TrustedAuthValue = "ksk"
-                };
-                var system = service.EmsSystem.Get( ctx );
-                system.Id.Should().Be( 1 );
-                service.HasAuthenticatedWithTrusted( config.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
-                service.Authenticated.Should().BeFalse();
-            }
+                TrustedAuthValue = "ksk"
+            };
+            var system = service.EmsSystem.Get( ctx );
+            system.Id.Should().Be( 1 );
+            service.HasAuthenticatedWithTrusted( config.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
+            service.Authenticated.Should().BeFalse();
         }
 
         [Fact( DisplayName = "Trusted and then password both work" )]
         public void Trusted_then_password()
         {
-            using( var service = NewService() )
-            {
-                // First perform the trusted auth.
-                var ctx = new CallContext
-                {
-                    TrustedAuthName = "SAMAccountName",
-                    TrustedAuthValue = "ksk"
-                };
-                var system = service.EmsSystem.Get( ctx );
-                system.Id.Should().Be( 1 );
-                service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
-                service.Authenticated.Should().BeFalse();
+            using var service = NewService();
 
-                // Then perform the password auth.
-                system = service.EmsSystem.Get();
-                system.Id.Should().Be( 1 );
-                service.Authenticated.Should().BeTrue();
-            }
+            // First perform the trusted auth.
+            var ctx = new CallContext
+            {
+                TrustedAuthName = "SAMAccountName",
+                TrustedAuthValue = "ksk"
+            };
+            var system = service.EmsSystem.Get( ctx );
+            system.Id.Should().Be( 1 );
+            service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
+            service.Authenticated.Should().BeFalse();
+
+            // Then perform the password auth.
+            system = service.EmsSystem.Get();
+            system.Id.Should().Be( 1 );
+            service.Authenticated.Should().BeTrue();
         }
 
         [Fact( DisplayName = "Password and then trusted both work" )]
         public void Password_then_trusted()
         {
-            using( var service = NewService() )
+            using var service = NewService();
+
+            var ctx = new CallContext
             {
-                var ctx = new CallContext
-                {
-                    TrustedAuthName = "SAMAccountName",
-                    TrustedAuthValue = "ksk"
-                };
+                TrustedAuthName = "SAMAccountName",
+                TrustedAuthValue = "ksk"
+            };
 
-                // First perform the password auth.
-                var system = service.EmsSystem.Get();
-                system.Id.Should().Be( 1 );
-                service.Authenticated.Should().BeTrue();
-                service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeFalse();
+            // First perform the password auth.
+            var system = service.EmsSystem.Get();
+            system.Id.Should().Be( 1 );
+            service.Authenticated.Should().BeTrue();
+            service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeFalse();
 
-                // Then perform the trusted auth.
-                system = service.EmsSystem.Get( ctx );
-                system.Id.Should().Be( 1 );
-                service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
-            }
+            // Then perform the trusted auth.
+            system = service.EmsSystem.Get( ctx );
+            system.Id.Should().Be( 1 );
+            service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
         }
 
         [Fact( DisplayName = "Authentication cache" )]
         public void Auth_cache()
         {
             var lastHandler = new TestMessageHandler();
-            using( var service = NewService( null, lastHandler ) )
+            using var service = NewService( null, lastHandler );
+
+            var ctx = new CallContext
             {
-                var ctx = new CallContext
-                {
-                    TrustedAuthName = "SAMAccountName",
-                    TrustedAuthValue = "ksk"
-                };
-                var ctx2 = new CallContext
-                {
-                    TrustedAuthName = "SAMAccountName",
-                    TrustedAuthValue = "cwo"
-                };
+                TrustedAuthName = "SAMAccountName",
+                TrustedAuthValue = "ksk"
+            };
+            var ctx2 = new CallContext
+            {
+                TrustedAuthName = "SAMAccountName",
+                TrustedAuthValue = "cwo"
+            };
 
-                // First perform the password auth - CACHE MISS
-                var system = service.EmsSystem.Get();
-                lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
-                system.Id.Should().Be( 1 );
-                service.Authenticated.Should().BeTrue();
-                service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeFalse();
+            // First perform the password auth - CACHE MISS
+            var system = service.EmsSystem.Get();
+            lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
+            system.Id.Should().Be( 1 );
+            service.Authenticated.Should().BeTrue();
+            service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeFalse();
 
-                // Then perform the trusted auth - CACHE MISS
-                system = service.EmsSystem.Get( ctx );
-                lastHandler.CallCount.Should().Be( 4 ); // One for the token and one for our actual call.
-                system.Id.Should().Be( 1 );
-                service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
-                service.HasAuthenticatedWithTrusted( ctx2.TrustedAuthName, ctx2.TrustedAuthValue ).Should().BeFalse();
+            // Then perform the trusted auth - CACHE MISS
+            system = service.EmsSystem.Get( ctx );
+            lastHandler.CallCount.Should().Be( 4 ); // One for the token and one for our actual call.
+            system.Id.Should().Be( 1 );
+            service.HasAuthenticatedWithTrusted( ctx.TrustedAuthName, ctx.TrustedAuthValue ).Should().BeTrue();
+            service.HasAuthenticatedWithTrusted( ctx2.TrustedAuthName, ctx2.TrustedAuthValue ).Should().BeFalse();
 
-                // Then perform the trusted auth 2 - CACHE MISS
-                system = service.EmsSystem.Get( ctx2 );
-                lastHandler.CallCount.Should().Be( 6 ); // One for the token and one for our actual call.
-                system.Id.Should().Be( 1 );
-                service.HasAuthenticatedWithTrusted( ctx2.TrustedAuthName, ctx2.TrustedAuthValue ).Should().BeTrue();
+            // Then perform the trusted auth 2 - CACHE MISS
+            system = service.EmsSystem.Get( ctx2 );
+            lastHandler.CallCount.Should().Be( 6 ); // One for the token and one for our actual call.
+            system.Id.Should().Be( 1 );
+            service.HasAuthenticatedWithTrusted( ctx2.TrustedAuthName, ctx2.TrustedAuthValue ).Should().BeTrue();
 
-                // Then perform the three calls again - CACHE HIT
-                system = service.EmsSystem.Get( ctx2 );
-                lastHandler.CallCount.Should().Be( 7 );
-                system = service.EmsSystem.Get( ctx );
-                lastHandler.CallCount.Should().Be( 8 );
-                system = service.EmsSystem.Get();
-                lastHandler.CallCount.Should().Be( 9 );
+            // Then perform the three calls again - CACHE HIT
+            system = service.EmsSystem.Get( ctx2 );
+            lastHandler.CallCount.Should().Be( 7 );
+            system = service.EmsSystem.Get( ctx );
+            lastHandler.CallCount.Should().Be( 8 );
+            system = service.EmsSystem.Get();
+            lastHandler.CallCount.Should().Be( 9 );
 
-                // Clear the cache and make a few more calls on one authentication path.
-                service.ClearAuthenticationCache();
-                system = service.EmsSystem.Get( ctx2 );
-                lastHandler.CallCount.Should().Be( 11 ); // One for the token and one for our actual call.
-                system = service.EmsSystem.Get( ctx2 );
-                lastHandler.CallCount.Should().Be( 12 );
+            // Clear the cache and make a few more calls on one authentication path.
+            service.ClearAuthenticationCache();
+            system = service.EmsSystem.Get( ctx2 );
+            lastHandler.CallCount.Should().Be( 11 ); // One for the token and one for our actual call.
+            system = service.EmsSystem.Get( ctx2 );
+            lastHandler.CallCount.Should().Be( 12 );
 
-                // Expire the tokens and make a few more calls on one authentication path.
-                service.ExpireAuthenticationCacheEntries();
-                system = service.EmsSystem.Get( ctx2 );
-                lastHandler.CallCount.Should().Be( 14 ); // One for the token and one for our actual call.
-                system = service.EmsSystem.Get( ctx2 );
-                lastHandler.CallCount.Should().Be( 15 );
-
-            }
+            // Expire the tokens and make a few more calls on one authentication path.
+            service.ExpireAuthenticationCacheEntries();
+            system = service.EmsSystem.Get( ctx2 );
+            lastHandler.CallCount.Should().Be( 14 ); // One for the token and one for our actual call.
+            system = service.EmsSystem.Get( ctx2 );
+            lastHandler.CallCount.Should().Be( 15 );
         }
     }
 }

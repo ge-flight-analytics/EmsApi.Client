@@ -9,8 +9,10 @@ namespace EmsApi.Dto.V2
     {
         public AnalyticQuery()
         {
-            Raw = new Query();
-            Raw.Select = new ObservableCollection<AnalyticSelect>();
+            Raw = new Query
+            {
+                Select = new ObservableCollection<AnalyticSelect>()
+            };
         }
 
         /// <summary>

@@ -39,12 +39,12 @@ namespace EmsApi.Dto.V2
         /// <summary>
         /// The column ids in an ordered list.
         /// </summary>
-        private List<string> m_orderedColumnIds;
+        private readonly List<string> m_orderedColumnIds;
 
         /// <summary>
         /// The column names in an ordered list.
         /// </summary>
-        private List<string> m_orderedColumnNames;
+        private readonly List<string> m_orderedColumnNames;
 
         /// <summary>
         /// Converts query result rows into Row objects, and adds them to the collection.
@@ -145,9 +145,9 @@ namespace EmsApi.Dto.V2
                 object raw = m_values[columnIndex];
 
                 // Trim strings, some database fields are fixed width.
-                if( raw is string )
+                if( raw is string stringVal )
                 {
-                    return ((string)raw).Trim();
+                    return stringVal.Trim();
                 }
 
                 return raw;
@@ -156,9 +156,9 @@ namespace EmsApi.Dto.V2
             // Note: These are lists of strings so we only keep a pointer to them.
             // An array of strings actually copies the values, since in .NET a string
             // acts like a nullable value type.
-            private List<string> m_columnIds;
-            private List<string> m_columnNames;
-            private object[] m_values;
+            private readonly List<string> m_columnIds;
+            private readonly List<string> m_columnNames;
+            private readonly object[] m_values;
         }
     }
 }
