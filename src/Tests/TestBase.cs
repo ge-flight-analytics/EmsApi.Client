@@ -3,6 +3,19 @@ using System.Net.Http;
 
 using EmsApi.Client.V2;
 
+//
+// We expose some synchronous APIs which we test. This can lead to deadlocks in XUnit given the way
+// it was designed (to help catch this sort of thing). Instead we are going to let it start as many
+// threads as it wants. We could also solve this by setting `DisableParallelization` to be true, but
+// then tests would take longer to run, and we don't want that.
+//
+// For a write-up of some of the gory details in this XUnit choice see this: https://github.com/xunit/xunit/issues/864
+//
+// This value CAN be overridden by test runner configuration, so be careful. Full details on that
+// can be found here: https://xunit.net/docs/running-tests-in-parallel
+//
+[assembly: Xunit.CollectionBehavior(MaxParallelThreads = -1)]
+
 namespace EmsApi.Tests
 {
     /// <summary>
