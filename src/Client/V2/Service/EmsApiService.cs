@@ -25,7 +25,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            Initialize();
+            Initialize( firstHandler: null, lastHandler: null, retryTransientFailures: RetryDefault );
             SetServiceConfigInternal( new EmsApiServiceConfiguration() );
         }
 
@@ -34,11 +34,16 @@ namespace EmsApi.Client.V2
         /// The first and last handlers, if provided, will be added to the standard HttpMessageHandler
         /// stack used. This can be useful for tracing or testing purposes.
         /// </summary>
-        public EmsApiService( EmsApiServiceConfiguration config, DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null, bool retryTransientFailures = true )
+        public EmsApiService( EmsApiServiceConfiguration config, DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null, bool retryTransientFailures = RetryDefault )
         {
             Initialize( firstHandler, lastHandler, retryTransientFailures );
             ServiceConfig = config;
         }
+
+        /// <summary>
+        /// The default for retrying transient failures.
+        /// </summary>
+        private const bool RetryDefault = true;
 
         /// <summary>
         /// Access to the swagger specification.
@@ -155,7 +160,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
-        private void Initialize( DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null, bool retryTransientFailures = true )
+        private void Initialize( DelegatingHandler firstHandler, DelegatingHandler lastHandler, bool retryTransientFailures )
         {
             m_cleanup = new List<Action>();
             m_authCallbacks = new List<Action<string>>();
