@@ -17,7 +17,7 @@
 
 ## Connect to the api
 
-A username and password must always be specified to connect to the API. They may be retrieved from environment variables as well.
+For almost all use cases a username, password, and API endpoint should be specified in order to connect. They may be retrieved from environment variables as well.
 
 ```cs
 using System;
@@ -59,7 +59,7 @@ class Program
 
 Most method calls take in an optional CallContext argument that includes various per-call configuration.
 
-This is used to enable Trusted Authentication by setting the TrustedAuthValue and (optionally) TrustedAuthName settings.
+This is used to enable Trusted Authentication by setting the TrustedAuthValue and (optionally) TrustedAuthName settings, as opposed to using username and password authentication described above.
 
 ```cs
 // This pattern passes the trusted authentication name and value to every method call:
@@ -132,7 +132,7 @@ class Program
 			query.Top = 100;
 
 			// Execute the query and receive the result.
-			DatabaseQueryResult result = api.Databases.Query( Monikers.FlightDatabase, query, emsSystem: 1 );
+			DatabaseQueryResult result = api.Databases.Query( Monikers.FlightDatabase, query );
 			foreach( DatabaseQueryResult.Row row in result.Rows )
 			{
 				// Go through each result row and print out the information.
@@ -188,7 +188,7 @@ class Program
 			query.SelectAnalytic( RadioAltitudeId );
 
 			// Execute the query.
-			QueryResult result = api.Analytics.QueryResults( flightId: 1, query: query, emsSystem: 1 );
+			QueryResult result = api.Analytics.QueryResults( flightId: 1, query: query );
 
 			// Access the results.
 
@@ -233,11 +233,11 @@ The library supports using environment variables for configuration instead of sp
 
 ## Editor prerequisites
 * Text editor or IDE of your choice
-* An EditorConfig extension, to enforce code style rules
+* An EditorConfig extension to enforce code style rules
 * The SpecFlow extension for writing unit tests
 
 ## Compilation targets
-The project is built as a .netstandard2.0 library, which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+. Supported frameworks can be found [here](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md). The unit test project targets .NET 5.
+The project is built as a .netstandard2.0 library which will allow it to work with .NET Framework 4.6.1+ and .NET core 2.0+. Supported frameworks can be found [here](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md). The unit test project targets .NET 5.
 
 ## Build
 Run `dotnet build` in the `src` directory or build with Visual Studio.
