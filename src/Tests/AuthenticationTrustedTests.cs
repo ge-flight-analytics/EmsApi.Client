@@ -147,7 +147,7 @@ namespace EmsApi.Tests
         public void Auth_cache()
         {
             var lastHandler = new TestMessageHandler();
-            using var service = NewService( null, lastHandler );
+            using var service = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
 
             var ctx = new CallContext
             {

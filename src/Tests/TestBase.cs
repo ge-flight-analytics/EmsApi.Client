@@ -45,8 +45,9 @@ namespace EmsApi.Tests
             if( string.IsNullOrEmpty( apiClientSecret ) )
                 throw new InvalidOperationException( "Test API Client Secret not set" );
 
-            m_config = new EmsApiServiceConfiguration( endpoint, useEnvVars: false )
+            m_config = new EmsApiServiceConfiguration( useEnvVars: false )
             {
+                Endpoint = endpoint,
                 UserName = user,
                 Password = pass,
                 ApiClientId = apiClientId,
@@ -59,9 +60,9 @@ namespace EmsApi.Tests
         /// (set by the EmsApiTest* environment variables) and a valid cached ems system
         /// id.
         /// </summary>
-        protected static EmsApiService NewService( DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null )
+        protected static EmsApiService NewService( EmsApiServiceHttpClientConfiguration httpClientConfig = null )
         {
-            return new EmsApiService( m_config.Clone(), firstHandler, lastHandler );
+            return new EmsApiService( m_config.Clone(), httpClientConfig );
         }
 
         /// <summary>

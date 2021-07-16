@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using EmsApi.Client.V2;
 using FluentAssertions;
 using Xunit;
 
@@ -20,7 +21,7 @@ namespace EmsApi.Tests
                 HttpStatusCode.OK
             });
 
-            using var api = NewService( null, lastHandler );
+            using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
 
             api.EmsSystem.Get();
 
@@ -38,7 +39,7 @@ namespace EmsApi.Tests
                 HttpStatusCode.InternalServerError
             } );
 
-            using var api = NewService( null, lastHandler );
+            using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
 
             api.EmsSystem.Get();
 

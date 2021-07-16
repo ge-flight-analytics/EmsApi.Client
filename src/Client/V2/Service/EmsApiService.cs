@@ -25,8 +25,8 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            Initialize( firstHandler: null, lastHandler: null, retryTransientFailures: RetryDefault );
-            SetServiceConfigInternal( new EmsApiServiceConfiguration() );
+            Initialize( httpClientConfig: null );
+            // As noted above ServiceConfig must be set before making any API calls.
         }
 
         /// <summary>
@@ -34,16 +34,11 @@ namespace EmsApi.Client.V2
         /// The first and last handlers, if provided, will be added to the standard HttpMessageHandler
         /// stack used. This can be useful for tracing or testing purposes.
         /// </summary>
-        public EmsApiService( EmsApiServiceConfiguration config, DelegatingHandler firstHandler = null, DelegatingHandler lastHandler = null, bool retryTransientFailures = RetryDefault )
+        public EmsApiService( EmsApiServiceConfiguration config, EmsApiServiceHttpClientConfiguration httpClientConfig = null )
         {
-            Initialize( firstHandler, lastHandler, retryTransientFailures );
+            Initialize( httpClientConfig );
             ServiceConfig = config;
         }
-
-        /// <summary>
-        /// The default for retrying transient failures.
-        /// </summary>
-        private const bool RetryDefault = true;
 
         /// <summary>
         /// Access to the swagger specification.
@@ -100,8 +95,11 @@ namespace EmsApi.Client.V2
             get; private set;
         }
 
-        private void InitializeHttpClient( DelegatingHandler firstHandler, DelegatingHandler lastHandler, bool retryTransientFailures )
+        private void InitializeHttpClient( EmsApiServiceHttpClientConfiguration httpClientConfig )
         {
+            // If no client configuration was provided then generate a new one to get the default settings.
+            httpClientConfig = httpClientConfig ?? new EmsApiServiceHttpClientConfiguration();
+
             // This builds up our message handler stack from back to front.
             // The nextHandler variable is what to assign to the InnerHandler of the latest handler created.
             HttpMessageHandler nextHandler = new HttpClientHandler
@@ -109,13 +107,13 @@ namespace EmsApi.Client.V2
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip
             };
 
-            if( lastHandler != null )
+            if( httpClientConfig.LastHandler != null )
             {
-                lastHandler.InnerHandler = nextHandler;
-                nextHandler = lastHandler;
+                httpClientConfig.LastHandler.InnerHandler = nextHandler;
+                nextHandler = httpClientConfig.LastHandler;
             }
 
-            if( retryTransientFailures )
+            if( httpClientConfig.RetryTransientFailures )
             {
                 // If we are configured to retry transient failures set that up now.
                 // We add this *after* the MessageHandler in the stack so that we get retries on
@@ -140,10 +138,10 @@ namespace EmsApi.Client.V2
                 InnerHandler = nextHandler
             };
 
-            if( firstHandler != null )
+            if( httpClientConfig.FirstHandler != null )
             {
-                firstHandler.InnerHandler = nextHandler;
-                nextHandler = firstHandler;
+                httpClientConfig.FirstHandler.InnerHandler = nextHandler;
+                nextHandler = httpClientConfig.FirstHandler;
             }
 
             m_httpClient = new HttpClient( nextHandler )
@@ -160,7 +158,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
-        private void Initialize( DelegatingHandler firstHandler, DelegatingHandler lastHandler, bool retryTransientFailures )
+        private void Initialize( EmsApiServiceHttpClientConfiguration httpClientConfig )
         {
             m_cleanup = new List<Action>();
             m_authCallbacks = new List<Action<string>>();
@@ -168,7 +166,7 @@ namespace EmsApi.Client.V2
 
             // Set up the HTTP client. This includes enabling automatic GZip decompression as the
             // EMS API will use that if requested.
-            InitializeHttpClient( firstHandler, lastHandler, retryTransientFailures );
+            InitializeHttpClient( httpClientConfig );
 
             // Set up access properties for external clients to use.
             InitializeAccessProperties();

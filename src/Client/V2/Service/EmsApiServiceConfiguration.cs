@@ -14,19 +14,12 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Creates a new instance of the configuration with the given endpoint.
         /// </summary>
-        /// <param name="endpoint">
-        /// The API endpoint to connect to. If this is not specified, a default
-        /// value will be used.
-        /// </param>
         /// <param name="useEnvVars">
         /// When true, system environment variables will be used to substitute certain
         /// parameters when the configuration is first constructed.
         /// </param>
-        /// <remarks>
-        /// </remarks>
-        public EmsApiServiceConfiguration( string endpoint = Endpoints.Default, bool useEnvVars = true )
+        public EmsApiServiceConfiguration( bool useEnvVars = true )
         {
-            Endpoint = endpoint;
             UseCompression = true;
             ThrowExceptionOnAuthFailure = true;
             ThrowExceptionOnApiFailure = true;
@@ -54,7 +47,8 @@ namespace EmsApi.Client.V2
         public string Password { get; set; }
 
         /// <summary>
-        /// The API Client id to use for trusted authentication.
+        /// The API Client id to use for trusted authentication. This may be substituted by the "EmsApiClientId"
+        /// environment variable.
         /// 
         /// You will need to also set ApiClientSecret and a TrustedAuthName and TrustedAuthValue in the CallContext
         /// (although TrustedAuthName can be set here in config if it is the same for this service configuration).
@@ -67,13 +61,15 @@ namespace EmsApi.Client.V2
         public string ApiClientId { get; set; }
 
         /// <summary>
-        /// The API Client secret to use for trusted authentication.
+        /// The API Client secret to use for trusted authentication. This may be substituted by the "EmsApiClientSecret"
+        /// environment variable, which should contain a base64 encoded version of the client secret.
         /// See <seealso cref="ApiClientId"/> for other trusted authentication requirements.
         /// </summary>
         public string ApiClientSecret { get; set; }
 
         /// <summary>
-        /// The property name to search in EFOQA classic AD as part of trusted authentication.
+        /// The property name to search in EFOQA classic AD as part of trusted authentication. This may be substituted
+        /// by the "EmsApiTrustedAuthName" environment variable.
         /// This can instead be set in the <seealso cref="CallContext.TrustedAuthName"/> if you wish to make it a
         /// per-call setting. That setting will override whatever is set here.
         /// </summary>

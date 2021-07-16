@@ -16,6 +16,7 @@ namespace EmsApi.Tests
             var service = new EmsApiService();
             var badConfig = new EmsApiServiceConfiguration()
             {
+                Endpoint = "https://not.a.real.site.com/api",
                 UserName = string.Empty,
                 Password = null
             };
@@ -56,7 +57,7 @@ namespace EmsApi.Tests
         {
             var lastHandler = new TestMessageHandler();
 
-            using var api = NewService( null, lastHandler );
+            using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
 
             const string username = "test-user";
             string correlationId = new Guid().ToString();
@@ -136,7 +137,7 @@ namespace EmsApi.Tests
         {
             var lastHandler = new TestMessageHandler();
 
-            using var api = NewService( null, lastHandler );
+            using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
 
             string username = "bob@burgers.com";
             string correlationId = "123456";
