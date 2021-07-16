@@ -1,6 +1,20 @@
 using System;
+using System.Net.Http;
 
 using EmsApi.Client.V2;
+
+//
+// We expose some synchronous APIs which we test. This can lead to deadlocks in XUnit given the way
+// it was designed (to help catch this sort of thing). Instead we are going to let it start as many
+// threads as it wants. We could also solve this by setting `DisableParallelization` to be true, but
+// then tests would take longer to run, and we don't want that.
+//
+// For a write-up of some of the gory details in this XUnit choice see this: https://github.com/xunit/xunit/issues/864
+//
+// This value CAN be overridden by test runner configuration, so be careful. Full details on that
+// can be found here: https://xunit.net/docs/running-tests-in-parallel
+//
+[assembly: Xunit.CollectionBehavior(MaxParallelThreads = -1)]
 
 namespace EmsApi.Tests
 {
@@ -23,20 +37,22 @@ namespace EmsApi.Tests
             if( string.IsNullOrEmpty( pass ) )
                 throw new InvalidOperationException( "Test API Password not set" );
 
-            m_config = new EmsApiServiceConfiguration( endpoint, useEnvVars: false )
-            {
-                UserName = user,
-                Password = pass
-            };
-        }
+            string apiClientId = Environment.GetEnvironmentVariable( "EmsApiTestClientId" );
+            if( string.IsNullOrEmpty( apiClientId ) )
+                throw new InvalidOperationException( "Test API Client Id not set" );
 
-        /// <summary>
-        /// A valid EMS system ID for the current test run that will be automatically applied
-        /// to the CachedEmsSystem property when a new service instance is created.
-        /// </summary>
-        protected static int ValidEmsSystemId
-        {
-            get { return 1; }
+            string apiClientSecret = Environment.GetEnvironmentVariable( "EmsApiTestClientSecret" );
+            if( string.IsNullOrEmpty( apiClientSecret ) )
+                throw new InvalidOperationException( "Test API Client Secret not set" );
+
+            m_config = new EmsApiServiceConfiguration( useEnvVars: false )
+            {
+                Endpoint = endpoint,
+                UserName = user,
+                Password = pass,
+                ApiClientId = apiClientId,
+                ApiClientSecret = apiClientSecret
+            };
         }
 
         /// <summary>
@@ -44,12 +60,9 @@ namespace EmsApi.Tests
         /// (set by the EmsApiTest* environment variables) and a valid cached ems system
         /// id.
         /// </summary>
-        protected static EmsApiService NewService()
+        protected static EmsApiService NewService( EmsApiServiceHttpClientConfiguration httpClientConfig = null )
         {
-            return new EmsApiService( m_config.Clone() )
-            {
-                CachedEmsSystem = ValidEmsSystemId
-            };
+            return new EmsApiService( m_config.Clone(), httpClientConfig );
         }
 
         /// <summary>

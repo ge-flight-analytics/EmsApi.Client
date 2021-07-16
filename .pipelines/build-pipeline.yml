@@ -1,5 +1,5 @@
 # Build the master branch and pull requests for master
-trigger: 
+trigger:
 - master
 
 pr:
@@ -25,7 +25,8 @@ steps:
     }
 
     # Write our test password secret to a variable that can be used in the dotnet test step
-    Write-Host "##vso[task.setvariable variable=emsApiTestPassword]$(emsApiTestPass)"
+    Write-Host "##vso[task.setvariable variable=EmsApiTestPassword]$(emsApiTestPass)"
+    Write-Host "##vso[task.setvariable variable=EmsApiTestClientSecret]$(emsApiTestClientSec)"
   displayName: Prepare
 
 - task: DotNetCoreCLI@2

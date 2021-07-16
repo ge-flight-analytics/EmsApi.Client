@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using EmsApi.Client.V2.Access;
+using Microsoft.Extensions.Http;
 using Newtonsoft.Json.Linq;
+using Polly;
+using Polly.Extensions.Http;
 using Refit;
 
 namespace EmsApi.Client.V2
@@ -23,17 +25,18 @@ namespace EmsApi.Client.V2
         /// </summary>
         public EmsApiService()
         {
-            Initialize();
-            SetServiceConfigInternal( new EmsApiServiceConfiguration() );
+            Initialize( httpClientConfig: null );
+            // As noted above ServiceConfig must be set before making any API calls.
         }
 
         /// <summary>
         /// Provides access to the EMS API using the provided configuration settings.
-        /// At a minimum, a username and password must be specified.
+        /// The first and last handlers, if provided, will be added to the standard HttpMessageHandler
+        /// stack used. This can be useful for tracing or testing purposes.
         /// </summary>
-        public EmsApiService( EmsApiServiceConfiguration config )
+        public EmsApiService( EmsApiServiceConfiguration config, EmsApiServiceHttpClientConfiguration httpClientConfig = null )
         {
-            Initialize();
+            Initialize( httpClientConfig );
             ServiceConfig = config;
         }
 
@@ -45,7 +48,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Access to ems-system routes.
         /// </summary>
-        public EmsSystemsAccess EmsSystems { get; set; }
+        public EmsSystemAccess EmsSystem { get; set; }
 
         /// <summary>
         /// Access to assets routes.
@@ -83,16 +86,6 @@ namespace EmsApi.Client.V2
         public TransfersAccess Transfers { get; set; }
 
         /// <summary>
-        /// The current EMS system that the service is operating on. This value may
-        /// be set to exclude it from access methods that need an EMS system specified.
-        /// </summary>
-        public int CachedEmsSystem
-        {
-            get { return m_cachedEmsSystemId; }
-            set { SetCachedEmsSystem( value ); }
-        }
-
-        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
@@ -102,37 +95,85 @@ namespace EmsApi.Client.V2
             get; private set;
         }
 
+        private void InitializeHttpClient( EmsApiServiceHttpClientConfiguration httpClientConfig )
+        {
+            // If no client configuration was provided then generate a new one to get the default settings.
+            httpClientConfig = httpClientConfig ?? new EmsApiServiceHttpClientConfiguration();
+
+            // This builds up our message handler stack from back to front.
+            // The nextHandler variable is what to assign to the InnerHandler of the latest handler created.
+            HttpMessageHandler nextHandler = new HttpClientHandler
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip
+            };
+
+            if( httpClientConfig.LastHandler != null )
+            {
+                httpClientConfig.LastHandler.InnerHandler = nextHandler;
+                nextHandler = httpClientConfig.LastHandler;
+            }
+
+            if( httpClientConfig.RetryTransientFailures )
+            {
+                // If we are configured to retry transient failures set that up now.
+                // We add this *after* the MessageHandler in the stack so that we get retries on
+                // both token request calls as well as normal API calls.
+                // This will retry and 408 (request timeout), 5XX (server error), or network failures (HttpRequestException).
+                var policyBuilder = HttpPolicyExtensions.HandleTransientHttpError();
+                var policy = policyBuilder.WaitAndRetryAsync( new[]
+                {
+                    // Retry 3 times with slightly longer retry periods each time.
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(10)
+                } );
+                nextHandler = new PolicyHttpMessageHandler( policy )
+                {
+                    InnerHandler = nextHandler
+                };
+            }
+
+            nextHandler = m_messageHandler = new MessageHandler
+            {
+                InnerHandler = nextHandler
+            };
+
+            if( httpClientConfig.FirstHandler != null )
+            {
+                httpClientConfig.FirstHandler.InnerHandler = nextHandler;
+                nextHandler = httpClientConfig.FirstHandler;
+            }
+
+            m_httpClient = new HttpClient( nextHandler )
+            {
+                // The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
+                // instance a gnarly database query can take longer than that to return on query creation or first result
+                // extraction time, especially if the SQL server is already busy.
+                // The value we opted for here is the value used for timeouts at the application gateway level and
+                // therefore seems like a reasonable default to use.
+                Timeout = TimeSpan.FromSeconds( 600 )
+            };
+        }
+
         /// <summary>
         /// Sets up our API interface and access properties.
         /// </summary>
-        private void Initialize()
+        private void Initialize( EmsApiServiceHttpClientConfiguration httpClientConfig )
         {
             m_cleanup = new List<Action>();
             m_authCallbacks = new List<Action<string>>();
             m_exceptionCallbacks = new List<Action<string>>();
 
-            // Set up the services we need to use.
-#if DEBUG
-            m_clientHandler = new DebugClientHandler();
-#else
-            m_clientHandler = new EmsApiClientHandler();
-#endif
-
-            m_httpClient = new HttpClient( m_clientHandler );
-
-            // The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
-            // instance a gnarly database query can take longer than that to return on query creation or first result
-            // extraction time, especially if the SQL server is already busy.
-            // The value we opted for here is the value used for timeouts at the application gateway level and
-            // therefore seems like a reasonable default to use.
-            m_httpClient.Timeout = TimeSpan.FromSeconds( 600 );
+            // Set up the HTTP client. This includes enabling automatic GZip decompression as the
+            // EMS API will use that if requested.
+            InitializeHttpClient( httpClientConfig );
 
             // Set up access properties for external clients to use.
             InitializeAccessProperties();
 
             // Subscribe to authentication failure events.
-            m_clientHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
-            m_cleanup.Add( () => m_clientHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
+            m_messageHandler.AuthenticationFailedEvent += AuthenticationFailedHandler;
+            m_cleanup.Add( () => m_messageHandler.AuthenticationFailedEvent -= AuthenticationFailedHandler );
         }
 
         /// <summary>
@@ -141,9 +182,8 @@ namespace EmsApi.Client.V2
         /// </summary>
         private void InitializeAccessProperties()
         {
-            m_accessors = new List<EmsApiRouteAccess>();
             Swagger = InitializeAccessClass<SwaggerAccess>();
-            EmsSystems = InitializeAccessClass<EmsSystemsAccess>();
+            EmsSystem = InitializeAccessClass<EmsSystemAccess>();
             Assets = InitializeAccessClass<AssetsAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
             Profiles = InitializeAccessClass<ProfilesAccess>();
@@ -153,30 +193,19 @@ namespace EmsApi.Client.V2
             Transfers = InitializeAccessClass<TransfersAccess>();
         }
 
-        private TAccess InitializeAccessClass<TAccess>() where TAccess : EmsApiRouteAccess, new()
+        private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
         {
-            EmsApiRouteAccess access = new TAccess();
+            RouteAccess access = new TAccess();
             access.SetService( this );
             access.ApiMethodFailedEvent += ApiExceptionHandler;
             m_cleanup.Add( () => access.ApiMethodFailedEvent -= ApiExceptionHandler );
-            m_accessors.Add( access );
 
             return (TAccess)access;
         }
 
-        private void SetCachedEmsSystem( int newId )
-        {
-            if( newId <= 0 )
-                throw new EmsApiException( "The cached EMS system id must be greater than 0." );
-
-            m_cachedEmsSystemId = newId;
-            m_accessors.OfType<CachedEmsIdRouteAccess>().ToList()
-                .ForEach( a => a.SetEmsSystemId( m_cachedEmsSystemId ) );
-        }
-
         /// <summary>
         /// Gets or sets the current service configuration. When setting this value, everything
-        /// including the base <seealso cref="HttpClient"/> is re-allocated, since the endpoint
+        /// including the base <seealso cref="HttpClient"/> is re-configured, since the endpoint
         /// or authentication properties may have changed.
         /// </summary>
         public EmsApiServiceConfiguration ServiceConfig
@@ -198,7 +227,7 @@ namespace EmsApi.Client.V2
         private void SetServiceConfigInternal( EmsApiServiceConfiguration config )
         {
             m_config = config;
-            m_clientHandler.ServiceConfig = config;
+            m_messageHandler.ServiceConfig = config;
 
             // Reset the default headers, they may have changed with the config.
             m_httpClient.DefaultRequestHeaders.Clear();
@@ -212,26 +241,65 @@ namespace EmsApi.Client.V2
                 // Reset the BaseAddress, and create a new refit service stub.
                 // It's bound to the HttpClient's base address when it's constructed.
                 m_httpClient.BaseAddress = new Uri( m_config.Endpoint );
-                RefitApi = RestService.For<IEmsApi>( m_httpClient );
+                var refitSettings = new RefitSettings {
+                    // In Refit v6 they switched to using System.Text.Json by default. We did not
+                    // want to go through the hassle of converting our DTOs to that so we are
+                    // going to still use Newtonsoft.
+                    ContentSerializer = new NewtonsoftJsonContentSerializer()
+                };
+                RefitApi = RestService.For<IEmsApi>( m_httpClient, refitSettings );
             }
         }
 
         /// <summary>
-        /// Returns true if the current service is authenticated.
+        /// Returns true if the current service is authenticated for password authentication. If
+        /// the service is not currently password authenticated, but has performed trusted
+        /// authentication, this will return false. This is by design as this property was intended
+        /// for use with password authentication only. Re-authentication may still be required if
+        /// this returns true, as the token may have timed out or may time out by the time the next
+        /// EMS API request is made.
         /// </summary>
         public bool Authenticated
         {
-            get { return m_clientHandler.Authenticated; }
+            get { return m_messageHandler.HasAuthenticatedWithPassword(); }
         }
 
         /// <summary>
-        /// Manually initiate authentication. Returns true if authentication succeeded,
-        /// or false otherwise. Normally authentication is performed on the first API
-        /// request or on the next request whenever the current token times out.
+        /// Returns true if the specified trusted name/value pair has authenticated.
         /// </summary>
-        public virtual bool Authenticate()
+        public bool HasAuthenticatedWithTrusted( string authName, string authValue )
         {
-            return m_clientHandler.Authenticate();
+            return m_messageHandler.HasAuthenticatedWithTrusted( authName, authValue );
+        }
+
+        /// <summary>
+        /// Manually initiate password authentication. Returns true if authentication succeeded,
+        /// or false otherwise. Normally authentication is performed on the first API
+        /// request or on the next request after the current token has timed out.
+        /// </summary>
+        public bool Authenticate()
+        {
+            return m_messageHandler.AuthenticateWithPassword();
+        }
+
+        /// <summary>
+        /// Clear out the authentication token cache.
+        /// </summary>
+        public void ClearAuthenticationCache()
+        {
+            m_messageHandler.ClearAuthenticationCache();
+        }
+
+        /// <summary>
+        /// Expires the entries in the autnetication cache.
+        /// </summary>
+        /// <remarks>
+        /// This is intended for testing purposes. If you want to clear the authentication cache
+        /// use <seealso cref="ClearAuthenticationCache"/>.
+        /// </remarks>
+        public void ExpireAuthenticationCacheEntries()
+        {
+            m_messageHandler.ExpireAuthenticationCacheEntries();
         }
 
         /// <summary>
@@ -282,8 +350,8 @@ namespace EmsApi.Client.V2
                     action();
             }
 
-            if( m_clientHandler != null )
-                m_clientHandler.Dispose();
+            if( m_messageHandler != null )
+                m_messageHandler.Dispose();
         }
 
         /// <summary>
@@ -370,25 +438,14 @@ namespace EmsApi.Client.V2
         private List<Action> m_cleanup;
 
         /// <summary>
-        /// References to the Access classes exposed by this service, so that
-        /// we can perform operations on them iteratively.
-        /// </summary>
-        private List<EmsApiRouteAccess> m_accessors;
-
-        /// <summary>
-        /// The current value for the cached ems system id.
-        /// </summary>
-        private int m_cachedEmsSystemId;
-
-        /// <summary>
         /// The configuration for the service.
         /// </summary>
         private EmsApiServiceConfiguration m_config;
 
         /// <summary>
-        /// The client handler, which handles authentication and compression.
+        /// The message handler, which handles authentication and other needs.
         /// </summary>
-        private EmsApiClientHandler m_clientHandler;
+        private MessageHandler m_messageHandler;
 
         /// <summary>
         /// The current http client.

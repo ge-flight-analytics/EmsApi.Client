@@ -7,18 +7,11 @@ namespace EmsApi.Tests
 {
     public class ErrorHandlingTests : TestBase
     {
-        [Fact( DisplayName = "Enabling auth exceptions should throw an exception" )]
-        public void Enabling_auth_exceptions_should_throw_an_exception()
-        {
-            using( var service = NewInvalidLoginService() )
-                Assert.Throws<EmsApiAuthenticationException>( () => service.Authenticate() );
-        }
-
         [Fact( DisplayName = "Disabling auth exceptions should not throw an exception" )]
         public void Disabling_auth_exceptions_should_not_throw_an_exception()
         {
-            using( var service = NewNoThrowInvalidLoginService() )
-                service.Authenticate();
+            using var service = NewNoThrowInvalidLoginService();
+            service.Authenticate();
         }
 
         [Fact( DisplayName = "Enabling api exceptions should throw an exception" )]
@@ -26,25 +19,21 @@ namespace EmsApi.Tests
         {
             // This is roughly the same as above except we ignore auth failures, and let the
             // failure happen on the subsequent API call.
-            using( var service = NewInvalidLoginService() )
-            {
-                service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
-                service.ServiceConfig.ThrowExceptionOnApiFailure = true;
+            using var service = NewInvalidLoginService();
+            service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
+            service.ServiceConfig.ThrowExceptionOnApiFailure = true;
 
-                Action causeFailure = () => service.EmsSystems.GetAll();
-                causeFailure.Should().ThrowExactly<EmsApiException>();
-            }
+            Action causeFailure = () => service.EmsSystem.GetSystemInfo();
+            causeFailure.Should().Throw<EmsApiException>();
         }
 
         [Fact( DisplayName = "Disabling api exceptions should not throw an exception" )]
         public void Disabling_api_exceptions_should_not_throw_an_exception()
         {
-            using( var service = NewNoThrowInvalidLoginService() )
-            {
-                service.ServiceConfig.ThrowExceptionOnApiFailure = false;
-                service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
-                service.EmsSystems.GetAll();
-            }
+            using var service = NewNoThrowInvalidLoginService();
+            service.ServiceConfig.ThrowExceptionOnApiFailure = false;
+            service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
+            service.EmsSystem.Get();
         }
     }
 }

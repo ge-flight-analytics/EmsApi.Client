@@ -8,29 +8,28 @@ namespace EmsApi.Client.V2.Access
     /// <summary>
     /// Provides access to EMS API "trajectories" routes.
     /// </summary>
-    public class TrajectoriesAccess : CachedEmsIdRouteAccess
+    public class TrajectoriesAccess : RouteAccess
     {
         /// <summary>
         /// Returns the current trajectory configuration.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<TrajectoryConfiguration>> GetAllConfigurationsAsync( int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<TrajectoryConfiguration>> GetAllConfigurationsAsync( CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetTrajectoryConfigurations( ems ) );
+            return CallApiTask( api => api.GetTrajectoryConfigurations( context ) );
         }
 
         /// <summary>
         /// Returns the current trajectory configuration.
         /// </summary>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<TrajectoryConfiguration> GetAllConfigurations( int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<TrajectoryConfiguration> GetAllConfigurations( CallContext context = null )
         {
-            return SafeAccessEnumerableTask( GetAllConfigurationsAsync( emsSystem ) );
+            return SafeAccessEnumerableTask( GetAllConfigurationsAsync( context ) );
         }
 
         /// <summary>
@@ -39,13 +38,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="flightId">
         /// The flight id to return trajectories for.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<TrajectoryValueArray> GetTrajectoryAsync( int flightId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<TrajectoryValueArray> GetTrajectoryAsync( int flightId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetTrajectory( ems, flightId ) );
+            return CallApiTask( api => api.GetTrajectory( flightId, context ) );
         }
 
         /// <summary>
@@ -54,12 +52,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="flightId">
         /// The flight id to return trajectories for.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
-        /// </param>        
-        public virtual TrajectoryValueArray GetTrajectory( int flightId, int emsSystem = NoEmsServerSpecified )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual TrajectoryValueArray GetTrajectory( int flightId, CallContext context = null )
         {
-            return AccessTaskResult( GetTrajectoryAsync( flightId, emsSystem ) );
+            return AccessTaskResult( GetTrajectoryAsync( flightId, context ) );
         }
 
         /// <summary>
@@ -71,13 +69,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="trajectoryId">
         /// The string identifier for the trajectory type to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<string> GetTrajectoryKmlAsync( int flightId, string trajectoryId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<string> GetTrajectoryKmlAsync( int flightId, string trajectoryId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetTrajectoryKml( ems, flightId, trajectoryId ) );
+            return CallApiTask( api => api.GetTrajectoryKml( flightId, trajectoryId, context ) );
         }
 
         /// <summary>
@@ -89,12 +86,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="trajectoryId">
         /// The string identifier for the trajectory type to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual string GetTrajectoryKml( int flightId, string trajectoryId, int emsSystem = NoEmsServerSpecified )
+        public virtual string GetTrajectoryKml( int flightId, string trajectoryId, CallContext context = null )
         {
-            return AccessTaskResult( GetTrajectoryKmlAsync( flightId, trajectoryId, emsSystem ) );
+            return AccessTaskResult( GetTrajectoryKmlAsync( flightId, trajectoryId, context ) );
         }
     }
 }

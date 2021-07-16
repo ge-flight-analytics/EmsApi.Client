@@ -25,184 +25,136 @@ namespace EmsApi.Client.V2
         /// Returns a set of EMS systems the currently logged in user is able to access.
         /// </summary>
         [Get( "/v2/ems-systems" )]
-        Task<IEnumerable<EmsSystem>> GetEmsSystems();
+        Task<IEnumerable<EmsSystem>> GetEmsSystems( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns some additional server information about the ems system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}" )]
-        Task<EmsSystemInfo> GetEmsSystemInfo( int emsSystemId );
+        [Get( "/v2/ems-systems/1" )]
+        Task<EmsSystemInfo> GetEmsSystemInfo( [Property] CallContext context = null );
 
         /// <summary>
         /// Ping an EMS system to verify that the specified system is currently up and running.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/ping" )]
-        Task<bool> PingEmsSystem( int emsSystemId );
+        [Get( "/v2/ems-systems/1/ping" )]
+        Task<bool> PingEmsSystem( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the list of fleets the user has access to in their security context.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/fleets" )]
-        Task<IEnumerable<Fleet>> GetFleets( int emsSystemId );
+        [Get( "/v2/ems-systems/1/assets/fleets" )]
+        Task<IEnumerable<Fleet>> GetFleets( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information for a fleet on the system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="fleetId">
         /// The unique identifier of the fleet.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/fleets/{fleetId}" )]
-        Task<Fleet> GetFleet( int emsSystemId, int fleetId );
+        [Get( "/v2/ems-systems/1/assets/fleets/{fleetId}" )]
+        Task<Fleet> GetFleet( int fleetId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the list of aircraft the user has access to in their security context.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="fleetId">
         /// The fleet id to filter by, if any.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/aircraft" )]
-        Task<IEnumerable<Aircraft>> GetAllAircraft( int emsSystemId, [AliasAs( "fleetId" )] int? fleetId = null );
+        [Get( "/v2/ems-systems/1/assets/aircraft" )]
+        Task<IEnumerable<Aircraft>> GetAllAircraft( int? fleetId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns info for an aircraft on the system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="aircraftId">
         /// The unique identifier of the aircraft.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/aircraft/{aircraftId}" )]
-        Task<Aircraft> GetSingleAircraft( int emsSystemId, int aircraftId );
+        [Get( "/v2/ems-systems/1/assets/aircraft/{aircraftId}" )]
+        Task<Aircraft> GetSingleAircraft( int aircraftId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the list of flight phases.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/flight-phases" )]
-        Task<IEnumerable<FlightPhase>> GetFlightPhases( int emsSystemId );
+        [Get( "/v2/ems-systems/1/assets/flight-phases" )]
+        Task<IEnumerable<FlightPhase>> GetFlightPhases( [Property] CallContext context = null );
 
         /// <summary>
         /// Retruns information for a flight phase on the system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightPhaseId">
         /// The unique identifier of the flight phase.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/flight-phases/{flightPhaseId}" )]
-        Task<FlightPhase> GetFlightPhase( int emsSystemId, int flightPhaseId );
+        [Get( "/v2/ems-systems/1/assets/flight-phases/{flightPhaseId}" )]
+        Task<FlightPhase> GetFlightPhase( int flightPhaseId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the list of airports that have been visited by the EMS system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/airports" )]
-        Task<IEnumerable<Airport>> GetAirports( int emsSystemId );
+        [Get( "/v2/ems-systems/1/assets/airports" )]
+        Task<IEnumerable<Airport>> GetAirports( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information for an airport on the system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="airportId">
         /// The unique identifier for the airport.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/assets/airports/{airportId}" )]
-        Task<Airport> GetAirport( int emsSystemId, int airportId );
+        [Get( "/v2/ems-systems/1/assets/airports/{airportId}" )]
+        Task<Airport> GetAirport( int airportId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the current trajectory configuration.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/trajectory-configurations" )]
-        Task<IEnumerable<TrajectoryConfiguration>> GetTrajectoryConfigurations( int emsSystemId );
+        [Get( "/v2/ems-systems/1/trajectory-configurations" )]
+        Task<IEnumerable<TrajectoryConfiguration>> GetTrajectoryConfigurations( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a trajectory path for the given flight.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The flight id to return trajectories for.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/trajectories" )]
-        Task<TrajectoryValueArray> GetTrajectory( int emsSystemId, int flightId );
+        [Get( "/v2/ems-systems/1/flights/{flightId}/trajectories" )]
+        Task<TrajectoryValueArray> GetTrajectory( int flightId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a KML document XML for the given flight and trajectory id, as a raw string.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The flight id to return a trajectory for.
         /// </param>
         /// <param name="trajectoryId">
         /// The string identifier for the trajectory type to return.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/kml-trajectories/{trajectoryId}" )]
-        Task<string> GetTrajectoryKml( int emsSystemId, int flightId, string trajectoryId );
+        [Get( "/v2/ems-systems/1/flights/{flightId}/kml-trajectories/{trajectoryId}" )]
+        Task<string> GetTrajectoryKml( int flightId, string trajectoryId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information about the set of APM profiles on the given EMS system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="parentGroupId">
         /// The optional parent profile group ID whose contents to search.
         /// </param>
         /// <param name="search">
         /// An optional profile name search string used to match profiles to return.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/profiles" )]
-        Task<IEnumerable<Profile>> GetProfiles( int emsSystemId, string parentGroupId = null, string search = null );
+        [Get( "/v2/ems-systems/1/profiles" )]
+        Task<IEnumerable<Profile>> GetProfiles( string parentGroupId = null, string search = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a profile group with a matching ID containing only its immediate 
         /// children in a hierarchical tree used to organize profiles.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="groupId">
         /// The unique identifier of the profile group whose contents to return. If 
         /// not specified, the contents of the root group are returned.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/profile-groups" )]
-        Task<ProfileGroup> GetProfileGroup( int emsSystemId, string groupId = null );
+        [Get( "/v2/ems-systems/1/profile-groups" )]
+        Task<ProfileGroup> GetProfileGroup( string groupId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns APM profile results for the given flight and profile id.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The flight id to return APM results for.
         /// </param>
@@ -210,16 +162,13 @@ namespace EmsApi.Client.V2
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/profiles/{profileId}/query" )]
-        Task<ProfileResults> GetProfileResults( int emsSystemId, int flightId, string profileId );
+        [Get( "/v2/ems-systems/1/flights/{flightId}/profiles/{profileId}/query" )]
+        Task<ProfileResults> GetProfileResults( int flightId, string profileId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a "glossary" for a specific profile and version, which helps define the 
         /// results that can be returned in a profile.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="profileId">
         /// The unique identifier of the profile whose glossary to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
@@ -229,54 +178,42 @@ namespace EmsApi.Client.V2
         /// <param name="format">
         /// The format of the returned glossary. Options are "json" or "csv". Defaults to JSON.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/glossary" )]
-        Task<ProfileGlossary> GetProfileGlossary( int emsSystemId, string profileId, int? profileVersionNumber = null, string format = null );
+        [Get( "/v2/ems-systems/1/profiles/{profileId}/glossary" )]
+        Task<ProfileGlossary> GetProfileGlossary( string profileId, int? profileVersionNumber = null, string format = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the events for a specific profile.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="profileId">
         /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/events" )]
-        Task<IEnumerable<Event>> GetProfileEvents( int emsSystemId, string profileId );
+        [Get( "/v2/ems-systems/1/profiles/{profileId}/events" )]
+        Task<IEnumerable<Event>> GetProfileEvents( string profileId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns an event for a specific profile.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="profileId">
         /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
         /// <param name="eventId">
         /// The integer ID for the event.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/events/{eventId}" )]
-        Task<Event> GetProfileEvent( int emsSystemId, string profileId, int eventId );
+        [Get( "/v2/ems-systems/1/profiles/{profileId}/events/{eventId}" )]
+        Task<Event> GetProfileEvent( string profileId, int eventId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information about the parameter sets on the given EMS system.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="groupId">
         /// The optional ID of the parameter set group to return.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/parameter-sets" )]
-        Task<ParameterSetGroup> GetParameterSets( int emsSystemId, string groupId = null );
+        [Get( "/v2/ems-systems/1/parameter-sets" )]
+        Task<ParameterSetGroup> GetParameterSets( string groupId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Searches for analytics by name.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="text">
         /// The search terms used to find a list of analytics by name.
         /// </param>
@@ -291,15 +228,12 @@ namespace EmsApi.Client.V2
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/analytics" )]
-        Task<IEnumerable<AnalyticInfo>> GetAnalytics( int emsSystemId, string text, string group = null, int? maxResults = null, Category category = Category.Full );
+        [Get( "/v2/ems-systems/1/analytics" )]
+        Task<IEnumerable<AnalyticInfo>> GetAnalytics( string text, string group = null, int? maxResults = null, Category category = Category.Full, [Property] CallContext context = null );
 
         /// <summary>
         /// Searches for analytics by name for a specific flight.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when searching analytics.
         /// </param>
@@ -317,42 +251,33 @@ namespace EmsApi.Client.V2
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
         /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
-        Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFlight( int emsSystemId, int flightId, string text, string group = null, int? maxResults = null, Category category = Category.Full );
+        [Get( "/v2/ems-systems/1/flights/{flightId}/analytics" )]
+        Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFlight( int flightId, string text, string group = null, int? maxResults = null, Category category = Category.Full, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/analytics" )]
-        Task<AnalyticInfo> GetAnalyticInfo( int emsSystemId, AnalyticId analyticId );
+        [Post( "/v2/ems-systems/1/analytics" )]
+        Task<AnalyticInfo> GetAnalyticInfo( [Body] AnalyticId analyticId, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when retrieving the analytic information.
         /// </param>
         /// <param name="analyticId">
         /// The analytic ID for which data is retrieved. These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics" )]
-        Task<AnalyticInfo> GetAnalyticInfoWithFlight( int emsSystemId, int flightId, AnalyticId analyticId );
+        [Post( "/v2/ems-systems/1/flights/{flightId}/analytics" )]
+        Task<AnalyticInfo> GetAnalyticInfoWithFlight( int flightId, [Body] AnalyticId analyticId, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="analyticGroupId">
         /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
         /// </param>
@@ -360,15 +285,12 @@ namespace EmsApi.Client.V2
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroup( int emsSystemId, string analyticGroupId = null, Category category = Category.Full );
+        [Get( "/v2/ems-systems/1/analytic-groups" )]
+        Task<AnalyticGroupContents> GetAnalyticGroup( string analyticGroupId = null, Category category = Category.Full, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record to use when retrieving the analytic information.
         /// </param>
@@ -379,30 +301,24 @@ namespace EmsApi.Client.V2
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int emsSystemId, int flightId, string analyticGroupId = null, Category category = Category.Full );
+        [Get( "/v2/ems-systems/1/flights/{flightId}/analytic-groups" )]
+        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int flightId, string analyticGroupId = null, Category category = Category.Full, [Property] CallContext context = null );
 
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record for which to query data.
         /// </param>
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/query" )]
-        Task<QueryResult> GetAnalyticResults( int emsSystemId, int flightId, Query query );
+        [Post( "/v2/ems-systems/1/flights/{flightId}/analytics/query" )]
+        Task<QueryResult> GetAnalyticResults( int flightId, [Body] Query query, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the analytic metadata for a flight.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="flightId">
         /// The integer ID of the flight record for which to retrieve data.
         /// </param>
@@ -410,30 +326,24 @@ namespace EmsApi.Client.V2
         /// The analytic ID (wrapped in double quotes) for which metadata is retrieved.
         /// These identifiers are typically obtained from nodes in an analytic group tree.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/metadata" )]
-        Task<Metadata> GetAnalyticMetadata( int emsSystemId, int flightId, AnalyticId analyticId );
+        [Post( "/v2/ems-systems/1/flights/{flightId}/analytics/metadata" )]
+        Task<Metadata> GetAnalyticMetadata( int flightId, [Body] AnalyticId analyticId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a database group with a matching ID containing only its immediate children 
         /// in a hierarchical tree used to organize databases.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="groupId">
         /// The unique identifier of the EMS database group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/database-groups" )]
-        Task<DatabaseGroup> GetDatabaseGroup( int emsSystemId, string groupId = null );
+        [Get( "/v2/ems-systems/1/database-groups" )]
+        Task<DatabaseGroup> GetDatabaseGroup( string groupId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a field group with a matching ID containing only its immediate children in a 
         /// hierarchical tree used to organize fields.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database containing a field group to return.
         /// </param>
@@ -441,30 +351,24 @@ namespace EmsApi.Client.V2
         /// The unique identifier of a field group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/field-groups" )]
-        Task<FieldGroup> GetDatabaseFieldGroup( int emsSystemId, string databaseId, string groupId = null );
+        [Get( "/v2/ems-systems/1/databases/{databaseId}/field-groups" )]
+        Task<FieldGroup> GetDatabaseFieldGroup( string databaseId, string groupId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information about a database field matching the specified ID.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database containing a field to return.
         /// </param>
         /// <param name="fieldId">
         /// The unique identifier of the field whose information to return.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/fields/{fieldId}" )]
-        Task<Field> GetDatabaseFieldDefinition( int emsSystemId, string databaseId, string fieldId );
+        [Get( "/v2/ems-systems/1/databases/{databaseId}/fields/{fieldId}" )]
+        Task<Field> GetDatabaseFieldDefinition( string databaseId, string fieldId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns all the fields matching the specified search options.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the database containing fields to return.
         /// </param>
@@ -482,47 +386,38 @@ namespace EmsApi.Client.V2
         /// The maximum number of fields to return. This defaults to 200 fields. If this is set to 
         /// 0 all the results will be returned.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/fields" )]
-        Task<IEnumerable<Field>> SearchDatabaseFields( int emsSystemId, string databaseId, string search = null, string fieldGroupId = null, bool includeProfiles = false, int maxResults = 200 );
+        [Get( "/v2/ems-systems/1/databases/{databaseId}/fields" )]
+        Task<IEnumerable<Field>> SearchDatabaseFields( string databaseId, string search = null, string fieldGroupId = null, bool includeProfiles = false, int maxResults = 200, [Property] CallContext context = null );
 
         /// <summary>
         /// Queries a database for information, composing the query with information provided in the 
         /// specified query structure.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
         /// </param>
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/query" )]
-        Task<DbQueryResult> QueryDatabase( int emsSystemId, string databaseId, DbQuery query );
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/query" )]
+        Task<DbQueryResult> QueryDatabase( string databaseId, [Body] DbQuery query, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates a query on a database using the provided query structure and returns an ID that 
         /// can be used to fetch result data through other async-query routes.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
         /// </param>
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query" )]
-        Task<AsyncQueryInfo> StartAsyncDatabaseQuery( int emsSystemId, string databaseId, DbQuery query );
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/async-query" )]
+        Task<AsyncQueryInfo> StartAsyncDatabaseQuery( string databaseId, [Body] DbQuery query, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
         /// </param>
@@ -535,75 +430,60 @@ namespace EmsApi.Client.V2
         /// <param name="end">
         /// The zero-based index of the last row to return.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
-        Task<AsyncQueryData> ReadAsyncDatabaseQuery( int emsSystemId, string databaseId, string queryId, int start, int end );
+        [Get( "/v2/ems-systems/1/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
+        Task<AsyncQueryData> ReadAsyncDatabaseQuery( string databaseId, string queryId, int start, int end, [Property] CallContext context = null );
 
         /// <summary>
         /// Stops the async query with the given ID.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to query.
         /// </param>
         /// <param name="queryId">
         /// The unique identifier of the query created by the API.
         /// </param>
-        [Delete( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/async-query/{queryId}" )]
-        Task StopAsyncDatabaseQuery( int emsSystemId, string databaseId, string queryId );
+        [Delete( "/v2/ems-systems/1/databases/{databaseId}/async-query/{queryId}" )]
+        Task StopAsyncDatabaseQuery( string databaseId, string queryId, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates one or more new data entities in the database.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to add data entities to.
         /// </param>
         /// <param name="create">
         /// The information used to create one or more new data entities.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/create" )]
-        Task<CreateResult> CreateDatabaseEntity( int emsSystemId, string databaseId, Create create );
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/create" )]
+        Task<CreateResult> CreateDatabaseEntity( string databaseId, [Body] Create create, [Property] CallContext context = null );
 
         /// <summary>
         /// Runs an update query on one or more rows of data in the database.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to update.
         /// </param>
         /// <param name="update">
         /// The information used to construct an update query.
         /// </param>
-        [Put( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/update" )]
-        Task<UpdateResult> UpdateDatabase( int emsSystemId, string databaseId, Update update );
+        [Put( "/v2/ems-systems/1/databases/{databaseId}/update" )]
+        Task<UpdateResult> UpdateDatabase( string databaseId, [Body] Update update, [Property] CallContext context = null );
 
         /// <summary>
         /// Deletes one or more existing data entities in the database.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database to delete data entities from.
         /// </param>
         /// <param name="delete">
         /// The information used to delete one or more data entities.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/delete" )]
-        Task<DeleteResult> DeleteDatabaseEntity( int emsSystemId, string databaseId, Delete delete );
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/delete" )]
+        Task<DeleteResult> DeleteDatabaseEntity( string databaseId, [Body] Delete delete, [Property] CallContext context = null );
 
         /// <summary>
         /// Adds a comment to a specific comment field.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database the comment field exists on.
         /// </param>
@@ -613,27 +493,21 @@ namespace EmsApi.Client.V2
         /// <param name="newComment">
         /// The context and information of the new comment.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/comments/{commentFieldId}" )]
-        Task CreateComment( int emsSystemId, string databaseId, string commentFieldId, NewComment newComment );
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/comments/{commentFieldId}" )]
+        Task CreateComment( string databaseId, string commentFieldId, [Body] NewComment newComment, [Property] CallContext context = null );
 
         /// <summary>
         /// Starts a new upload.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="request">
         /// The parameters for the upload.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/uploads" )]
-        Task<UploadParameters> StartUpload( int emsSystemId, [Body] UploadRequest request );
+        [Post( "/v2/ems-systems/1/uploads" )]
+        Task<UploadParameters> StartUpload( [Body] UploadRequest request, [Property] CallContext context = null );
 
         /// <summary>
         /// Uploads a chunk of a file. This will fail if any chunks have been skipped in the specified file.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="transferId">
         /// The ID of the upload, returned originally by the upload start call.
         /// </param>
@@ -650,20 +524,17 @@ namespace EmsApi.Client.V2
         /// The practical limit for a single chunk is less than 4MB or so, dependent on the web server's configuration. 
         /// If you receive 500 responses, try smaller chunk sizes.
         /// </remarks>
-        [Put( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}/{first}/{last}" )]
-        Task<UploadResult> UploadChunk( int emsSystemId, string transferId, long first, long last, [Body] byte[] chunk );
+        [Put( "/v2/ems-systems/1/uploads/{transferId}/{first}/{last}" )]
+        Task<UploadResult> UploadChunk( string transferId, long first, long last, [Body] byte[] chunk, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the status of an upload in progress.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="transferId">
         /// The ID of the upload, returned originally by the upload start call.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}" )]
-        Task<UploadStatus> GetUploadStatus( int emsSystemId, string transferId );
+        [Get( "/v2/ems-systems/1/uploads/{transferId}" )]
+        Task<UploadStatus> GetUploadStatus( string transferId, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the list of upload records from the server.
@@ -673,55 +544,43 @@ namespace EmsApi.Client.V2
         /// will be used if it's not specified.
         /// </param>
         [Get( "/v2/uploads" )]
-        Task<IEnumerable<UploadRecord>> GetUploads( int maxEntries = 50 );
+        Task<IEnumerable<UploadRecord>> GetUploads( int maxEntries = 50, [Property] CallContext context = null );
 
         /// <summary>
         /// Completes an existing upload in progress.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="transferId">
         /// The ID of the upload, returned originally by the upload start call.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}/finish" )]
-        Task<UploadRecord> FinishUpload( int emsSystemId, string transferId );
+        [Get( "/v2/ems-systems/1/uploads/{transferId}/finish" )]
+        Task<UploadRecord> FinishUpload( string transferId, [Property] CallContext context = null );
 
         /// <summary>
         /// Cancels an existing upload in progress.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="transferId">
         /// The ID of the upload, returned originally by the upload start call.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/uploads/{transferId}/cancel" )]
-        Task<UploadRecord> CancelUpload( int emsSystemId, string transferId );
+        [Get( "/v2/ems-systems/1/uploads/{transferId}/cancel" )]
+        Task<UploadRecord> CancelUpload( string transferId, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the EMS processing status for a single upload.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="uploadId">
         /// The ID of the upload for which to return status information.
         /// </param>
-        [Get( "/v2/ems-systems/{emsSystemId}/uploads/processing-status/{uploadId}" )]
-        Task<UploadProcessingStatus> GetProcessingStatusSingle( int emsSystemId, string uploadId );
+        [Get( "/v2/ems-systems/1/uploads/processing-status/{uploadId}" )]
+        Task<UploadProcessingStatus> GetProcessingStatusSingle( string uploadId, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the EMS processing status for a set of uploads.
         /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system.
-        /// </param>
         /// <param name="ids">
         /// An array of upload ids for which to return information.
         /// </param>
-        [Post( "/v2/ems-systems/{emsSystemId}/uploads/processing-status" )]
-        Task<IEnumerable<UploadProcessingStatus>> GetProcessingStatusMultiple( int emsSystemId, string[] ids );
+        [Post( "/v2/ems-systems/1/uploads/processing-status" )]
+        Task<IEnumerable<UploadProcessingStatus>> GetProcessingStatusMultiple( [Body] string[] ids, [Property] CallContext context = null );
 
 
         /// <summary>
@@ -731,6 +590,6 @@ namespace EmsApi.Client.V2
         /// The version of the API to return the specification for. The default is "v2".
         /// </param>
         [Get( "/{apiVersion}/swagger" )]
-        Task<string> GetSwaggerSpecification( string apiVersion = "v2" );
+        Task<string> GetSwaggerSpecification( string apiVersion = "v2", [Property] CallContext context = null );
     }
 }

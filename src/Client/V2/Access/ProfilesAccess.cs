@@ -7,7 +7,7 @@ namespace EmsApi.Client.V2.Access
     /// <summary>
     /// Provides access to EMS API "profiles" routes.
     /// </summary>
-    public class ProfilesAccess : CachedEmsIdRouteAccess
+    public class ProfilesAccess : RouteAccess
     {
         /// <summary>
         /// Returns APM profile results for the given flight and profile id.
@@ -19,13 +19,12 @@ namespace EmsApi.Client.V2.Access
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<ProfileResults> GetResultsAsync( int flightId, string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ProfileResults> GetResultsAsync( int flightId, string profileId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetProfileResults( ems, flightId, profileId ) );
+            return CallApiTask( api => api.GetProfileResults( flightId, profileId, context ) );
         }
 
         /// <summary>
@@ -38,12 +37,12 @@ namespace EmsApi.Client.V2.Access
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual ProfileResults GetResults( int flightId, string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual ProfileResults GetResults( int flightId, string profileId, CallContext context = null )
         {
-            return AccessTaskResult( GetResultsAsync( flightId, profileId, emsSystem ) );
+            return AccessTaskResult( GetResultsAsync( flightId, profileId, context ) );
         }
 
         /// <summary>
@@ -55,13 +54,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="search">
         /// An optional profile name search string used to match profiles to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<Profile>> GetDefinitionsAsync( string parentGroupId = null, string search = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Profile>> GetDefinitionsAsync( string parentGroupId = null, string search = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetProfiles( ems, parentGroupId, search ) );
+            return CallApiTask( api => api.GetProfiles( parentGroupId, search, context ) );
         }
 
         /// <summary>
@@ -73,12 +71,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="search">
         /// An optional profile name search string used to match profiles to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<Profile> GetDefinitions( string parentGroupId = null, string search = null, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Profile> GetDefinitions( string parentGroupId = null, string search = null, CallContext context = null )
         {
-            return AccessTaskResult( GetDefinitionsAsync( parentGroupId, search, emsSystem ) );
+            return AccessTaskResult( GetDefinitionsAsync( parentGroupId, search, context ) );
         }
 
         /// <summary>
@@ -89,13 +87,12 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of the profile group whose contents to return. If 
         /// not specified, the contents of the root group are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<ProfileGroup> GetGroupAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ProfileGroup> GetGroupAsync( string groupId = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetProfileGroup( ems, groupId ) );
+            return CallApiTask( api => api.GetProfileGroup( groupId, context ) );
         }
 
         /// <summary>
@@ -106,12 +103,12 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of the profile group whose contents to return. If 
         /// not specified, the contents of the root group are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual ProfileGroup GetGroup( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual ProfileGroup GetGroup( string groupId = null, CallContext context = null )
         {
-            return AccessTaskResult( GetGroupAsync( groupId, emsSystem ) );
+            return AccessTaskResult( GetGroupAsync( groupId, context ) );
         }
 
         /// <summary>
@@ -127,13 +124,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="format">
         /// The format of the returned glossary. Options are "json" or "csv". Defaults to JSON.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<ProfileGlossary> GetGlossaryAsync( string profileId, int? profileVersionNumber = null, string format = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<ProfileGlossary> GetGlossaryAsync( string profileId, int? profileVersionNumber = null, string format = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetProfileGlossary( ems, profileId, profileVersionNumber, format ) );
+            return CallApiTask( api => api.GetProfileGlossary( profileId, profileVersionNumber, format, context ) );
         }
 
         /// <summary>
@@ -149,12 +145,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="format">
         /// The format of the returned glossary. Options are "json" or "csv". Defaults to JSON.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual ProfileGlossary GetGlossary( string profileId, int? profileVersionNumber = null, string format = null, int emsSystem = NoEmsServerSpecified )
+        public virtual ProfileGlossary GetGlossary( string profileId, int? profileVersionNumber = null, string format = null, CallContext context = null )
         {
-            return AccessTaskResult( GetGlossaryAsync( profileId, profileVersionNumber, format, emsSystem ) );
+            return AccessTaskResult( GetGlossaryAsync( profileId, profileVersionNumber, format, context ) );
         }
 
         /// <summary>
@@ -163,13 +159,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="profileId">
         /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<Event>> GetEventsAsync( string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<IEnumerable<Event>> GetEventsAsync( string profileId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetProfileEvents( ems, profileId ) );
+            return CallApiTask( api => api.GetProfileEvents( profileId, context ) );
         }
 
         /// <summary>
@@ -178,12 +173,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="profileId">
         /// The unique identifier of the profile whose events to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<Event> GetEvents( string profileId, int emsSystem = NoEmsServerSpecified )
+        public virtual IEnumerable<Event> GetEvents( string profileId, CallContext context = null )
         {
-            return AccessTaskResult( GetEventsAsync( profileId, emsSystem ) );
+            return AccessTaskResult( GetEventsAsync( profileId, context ) );
         }
 
         /// <summary>
@@ -195,13 +190,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="eventId">
         /// The integer ID for the event.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<Event> GetEventAsync( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Event> GetEventAsync( string profileId, int eventId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetProfileEvent( ems, profileId, eventId ) );
+            return CallApiTask( api => api.GetProfileEvent( profileId, eventId, context ) );
         }
 
         /// <summary>
@@ -213,12 +207,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="eventId">
         /// The integer ID for the event.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the EMS system.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Event GetEvent( string profileId, int eventId, int emsSystem = NoEmsServerSpecified )
+        public virtual Event GetEvent( string profileId, int eventId, CallContext context = null )
         {
-            return AccessTaskResult( GetEventAsync( profileId, eventId, emsSystem ) );
+            return AccessTaskResult( GetEventAsync( profileId, eventId, context ) );
         }
     }
 }

@@ -10,7 +10,7 @@ namespace EmsApi.Client.V2.Access
     /// <summary>
     /// Provides access to EMS API "databases" routes.
     /// </summary>
-    public class DatabaseAccess : CachedEmsIdRouteAccess
+    public class DatabaseAccess : RouteAccess
     {
         /// <summary>
         /// Returns a database group with a matching ID containing only its immediate children 
@@ -20,13 +20,12 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of the EMS database group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<DatabaseGroup> GetDatabaseGroupAsync( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<DatabaseGroup> GetDatabaseGroupAsync( string groupId = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetDatabaseGroup( ems, groupId ) );
+            return CallApiTask( api => api.GetDatabaseGroup( groupId, context ) );
         }
 
         /// <summary>
@@ -37,12 +36,12 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of the EMS database group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual DatabaseGroup GetDatabaseGroup( string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual DatabaseGroup GetDatabaseGroup( string groupId = null, CallContext context = null )
         {
-            return AccessTaskResult( GetDatabaseGroupAsync( groupId, emsSystem ) );
+            return AccessTaskResult( GetDatabaseGroupAsync( groupId, context ) );
         }
 
         /// <summary>
@@ -56,13 +55,12 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of a field group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<FieldGroup> GetFieldGroupAsync( string databaseId, string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<FieldGroup> GetFieldGroupAsync( string databaseId, string groupId = null, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetDatabaseFieldGroup( ems, databaseId, groupId ) );
+            return CallApiTask( api => api.GetDatabaseFieldGroup( databaseId, groupId, context ) );
         }
 
         /// <summary>
@@ -76,12 +74,12 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of a field group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual FieldGroup GetFieldGroup( string databaseId, string groupId = null, int emsSystem = NoEmsServerSpecified )
+        public virtual FieldGroup GetFieldGroup( string databaseId, string groupId = null, CallContext context = null )
         {
-            return AccessTaskResult( GetFieldGroupAsync( databaseId, groupId, emsSystem ) );
+            return AccessTaskResult( GetFieldGroupAsync( databaseId, groupId, context ) );
         }
 
         /// <summary>
@@ -93,13 +91,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fieldId">
         /// The unique identifier of the field whose information to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<Field> GetFieldAsync( string databaseId, string fieldId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<Field> GetFieldAsync( string databaseId, string fieldId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.GetDatabaseFieldDefinition( ems, databaseId, fieldId ) );
+            return CallApiTask( api => api.GetDatabaseFieldDefinition( databaseId, fieldId, context ) );
         }
 
         /// <summary>
@@ -111,12 +108,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fieldId">
         /// The unique identifier of the field whose information to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Field GetField( string databaseId, string fieldId, int emsSystem = NoEmsServerSpecified )
+        public virtual Field GetField( string databaseId, string fieldId, CallContext context = null )
         {
-            return AccessTaskResult( GetFieldAsync( databaseId, fieldId, emsSystem ) );
+            return AccessTaskResult( GetFieldAsync( databaseId, fieldId, context ) );
         }
 
         /// <summary>
@@ -139,14 +136,13 @@ namespace EmsApi.Client.V2.Access
         /// The maximum number of fields to return. This defaults to 200 fields. If this is set to 
         /// 0 all the results will be returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
         public virtual Task<IEnumerable<Field>> SearchFieldsAsync( string databaseId, string search = null, string fieldGroupId = null,
-            bool includeProfiles = false, int maxResults = 200, int emsSystem = NoEmsServerSpecified )
+            bool includeProfiles = false, int maxResults = 200, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.SearchDatabaseFields( ems, databaseId, search, fieldGroupId, includeProfiles, maxResults ) );
+            return CallApiTask( api => api.SearchDatabaseFields( databaseId, search, fieldGroupId, includeProfiles, maxResults, context ) );
         }
 
         /// <summary>
@@ -169,14 +165,14 @@ namespace EmsApi.Client.V2.Access
         /// The maximum number of fields to return. This defaults to 200 fields. If this is set to 
         /// 0 all the results will be returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
         public virtual IEnumerable<Field> SearchFields( string databaseId, string search = null, string fieldGroupId = null,
-            bool includeProfiles = false, int maxResults = 200, int emsSystem = NoEmsServerSpecified )
+            bool includeProfiles = false, int maxResults = 200, CallContext context = null )
         {
             return SafeAccessEnumerableTask( SearchFieldsAsync(
-                databaseId, search, fieldGroupId, includeProfiles, maxResults, emsSystem ) );
+                databaseId, search, fieldGroupId, includeProfiles, maxResults, context ) );
         }
 
         /// <summary>
@@ -190,13 +186,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<DatabaseQueryResult> SimpleQueryAsync( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<DatabaseQueryResult> SimpleQueryAsync( string databaseId, DatabaseQuery query, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.QueryDatabase( ems, databaseId, query.Raw ) ).ContinueWith( task =>
+            return CallApiTask( api => api.QueryDatabase( databaseId, query.Raw, context ) ).ContinueWith( task =>
             {
                 // Convert to our result format.
                 DbQueryResult queryResult = task.Result;
@@ -220,13 +215,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="callback">
         /// A callback to execute for each row of data received.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
+        public virtual Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.QueryDatabase( ems, databaseId, query.Raw ) ).ContinueWith( task =>
+            return CallApiTask( api => api.QueryDatabase( databaseId, query.Raw, context ) ).ContinueWith( task =>
             {
                 // Callback for each row.
                 DbQueryResult queryResult = task.Result;
@@ -246,12 +240,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual DatabaseQueryResult SimpleQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual DatabaseQueryResult SimpleQuery( string databaseId, DatabaseQuery query, CallContext context = null )
         {
-            return AccessTaskResult( SimpleQueryAsync( databaseId, query, emsSystem ) );
+            return AccessTaskResult( SimpleQueryAsync( databaseId, query, context ) );
         }
 
         /// <summary>
@@ -268,12 +262,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="callback">
         /// A callback to execute for each row of data received.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual void SimpleQuery( string databaseId, DatabaseQuery query, RowCallback callback, int emsSystem = NoEmsServerSpecified )
+        public virtual void SimpleQuery( string databaseId, DatabaseQuery query, RowCallback callback, CallContext context = null )
         {
-            SimpleQueryAsync( databaseId, query, callback, emsSystem ).Wait();
+            SimpleQueryAsync( databaseId, query, callback, context ).Wait();
         }
 
         /// <summary>
@@ -290,25 +284,25 @@ namespace EmsApi.Client.V2.Access
         /// <param name="rowsPerCall">
         /// The number of rows to read for each API call.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual async Task<DatabaseQueryResult> QueryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual async Task<DatabaseQueryResult> QueryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, CallContext context = null )
         {
-            AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
+            AsyncQueryInfo info = await StartQueryAsync( databaseId, query, context );
             var result = new DatabaseQueryResult( info.Header );
 
             int startingRow = 0;
             bool moreToRead = true;
             while( moreToRead )
             {
-                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, emsSystem );
+                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
                 result.AddRows( query, data.Rows );
-                startingRow = startingRow + rowsPerCall;
+                startingRow += rowsPerCall;
                 moreToRead = data.HasMoreRows;
             }
 
-            await StopQueryAsync( databaseId, info.Id, emsSystem );
+            await StopQueryAsync( databaseId, info.Id, context );
             return result;
         }
 
@@ -329,25 +323,25 @@ namespace EmsApi.Client.V2.Access
         /// <param name="rowsPerCall">
         /// The number of rows to read for each API call.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, CallContext context = null )
         {
-            AsyncQueryInfo info = await StartQueryAsync( databaseId, query, emsSystem );
+            AsyncQueryInfo info = await StartQueryAsync( databaseId, query, context );
             var result = new DatabaseQueryResult( info.Header );
 
             int startingRow = 0;
             bool moreToRead = true;
             while( moreToRead )
             {
-                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, emsSystem );
+                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
                 result.CallbackRows( query, data.Rows, callback );
-                startingRow = startingRow + rowsPerCall;
+                startingRow += rowsPerCall;
                 moreToRead = data.HasMoreRows;
             }
 
-            await StopQueryAsync( databaseId, info.Id, emsSystem );
+            await StopQueryAsync( databaseId, info.Id, context );
         }
 
         /// <summary>
@@ -364,12 +358,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="rowsPerCall">
         /// The number of rows to read for each API call.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual DatabaseQueryResult Query( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual DatabaseQueryResult Query( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, CallContext context = null )
         {
-            return AccessTaskResult( QueryAsync( databaseId, query, rowsPerCall, emsSystem ) );
+            return AccessTaskResult( QueryAsync( databaseId, query, rowsPerCall, context ) );
         }
 
         /// <summary>
@@ -389,12 +383,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="rowsPerCall">
         /// The number of rows to read for each API call.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, int emsSystem = NoEmsServerSpecified )
+        public virtual void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, CallContext context = null )
         {
-            QueryAsync( databaseId, query, callback, rowsPerCall, emsSystem ).Wait();
+            QueryAsync( databaseId, query, callback, rowsPerCall, context ).Wait();
         }
 
         /// <summary>
@@ -407,13 +401,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<AsyncQueryInfo> StartQueryAsync( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<AsyncQueryInfo> StartQueryAsync( string databaseId, DatabaseQuery query, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.StartAsyncDatabaseQuery( ems, databaseId, query.Raw ) );
+            return CallApiTask( api => api.StartAsyncDatabaseQuery( databaseId, query.Raw, context ) );
         }
 
         /// <summary>
@@ -426,12 +419,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="query">
         /// The information used to construct a query for which results are returned.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual AsyncQueryInfo StartQuery( string databaseId, DatabaseQuery query, int emsSystem = NoEmsServerSpecified )
+        public virtual AsyncQueryInfo StartQuery( string databaseId, DatabaseQuery query, CallContext context = null )
         {
-            return AccessTaskResult( StartQueryAsync( databaseId, query, emsSystem ) );
+            return AccessTaskResult( StartQueryAsync( databaseId, query, context ) );
         }
 
         /// <summary>
@@ -449,13 +442,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="end">
         /// The zero-based index of the last row to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<AsyncQueryData> ReadQueryAsync( string databaseId, string queryId, int start, int end, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<AsyncQueryData> ReadQueryAsync( string databaseId, string queryId, int start, int end, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.ReadAsyncDatabaseQuery( ems, databaseId, queryId, start, end ) );
+            return CallApiTask( api => api.ReadAsyncDatabaseQuery( databaseId, queryId, start, end, context ) );
         }
 
         /// <summary>
@@ -473,12 +465,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="end">
         /// The zero-based index of the last row to return.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual AsyncQueryData ReadQuery( string databaseId, string queryId, int start, int end, int emsSystem = NoEmsServerSpecified )
+        public virtual AsyncQueryData ReadQuery( string databaseId, string queryId, int start, int end, CallContext context = null )
         {
-            return AccessTaskResult( ReadQueryAsync( databaseId, queryId, start, end, emsSystem ) );
+            return AccessTaskResult( ReadQueryAsync( databaseId, queryId, start, end, context ) );
         }
 
         /// <summary>
@@ -490,13 +482,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="queryId">
         /// The unique identifier of the query created by the API.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task StopQueryAsync( string databaseId, string queryId, int emsSystem = NoEmsServerSpecified )
+        public virtual Task StopQueryAsync( string databaseId, string queryId, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.StopAsyncDatabaseQuery( ems, databaseId, queryId ) );
+            return CallApiTask( api => api.StopAsyncDatabaseQuery( databaseId, queryId, context ) );
         }
 
         /// <summary>
@@ -508,12 +499,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="queryId">
         /// The unique identifier of the query created by the API.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual void StopQuery( string databaseId, string queryId, int emsSystem = NoEmsServerSpecified )
+        public virtual void StopQuery( string databaseId, string queryId, CallContext context = null )
         {
-            StopQueryAsync( databaseId, queryId, emsSystem ).Wait();
+            StopQueryAsync( databaseId, queryId, context ).Wait();
         }
 
         /// <summary>
@@ -525,13 +516,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="createQuery">
         /// The information used to create one or more new data entities.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<CreateResult> CreateEntityAsync( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<CreateResult> CreateEntityAsync( string databaseId, Create createQuery, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.CreateDatabaseEntity( ems, databaseId, createQuery ) );
+            return CallApiTask( api => api.CreateDatabaseEntity( databaseId, createQuery, context ) );
         }
 
         /// <summary>
@@ -543,12 +533,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="createQuery">
         /// The information used to create one or more new data entities.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual CreateResult CreateEntity( string databaseId, Create createQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual CreateResult CreateEntity( string databaseId, Create createQuery, CallContext context = null )
         {
-            return AccessTaskResult( CreateEntityAsync( databaseId, createQuery, emsSystem ) );
+            return AccessTaskResult( CreateEntityAsync( databaseId, createQuery, context ) );
         }
 
         /// <summary>
@@ -560,13 +550,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="updateQuery">
         /// The information used to construct an update query.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<UpdateResult> UpdateAsync( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<UpdateResult> UpdateAsync( string databaseId, Update updateQuery, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.UpdateDatabase( ems, databaseId, updateQuery ) );
+            return CallApiTask( api => api.UpdateDatabase( databaseId, updateQuery, context ) );
         }
 
         /// <summary>
@@ -578,12 +567,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="updateQuery">
         /// The information used to construct an update query.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual UpdateResult Update( string databaseId, Update updateQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual UpdateResult Update( string databaseId, Update updateQuery, CallContext context = null )
         {
-            return AccessTaskResult( UpdateAsync( databaseId, updateQuery, emsSystem ) );
+            return AccessTaskResult( UpdateAsync( databaseId, updateQuery, context ) );
         }
 
         /// <summary>
@@ -595,13 +584,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="deleteQuery">
         /// The information used to delete one or more data entities.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual Task<DeleteResult> DeleteEntityAsync( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual Task<DeleteResult> DeleteEntityAsync( string databaseId, Delete deleteQuery, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-            return CallApiTask( api => api.DeleteDatabaseEntity( ems, databaseId, deleteQuery ) );
+            return CallApiTask( api => api.DeleteDatabaseEntity( databaseId, deleteQuery, context ) );
         }
 
         /// <summary>
@@ -613,12 +601,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="deleteQuery">
         /// The information used to delete one or more data entities.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual DeleteResult DeleteEntity( string databaseId, Delete deleteQuery, int emsSystem = NoEmsServerSpecified )
+        public virtual DeleteResult DeleteEntity( string databaseId, Delete deleteQuery, CallContext context = null )
         {
-            return AccessTaskResult( DeleteEntityAsync( databaseId, deleteQuery, emsSystem ) );
+            return AccessTaskResult( DeleteEntityAsync( databaseId, deleteQuery, context ) );
         }
 
         /// <summary>
@@ -633,20 +621,18 @@ namespace EmsApi.Client.V2.Access
         /// <param name="newComment">
         /// The information and context for the new comment to be added.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
         /// <returns>
         /// The resulting task object. Note this is wrapped in a bool generic task
         /// for interoperability and the bool value does not indicate anything.
         /// </returns>
-        public async virtual Task<bool> CreateCommentAsync( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
+        public async virtual Task<bool> CreateCommentAsync( string databaseId, string commentFieldId, NewComment newComment, CallContext context = null )
         {
-            int ems = GetEmsSystemForMethodCall( emsSystem );
-
             // Wrap the Task in a Task<bool> for handling the response later using AccessTaskResult.
             // We don't actually care about the bool response.
-            await CallApiTask( api => api.CreateComment( ems, databaseId, commentFieldId, newComment ) ).ConfigureAwait( false );
+            await CallApiTask( api => api.CreateComment( databaseId, commentFieldId, newComment, context ) ).ConfigureAwait( false );
             return false;
 
         }
@@ -663,12 +649,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="newComment">
         /// The information and context for the new comment to be added.
         /// </param>
-        /// <param name="emsSystem">
-        /// The unique identifier of the system containing the EMS data.
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
-        public virtual void CreateComment( string databaseId, string commentFieldId, NewComment newComment, int emsSystem = NoEmsServerSpecified )
+        public virtual void CreateComment( string databaseId, string commentFieldId, NewComment newComment, CallContext context = null )
         {
-            AccessTaskResult<bool>( CreateCommentAsync( databaseId, commentFieldId, newComment, emsSystem ) );
+            AccessTaskResult<bool>( CreateCommentAsync( databaseId, commentFieldId, newComment, context ) );
         }
     }
 }

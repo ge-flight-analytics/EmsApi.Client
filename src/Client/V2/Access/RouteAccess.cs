@@ -13,12 +13,12 @@ namespace EmsApi.Client.V2.Access
     /// 2) To provide both synchronous and asynchronous access methods.
     /// 3) To provide unified error handling for both asynchronous and synchronous methods.
     /// </summary>
-    public abstract class EmsApiRouteAccess
+    public abstract class RouteAccess
     {
         /// <summary>
         /// Creates a new instance of an access class.
         /// </summary>
-        internal EmsApiRouteAccess() { }
+        internal RouteAccess() { }
 
         /// <summary>
         /// Sets the service that this access class is working for. This must
@@ -131,7 +131,7 @@ namespace EmsApi.Client.V2.Access
                     throw inner;
             }
 
-            return default( TRet );
+            return default;
         }
 
         private TRet HandleApiException<TRet>( Task<TRet> task )
@@ -142,7 +142,7 @@ namespace EmsApi.Client.V2.Access
             task.Exception.Handle( HandleTaskException );
 
             // This will normally return null, the caller can handle null if it wants.
-            return default( TRet );
+            return default;
         }
 
         private void HandleApiException( Task task )
@@ -170,51 +170,5 @@ namespace EmsApi.Client.V2.Access
         {
             ApiMethodFailedEvent?.Invoke( this, args );
         }
-    }
-
-    /// <summary>
-    /// Adds some additional functions for setting and accessing a cached EMS server id.
-    /// </summary>
-    public abstract class CachedEmsIdRouteAccess : EmsApiRouteAccess
-    {
-        /// <summary>
-        /// A special id to use when an EMS system ID is not being provided for a method call.
-        /// </summary>
-        public const int NoEmsServerSpecified = -1;
-
-        /// <summary>
-        /// Allows the library user to set a particular EMS system id and have all subsequent
-        /// method calls refer to that system.
-        /// </summary>
-        /// <param name="emsSystemId">
-        /// The unique identifier of the EMS system to cache.
-        /// </param>
-        internal void SetEmsSystemId( int emsSystemId )
-        {
-            m_emsId = emsSystemId;
-        }
-
-        /// <summary>
-        /// Returns the proper EMS system to access for the method call.
-        /// </summary>
-        /// <param name="inputArg">
-        /// The value for the emsSystemId parameter that was passed to the method originally.
-        /// </param>
-        /// <returns></returns>
-        protected int GetEmsSystemForMethodCall( int inputArg )
-        {
-            if( inputArg == NoEmsServerSpecified )
-            {
-                // Make sure we have a cached value or throw an exception.
-                if( m_emsId == NoEmsServerSpecified )
-                    throw new EmsApiException( "No EMS server was specified for the method call, and a cached server has not been set." );
-
-                return m_emsId;
-            }
-
-            return inputArg;
-        }
-
-        private int m_emsId = NoEmsServerSpecified;
     }
 }
