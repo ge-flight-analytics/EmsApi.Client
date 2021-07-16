@@ -36,7 +36,7 @@ namespace EmsApi.Tests
         public void Trusted_value_but_no_name()
         {
             using var service = NewService();
-            var ctx = new CallContext { TrustedAuthValue = "ksk" };
+            var ctx = new CallContext { TrustedAuthValue = "emsapitest" };
             Action getSystem = () => service.EmsSystem.Get( ctx );
             getSystem.Should().Throw<EmsApiException>();
         }
@@ -51,7 +51,7 @@ namespace EmsApi.Tests
             var ctx = new CallContext
             {
                 TrustedAuthName = "SAMAccountName",
-                TrustedAuthValue = "ksk"
+                TrustedAuthValue = "emsapitest"
             };
             Action getSystem = () => service.EmsSystem.Get( ctx );
             getSystem.Should().Throw<EmsApiException>();
@@ -74,7 +74,7 @@ namespace EmsApi.Tests
             var ctx = new CallContext
             {
                 TrustedAuthName = "SAMAccountName",
-                TrustedAuthValue = "ksk"
+                TrustedAuthValue = "emsapitest"
             };
             var system = service.EmsSystem.Get( ctx );
             system.Id.Should().Be( 1 );
@@ -90,7 +90,7 @@ namespace EmsApi.Tests
             using var service = new EmsApiService( config );
             var ctx = new CallContext
             {
-                TrustedAuthValue = "ksk"
+                TrustedAuthValue = "emsapitest"
             };
             var system = service.EmsSystem.Get( ctx );
             system.Id.Should().Be( 1 );
@@ -107,7 +107,7 @@ namespace EmsApi.Tests
             var ctx = new CallContext
             {
                 TrustedAuthName = "SAMAccountName",
-                TrustedAuthValue = "ksk"
+                TrustedAuthValue = "emsapitest"
             };
             var system = service.EmsSystem.Get( ctx );
             system.Id.Should().Be( 1 );
@@ -128,7 +128,7 @@ namespace EmsApi.Tests
             var ctx = new CallContext
             {
                 TrustedAuthName = "SAMAccountName",
-                TrustedAuthValue = "ksk"
+                TrustedAuthValue = "emsapitest"
             };
 
             // First perform the password auth.
@@ -152,12 +152,12 @@ namespace EmsApi.Tests
             var ctx = new CallContext
             {
                 TrustedAuthName = "SAMAccountName",
-                TrustedAuthValue = "ksk"
+                TrustedAuthValue = "emsapitest"
             };
             var ctx2 = new CallContext
             {
                 TrustedAuthName = "SAMAccountName",
-                TrustedAuthValue = "cwo"
+                TrustedAuthValue = "emsweb"
             };
 
             // First perform the password auth - CACHE MISS

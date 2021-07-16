@@ -75,7 +75,7 @@ namespace EmsApi.Client.V2
                 }
 
                 if( deAuth )
-                    InvalidateAuthentication();
+                    ClearAuthenticationCache();
 
                 m_serviceConfig = value;
             }
@@ -298,11 +298,6 @@ namespace EmsApi.Client.V2
             int expiresIn = result.GetValue( "expires_in" ).ToObject<int>();
 
             return new AuthResult( new AuthToken( token, expiresIn ) );
-        }
-
-        private void InvalidateAuthentication()
-        {
-            m_tokens.Clear();
         }
 
         private void OnAuthenticationFailed( AuthenticationFailedEventArgs e )
