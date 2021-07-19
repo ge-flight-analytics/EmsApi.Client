@@ -137,6 +137,8 @@ namespace EmsApi.Client.V2
             AddCustomHeaders( request.Headers );
 
             CallContext ctx = RetrieveCallContext( request );
+            if( ctx == null && m_serviceConfig.RequireCallContext )
+                throw new EmsApiNoCallContextException();
             AddCallContextHeaders( request.Headers, ctx );
 
             var authConfig = DetermineAuthMode( ctx );

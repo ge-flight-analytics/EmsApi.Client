@@ -65,4 +65,15 @@ namespace EmsApi.Client.V2
         {
         }
     }
+
+    public class EmsApiNoCallContextException : EmsApiException
+    {
+        /// <summary>
+        /// Thrown when there is no CallContext provided and the service is configured to require one.
+        /// </summary>
+        public EmsApiNoCallContextException()
+            : base( "The EMS API was not provided a CallContext and one was expected.", innerException: null )
+        {
+        }
+    }
 }

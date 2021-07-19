@@ -118,6 +118,14 @@ namespace EmsApi.Client.V2
         public bool ThrowExceptionOnApiFailure { get; set; }
 
         /// <summary>
+        /// When true, the <seealso cref="EmsApiService"/> will throw an exception for
+        /// any API calls which do *not* have a CallContext passed into them.
+        /// This is useful in some scenarios where you want to enforce callers to provide a
+        /// call context to be more explicit.
+        /// </summary>
+        public bool RequireCallContext { get; set; }
+
+        /// <summary>
         /// Any customer headers that should be appended to a request. These are appended
         /// at the time of making the request so they can be altered on a per request basis.
         /// This is a good place to set the "X-Adi-Client-Username" and "X-Adi-Correlation-Id"
@@ -244,6 +252,7 @@ namespace EmsApi.Client.V2
                 ApplicationName = ApplicationName,
                 ThrowExceptionOnApiFailure = ThrowExceptionOnApiFailure,
                 ThrowExceptionOnAuthFailure = ThrowExceptionOnAuthFailure,
+                RequireCallContext = RequireCallContext,
                 CustomHeaders = CustomHeaders
             };
         }

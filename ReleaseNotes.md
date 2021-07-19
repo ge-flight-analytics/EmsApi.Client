@@ -1,1 +1,1 @@
-* Adds support for specifying Application Name in the CallContext.
+* Add the ability to require calls to include CallContext.

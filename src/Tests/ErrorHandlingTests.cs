@@ -35,5 +35,15 @@ namespace EmsApi.Tests
             service.ServiceConfig.ThrowExceptionOnAuthFailure = false;
             service.EmsSystem.Get();
         }
+
+        [Fact( DisplayName = "Requiring a call context but not providing one should throw" )]
+        public void Require_call_context_but_dont_provide_one()
+        {
+            var config = m_config.Clone();
+            config.RequireCallContext = true;
+            using var service = new EmsApiService( config );
+            Action causeFailure = () => service.EmsSystem.Get();
+            causeFailure.Should().Throw<EmsApiException>();
+        }
     }
 }
