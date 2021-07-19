@@ -16,6 +16,11 @@ namespace EmsApi.Client.V2
     public class CallContext
     {
         /// <summary>
+        /// The value to use for the 'X-Adi-Application-Name' header.
+        /// </summary>
+        public string ApplicationName { get; set; }
+
+        /// <summary>
         /// The value to use in the 'X-Adi-Client-Username' header.
         /// </summary>
         public string ClientUsername { get; set; }

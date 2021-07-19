@@ -139,10 +139,12 @@ namespace EmsApi.Tests
 
             using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
 
+            string appname = "AngryBards";
             string username = "bob@burgers.com";
             string correlationId = "123456";
             var ctx = new CallContext
             {
+                ApplicationName = appname,
                 ClientUsername = username,
                 CorrelationId = correlationId,
             };
@@ -150,6 +152,8 @@ namespace EmsApi.Tests
 
             lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
             var reqHeaders = lastHandler.LastRequest.Headers;
+            reqHeaders.Contains( HttpHeaderNames.ApplicationName ).Should().BeTrue();
+            reqHeaders.GetValues( HttpHeaderNames.ApplicationName ).First().Should().BeEquivalentTo( appname );
             reqHeaders.Contains( HttpHeaderNames.ClientUsername ).Should().BeTrue();
             reqHeaders.GetValues( HttpHeaderNames.ClientUsername ).First().Should().BeEquivalentTo( username );
             reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeTrue();
