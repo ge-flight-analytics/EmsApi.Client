@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\.pipelines\build-pipeline.yml = ..\.pipelines\build-pipeline.yml
 		Directory.Build.props = Directory.Build.props
 		..\Dockerfile = ..\Dockerfile
+		..\README.md = ..\README.md
 		..\.pipelines\release-pipeline.yml = ..\.pipelines\release-pipeline.yml
+		..\ReleaseNotes.md = ..\ReleaseNotes.md
 	EndProjectSection
 EndProject
 Global

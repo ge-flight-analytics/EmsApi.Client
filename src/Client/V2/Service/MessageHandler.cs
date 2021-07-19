@@ -221,6 +221,8 @@ namespace EmsApi.Client.V2
             if( ctx == null )
                 return;
 
+            if( !string.IsNullOrWhiteSpace( ctx.ApplicationName ) )
+                OverwriteHeader( headers, HttpHeaderNames.ApplicationName, ctx.ApplicationName );
             if( !string.IsNullOrWhiteSpace( ctx.ClientUsername ) )
                 OverwriteHeader( headers, HttpHeaderNames.ClientUsername, ctx.ClientUsername );
             if( !string.IsNullOrWhiteSpace( ctx.CorrelationId ) )
