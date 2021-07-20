@@ -139,6 +139,7 @@ namespace EmsApi.Client.V2
             CallContext ctx = RetrieveCallContext( request );
             if( ctx == null && m_serviceConfig.RequireCallContext )
                 throw new EmsApiNoCallContextException();
+
             AddCallContextHeaders( request.Headers, ctx );
 
             var authConfig = DetermineAuthMode( ctx );

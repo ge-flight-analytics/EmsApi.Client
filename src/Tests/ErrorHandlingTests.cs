@@ -43,7 +43,7 @@ namespace EmsApi.Tests
             config.RequireCallContext = true;
             using var service = new EmsApiService( config );
             Action causeFailure = () => service.EmsSystem.Get();
-            causeFailure.Should().Throw<EmsApiException>();
+            causeFailure.Should().Throw<EmsApiNoCallContextException>();
         }
     }
 }

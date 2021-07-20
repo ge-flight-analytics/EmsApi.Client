@@ -367,7 +367,13 @@ namespace EmsApi.Client.V2
                 return;
 
             if( !(args.Exception is ApiException apiEx) )
+            {
+                // If we got an EmsApiException already, then we should just rethrow that here.
+                if( args.Exception is EmsApiException )
+                    throw args.Exception;
+
                 throw new EmsApiException( args.Exception.Message, args.Exception );
+            }
 
             // Note: This object is a Dto.V2.Error, but in that class the messageDetail
             // field is marked as required, so it will not deserialize if the details
