@@ -10,7 +10,7 @@ namespace EmsApi.Dto.V2
     /// </summary>
     public class DatabaseQueryResult
     {
-        internal DatabaseQueryResult( IEnumerable<DbQueryResultHeader> headers )
+        public DatabaseQueryResult( IEnumerable<DbQueryResultHeader> headers )
         {
             Headers = headers.ToArray();
             m_orderedColumnIds = new List<string>();
@@ -49,7 +49,7 @@ namespace EmsApi.Dto.V2
         /// <summary>
         /// Converts query result rows into Row objects, and adds them to the collection.
         /// </summary>
-        internal void AddRows( DatabaseQuery query, IEnumerable<object> rows )
+        public void AddRows( DatabaseQuery query, IEnumerable<object> rows )
         {
             if( query.Raw.OrderBy == null || query.Raw.OrderBy.Count == 0 )
             {
@@ -72,7 +72,7 @@ namespace EmsApi.Dto.V2
         /// loop. This should be more efficient in that case because the data retrieval is
         /// network bound, so we have CPU time to spare.
         /// </summary>
-        internal void CallbackRows( DatabaseQuery query, IEnumerable<object> rows, Action<Row> callback )
+        public void CallbackRows( DatabaseQuery query, IEnumerable<object> rows, Action<Row> callback )
         {
             if( query.Raw.OrderBy == null || query.Raw.OrderBy.Count == 0 )
             {
@@ -101,7 +101,7 @@ namespace EmsApi.Dto.V2
         /// </summary>
         public class Row
         {
-            internal Row( List<string> columnIds, List<string> columnNames, object[] values )
+            public Row( List<string> columnIds, List<string> columnNames, object[] values )
             {
                 m_columnIds = columnIds;
                 m_columnNames = columnNames;
