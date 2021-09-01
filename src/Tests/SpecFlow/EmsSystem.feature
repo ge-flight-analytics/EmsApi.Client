@@ -17,3 +17,13 @@ Scenario: Get EMS system information
 	Given A valid API endpoint
 	When I run GetSystemInfo
 	Then An EmsSystemInfo object is returned
+
+Scenario: Get EMS system information with search
+	Given A valid API endpoint
+	When I run GetSystemInfoWithSearch
+	Then An EmsSystemInfo object is returned
+
+Scenario: Get EMS system next maintenance window
+	Given A valid API endpoint
+	When I run GetNextMaintenanceWindow
+	Then A MaintenanceWindow object is returned
