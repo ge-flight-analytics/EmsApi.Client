@@ -86,6 +86,11 @@ namespace EmsApi.Client.V2
         public TransfersAccess Transfers { get; set; }
 
         /// <summary>
+        /// Access to admin user routes.
+        /// </summary>
+        public AdminUserAccess AdminUser { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
@@ -191,6 +196,7 @@ namespace EmsApi.Client.V2
             Analytics = InitializeAccessClass<AnalyticsAccess>();
             Databases = InitializeAccessClass<DatabaseAccess>();
             Transfers = InitializeAccessClass<TransfersAccess>();
+            AdminUser = InitializeAccessClass<AdminUserAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()

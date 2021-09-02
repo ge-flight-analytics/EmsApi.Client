@@ -10,7 +10,7 @@ namespace EmsApi.Client.V2
     /// The interface methods that match the REST signature for the EMS API.
     /// </summary>
     /// <remarks>
-    /// These methods are used by the Refit library to generate a implementation to
+    /// These methods are used by the Refit library to generate an implementation to
     /// make the actual HTTP calls, so they need to mirror the exposed routes exactly.
     /// The library uses code generation to compile the stub implementation into this
     /// assembly, so every time this project is built a RefitStubs.g.cs file is generated
@@ -32,6 +32,15 @@ namespace EmsApi.Client.V2
         /// </summary>
         [Get( "/v2/ems-systems/1" )]
         Task<EmsSystemInfo> GetEmsSystemInfo( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns some additional server information about the ems system.
+        /// </summary>
+        /// <param name="search">
+        /// The case-insensitive search used to filter the returned EMS system information.
+        /// </param>
+        [Get( "/v2/ems-systems/1" )]
+        Task<EmsSystemInfo> GetEmsSystemInfoWithSearch( string search, [Property] CallContext context = null );
 
         /// <summary>
         /// Ping an EMS system to verify that the specified system is currently up and running.
@@ -582,6 +591,18 @@ namespace EmsApi.Client.V2
         [Post( "/v2/ems-systems/1/uploads/processing-status" )]
         Task<IEnumerable<UploadProcessingStatus>> GetProcessingStatusMultiple( [Body] string[] ids, [Property] CallContext context = null );
 
+        /// <summary>
+        /// Retrieves the list of user accounts.
+        /// </summary>
+        /// <param name="username">
+        /// The optional username search string used to search the list of users. Only users that contain this search
+        /// string in their user name are returned.
+        /// </param>
+        /// <remarks>
+        /// You must have Admin privileges to the EMS API to be able to call this route.
+        /// </remarks>
+        [Get( "/v2/admin/users" )]
+        Task<IEnumerable<AdminUser>> AdminGetUsers( string username = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.

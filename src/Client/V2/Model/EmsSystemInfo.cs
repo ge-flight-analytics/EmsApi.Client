@@ -59,5 +59,18 @@ namespace EmsApi.Dto.V2
         /// </summary>
         [JsonProperty]
         public string AircraftListDescription { get; set; }
+
+        /// <summary>
+        /// The UTC start of the next maintenance window, or when the current maintenance window started if we are in the
+        /// middle of one now, or null if there is no scheduled next maintenance window.
+        /// </summary>
+        [JsonProperty]
+        public DateTime? NextMaintenanceWindowStart { get; set; }
+
+        /// <summary>
+        /// The UTC end of the next maintenance window or null if there is no scheduled next maintenance window.
+        /// </summary>
+        [JsonProperty]
+        public DateTime? NextMaintenanceWindowEnd { get; set; }
     }
 }

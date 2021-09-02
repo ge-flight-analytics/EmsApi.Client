@@ -39,10 +39,28 @@ namespace EmsApi.Tests.Features
             m_result.Object = m_api.EmsSystem.GetSystemInfo();
         }
 
+        [When( @"I run GetSystemInfoWithSearch" )]
+        public void WhenIRunGetSystemInfoWithSearchAndEnterTheValue()
+        {
+            m_result.Object = m_api.EmsSystem.GetSystemInfoWithSearch("client");
+        }
+
         [Then( @"An EmsSystemInfo object is returned" )]
         public void ThenAnEmsSystemInfoObjectIsReturned()
         {
             m_result.Object.ShouldNotBeNullOfType<EmsSystemInfo>();
+        }
+
+        [When( @"I run GetNextMaintenanceWindow" )]
+        public void WhenIRunGetNextMaintenanceWindow()
+        {
+            m_result.Object = m_api.EmsSystem.GetNextMaintenanceWindow();
+        }
+
+        [Then( @"A MaintenanceWindow object is returned" )]
+        public void ThenAMaintenanceWindowObjectIsReturned()
+        {
+            m_result.Object.ShouldNotBeNullOfType<MaintenanceWindow>();
         }
     }
 }
