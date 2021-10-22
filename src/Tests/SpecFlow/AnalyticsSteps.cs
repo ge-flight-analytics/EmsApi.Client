@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow;
-using FluentAssertions;
-
 using EmsApi.Dto.V2;
+using FluentAssertions;
+using TechTalk.SpecFlow;
 
 namespace EmsApi.Tests.Features
 {
@@ -42,7 +39,7 @@ namespace EmsApi.Tests.Features
             m_result.Object = m_api.Analytics.GetInfo( p0, p1 );
         }
 
-        [Then( @"An AnlyticInfo object is returned" )]
+        [Then( @"An AnalyticInfo object is returned" )]
         public void ThenAnAnlyticInfoObjectIsReturned()
         {
             m_result.Object.ShouldNotBeNullOfType<AnalyticInfo>();
