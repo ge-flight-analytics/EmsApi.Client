@@ -20,6 +20,9 @@ Scenario: Get analytic set
     Then An AnalyticSet object is returned
     And It has the name 'Uncommanded Pitch'
 
+# The pipeline test runner has limited access. This test should only be run manually.
+# WARNING: failures during this test could lead to new or altered analytic (parameter) set groups on the EMS system.
+@ignore
 Scenario: Create, update, read, and delete an analytic set group
     Given A valid API endpoint
     Given I have a NewAnalyticSetGroup with name 'New Analytic Set Group'
@@ -37,6 +40,9 @@ Scenario: Create, update, read, and delete an analytic set group
     When I run DeleteAnalyticSetGroup with group id 'Updated Analytic Set Group'
     Then the analytic set group with id 'Updated Analytic Set Group' does not exist
 
+# The pipeline test runner has limited access. This test should only be run manually.
+# WARNING: failures during this test could lead to new or altered analytic (parameter) sets on the EMS system.
+@ignore
 Scenario: Create, update, read, and delete an analytic set
     Given A valid API endpoint
     Given I have a NewAnalyticSet with name 'New Analytic Set'
@@ -53,6 +59,10 @@ Scenario: Create, update, read, and delete an analytic set
     When I run DeleteAnalyticSet with group id 'Root' and analytic set name 'New Analytic Set'
     Then the analytic set in group id 'Root' and name 'New Analytic Set' does not exist
 
+# The Analytic Collection endpoints have not been released yet.
+# The pipeline test runner has limited access. This test should only be run manually.
+# WARNING: failures during this test could lead to new or altered analytic (parameter) sets on the EMS system.
+@ignore
 Scenario: Create, update, read, and delete an analytic collection
     Given A valid API endpoint
     Given I have a NewAnalyticCollection with name 'New Analytic Collection'
