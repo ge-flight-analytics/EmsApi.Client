@@ -88,7 +88,7 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<FlightPhase>> GetFlightPhases( [Property] CallContext context = null );
 
         /// <summary>
-        /// Retruns information for a flight phase on the system.
+        /// Returns information for a flight phase on the system.
         /// </summary>
         /// <param name="flightPhaseId">
         /// The unique identifier of the flight phase.
@@ -337,6 +337,153 @@ namespace EmsApi.Client.V2
         /// </param>
         [Post( "/v2/ems-systems/1/flights/{flightId}/analytics/metadata" )]
         Task<Metadata> GetAnalyticMetadata( int flightId, [Body] AnalyticId analyticId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns information about the analytic set groups on the given EMS system.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/analytic-set-groups" )]
+        Task<AnalyticSetGroup> GetAnalyticSetGroups( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns information about an analytic set group on the given EMS system.
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the analytic set group to return.
+        /// </param>
+        [Get( "/v2/ems-systems/1/analytic-set-groups/{groupId}" )]
+        Task<AnalyticSetGroup> GetAnalyticSetGroup( string groupId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Creates an analytic set group.
+        /// </summary>
+        /// <param name="newAnalyticSetGroup">
+        /// The information needed to create a new analytic set group.
+        /// </param>
+        [Post( "/v2/ems-systems/1/analytic-set-groups" )]
+        Task<AnalyticSetGroupCreated> CreateAnalyticSetGroup( [Body] NewAnalyticSetGroup newAnalyticSetGroup, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Updates an analytic set group. This will alter the location of any analytic sets and groups contained within. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the group to update.
+        /// </param>
+        /// <param name="updateAnalyticSetGroup">
+        /// The information required to update the analytic set group.
+        /// </param>
+        [Put( "/v2/ems-systems/1/analytic-set-groups/{groupId}" )]
+        Task<AnalyticSetGroupUpdated> UpdateAnalyticSetGroup( string groupId, [Body] UpdateAnalyticSetGroup updateAnalyticSetGroup, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes an analytic set group. The group must be empty in order to remove it. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the analytic set group to delete.
+        /// </param>
+        [Delete( "/v2/ems-systems/1/analytic-set-groups/{groupId}" )]
+        Task<object> DeleteAnalyticSetGroup( string groupId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns information about the analytic set on the given EMS system.
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the analytic set group where the analytic set exists.
+        /// </param>
+        /// <param name="analyticSetName">
+        /// The name of the analytic set to return.
+        /// </param>
+        [Get( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-sets/{analyticSetName}" )]
+        Task<AnalyticSet> GetAnalyticSet( string groupId, string analyticSetName, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Creates a new analytic set.
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the analytic set group where the new analytic set will be created.
+        /// </param>
+        /// <param name="newAnalyticSet">
+        /// The name of analytic set to be created.
+        /// </param>
+        [Post( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-sets" )]
+        Task<AnalyticSetCreated> CreateAnalyticSet( string groupId, [Body] NewAnalyticSet newAnalyticSet, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Updates an existing analytic set. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the analytic set group where the analytic set to update exists.
+        /// </param>
+        /// <param name="analyticSetName">
+        /// The name of the analytic set to update.
+        /// </param>
+        /// <param name="updateAnalyticSet">
+        /// The information required to update the analytic set.
+        /// </param>
+        [Put( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-sets/{analyticSetName}" )]
+        Task<object> UpdateAnalyticSet( string groupId, string analyticSetName, [Body] UpdateAnalyticSet updateAnalyticSet, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes an analytic set. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the analytic set group where the analytic set to remove exists.
+        /// </param>
+        /// <param name="analyticSetName">
+        /// The name of the analytic set to remove.
+        /// </param>
+        [Delete( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-sets/{analyticSetName}" )]
+        Task<object> DeleteAnalyticSet( string groupId, string analyticSetName, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns the specified analytic collection. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the group that contains the analytic collection.
+        /// </param>
+        /// <param name="analyticCollectionName">
+        /// The name of the analytic collection to return.
+        /// </param>
+        [Get( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-collections/{analyticCollectionName}" )]
+        Task<AnalyticCollection> GetAnalyticCollection( string groupId, string analyticCollectionName, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Creates a new analytic collection.        
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the group where the collection will be created.
+        /// </param>
+        /// <param name="newAnalyticCollection">
+        /// The name to assign to the new collection.
+        /// </param>
+        [Post( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-collections" )]
+        Task<AnalyticCollectionCreated> CreateAnalyticCollection( string groupId, [Body] NewAnalyticCollection newAnalyticCollection, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Updates an analytic collection. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the group that contains the analytic collection to update.
+        /// </param>
+        /// <param name="analyticCollectionName">
+        /// The name of the collection to update.
+        /// </param>
+        /// <param name="updateAnalyticCollection">
+        /// The information required to update the collection.
+        /// </param>
+        [Put( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-collections/{analyticCollectionName}" )]
+        Task<object> UpdateAnalyticCollection( string groupId, string analyticCollectionName, [Body] UpdateAnalyticCollection updateAnalyticCollection, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes an analytic collection. 
+        /// </summary>
+        /// <param name="groupId">
+        /// The ID of the group where the collection to be removed exists.
+        /// </param>
+        /// <param name="analyticCollectionName">
+        /// The name of the collection to be removed.
+        /// </param>
+        [Delete( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-collections/{analyticCollectionName}" )]
+        Task<object> DeleteAnalyticCollection( string groupId, string analyticCollectionName, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a database group with a matching ID containing only its immediate children 

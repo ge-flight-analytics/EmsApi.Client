@@ -445,7 +445,7 @@
                     "Analytic APIs"
                 ],
                 "summary": "Queries offsets and values in time-series data for a specified flight and analytic.",
-                "description": "<p>\r\n            This can be used to query for multiple analytics at the same time by providing more than one analytic ID\r\n            in the query. Keep in mind that querying for many analytics might cause your request to take a longer \r\n            period of time to complete.\r\n            </p>\r\n<p>Below are some guidelines to consider when using this API.\r\n            <ul><li>Use the <code>size</code> option to return a specified amount of interpolated samples. </li><li>Not specifying a <code>size</code> returns all data samples, but you can also use a range of <code>start</code> and <code>end</code> \r\n            \t\tvalues to limit the amount of data returned. You can't use this option with the <code>unsampledDataMode</code> \r\n            \t\toption.</li><li>Use the <code>offsets</code> option to return data for only a specified set of samples. If an analytic isn't\r\n            \t\tsampled at the offset, its interpolated value is returned. You can't use this option with the\r\n            \t\t<code>unsampledDataMode</code> option.</li><li>Use the <code>offsetType</code> option to return values only at sampled locations using the <code>sampledValues</code> option or at \r\n            \t\ta specific sampling rate using the <code>samplingRate</code> option. Since these options are more complex and can leave\r\n            \t\tsample locations with no value (i.e. the analytic isn't sampled at that location) or DNE values where the sample\r\n            \t\t<code>does not exist</code> you can use the <code>offsetType</code> in conjunction with the <code>unsampledDataMode</code>, the <code>unsampledValue</code>,\r\n            \t\tand/or the <code>doesNotExistValue</code> options. These are explained in greater detail below.</li><li>If you use the <code>unsampledDataMode</code> option with <code>offsetType</code> you can set how unsampled data is treated\r\n            \twith one of the following options:\r\n            \t\t<ul><li><code>leaveBlank</code> Leaves any unsampled data locations as blank values. This is the default.</li><li><code>uniquePreviousSample</code> leaves values blank except when there is a previous valid sampled \r\n            \t\t\tvalue that was skipped over due to the sampling rate if it is unchanged. This can be used to circumvent the \r\n            \t\t\tissue of possibly returning all blank values when the provided sampling rate doesn't match the analytic's \r\n            \t\t\tsampling rate.</li><li><code>stairStep</code> Any unsampled values are filled with the last known sampled value.</li><li><code>linearInterpolation</code> This performs a linear interpolation on the data to calculate a value for unsampled locations.</li><li><code>parameterDefault</code> Some analytics define their own default for how to treat unsampled data. This option uses that default setting.</li><li><code>previousSample</code> leaves values blank except when there is a previous valid sampled \r\n            \t\t\tvalue that was skipped over due to the sampling rate (regardless of change). This can be used to circumvent \r\n            \t\t\tthe issue of possibly returning all blank values when the provided sampling rate doesn't match the analytic's \r\n            \t\t\tsampling rate or if the values are not changing.</li></ul></li><li>Use the <code>unsampledValue</code> to provide your own value to be used for unsampled values. This only applies when using <code>offsetType</code> queries.</li><li>Use the <code>doesNotExistValue</code> to provide your own value for values that are DNE. This only applies when using <code>offsetType</code> queries.</li><li>Use the <code>discretesAsStrings</code> to specify whether the values of discrete parameters should be their string representations or their numeric value. This only applies when using <code>offsetType</code> queries.</li></ul></p>",
+                "description": "<p>\r\n            This can be used to query for multiple analytics at the same time by providing more than one analytic ID\r\n            in the query. Keep in mind that querying for many analytics might cause your request to take a longer \r\n            period of time to complete.\r\n            </p>\r\n<p>Below are some guidelines to consider when using this API.\r\n            <ul><li>Use the <code>size</code> option to return a specified amount of interpolated samples. </li><li>Not specifying a <code>size</code> returns all data samples, but you can also use a range of <code>start</code> and <code>end</code> \r\n            \t\tvalues to limit the amount of data returned. You can't use this option with the <code>unsampledDataMode</code> \r\n            \t\toption.</li><li>Use the <code>offsets</code> option to return data for only a specified set of samples. If an analytic isn't\r\n            \t\tsampled at the offset, its interpolated value is returned. You can't use this option with the\r\n            \t\t<code>unsampledDataMode</code> option.</li><li>Use the <code>offsetType</code> option to return values only at sampled locations using the <code>sampledValues</code> type or at \r\n            \t\ta specific sampling rate using the <code>fixedRate</code> type along with the <code>samplingRate</code> value. Since these options are more complex and can leave\r\n            \t\tsample locations with no value (i.e. the analytic isn't sampled at that location) or DNE values where the sample\r\n            \t\t<code>does not exist</code> you can use the <code>offsetType</code> in conjunction with the <code>unsampledDataMode</code>, the <code>unsampledValue</code>,\r\n            \t\tand/or the <code>doesNotExistValue</code> options. These are explained in greater detail below.</li><li>If you use the <code>unsampledDataMode</code> option with <code>offsetType</code> you can set how unsampled data is treated\r\n            \twith one of the following options:\r\n            \t\t<ul><li><code>leaveBlank</code> Leaves any unsampled data locations as blank values. This is the default.</li><li><code>uniquePreviousSample</code> leaves values blank except when there is a previous valid sampled \r\n            \t\t\tvalue that was skipped over due to the sampling rate if it is unchanged. This can be used to circumvent the \r\n            \t\t\tissue of possibly returning all blank values when the provided sampling rate doesn't match the analytic's \r\n            \t\t\tsampling rate.</li><li><code>stairStep</code> Any unsampled values are filled with the last known sampled value.</li><li><code>linearInterpolation</code> This performs a linear interpolation on the data to calculate a value for unsampled locations.</li><li><code>parameterDefault</code> Some analytics define their own default for how to treat unsampled data. This option uses that default setting.</li><li><code>previousSample</code> leaves values blank except when there is a previous valid sampled \r\n            \t\t\tvalue that was skipped over due to the sampling rate (regardless of change). This can be used to circumvent \r\n            \t\t\tthe issue of possibly returning all blank values when the provided sampling rate doesn't match the analytic's \r\n            \t\t\tsampling rate or if the values are not changing.</li></ul></li><li>Use the <code>unsampledValue</code> to provide your own value to be used for unsampled values. This only applies when using <code>offsetType</code> queries.</li><li>Use the <code>doesNotExistValue</code> to provide your own value for values that are DNE. This only applies when using <code>offsetType</code> queries.</li><li>Use the <code>discretesAsStrings</code> to specify whether the values of discrete parameters should be their string representations or their numeric value. This only applies when using <code>offsetType</code> queries.</li></ul></p>",
                 "operationId": "Analytic_GetQueryResults",
                 "consumes": [
                     "application/json",
@@ -620,6 +620,79 @@
                     }
                 },
                 "deprecated": false
+            },
+            "post": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Creates an analytic set group.",
+                "operationId": "AnalyticSet_CreateAnalyticSetGroup",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "newGroup",
+                        "in": "body",
+                        "description": "The information needed to create a new analytic set group.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSetGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetGroupCreated"
+                        }
+                    },
+                    "400": {
+                        "description": "An analytic set group name cannot include certain characters.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic set group with the provided ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "409": {
+                        "description": "An analytic set group with the provided name in the provided group already exists.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
             }
         },
         "/v2/ems-systems/{emsSystemId}/analytic-set-groups/{groupId}": {
@@ -672,6 +745,142 @@
                     }
                 },
                 "deprecated": false
+            },
+            "put": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Updates an analytic set group. This will alter the location of any analytic sets and groups contained within.",
+                "operationId": "AnalyticSet_UpdateAnalyticSetGroup",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The unique identifier of the group to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "updatedGroup",
+                        "in": "body",
+                        "description": "The information needed to update an existing analytic set group.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.UpdateAnalyticSetGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetGroupUpdated"
+                        }
+                    },
+                    "400": {
+                        "description": "An analytic set group name can not include certain characters.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic set group with the provided ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "delete": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Deletes an analytic set group. The group must be empty in order to remove it.",
+                "operationId": "AnalyticSet_DeleteAnalyticSetGroup",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The unique identifier of the group to remove.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The analytic set group has been removed.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic set group with the provided ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "409": {
+                        "description": "The analytic set group still contains other groups and/or sets and cannot be removed.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
             }
         },
         "/v2/ems-systems/{emsSystemId}/analytic-set-groups/{groupId}/analytic-sets/{analyticSetName}": {
@@ -680,7 +889,7 @@
                     "Analytic Set APIs"
                 ],
                 "summary": "Returns an analytic set with the provided name from the group requested.",
-                "operationId": "AnalyticSet_GetParameterSets",
+                "operationId": "AnalyticSet_GetAnalyticSet",
                 "consumes": [],
                 "produces": [
                     "application/json",
@@ -724,7 +933,506 @@
                         }
                     },
                     "404": {
-                        "description": "A analytic set or group with the provided name or ID could not be found",
+                        "description": "An analytic set or group with the provided name or ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "put": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Updates an existing analytic set.",
+                "operationId": "AnalyticSet_UpdateAnalyticSet",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The identifer of the analytic set group where the analytic set to update exists.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "analyticSetName",
+                        "in": "path",
+                        "description": "The name of the analytic set to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "updatedAnalyticSet",
+                        "in": "body",
+                        "description": "The content to update the analytic set with.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.UpdateAnalyticSet"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The analytic set was successfully updated."
+                    },
+                    "400": {
+                        "description": "The updated analytic set was not configured correctly.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic set or group with the provided name or ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "delete": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Deletes an analytic set.",
+                "operationId": "AnalyticSet_DeleteAnalyticSet",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The ID of the analytic set group where the analytic set exists.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "analyticSetName",
+                        "in": "path",
+                        "description": "The analytic set to delete.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The analytic set was successfully deleted."
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic set or group with the provided name or ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/analytic-set-groups/{groupId}/analytic-sets": {
+            "post": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Creates a new analytic set.",
+                "operationId": "AnalyticSet_CreateAnalyticSet",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The ID of the analytic set group where the new analytic set will be created.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "newAnalyticSet",
+                        "in": "body",
+                        "description": "The new analytic set to create.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSet"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The analytic set was successfully created.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetCreated"
+                        }
+                    },
+                    "400": {
+                        "description": "The new analytic set was not configured correctly.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic group with the provided ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "409": {
+                        "description": "An analytic set already exists with the provided name in the provided group.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/analytic-set-groups/{groupId}/analytic-collections/{analyticCollectionName}": {
+            "get": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Returns the specified analytic collection.",
+                "operationId": "AnalyticSet_GetAnalyticCollection",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The ID of the analytic set group where the analytic collection exists.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "analyticCollectionName",
+                        "in": "path",
+                        "description": "The identifier for the analytic collection.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticCollection"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "put": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Updates an analytic collection.",
+                "operationId": "AnalyticSet_UpdateAnalyticCollection",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The unique identifier of the group to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "analyticCollectionName",
+                        "in": "path",
+                        "description": "The name of the analytic collection.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "updateCollection",
+                        "in": "body",
+                        "description": "The information needed to update an existing analytic collection.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.UpdateAnalyticCollection"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The analytic collection was updated."
+                    },
+                    "400": {
+                        "description": "An analytic collection must have at least one item.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic set group with the provided ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "delete": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Deletes an analytic collection.",
+                "operationId": "AnalyticSet_DeleteAnalyticCollection",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The ID of the analytic set group where the analytic collection exists.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "analyticCollectionName",
+                        "in": "path",
+                        "description": "The analytic collection to delete.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The analytic collection was successfully deleted."
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic collection or group with the provided name or ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/analytic-set-groups/{groupId}/analytic-collections": {
+            "post": {
+                "tags": [
+                    "Analytic Set APIs"
+                ],
+                "summary": "Creates a new analytic collection.",
+                "operationId": "AnalyticSet_CreateAnalyticCollection",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "The ID of the analytic set group where the new analytic collection will be created.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "newAnalyticCollection",
+                        "in": "body",
+                        "description": "The new analytic collection to create.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticCollection"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The analytic collection was successfully created.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetCreated"
+                        }
+                    },
+                    "400": {
+                        "description": "The new analytic collection was not configured correctly.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "An analytic group with the provided ID could not be found.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "409": {
+                        "description": "An analytic collection already exists with the provided name in the provided group.",
                         "schema": {
                             "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
                         }
@@ -5556,25 +6264,32 @@
             "type": "object",
             "properties": {
                 "name": {
-                    "description": "The name of the group.",
+                    "description": "The name of the group",
                     "type": "string"
                 },
                 "groupId": {
-                    "description": "The ID of the group. This should be a relative path with backslashes replaced with colons.",
+                    "description": "The ID of the group. This should be a relative path with backslashes replaced with colons",
                     "type": "string"
                 },
                 "groups": {
-                    "description": "An array of groups contained by this group.",
+                    "description": "An array of groups contained by this group",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetGroup"
                     }
                 },
                 "sets": {
-                    "description": "An array of analytic sets contained by this group.",
+                    "description": "An array of analytic sets contained by this group",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSet"
+                    }
+                },
+                "collections": {
+                    "description": "An array of analytic collections contained by this group",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticCollection"
                     }
                 }
             }
@@ -5584,18 +6299,39 @@
             "type": "object",
             "properties": {
                 "name": {
-                    "description": "The name of the AnalyticSet.",
+                    "description": "The name of the AnalyticSet",
                     "type": "string"
                 },
                 "description": {
-                    "description": "An optional description of the ParameterSet.",
+                    "description": "An optional description of the AnalyticSet.",
                     "type": "string"
                 },
                 "items": {
-                    "description": "An array of the analytics contained in the AnalyticSet.",
+                    "description": "An array of the analytics contained in the AnalyticSet",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetItem"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticCollection": {
+            "description": "A collection of analytics. Typically grouped together for graphing in an analytic set.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the AnalyticCollection",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "An optional description of the AnalyticCollection",
+                    "type": "string"
+                },
+                "items": {
+                    "description": "An array of the analytics contained in the AnalyticCollection",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticCollectionItem"
                     }
                 }
             }
@@ -5606,37 +6342,41 @@
             "properties": {
                 "chartIndex": {
                     "format": "int32",
-                    "description": "The index of the chart that this analytic info belongs to, or null if no index specified.",
+                    "description": "The index of the chart that this analytic info belongs to, or null if no index specified",
                     "type": "integer"
+                },
+                "chartSize": {
+                    "description": "The size of the chart or null if not specified.\r\n            Possible values: [Normal, Small]",
+                    "type": "string"
                 },
                 "analytic": {
                     "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticInfo",
-                    "description": "The analytic that is represented by this analytic set item."
+                    "description": "The analytic that is represented by this analytic set item"
                 },
                 "customName": {
-                    "description": "The custom name the user specified for the item, or null if not-specified.",
+                    "description": "The custom name the user specified for the item, or null if not-specified",
                     "type": "string"
                 },
                 "color": {
-                    "description": "The color to use for the line in hexadecimal color specification \"#RRGGBB\", or null if no color specified.",
+                    "description": "The color to use for the line in hexadecimal color specification \"#RRGGBB\", or null if no color specified",
                     "type": "string"
                 },
                 "customRange": {
                     "$ref": "#/definitions/Adi.Ems.Web.Api.Core.Dto.DataRange",
-                    "description": "Optional override for the vertical scale for an analytic."
+                    "description": "Optional override for the vertical scale for an analytic"
                 },
                 "customDigitsAfterDecimal": {
                     "format": "int32",
-                    "description": "Optional override for the number of digits to display.",
+                    "description": "Optional override for the number of digits to display",
                     "type": "integer"
                 },
                 "lineWidth": {
                     "format": "int32",
-                    "description": "Optional value from 1 to 5 for the width of the line.",
+                    "description": "Optional value from 1 to 5 for the width of the line",
                     "type": "integer"
                 },
                 "displaySampleMarker": {
-                    "description": "Optional value specifying whether the parrmeter should display shapes to indicate the sampled values.",
+                    "description": "Optional value specifying whether the parameter should display shapes to indicate the sampled values",
                     "type": "boolean"
                 },
                 "sampleMarkerShape": {
@@ -5645,6 +6385,66 @@
                 },
                 "lineStyle": {
                     "description": "If set, describes the line style to use when drawing.\r\n            Possible values: [Dash, Dot, DashDot, DashDotDot, Solid]",
+                    "type": "string"
+                },
+                "parameterFilteringMode": {
+                    "description": "Whether parameter filtering mode should be enabled for this item or not.\r\n            possible values: [Default, Enabled, Disabled]",
+                    "type": "string"
+                },
+                "interpolationMode": {
+                    "description": "The way in which the data should be interpolated.\r\n            Possible values: [Default, StairStep, Continuous]",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticCollectionItem": {
+            "description": "A model that encapsulates the data for a single analytic in an analytic collection.",
+            "type": "object",
+            "properties": {
+                "analytic": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticInfo",
+                    "description": "The analytic that is represented by this analytic set item"
+                },
+                "customName": {
+                    "description": "The custom name the user specified for the item, or null if not-specified",
+                    "type": "string"
+                },
+                "color": {
+                    "description": "The color to use for the line in hexadecimal color specification \"#RRGGBB\", or null if no color specified",
+                    "type": "string"
+                },
+                "customRange": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.Core.Dto.DataRange",
+                    "description": "Optional override for the vertical scale for an analytic"
+                },
+                "customDigitsAfterDecimal": {
+                    "format": "int32",
+                    "description": "Optional override for the number of digits to display",
+                    "type": "integer"
+                },
+                "lineWidth": {
+                    "format": "int32",
+                    "description": "Optional value from 1 to 5 for the width of the line",
+                    "type": "integer"
+                },
+                "displaySampleMarker": {
+                    "description": "Optional value specifying whether the parameter should display shapes to indicate the sampled values",
+                    "type": "boolean"
+                },
+                "sampleMarkerShape": {
+                    "description": "If set, describes the shape to use for the sampled values.\r\n            Possible values: [Square, Circle, Triangle, InvertedTriangle, Cross, Star]",
+                    "type": "string"
+                },
+                "lineStyle": {
+                    "description": "If set, describes the line style to use when drawing.\r\n            Possible values: [Dash, Dot, DashDot, DashDotDot, Solid]",
+                    "type": "string"
+                },
+                "parameterFilteringMode": {
+                    "description": "Whether parameter filtering mode should be enabled for this item or not.\r\n            possible values: [Default, Enabled, Disabled]",
+                    "type": "string"
+                },
+                "interpolationMode": {
+                    "description": "The way in which the data should be interpolated.\r\n            Possible values: [Default, StairStep, Continuous]",
                     "type": "string"
                 }
             }
@@ -5659,6 +6459,287 @@
                 "max": {
                     "format": "double",
                     "type": "number"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSetGroup": {
+            "description": "The information needed to create a new analytic set group.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the analytic set group",
+                    "type": "string"
+                },
+                "parentGroupId": {
+                    "description": "The groupId of the parent group for the new analytic set group",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetGroupCreated": {
+            "description": "The result of a newly created group.",
+            "type": "object",
+            "properties": {
+                "groupId": {
+                    "description": "The group identifier for the newly created group",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "The URI location for the newly created group",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.UpdateAnalyticSetGroup": {
+            "description": "The information for updating an analytic set group.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the analytic set group.\r\n            This can be the existing name or a new name",
+                    "type": "string"
+                },
+                "parentGroupId": {
+                    "description": "The groupId of the parent group for this analytic set group",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetGroupUpdated": {
+            "description": "The result of an updated group.",
+            "type": "object",
+            "properties": {
+                "groupId": {
+                    "description": "The group identifier of the updated group",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "The URI location of the updated group",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.UpdateAnalyticSet": {
+            "description": "Encapsulates the data for updating an existing analytic set.",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "An optional description of the AnalyticSet",
+                    "type": "string"
+                },
+                "items": {
+                    "description": "An array of the analytics contained in the AnalyticSet",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSetItem"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSetItem": {
+            "description": "A model that encapsulates the data for a single analytic in an analytic set.",
+            "type": "object",
+            "properties": {
+                "chartIndex": {
+                    "format": "int32",
+                    "description": "The index of the chart that this analytic info belongs to, or null if no index specified",
+                    "type": "integer"
+                },
+                "chartSize": {
+                    "description": "The size of the chart or null if not specified.\r\n            Possible values: [Normal, Small]",
+                    "type": "string"
+                },
+                "analyticId": {
+                    "description": "The analytic identifier that is represented by this analytic set item",
+                    "type": "string"
+                },
+                "customName": {
+                    "description": "The custom name the user specified for the item, or null if not-specified",
+                    "type": "string"
+                },
+                "color": {
+                    "description": "The color to use for the line in hexadecimal color specification \"#RRGGBB\", or null if no color specified",
+                    "type": "string"
+                },
+                "customRange": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.Core.Dto.DataRange",
+                    "description": "Optional override for the vertical scale for an analytic"
+                },
+                "customDigitsAfterDecimal": {
+                    "format": "int32",
+                    "description": "Optional override for the number of digits to display",
+                    "type": "integer"
+                },
+                "lineWidth": {
+                    "format": "int32",
+                    "description": "Optional value from 1 to 5 for the width of the line",
+                    "type": "integer"
+                },
+                "displaySampleMarker": {
+                    "description": "Optional value specifying whether the parameter should display shapes to indicate the sampled values",
+                    "type": "boolean"
+                },
+                "sampleMarkerShape": {
+                    "description": "If set, describes the shape to use for the sampled values.\r\n            Possible values: [Square, Circle, Triangle, InvertedTriangle, Cross, Star]",
+                    "type": "string"
+                },
+                "lineStyle": {
+                    "description": "If set, describes the line style to use when drawing.\r\n            Possible values: [Dash, Dot, DashDot, DashDotDot, Solid]",
+                    "type": "string"
+                },
+                "parameterFilteringMode": {
+                    "description": "Whether parameter filtering mode should be enabled for this item or not.\r\n            possible values: [Default, Enabled, Disabled]",
+                    "type": "string"
+                },
+                "interpolationMode": {
+                    "description": "The way in which the data should be interpolated.\r\n            Possible values: [Default, StairStep, Continuous].",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSet": {
+            "description": "Encapsulates the data for the creation of a new analytic set.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the AnalyticSet",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "An optional description of the AnalyticSet",
+                    "type": "string"
+                },
+                "items": {
+                    "description": "An array of the analytics contained in the AnalyticSet",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticSetItem"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetCreated": {
+            "description": "Encapsulates the results of a successfully created analytic set.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the AnalyticSet",
+                    "type": "string"
+                },
+                "groupId": {
+                    "description": "The group identifier of the AnalyticSet",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "The full URL of the newly created AnalyticSet",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.UpdateAnalyticCollection": {
+            "description": "Encapsulates the data for updating an existing analytic collection.",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "An optional description of the AnalyticCollection",
+                    "type": "string"
+                },
+                "items": {
+                    "description": "An array of the analytics contained in the AnalyticCollection",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticCollectionItem"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticCollectionItem": {
+            "description": "A model that encapsulates the data for a single analytic in an analytic set.",
+            "type": "object",
+            "properties": {
+                "analyticId": {
+                    "description": "The analytic identifier that is represented by this analytic set item",
+                    "type": "string"
+                },
+                "customName": {
+                    "description": "The custom name the user specified for the item, or null if not-specified",
+                    "type": "string"
+                },
+                "color": {
+                    "description": "The color to use for the line in hexadecimal color specification \"#RRGGBB\", or null if no color specified",
+                    "type": "string"
+                },
+                "customRange": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.Core.Dto.DataRange",
+                    "description": "Optional override for the vertical scale for an analytic"
+                },
+                "customDigitsAfterDecimal": {
+                    "format": "int32",
+                    "description": "Optional override for the number of digits to display",
+                    "type": "integer"
+                },
+                "lineWidth": {
+                    "format": "int32",
+                    "description": "Optional value from 1 to 5 for the width of the line",
+                    "type": "integer"
+                },
+                "displaySampleMarker": {
+                    "description": "Optional value specifying whether the parameter should display shapes to indicate the sampled values",
+                    "type": "boolean"
+                },
+                "sampleMarkerShape": {
+                    "description": "If set, describes the shape to use for the sampled values.\r\n            Possible values: [Square, Circle, Triangle, InvertedTriangle, Cross, Star]",
+                    "type": "string"
+                },
+                "lineStyle": {
+                    "description": "If set, describes the line style to use when drawing.\r\n            Possible values: [Dash, Dot, DashDot, DashDotDot, Solid]",
+                    "type": "string"
+                },
+                "parameterFilteringMode": {
+                    "description": "Whether parameter filtering mode should be enabled for this item or not.\r\n            possible values: [Default, Enabled, Disabled]",
+                    "type": "string"
+                },
+                "interpolationMode": {
+                    "description": "The way in which the data should be interpolated.\r\n            Possible values: [Default, StairStep, Continuous].",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticCollection": {
+            "description": "Encapsulates the data for the creation of a new analytic collection.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the AnalyticCollection",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "An optional description of the AnalyticCollection",
+                    "type": "string"
+                },
+                "items": {
+                    "description": "An array of the analytics contained in the AnalyticCollection",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticCollectionItem"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticCollectionCreated": {
+            "description": "Encapsulates the results of a successfully created analytic collection.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the AnalyticCollection",
+                    "type": "string"
+                },
+                "groupId": {
+                    "description": "The group identifier of the AnalyticCollection",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "The full URL of the newly created AnalyticCollection",
+                    "type": "string"
                 }
             }
         },
@@ -7449,7 +8530,7 @@
                     "type": "integer"
                 },
                 "displaySampleMarker": {
-                    "description": "Optional value specifying whether the parrmeter should display shapes to indicate the sampled values.",
+                    "description": "Optional value specifying whether the parameter should display shapes to indicate the sampled values.",
                     "type": "boolean"
                 },
                 "sampleMarkerShape": {
@@ -7941,6 +9022,14 @@
                 "isSavedToDatabase": {
                     "description": "A flag describing if a measurement is saved to the database",
                     "type": "boolean"
+                },
+                "comments": {
+                    "description": "The comments on the object.",
+                    "type": "string"
+                },
+                "properties": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Metadata",
+                    "description": "Additional metadata on the object."
                 }
             }
         },

@@ -76,6 +76,11 @@ namespace EmsApi.Client.V2
         public AnalyticsAccess Analytics { get; set; }
 
         /// <summary>
+        /// Access to the analytic sets routes.
+        /// </summary>
+        public AnalyticSetAccess AnalyticSets { get; set; }
+
+        /// <summary>
         /// Access to database routes.
         /// </summary>
         public DatabaseAccess Databases { get; set; }
@@ -194,6 +199,7 @@ namespace EmsApi.Client.V2
             Profiles = InitializeAccessClass<ProfilesAccess>();
             ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
             Analytics = InitializeAccessClass<AnalyticsAccess>();
+            AnalyticSets = InitializeAccessClass<AnalyticSetAccess>();
             Databases = InitializeAccessClass<DatabaseAccess>();
             Transfers = InitializeAccessClass<TransfersAccess>();
             AdminUser = InitializeAccessClass<AdminUserAccess>();
@@ -247,7 +253,8 @@ namespace EmsApi.Client.V2
                 // Reset the BaseAddress, and create a new refit service stub.
                 // It's bound to the HttpClient's base address when it's constructed.
                 m_httpClient.BaseAddress = new Uri( m_config.Endpoint );
-                var refitSettings = new RefitSettings {
+                var refitSettings = new RefitSettings
+                {
                     // In Refit v6 they switched to using System.Text.Json by default. We did not
                     // want to go through the hassle of converting our DTOs to that so we are
                     // going to still use Newtonsoft.
