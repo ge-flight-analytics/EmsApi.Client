@@ -51,6 +51,11 @@ namespace EmsApi.Client.V2
         public EmsSystemAccess EmsSystem { get; set; }
 
         /// <summary>
+        /// Access to securables routes.
+        /// </summary>
+        public EmsSecurablesAccess EmsSecurables { get; set; }
+
+        /// <summary>
         /// Access to assets routes.
         /// </summary>
         public AssetsAccess Assets { get; set; }
@@ -194,6 +199,7 @@ namespace EmsApi.Client.V2
         {
             Swagger = InitializeAccessClass<SwaggerAccess>();
             EmsSystem = InitializeAccessClass<EmsSystemAccess>();
+            EmsSecurables = InitializeAccessClass<EmsSecurablesAccess>();
             Assets = InitializeAccessClass<AssetsAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
             Profiles = InitializeAccessClass<ProfilesAccess>();

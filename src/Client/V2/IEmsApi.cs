@@ -49,6 +49,18 @@ namespace EmsApi.Client.V2
         Task<bool> PingEmsSystem( [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns a set of EMS securable items and any associated metadata.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/securables" )]
+        Task<EmsSecurableContainer> GetEmsSecurables( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns whether the user has permissions for the provided securable and access right.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/securables/{securableId}" )]
+        Task<EmsSecurableEffectiveAccess> GetEmsSecurableAccess( string securableId, string accessRight, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns the list of fleets the user has access to in their security context.
         /// </summary>
         [Get( "/v2/ems-systems/1/assets/fleets" )]
