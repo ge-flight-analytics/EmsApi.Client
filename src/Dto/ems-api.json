@@ -11,6 +11,471 @@
         "https"
     ],
     "paths": {
+        "/v2/ems-systems/{emsSystemId}/alerts/definitions": {
+            "get": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Returns the full list of alert definitions in the system.",
+                "operationId": "Alert_GetDefinitions",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.Definition"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "post": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Creates a new alert definition in the system.",
+                "operationId": "Alert_CreateDefinition",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "definition",
+                        "in": "body",
+                        "description": "The new alert definition, without an Id.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.SetDefinition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.Definition"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/alerts/definitions/{id}": {
+            "get": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Returns a specific alert definition from the system.",
+                "operationId": "Alert_GetDefinition",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The unique identifier of the alert definition of interest.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.Definition"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "put": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Updates an alert definition in the system. Note that the alert's linked type cannot be changed.",
+                "operationId": "Alert_UpdateDefinition",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the alert definition to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "definition",
+                        "in": "body",
+                        "description": "The updated alert definition.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.SetDefinition"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/System.Object"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "delete": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Deletes a specific alert definition from the system.",
+                "operationId": "Alert_RemoveDefinition",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The unique identifier of the alert definition to delete.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/System.Object"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/alerts/definitions/{id}/entities/{entityRecord}/state": {
+            "get": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Gets the current state for some alert for a data entity (e.g. an aircraft).",
+                "operationId": "Alert_SetAlertState",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The alert definition whose state is being queried.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "entityRecord",
+                        "in": "path",
+                        "description": "The record number of the entity being queried.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.GetActivity"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/alerts/definitions/{id}/entities/{entityRecord}/activity": {
+            "get": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Gets all the activity/history entries for some alert on a particular entity.",
+                "operationId": "Alert_GetAlertActivity",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The alert definition whose activity is being queried.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "entityRecord",
+                        "in": "path",
+                        "description": "The record number of the entity whose alert activity is being queried.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "maxResults",
+                        "in": "query",
+                        "description": "The maximum number of activity entries to retrieve (default = 100). Results are returned in newest-first order.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.GetActivity"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "post": {
+                "tags": [
+                    "Alert APIs"
+                ],
+                "summary": "Adds an activity/history entry for some alert on a particular entity, indicating a time when the\r\n            alert state was changed or known to have some value.",
+                "operationId": "Alert_AddAlertActivity",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The alert definition whose activity is being recorded.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "entityRecord",
+                        "in": "path",
+                        "description": "The record number of the entity whose alert activity is being recorded.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "inputs",
+                        "in": "body",
+                        "description": "The inputs for how to set the alert state.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.AddActivity"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Alert.GetActivity"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
         "/v2/ems-systems/{emsSystemId}/analytics": {
             "get": {
                 "tags": [
@@ -655,8 +1120,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "The analytic set group was successfully created.",
                         "schema": {
                             "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSetGroupCreated"
                         }
@@ -850,10 +1315,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "The analytic set group has been removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
+                        "description": "The analytic set group has been removed."
                     },
                     "401": {
                         "description": "You do not have access to the requested resource.",
@@ -973,7 +1435,7 @@
                     {
                         "name": "groupId",
                         "in": "path",
-                        "description": "The identifer of the analytic set group where the analytic set to update exists.",
+                        "description": "The identifier of the analytic set group where the analytic set to update exists.",
                         "required": true,
                         "type": "string"
                     },
@@ -2939,6 +3401,116 @@
                     },
                     "404": {
                         "description": "EMS Profile Glossary could not be found on the EMS system.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/securables": {
+            "get": {
+                "tags": [
+                    "Ems Securable APIs"
+                ],
+                "summary": "Retrieves a hierarchical tree of EMS securables and their related access rights.",
+                "operationId": "EmsSecurable_GetSecurables",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS securables.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableContainer"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/securables/{securableId}": {
+            "get": {
+                "tags": [
+                    "Ems Securable APIs"
+                ],
+                "summary": "Returns the effective access permission for the given securable and access right for the user.",
+                "operationId": "EmsSecurable_GetAccessForSecurable",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS securable.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "securableId",
+                        "in": "path",
+                        "description": "The ID of the securable to check access for.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accessRight",
+                        "in": "query",
+                        "description": "The name of the access right for the securable. This has to be\r\n            a valid access right for the specific type of securable.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableEffectiveAccess"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "The securable identifier or access right could not be found.",
                         "schema": {
                             "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
                         }
@@ -5965,6 +6537,28 @@
         }
     },
     "definitions": {
+        "Adi.Ems.Web.Api.V2.Dto.Alert.Definition": {
+            "description": "Defines a type of alert that can occur for some asset type",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique id of the definition",
+                    "type": "string"
+                },
+                "displayName": {
+                    "description": "The human-readable name for the alert",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A free-form description of what the alert represents",
+                    "type": "string"
+                },
+                "linkedType": {
+                    "description": "The schema entity type that the alert applies to (such as Aircraft)",
+                    "type": "string"
+                }
+            }
+        },
         "Adi.Ems.Web.Api.Model.Error": {
             "required": [
                 "message",
@@ -5984,22 +6578,98 @@
                 }
             }
         },
-        "Adi.Ems.Web.Api.V2.Model.ApiMessage": {
-            "description": "Represents a message used to provide information to users about an action that took place in an API request.",
+        "Adi.Ems.Web.Api.V2.Dto.Alert.SetDefinition": {
+            "description": "Contains the information required to create/update an alert definition.",
             "type": "object",
             "properties": {
-                "type": {
-                    "description": "A categorization of the message.",
-                    "enum": [
-                        "warning",
-                        "error",
-                        "success"
-                    ],
+                "displayName": {
+                    "description": "The human-readable name for the alert",
                     "type": "string"
                 },
-                "message": {
-                    "description": "A string message describing an event that occurred in an API action or event.",
+                "description": {
+                    "description": "A free-form description of what the alert represents",
                     "type": "string"
+                },
+                "linkedType": {
+                    "description": "The schema entity type that the alert applies to (such as Aircraft)",
+                    "type": "string"
+                }
+            }
+        },
+        "System.Object": {
+            "type": "object",
+            "properties": {}
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Alert.GetActivity": {
+            "description": "Output type for getting the activity of an alert, and returned from a call to add alert trigger history.",
+            "type": "object",
+            "properties": {
+                "recordedAt": {
+                    "format": "date-time",
+                    "description": "The timestamp of when the activity record was recorded on the server.",
+                    "type": "string"
+                },
+                "triggerDate": {
+                    "format": "date-time",
+                    "description": "The timestamp of the data that triggered the alert activity (for instance, if the alert activity\r\n            was triggered by analysis of a flight, the flight date could be considered the trigger date)",
+                    "type": "string"
+                },
+                "isActive": {
+                    "description": "Specifies whether the alert is Active or Inactive.",
+                    "type": "boolean"
+                },
+                "stateChanged": {
+                    "description": "Specifies whether the alert state changed from the previous activity to this activity.",
+                    "type": "boolean"
+                },
+                "sortKey": {
+                    "description": "A sortable string which orders the alert activity in ascending real-world chronological order.",
+                    "type": "string"
+                },
+                "triggerAgent": {
+                    "description": "Free-form string that identifies the agent which recorded the activity, such as a profile number.",
+                    "type": "string"
+                },
+                "triggerReferenceType": {
+                    "description": "Optional: caller-defined information which identifies what type of information\r\n            is stored in TriggerReferenceValue. When returned from a call to set an alert's\r\n            state, this is the value provided to that call. When returned from a call to get\r\n            an alert's state, this is the value from the last time the alert actually changed\r\n            state (from Active to Inactive or vice versa).",
+                    "type": "string"
+                },
+                "triggerReferenceValue": {
+                    "format": "int32",
+                    "description": "Optional: a record number or other value which was associated with this alert\r\n            state change. For example, this may be the record number of a flight whose\r\n            data was the cause of the state change (maybe through an APM alert trigger).\r\n            When returned from a call to set an alert's state, this is the value provided to\r\n            that call. When returned from a call to get an alert's state, this is the value\r\n            from the last time the alert actually changed state (from Active to Inactive or\r\n            vice versa).",
+                    "type": "integer"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Alert.AddActivity": {
+            "description": "Input data type for adding to the history of an alert for some entity (e.g. an aircraft)",
+            "type": "object",
+            "properties": {
+                "triggerDate": {
+                    "format": "date-time",
+                    "description": "The timestamp of the data that triggered the alert activity (for instance, if the alert activity\r\n            was triggered by analysis of a flight, the flight date could be considered the trigger date)",
+                    "type": "string"
+                },
+                "isActive": {
+                    "description": "Specifies whether the alert was/became Active or Inactive at the given trigger date",
+                    "type": "boolean"
+                },
+                "sortKey": {
+                    "description": "A sortable string which orders the alert activity in ascending real-world chronological order",
+                    "type": "string"
+                },
+                "triggerAgent": {
+                    "description": "Optional: caller-defined free-form string that identifies the agent which recorded the activity,\r\n            such as a profile number.",
+                    "type": "string"
+                },
+                "triggerReferenceType": {
+                    "description": "Optional: caller-defined information which identifies what type of information\r\n            is stored in TriggerReferenceValue",
+                    "type": "string"
+                },
+                "triggerReferenceValue": {
+                    "format": "int32",
+                    "description": "Optional: a record number or other value which is associated with this alert\r\n            state change. For example, this may be the record number of a flight whose\r\n            data was the cause of the state change (maybe through an APM alert trigger).",
+                    "type": "integer"
                 }
             }
         },
@@ -6228,10 +6898,6 @@
                 }
             }
         },
-        "System.Object": {
-            "type": "object",
-            "properties": {}
-        },
         "Adi.Ems.Web.Api.V2.Dto.Metadata": {
             "description": "Encapsulates metadata information for a parameter or analytic in EMS.",
             "type": "object",
@@ -6403,7 +7069,7 @@
             "properties": {
                 "analytic": {
                     "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticInfo",
-                    "description": "The analytic that is represented by this analytic set item"
+                    "description": "The analytic that is represented by this analytic collection item"
                 },
                 "customName": {
                     "description": "The custom name the user specified for the item, or null if not-specified",
@@ -6653,11 +7319,11 @@
             }
         },
         "Adi.Ems.Web.Api.V2.Dto.AnalyticSet.NewAnalyticCollectionItem": {
-            "description": "A model that encapsulates the data for a single analytic in an analytic set.",
+            "description": "A model that encapsulates the data for a single analytic in an analytic collection.",
             "type": "object",
             "properties": {
                 "analyticId": {
-                    "description": "The analytic identifier that is represented by this analytic set item",
+                    "description": "The analytic identifier that is represented by this analytic collection item",
                     "type": "string"
                 },
                 "customName": {
@@ -6969,6 +7635,13 @@
                         "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FieldGroup"
                     }
                 },
+                "path": {
+                    "description": "An ordered list of groupIds that make up the path to this group, excluding the root group. \r\n            The last groupId is the parent group of this group",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "fields": {
                     "description": "An ordered list of child fields contained in a field group",
                     "type": "array",
@@ -7005,6 +7678,13 @@
                 "name": {
                     "description": "The display name for the field",
                     "type": "string"
+                },
+                "path": {
+                    "description": "An ordered list of groupIds that make up the path to this field, excluding the root group.\r\n            The last groupId is the parent group of this field",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -7278,7 +7958,8 @@
             "description": "Represents a header column in data source query result.",
             "required": [
                 "id",
-                "name"
+                "name",
+                "format"
             ],
             "type": "object",
             "properties": {
@@ -7290,8 +7971,30 @@
                     "description": "The user-friendly display name of the field associated with this column",
                     "type": "string"
                 },
+                "format": {
+                    "description": "The format applied to the values for the field associated with this column",
+                    "enum": [
+                        "none",
+                        "display"
+                    ],
+                    "type": "string"
+                },
                 "units": {
                     "description": "The units of values of the field associated with this column. This value may be empty if not applicable",
+                    "type": "string"
+                },
+                "aggregate": {
+                    "description": "The aggregate operation performed on this column. This value may be empty if not applicable",
+                    "enum": [
+                        "none",
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "stdev",
+                        "sum",
+                        "var"
+                    ],
                     "type": "string"
                 }
             }
@@ -7806,6 +8509,86 @@
                     "format": "int32",
                     "description": "The item id of the second associated item.",
                     "type": "integer"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableContainer": {
+            "description": "A container for securables and other containers.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of this container",
+                    "type": "string"
+                },
+                "containers": {
+                    "description": "The child containers of this container",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableContainer"
+                    }
+                },
+                "securables": {
+                    "description": "The securable items in this container",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurable"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurable": {
+            "description": "Represents a securable item within the EMS environment.",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The identifier for this securable",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The name of this securable",
+                    "type": "string"
+                },
+                "concreteType": {
+                    "description": "The type for this securable. The type determines which access rights are applicable to the securable",
+                    "type": "string"
+                },
+                "supportedRights": {
+                    "description": "The access rights for this securable",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableAccessRight"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableAccessRight": {
+            "description": "An access right that can be applied to a securable.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the access right",
+                    "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableEffectiveAccess": {
+            "description": "Represents the access results for a securable access check request.",
+            "type": "object",
+            "properties": {
+                "securableId": {
+                    "description": "The identifier for the securable",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "accessRight": {
+                    "description": "The access right for the securable",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "hasAccess": {
+                    "description": "Whether the user has access or not to the securable and access right",
+                    "type": "boolean",
+                    "readOnly": true
                 }
             }
         },
