@@ -154,8 +154,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 13
- testRunner.When("I run GetAccessForSecurable with securableId \'FDW:General\' and accessRight \'View " +
-                        "Aircraft Version\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run GetAccessForSecurable with securableId \'FDW:General\' and accessRight \'Looku" +
+                        "p Flight By Ident Info\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 14
  testRunner.Then("EmsSecurableEffectiveAccess is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -199,8 +199,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 19
- testRunner.When("I run GetAccessForSecurable with securableId \'EmsGeneral:Applications\' and access" +
-                        "Right \'Explorer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run GetAccessForSecurable with securableId \'FDW:General\' and accessRight \'View " +
+                        "Flights\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 20
  testRunner.Then("EmsSecurableEffectiveAccess is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
