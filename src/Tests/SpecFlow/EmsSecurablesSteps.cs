@@ -25,7 +25,6 @@ namespace EmsApi.Tests.SpecFlow
             m_result.Object = m_api.EmsSecurables.GetAccessForSecurable( securableId, accessRight );
         }
 
-
         [Then( @"EmsSecurableEffectiveAccess is returned" )]
         public void ThenEmsSecurableEffectiveAccessIsReturned()
         {
@@ -37,8 +36,5 @@ namespace EmsApi.Tests.SpecFlow
         {
             m_result.GetPropertyValue<bool>( "HasAccess" ).Should().Be( hasAccess );
         }
-
-
-
     }
 }
