@@ -60,7 +60,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual EmsSecurableEffectiveAccess GetAccessForSecurable(string securableId, string accessRight, CallContext context = null )
+        public virtual EmsSecurableEffectiveAccess GetAccessForSecurable( string securableId, string accessRight, CallContext context = null )
         {
             return AccessTaskResult( GetAccessForSecurableAsync( securableId, accessRight, context ) );
         }
