@@ -10,12 +10,12 @@ Scenario: Get Securables
 
 Scenario: Get Securable Effective Access - No Access
 	Given A valid API endpoint
-	When I run GetAccessForSecurable with securableId 'FDW:General' and accessRight 'View Aircraft Version'
+	When I run GetAccessForSecurable with securableId 'FDW:General' and accessRight 'Lookup Flight By Ident Info'
 	Then EmsSecurableEffectiveAccess is returned
 	And The HasAccess property is false
 	
 Scenario: Get Securable Effective Access - Access
 	Given A valid API endpoint
-	When I run GetAccessForSecurable with securableId 'EmsGeneral:Applications' and accessRight 'Explorer'
+	When I run GetAccessForSecurable with securableId 'FDW:General' and accessRight 'View Flights'
 	Then EmsSecurableEffectiveAccess is returned
 	And The HasAccess property is true
