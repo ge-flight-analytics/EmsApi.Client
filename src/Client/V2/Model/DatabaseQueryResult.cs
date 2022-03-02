@@ -55,13 +55,13 @@ namespace EmsApi.Dto.V2
             {
                 // We can access the enumerable in parallel, the order doesn't matter.
                 Rows.AddRange( rows.AsParallel().Select(
-                    obj => CreateRowFromObservableCollection( obj ) ) );
+                    obj => CreateRowFromCollection( obj ) ) );
 
                 return;
             }
 
             // Access the enumerable in a series, because the order matters.
-            Rows.AddRange( rows.Select( obj => CreateRowFromObservableCollection( obj ) ) );
+            Rows.AddRange( rows.Select( obj => CreateRowFromCollection( obj ) ) );
         }
 
         /// <summary>
@@ -77,22 +77,22 @@ namespace EmsApi.Dto.V2
             if( query.Raw.OrderBy == null || query.Raw.OrderBy.Count == 0 )
             {
                 // We can fire callbacks in parallel, the order doesn't matter.
-                rows.AsParallel().ForAll( obj => callback( CreateRowFromObservableCollection( obj ) ) );
+                rows.AsParallel().ForAll( obj => callback( CreateRowFromCollection( obj ) ) );
                 return;
             }
 
             // Access the enumerable in a series, because the order matters.
             foreach( object raw in rows )
-                callback( CreateRowFromObservableCollection( raw ) );
+                callback( CreateRowFromCollection( raw ) );
         }
 
         /// <summary>
         /// Converts the raw object to an observable collection of objects. This is the format used by
         /// the simple query routes.
         /// </summary>
-        private Row CreateRowFromObservableCollection( object collection )
+        private Row CreateRowFromCollection( object collection )
         {
-            var converted = (ObservableCollection<object>)collection;
+            var converted = (Collection<object>)collection;
             return new Row( m_orderedColumnIds, m_orderedColumnNames, converted.ToArray() );
         }
 

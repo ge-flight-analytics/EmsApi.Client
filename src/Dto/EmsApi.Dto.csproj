@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.JSon" Version="12.0.3" />
-    <PackageReference Include="NSwag.MSBuild" Version="11.19.2">
+    <PackageReference Include="NSwag.MSBuild" Version="13.15.10">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="RoslynCodeTaskFactory" Version="2.0.7">
@@ -20,7 +20,7 @@
 
   <Target Name="NSwag" BeforeTargets="BeforeBuild">
     <Delete Files="EmsApi.Dto.V2.cs" />
-    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:ems-api.json /namespace:EmsApi.Dto.V2 /output:EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /classStyle:Poco" />
+    <Exec Command="$(NSwagExe_Net50) swagger2csclient /input:ems-api.json /namespace:EmsApi.Dto.V2 /output:EmsApi.Dto.V2.cs /generateClientClasses:false /generateDtoTypes:true /generateExceptionClasses:false /generateOptionalParameters:false /generateDataAnnotations:false /generateDefaultValues:false /generateJsonMethods:true /classStyle:Poco" />
     <ItemGroup>
       <!-- Both the analytics and database query objects get put in the same namespace here -->
       <RegexTransform Include="EmsApi.Dto.V2.cs">
@@ -35,11 +35,36 @@
         <Find><![CDATA[QueryResultHeader]]></Find>
         <ReplaceWith><![CDATA[DbQueryResultHeader]]></ReplaceWith>
       </RegexTransform>
-      <!-- Make the async-query return rows the same as the non-async query verison. -->
-      <!-- The default implementation does not deserialize correctly in json.net  -->
+      <!-- Make the db queries return object types. -->
       <RegexTransform Include="EmsApi.Dto.V2.cs">
-        <Find><![CDATA[public System.Collections.ObjectModel.ObservableCollection<string> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<string>]]></Find>
-        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>> Rows { get; set; } = new System.Collections.ObjectModel.ObservableCollection<System.Collections.ObjectModel.ObservableCollection<object>>]]></ReplaceWith>
+        <Find><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Object>> Rows { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Object>>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<object>> Rows { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<object>>]]></ReplaceWith>
+      </RegexTransform>
+      <!-- Add some explicit casts required with the updated NSwag and .NET 5 -->
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>> CreateColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>> CreateColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>> DeleteColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>> DeleteColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></ReplaceWith>
+      </RegexTransform>
+      <!-- Fix some cases where our swagger spec is generating a special Object class instead of using object -->
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public Object Value { get; set; } = new Object]]></Find>
+        <ReplaceWith><![CDATA[public object Value { get; set; } = new object]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public Object Value { get; set; }]]></Find>
+        <ReplaceWith><![CDATA[public object Value { get; set; }]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.Generic.ICollection<Object> EntityIdentifier { get; set; } = new System.Collections.ObjectModel.Collection<Object>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<object> EntityIdentifier { get; set; } = new System.Collections.ObjectModel.Collection<object>]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.Generic.ICollection<Object> Values { get; set; } = new System.Collections.ObjectModel.Collection<Object>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<object> Values { get; set; } = new System.Collections.ObjectModel.Collection<object>]]></ReplaceWith>
       </RegexTransform>
     </ItemGroup>
     <RegexTransform Items="@(RegexTransform)" />

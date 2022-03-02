@@ -15,7 +15,7 @@ namespace EmsApi.Dto.V2
         {
             Raw = new DbQuery
             {
-                Select = new ObservableCollection<SelectColumn>()
+                Select = new Collection<SelectColumn>()
             };
             ValueFormat = DbQueryFormat.Display;
         }
@@ -84,7 +84,7 @@ namespace EmsApi.Dto.V2
         public void GroupByField( string fieldId )
         {
             if( Raw.GroupBy == null )
-                Raw.GroupBy = new ObservableCollection<GroupByColumn>();
+                Raw.GroupBy = new Collection<GroupByColumn>();
 
             Raw.GroupBy.Add( new GroupByColumn { FieldId = fieldId } );
         }
@@ -95,7 +95,7 @@ namespace EmsApi.Dto.V2
         public void OrderByField( string fieldId, OrderByColumnAggregate? aggregate = null, OrderByColumnOrder? order = null )
         {
             if( Raw.OrderBy == null )
-                Raw.OrderBy = new ObservableCollection<OrderByColumn>();
+                Raw.OrderBy = new Collection<OrderByColumn>();
 
             var column = new OrderByColumn
             {
@@ -126,7 +126,7 @@ namespace EmsApi.Dto.V2
             Filter filter = Raw.Filter;
 
             if( filter.Args == null )
-                filter.Args = new ObservableCollection<FilterArgument>();
+                filter.Args = new Collection<FilterArgument>();
 
             var wrapper = new FilterArgument
             {
@@ -136,7 +136,7 @@ namespace EmsApi.Dto.V2
             var inner = new Filter
             {
                 Operator = op,
-                Args = new ObservableCollection<FilterArgument>()
+                Args = new Collection<FilterArgument>()
             };
 
             foreach( var arg in arguments )

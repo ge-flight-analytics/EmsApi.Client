@@ -127,7 +127,7 @@ namespace EmsApi.Tests.SpecFlow
             {
                 Name = p0,
                 Description = "new analytic set",
-                Items = new ObservableCollection<NewAnalyticSetItem>
+                Items = new Collection<NewAnalyticSetItem>
                 {
                     new NewAnalyticSetItem {
                         AnalyticId = "H4sIAAAAAAAEAJ2STW/CMAyGz0PiPyAO3NIkbekHsEqTuCDBBcS0qxunEKkkrA1jP39tUWDVtstuie3ntf0mi62sTfkBeSlXKLVVhZLV6PNU6nqmnsdHa88zSq/Xq3cNPFMdqM8Yp2+b9U4c5QmI0rUFLeT4xtyJukvXHoIFYbStQFjHh5TF9AWVt69gnA0Ho9HiNoWsVpgtoVyqk9S1MvoVyotc0G/ZXvXuLEUzsFg2TbJJaedbY+zkYOftuS/iEO+x73+2bMWHg6enXoM2CAgsRT8gPPKRhBEggTBICDCBIAvMgyJpIdqjnNTGoGzvayOgXGFX6GKuplujDfhJMY0lByLzKCehSHnTaiqIz30meYxpDqxTuBONRL/3X5Y476gz8uF9z+tfX2Gv1ful+UWZABA+a2zgQcRJEQRIRJGnJMUkSrFgYRjGP4Xv+HDgkv1fmX0BGyq1a6wCAAA="
@@ -166,7 +166,7 @@ namespace EmsApi.Tests.SpecFlow
             m_updateAnalyticSet = new UpdateAnalyticSet
             {
                 Description = "updated analytic set",
-                Items = new ObservableCollection<NewAnalyticSetItem>
+                Items = new Collection<NewAnalyticSetItem>
                 {
                     new NewAnalyticSetItem
                     {
@@ -206,7 +206,7 @@ namespace EmsApi.Tests.SpecFlow
             {
                 Name = p0,
                 Description = "new analytic collection",
-                Items = new ObservableCollection<NewAnalyticCollectionItem>
+                Items = new Collection<NewAnalyticCollectionItem>
                 {
                     new NewAnalyticCollectionItem {
                         AnalyticId = "H4sIAAAAAAAEAJ2STW/CMAyGz0PiPyAO3NIkbekHsEqTuCDBBcS0qxunEKkkrA1jP39tUWDVtstuie3ntf0mi62sTfkBeSlXKLVVhZLV6PNU6nqmnsdHa88zSq/Xq3cNPFMdqM8Yp2+b9U4c5QmI0rUFLeT4xtyJukvXHoIFYbStQFjHh5TF9AWVt69gnA0Ho9HiNoWsVpgtoVyqk9S1MvoVyotc0G/ZXvXuLEUzsFg2TbJJaedbY+zkYOftuS/iEO+x73+2bMWHg6enXoM2CAgsRT8gPPKRhBEggTBICDCBIAvMgyJpIdqjnNTGoGzvayOgXGFX6GKuplujDfhJMY0lByLzKCehSHnTaiqIz30meYxpDqxTuBONRL/3X5Y476gz8uF9z+tfX2Gv1ful+UWZABA+a2zgQcRJEQRIRJGnJMUkSrFgYRjGP4Xv+HDgkv1fmX0BGyq1a6wCAAA="
@@ -245,7 +245,7 @@ namespace EmsApi.Tests.SpecFlow
             m_updateAnalyticCollection = new UpdateAnalyticCollection
             {
                 Description = "updated analytic collection",
-                Items = new ObservableCollection<NewAnalyticCollectionItem>
+                Items = new Collection<NewAnalyticCollectionItem>
                 {
                     new NewAnalyticCollectionItem
                     {
