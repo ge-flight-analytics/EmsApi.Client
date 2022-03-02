@@ -10,7 +10,7 @@ namespace EmsApi.Dto.V2
         {
             Raw = new Query
             {
-                Select = new ObservableCollection<AnalyticSelect>()
+                Select = new Collection<AnalyticSelect>()
             };
         }
 
@@ -54,7 +54,7 @@ namespace EmsApi.Dto.V2
             }
             set
             {
-                Raw.Offsets = new ObservableCollection<double>( value );
+                Raw.Offsets = new Collection<double>( value );
             }
         }
 
