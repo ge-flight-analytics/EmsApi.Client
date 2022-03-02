@@ -38,16 +38,16 @@
       <!-- Make the db queries return object types. -->
       <RegexTransform Include="EmsApi.Dto.V2.cs">
         <Find><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Object>> Rows { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Object>>]]></Find>
-        <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<object>> Rows { get; set; } = (System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<object>>)new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<object>>]]></ReplaceWith>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<object>> Rows { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<object>>]]></ReplaceWith>
       </RegexTransform>
       <!-- Add some explicit casts required with the updated NSwag and .NET 5 -->
       <RegexTransform Include="EmsApi.Dto.V2.cs">
         <Find><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>> CreateColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></Find>
-        <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>> CreateColumns { get; set; } = (System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>>)new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></ReplaceWith>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>> CreateColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></ReplaceWith>
       </RegexTransform>
       <RegexTransform Include="EmsApi.Dto.V2.cs">
         <Find><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>> DeleteColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></Find>
-        <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>> DeleteColumns { get; set; } = (System.Collections.Generic.ICollection<System.Collections.Generic.ICollection<Column>>)new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></ReplaceWith>
+        <ReplaceWith><![CDATA[public System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>> DeleteColumns { get; set; } = new System.Collections.ObjectModel.Collection<System.Collections.ObjectModel.Collection<Column>>]]></ReplaceWith>
       </RegexTransform>
       <!-- Fix some cases where our swagger spec is generating a special Object class instead of using object -->
       <RegexTransform Include="EmsApi.Dto.V2.cs">
@@ -61,6 +61,10 @@
       <RegexTransform Include="EmsApi.Dto.V2.cs">
         <Find><![CDATA[public System.Collections.Generic.ICollection<Object> EntityIdentifier { get; set; } = new System.Collections.ObjectModel.Collection<Object>]]></Find>
         <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<object> EntityIdentifier { get; set; } = new System.Collections.ObjectModel.Collection<object>]]></ReplaceWith>
+      </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[public System.Collections.Generic.ICollection<Object> Values { get; set; } = new System.Collections.ObjectModel.Collection<Object>]]></Find>
+        <ReplaceWith><![CDATA[public System.Collections.Generic.ICollection<object> Values { get; set; } = new System.Collections.ObjectModel.Collection<object>]]></ReplaceWith>
       </RegexTransform>
     </ItemGroup>
     <RegexTransform Items="@(RegexTransform)" />
