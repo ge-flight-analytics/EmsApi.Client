@@ -217,12 +217,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Create, update, read, and delete an analytic set group")]
         [Xunit.TraitAttribute("FeatureTitle", "AnalyticSets")]
         [Xunit.TraitAttribute("Description", "Create, update, read, and delete an analytic set group")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void CreateUpdateReadAndDeleteAnAnalyticSetGroup()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create, update, read, and delete an analytic set group", null, tagsOfScenario, argumentsOfScenario);
-#line 23
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -242,50 +244,50 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 27
     testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 25
+#line 28
     testRunner.Given("I have a NewAnalyticSetGroup with name \'New Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 26
+#line 29
     testRunner.When("I run CreateAnalyticSetGroup with group id \'Root\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 30
     testRunner.Then("An AnalyticSetGroupCreated object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 28
+#line 31
     testRunner.When("I run GetAnalyticSetGroup and enter an analytic group id of \'New Analytic Set Gro" +
                         "up\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
-    testRunner.Then("An AnalyticSetGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 30
-    testRunner.And("It has the name \'New Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 31
-    testRunner.Given("I have a UpdateAnalyticSetGroup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 32
-    testRunner.When("I run UpdateAnalyticSetGroup with group id \'New Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.Then("An AnalyticSetGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 33
-    testRunner.Then("An AnalyticSetGroupUpdated object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.And("It has the name \'New Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 34
-    testRunner.When("I run GetAnalyticSetGroup with group id \'Updated Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.Given("I have a UpdateAnalyticSetGroup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 35
-    testRunner.Then("An AnalyticSetGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("I run UpdateAnalyticSetGroup with group id \'New Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 36
-    testRunner.And("It has the name \'Updated Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Then("An AnalyticSetGroupUpdated object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 37
-    testRunner.When("I run DeleteAnalyticSetGroup with group id \'Updated Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I run GetAnalyticSetGroup with group id \'Updated Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 38
+    testRunner.Then("An AnalyticSetGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 39
+    testRunner.And("It has the name \'Updated Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+    testRunner.When("I run DeleteAnalyticSetGroup with group id \'Updated Analytic Set Group\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 41
     testRunner.Then("the analytic set group with id \'Updated Analytic Set Group\' does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -295,12 +297,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Create, update, read, and delete an analytic set")]
         [Xunit.TraitAttribute("FeatureTitle", "AnalyticSets")]
         [Xunit.TraitAttribute("Description", "Create, update, read, and delete an analytic set")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void CreateUpdateReadAndDeleteAnAnalyticSet()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create, update, read, and delete an analytic set", null, tagsOfScenario, argumentsOfScenario);
-#line 40
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -320,48 +324,48 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 41
+#line 47
     testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 42
+#line 48
     testRunner.Given("I have a NewAnalyticSet with name \'New Analytic Set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 43
+#line 49
     testRunner.When("I run CreateAnalyticSet with group id \'Root\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 50
     testRunner.Then("An AnalyticSetCreated object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 45
+#line 51
     testRunner.When("I run GetAnalyticSet with group id \'Root\' and analytic name \'New Analytic Set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 46
+#line 52
     testRunner.Then("An AnalyticSet object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 47
+#line 53
     testRunner.And("it has the description \'new analytic set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 54
     testRunner.Given("I have a UpdateAnalyticSet", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 49
+#line 55
     testRunner.When("I run UpdateAnalyticSet with group id \'Root\' and analytic set name \'New Analytic " +
                         "Set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
+#line 56
     testRunner.When("I run GetAnalyticSet with group id \'Root\' and analytic name \'New Analytic Set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 57
     testRunner.Then("An AnalyticSet object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 52
+#line 58
     testRunner.And("it has the description \'updated analytic set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 59
     testRunner.When("I run DeleteAnalyticSet with group id \'Root\' and analytic set name \'New Analytic " +
                         "Set\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 60
     testRunner.Then("the analytic set in group id \'Root\' and name \'New Analytic Set\' does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -371,12 +375,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Create, update, read, and delete an analytic collection")]
         [Xunit.TraitAttribute("FeatureTitle", "AnalyticSets")]
         [Xunit.TraitAttribute("Description", "Create, update, read, and delete an analytic collection")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void CreateUpdateReadAndDeleteAnAnalyticCollection()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create, update, read, and delete an analytic collection", null, tagsOfScenario, argumentsOfScenario);
-#line 56
+#line 65
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -396,50 +402,50 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 57
+#line 66
     testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 58
+#line 67
     testRunner.Given("I have a NewAnalyticCollection with name \'New Analytic Collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 59
+#line 68
     testRunner.When("I run CreateAnalyticCollection with group id \'Root\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 60
+#line 69
     testRunner.Then("An AnalyticCollectionCreated object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 61
+#line 70
     testRunner.When("I run GetAnalyticCollection with group id \'Root\' and analytic name \'New Analytic " +
                         "Collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
+#line 71
     testRunner.Then("An AnalyticCollection object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 63
+#line 72
     testRunner.And("it has the description \'new analytic collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 64
+#line 73
     testRunner.Given("I have a UpdateAnalyticCollection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 65
+#line 74
     testRunner.When("I run UpdateAnalyticCollection with group id \'Root\' and analytic collection name " +
                         "\'New Analytic Collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 66
+#line 75
     testRunner.When("I run GetAnalyticCollection with group id \'Root\' and analytic name \'New Analytic " +
                         "Collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 67
+#line 76
     testRunner.Then("An AnalyticCollection object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 68
+#line 77
     testRunner.And("it has the description \'updated analytic collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 69
+#line 78
     testRunner.When("I run DeleteAnalyticCollection with group id \'Root\' and analytic collection name " +
                         "\'New Analytic Collection\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 70
+#line 79
     testRunner.Then("the analytic collection in group id \'Root\' and name \'New Analytic Collection\' doe" +
                         "s not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

@@ -56,6 +56,11 @@ namespace EmsApi.Client.V2
         public EmsSecurablesAccess EmsSecurables { get; set; }
 
         /// <summary>
+        /// Access to the admin securables routes.
+        /// </summary>
+        public AdminEmsSecurablesAccess AdminEmsSecurables { get; set; }
+
+        /// <summary>
         /// Access to assets routes.
         /// </summary>
         public AssetsAccess Assets { get; set; }
