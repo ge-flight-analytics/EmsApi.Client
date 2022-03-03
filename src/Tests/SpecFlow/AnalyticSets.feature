@@ -59,7 +59,6 @@ Scenario: Create, update, read, and delete an analytic set
     When I run DeleteAnalyticSet with group id 'Root' and analytic set name 'New Analytic Set'
     Then the analytic set in group id 'Root' and name 'New Analytic Set' does not exist
 
-# The Analytic Collection endpoints have not been released yet.
 # The pipeline test runner has limited access. This test should only be run manually.
 # WARNING: failures during this test could lead to new or altered analytic (parameter) sets on the EMS system.
 @ignore

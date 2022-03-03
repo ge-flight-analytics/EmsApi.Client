@@ -214,6 +214,7 @@ namespace EmsApi.Client.V2
             Databases = InitializeAccessClass<DatabaseAccess>();
             Transfers = InitializeAccessClass<TransfersAccess>();
             AdminUser = InitializeAccessClass<AdminUserAccess>();
+            AdminEmsSecurables = InitializeAccessClass<AdminEmsSecurablesAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
