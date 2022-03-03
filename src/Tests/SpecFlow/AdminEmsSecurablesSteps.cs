@@ -7,7 +7,7 @@ namespace EmsApi.Tests.SpecFlow
     [Binding, Scope( Feature = "AdminEmsSecurables" )]
     public class AdminEmsSecurablesSteps : FeatureTest
     { 
-        [When( @"I run GetAccessForSecurable with securableId '(.*)', accessRight '(.*)', and username '(.*)" )]
+        [When( @"I run GetAccessForSecurable with securableId '(.*)', accessRight '(.*)', and username '(.*)'" )]
         public void WhenIRunGetAccessForSecurableWithSecurableIdAndAccessRight( string securableId, string accessRight, string username )
         {
             m_result.Object = m_api.AdminEmsSecurables.GetAccessForSecurable( securableId, accessRight, username );

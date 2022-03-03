@@ -81,14 +81,14 @@ namespace EmsApi.Tests.SpecFlow
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get Securable Effective Access - No Access")]
+        [Xunit.SkippableFactAttribute(DisplayName="Admin Get Securable Effective Access - No Access")]
         [Xunit.TraitAttribute("FeatureTitle", "AdminEmsSecurables")]
-        [Xunit.TraitAttribute("Description", "Get Securable Effective Access - No Access")]
-        public virtual void GetSecurableEffectiveAccess_NoAccess()
+        [Xunit.TraitAttribute("Description", "Admin Get Securable Effective Access - No Access")]
+        public virtual void AdminGetSecurableEffectiveAccess_NoAccess()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Securable Effective Access - No Access", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Admin Get Securable Effective Access - No Access", null, tagsOfScenario, argumentsOfScenario);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -126,14 +126,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get Securable Effective Access - Access")]
+        [Xunit.SkippableFactAttribute(DisplayName="Admin Get Securable Effective Access - Access")]
         [Xunit.TraitAttribute("FeatureTitle", "AdminEmsSecurables")]
-        [Xunit.TraitAttribute("Description", "Get Securable Effective Access - Access")]
-        public virtual void GetSecurableEffectiveAccess_Access()
+        [Xunit.TraitAttribute("Description", "Admin Get Securable Effective Access - Access")]
+        public virtual void AdminGetSecurableEffectiveAccess_Access()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Securable Effective Access - Access", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Admin Get Securable Effective Access - Access", null, tagsOfScenario, argumentsOfScenario);
 #line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
