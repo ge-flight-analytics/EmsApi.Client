@@ -61,6 +61,15 @@ namespace EmsApi.Client.V2
         Task<EmsSecurableEffectiveAccess> GetEmsSecurableAccess( string securableId, string accessRight, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns whether the provided user has permissions for the provided securable and access right.
+        /// </summary>
+        /// <remarks>
+        /// You must have Admin privileges to the EMS API to be able to call this route.
+        /// </remarks>
+        [Get( "/v2/admin/ems-systems/1/securables/{securableId}" )]
+        Task<EmsSecurableEffectiveAccess> AdminGetEmsSecurableAccess( string securableId, string accessRight, string username, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns the list of fleets the user has access to in their security context.
         /// </summary>
         [Get( "/v2/ems-systems/1/assets/fleets" )]
