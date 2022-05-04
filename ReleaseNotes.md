@@ -1,2 +1,2 @@
-# Release 2.5.1
-* Expands the EMS API securables to include the admin securables route.
+# Release 2.6.0
+* Add some more admin/users routes

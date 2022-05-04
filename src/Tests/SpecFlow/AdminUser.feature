@@ -12,3 +12,8 @@ Scenario: Get a filtered set of just one user
 	Given A valid API endpoint
 	When I run GetUsers with a filter
 	Then An enumerable with one AdminUser object is returned
+
+Scenario: Get the EMS systems assigned to a user
+    Given A valid API endpoint
+    When I run GetUserEmsSystems with the user id 1
+    Then An enumerable with one EmsSystem object is returned

@@ -34,5 +34,19 @@ namespace EmsApi.Tests.Features
             var users = (IEnumerable<AdminUser>)m_result.Object;
             users.Should().OnlyContain( u => u.Username == "efoqa\\EmsWeb" );
         }
+
+        [When( @"I run GetUserEmsSystems with the user id (.*)" )]
+        public void WhenIRunGetUserEmsSystems( int userId )
+        {
+            m_result.Object = m_api.AdminUser.GetUserEmsSystems( userId );
+        }
+
+        [Then( @"An enumerable with one EmsSystem object is returned" )]
+        public void ThenAnEnumerableWithOneEmsSystemObjectIsReturned()
+        {
+            m_result.Object.ShouldNotBeNullOfType<List<EmsSystem>>();
+            var systems = (IEnumerable<EmsSystem>)m_result.Object;
+            systems.Should().OnlyContain( s => s.Id == 1 );
+        }
     }
 }

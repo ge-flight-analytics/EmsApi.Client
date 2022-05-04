@@ -773,6 +773,45 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<AdminUser>> AdminGetUsers( string username = null, [Property] CallContext context = null );
 
         /// <summary>
+        /// Creates a new user account with the provided settings.
+        /// </summary>
+        /// <param name="user">
+        /// The details of the user to add.
+        /// </param>
+        /// <remarks>
+        /// You must have Admin privileges to the EMS API to be able to call this route.
+        /// </remarks>
+        [Post( "/v2/admin/users" )]
+        Task<AdminUser> AdminAddUser( [Body] AdminUser user, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns the list of EMS systems associated with the user account.
+        /// </summary>
+        /// <param name="userId">
+        /// The integer ID of the user account for which to return associated EMS systems.
+        /// </param>
+        /// <remarks>
+        /// You must have Admin privileges to the EMS API to be able to call this route.
+        /// </remarks>
+        [Get( "/v2/admin/users/{userId}/ems-systems" )]
+        Task<IEnumerable<EmsSystem>> AdminGetUserEmsSystems( int userId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Associates a user account with an EMS system.
+        /// </summary>
+        /// <param name="userId">
+        /// The integer ID of the user account to associate with the EMS system.
+        /// </param>
+        /// <param name="emsSystemId">
+        /// The integer ID of the EMS system to associate with the user account.
+        /// </param>
+        /// <remarks>
+        /// You must have Admin privileges to the EMS API to be able to call this route.
+        /// </remarks>
+        [Post( "/v2/admin/users/{userId}/ems-systems/{emsSystemId}" )]
+        Task AdminAssignUserEmsSystem( int userId, int emsSystemId, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">
