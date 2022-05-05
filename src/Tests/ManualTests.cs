@@ -21,7 +21,7 @@ namespace EmsApi.Tests
             user.Username.Should().Be( "EmsApiTest" );
         }
 
-        [Fact( DisplayName = "Users can be assigned to EMS systems" )]
+        [Fact( DisplayName = "Users can be assigned to EMS systems", Skip = "User may not exist" )]
         public void Users_Can_Be_Assigned_To_Ems_Systems()
         {
             using var api = NewService();
