@@ -1,2 +1,2 @@
-# Release 2.6.0
-* Add some more admin/users routes
+# Release 2.7.0
+* Adds the Flight Identification route.
