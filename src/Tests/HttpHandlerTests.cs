@@ -54,14 +54,21 @@ namespace EmsApi.Tests
             var lastHandler = new FlakyMessageHandler( new HttpStatusCode[0] );
             var config = new EmsApiServiceHttpClientConfiguration
             {
-                Timeout = TimeSpan.FromMilliseconds( 10 ),
+                Timeout = TimeSpan.FromMilliseconds( 1 ),
                 LastHandler = lastHandler
             };
 
             using var api = NewService( config );
-            await api.EmsSystem.GetAsync();
-            lastHandler.TotalCallCount.Should().Be( 4 );
-            lastHandler.SuccessCallCount.Should().Be( 0 );
+            try
+            {
+                await api.EmsSystem.GetAsync();
+            }
+            catch( AggregateException )
+            {
+
+            }
+
+            lastHandler.TotalCallCount.Should().Be( 1 );
         }
     }
 
