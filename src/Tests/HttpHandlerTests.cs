@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace EmsApi.Tests
 {
-    public class RetryTests : TestBase
+    public class HttpHandlerTests : TestBase
     {
         [Fact( DisplayName = "Test retry" )]
         public void Test_Retry()
@@ -46,6 +47,22 @@ namespace EmsApi.Tests
             lastHandler.TotalCallCount.Should().Be( 5 ); // Three failures on the API token and then a token and a normal API success.
             lastHandler.SuccessCallCount.Should().Be( 2 );
         }
+
+        [Fact( DisplayName = "Test timeout" )]
+        public async void Test_Http_Timeout()
+        {
+            var lastHandler = new FlakyMessageHandler( new HttpStatusCode[0] );
+            var config = new EmsApiServiceHttpClientConfiguration
+            {
+                Timeout = TimeSpan.FromMilliseconds( 10 ),
+                LastHandler = lastHandler
+            };
+
+            using var api = NewService( config );
+            await api.EmsSystem.GetAsync();
+            lastHandler.TotalCallCount.Should().Be( 4 );
+            lastHandler.SuccessCallCount.Should().Be( 0 );
+        }
     }
 
     public class FlakyMessageHandler : DelegatingHandler
@@ -56,7 +73,7 @@ namespace EmsApi.Tests
 
         private readonly HttpStatusCode[] m_results;
 
-        public FlakyMessageHandler(params HttpStatusCode[] results)
+        public FlakyMessageHandler( params HttpStatusCode[] results )
         {
             m_results = results;
         }

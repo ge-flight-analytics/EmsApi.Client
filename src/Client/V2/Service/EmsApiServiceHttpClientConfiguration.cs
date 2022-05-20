@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 
 namespace EmsApi.Client.V2
@@ -23,6 +24,18 @@ namespace EmsApi.Client.V2
         /// This defaults to true as we believe that is the more common/desired use case.
         /// </remarks>
         public bool RetryTransientFailures { get; set; } = true;
+
+        /// <summary>
+        /// The default timeout for HTTP requests.
+        /// </summary>
+        /// <remarks>
+        /// The HttpClient default of 100 seconds is not long enough for some of our longer EMS API calls. For
+        /// instance a gnarly database query can take longer than that to return on query creation or first result
+        /// extraction time, especially if the SQL server is already busy.
+        /// The value we opted for here is the value used for timeouts at the application gateway level and
+        /// therefore seems like a reasonable default to use.
+        /// </remarks>
+        public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes( 10 );
 
         /// <summary>
         /// A delegating handler added to the front of the HTTP message stack.
