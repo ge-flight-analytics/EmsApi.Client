@@ -812,6 +812,19 @@ namespace EmsApi.Client.V2
         Task AdminAssignUserEmsSystem( int userId, int emsSystemId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Gets the flight identification information for the given flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record to get the identification for.
+        /// </param>
+        /// <remarks>
+        /// You must have access to view flight identification information in EMS.
+        /// All normal EMS audit logging and notifications configuration will trigger for all identification requests.
+        /// </remarks>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/identification" )]
+        Task<Identification> GetFlightIdentification( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">
