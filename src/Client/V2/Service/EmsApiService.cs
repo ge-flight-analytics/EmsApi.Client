@@ -106,6 +106,11 @@ namespace EmsApi.Client.V2
         public AdminUserAccess AdminUser { get; set; }
 
         /// <summary>
+        /// Access to flight identification information.
+        /// </summary>
+        public IdentificationAccess Identification { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
@@ -210,6 +215,7 @@ namespace EmsApi.Client.V2
             Transfers = InitializeAccessClass<TransfersAccess>();
             AdminUser = InitializeAccessClass<AdminUserAccess>();
             AdminEmsSecurables = InitializeAccessClass<AdminEmsSecurablesAccess>();
+            Identification = InitializeAccessClass<IdentificationAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
