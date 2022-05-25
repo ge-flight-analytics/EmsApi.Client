@@ -48,7 +48,7 @@ namespace EmsApi.Tests
             lastHandler.SuccessCallCount.Should().Be( 2 );
         }
 
-        [Fact( DisplayName = "Test timeout" )]
+        [Fact( DisplayName = "Test timeout", Skip = "Test needs more work" )]
         public async void Test_Http_Timeout()
         {
             var lastHandler = new FlakyMessageHandler( new HttpStatusCode[0] );
