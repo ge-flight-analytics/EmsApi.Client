@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>EmsApi.Client</PackageId>
     <Description>.NET client library for the Event Measurement System API</Description>
   </PropertyGroup>
@@ -15,6 +16,11 @@
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
     <PackageReference Include="Refit" Version="6.0.38" />
     <PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.38" />
+  </ItemGroup>
+
+  <!-- This dependency is required to support IAsyncEnumerable before .NET core 3 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
