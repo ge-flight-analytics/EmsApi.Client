@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using EmsApi.Dto.V2;
-
 using RowCallback = System.Action<EmsApi.Dto.V2.DatabaseQueryResult.Row>;
-
 namespace EmsApi.Client.V2.Access
 {
     /// <summary>
@@ -12,6 +10,11 @@ namespace EmsApi.Client.V2.Access
     /// </summary>
     public class DatabaseAccess : RouteAccess
     {
+        /// <summary>
+        /// The default page size when performing async database queries.
+        /// </summary>
+        public const int DefaultRowsPerPage = 20000;
+
         /// <summary>
         /// Returns a database group with a matching ID containing only its immediate children 
         /// in a hierarchical tree used to organize databases.
@@ -218,6 +221,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
+        [System.Obsolete("Database queries using RowCallback will be removed in future versions.")]
         public virtual Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, CallContext context = null )
         {
             return CallApiTask( api => api.QueryDatabase( databaseId, query.Raw, context ) ).ContinueWith( task =>
@@ -265,6 +269,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
+        [System.Obsolete( "Database queries using RowCallback will be removed in future versions." )]
         public virtual void SimpleQuery( string databaseId, DatabaseQuery query, RowCallback callback, CallContext context = null )
         {
             SimpleQueryAsync( databaseId, query, callback, context ).Wait();
@@ -287,23 +292,31 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual async Task<DatabaseQueryResult> QueryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, CallContext context = null )
+        public virtual async Task<DatabaseQueryResult> QueryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
         {
-            AsyncQueryInfo info = await StartQueryAsync( databaseId, query, context );
-            var result = new DatabaseQueryResult( info.Header );
-
-            int startingRow = 0;
-            bool moreToRead = true;
-            while( moreToRead )
+            AsyncQueryInfo info = null;
+            try
             {
-                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
-                result.AddRows( query, data.Rows );
-                startingRow += rowsPerCall;
-                moreToRead = data.HasMoreRows;
-            }
+                info = await StartQueryAsync( databaseId, query, context );
+                var result = new DatabaseQueryResult( info.Header );
 
-            await StopQueryAsync( databaseId, info.Id, context );
-            return result;
+                int startingRow = 0;
+                bool moreToRead = true;
+                while( moreToRead )
+                {
+                    AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
+                    result.AddRows( query, data.Rows );
+                    startingRow += rowsPerCall;
+                    moreToRead = data.HasMoreRows;
+                }
+
+                return result;
+            }
+            finally
+            {
+                if( info != null )
+                    await StopQueryAsync( databaseId, info.Id, context );
+            }
         }
 
         /// <summary>
@@ -326,22 +339,30 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, CallContext context = null )
+        [System.Obsolete( "Database queries using RowCallback will be removed in future versions." )]
+        public virtual async Task QueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
         {
-            AsyncQueryInfo info = await StartQueryAsync( databaseId, query, context );
-            var result = new DatabaseQueryResult( info.Header );
-
-            int startingRow = 0;
-            bool moreToRead = true;
-            while( moreToRead )
+            AsyncQueryInfo info = null;
+            try
             {
-                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
-                result.CallbackRows( query, data.Rows, callback );
-                startingRow += rowsPerCall;
-                moreToRead = data.HasMoreRows;
-            }
+                info = await StartQueryAsync( databaseId, query, context );
+                var result = new DatabaseQueryResult( info.Header );
 
-            await StopQueryAsync( databaseId, info.Id, context );
+                int startingRow = 0;
+                bool moreToRead = true;
+                while( moreToRead )
+                {
+                    AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
+                    result.CallbackRows( query, data.Rows, callback );
+                    startingRow += rowsPerCall;
+                    moreToRead = data.HasMoreRows;
+                }
+            }
+            finally
+            {
+                if( info != null )
+                    await StopQueryAsync( databaseId, info.Id, context );
+            }
         }
 
         /// <summary>
@@ -361,7 +382,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual DatabaseQueryResult Query( string databaseId, DatabaseQuery query, int rowsPerCall = 20000, CallContext context = null )
+        public virtual DatabaseQueryResult Query( string databaseId, DatabaseQuery query, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
         {
             return AccessTaskResult( QueryAsync( databaseId, query, rowsPerCall, context ) );
         }
@@ -386,9 +407,209 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = 20000, CallContext context = null )
+        [System.Obsolete( "Database queries using RowCallback will be removed in future versions." )]
+        public virtual void Query( string databaseId, DatabaseQuery query, RowCallback callback, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
         {
             QueryAsync( databaseId, query, callback, rowsPerCall, context ).Wait();
+        }
+
+        /// <summary>
+        /// Queries the database for information, composing the query with information provided in the
+        /// specified query structure. This method returns an async enumerable where each item is a
+        /// read only dictionary that represents a single row. The keys in the returned dictionary
+        /// are the field ids, and the values are the values for each field represented by the field id.
+        /// This will throw an <see cref="System.ArgumentException"/> if a field is specified more than
+        /// once in the query due to attempting to add duplicate dictionary keys and QueryValuesAsync
+        /// should be used instead. This is a convenience wrapper that calls both StartQueryAsync
+        /// and StopQueryAsync after completing the read, but if you need access to the <see cref="AsyncQueryInfo"/>
+        /// those methods need to be called manually with <see cref="ReadQueryDictionaryAsync(string, AsyncQueryInfo, int, CallContext)"/>
+        /// to read the data.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
+        /// <param name="rowsPerCall">
+        /// The number of rows to read for each API call. Setting this to a lower value will return
+        /// async enumerable values more quickly but may be slower overall due to requiring more API
+        /// requests due to smaller pages.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual async IAsyncEnumerable<IReadOnlyDictionary<string, object>> QueryDictionaryAsync( string databaseId, DatabaseQuery query, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
+        {
+            AsyncQueryInfo info = null;
+            try
+            {
+                info = await StartQueryAsync( databaseId, query, context );
+                string[] orderedIds = GetOrderedFieldIds( info );
+
+                int startingRow = 0;
+                bool moreToRead = true;
+                while( moreToRead )
+                {
+                    AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
+                    foreach( ICollection<object> row in data.Rows )
+                    {
+                        int i = 0;
+                        var result = new Dictionary<string, object>();
+                        foreach( object value in row )
+                        {
+                            result.Add( orderedIds[i], ScrubDatabaseValue( value ) );
+                            i++;
+                        }
+
+                        yield return result;
+                    }
+                    startingRow += rowsPerCall;
+                    moreToRead = data.HasMoreRows;
+                }
+            }
+            finally
+            {
+                if( info != null )
+                    await StopQueryAsync( databaseId, info.Id, context );
+            }
+        }
+
+        /// <summary>
+        /// Reads all of the values for an async database query and returns them as an async enumerable of dictionaries.
+        /// The keys in the returned dictionary are the field ids, and the values are the values for each field represented
+        /// by the field id. This will throw an <see cref="System.ArgumentException"/> if a field is specified more than
+        /// once in the query due to attempting to add duplicate dictionary keys and QueryValuesAsync should be used instead.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database being queried.
+        /// </param>
+        /// <param name="info">
+        /// The asynchronous query info, as retrieved from <see cref="StartQueryAsync(string, DatabaseQuery, CallContext)"/>.
+        /// </param>
+        /// <param name="rowsPerCall">
+        /// The number of rows to read for each API call.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual async IAsyncEnumerable<IReadOnlyDictionary<string, object>> ReadQueryDictionaryAsync( string databaseId, AsyncQueryInfo info, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
+        {
+            string[] orderedIds = GetOrderedFieldIds( info );
+
+            int startingRow = 0;
+            bool moreToRead = true;
+            while( moreToRead )
+            {
+                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
+                foreach( ICollection<object> row in data.Rows )
+                {
+                    int i = 0;
+                    var result = new Dictionary<string, object>();
+                    foreach( object value in row )
+                    {
+                        result.Add( orderedIds[i], ScrubDatabaseValue( value ) );
+                        i++;
+                    }
+
+                    yield return result;
+                }
+                startingRow += rowsPerCall;
+                moreToRead = data.HasMoreRows;
+            }
+        }
+
+        /// <summary>
+        /// Returns the field ids from the query info in order.
+        /// </summary>
+        private string[] GetOrderedFieldIds( AsyncQueryInfo info )
+        {
+            string[] orderedIds = new string[info.Header.Count];
+            for( int i = 0; i < orderedIds.Length; ++i )
+                orderedIds[i] = info.Header[i].Id;
+
+            return orderedIds;
+        }
+
+        /// <summary>
+        /// Queries the database for information, composing the query with information provided in the
+        /// specified query structure. This method returns an async enumerable where each item is a
+        /// collection of the values for a single row. The values will be in the same order that the
+        /// fields are specified in the query. This is a convenience wrapper that calls both StartQueryAsync
+        /// and StopQueryAsync after completing the read, but if you need access to the <see cref="AsyncQueryInfo"/>
+        /// those methods need to be called manually instead of using this one. This method does not trim the raw string
+        /// values like QueryAsync and QueryDictionaryAsync do.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The information used to construct a query for which results are returned.
+        /// </param>
+        /// <param name="rowsPerCall">
+        /// The number of rows to read for each API call.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual async IAsyncEnumerable<IList<object>> QueryValuesAsync( string databaseId, DatabaseQuery query, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
+        {
+            AsyncQueryInfo info = null;
+            try
+            {
+                info = await StartQueryAsync( databaseId, query, context );
+
+                // Note: This is intentionally duplicated with the body of ReadQueryValuesAsync below because we cannot directly return
+                // the result of that method here. We need to use the async keyword (for start / stop) and that causes the method to
+                // require a yield.
+                int startingRow = 0;
+                bool moreToRead = true;
+                while( moreToRead )
+                {
+                    AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
+                    foreach( IList<object> row in data.Rows )
+                        yield return row;
+
+                    startingRow += rowsPerCall;
+                    moreToRead = data.HasMoreRows;
+                }
+            }
+            finally
+            {
+                if( info != null )
+                    await StopQueryAsync( databaseId, info.Id, context );
+            }
+        }
+
+        /// <summary>
+        /// Reads all of the raw values for an async database query and returns them as an async enumerable, where
+        /// each item represents one row.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database being queried.
+        /// </param>
+        /// <param name="info">
+        /// The asynchronous query info, as retrieved from <see cref="StartQueryAsync(string, DatabaseQuery, CallContext)"/>.
+        /// </param>
+        /// <param name="rowsPerCall">
+        /// The number of rows to read for each API call.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual async IAsyncEnumerable<IList<object>> ReadQueryValuesAsync( string databaseId, AsyncQueryInfo info, int rowsPerCall = DefaultRowsPerPage, CallContext context = null )
+        {
+            int startingRow = 0;
+            bool moreToRead = true;
+            while( moreToRead )
+            {
+                AsyncQueryData data = await ReadQueryAsync( databaseId, info.Id, startingRow, startingRow + rowsPerCall - 1, context );
+                foreach( IList<object> row in data.Rows )
+                    yield return row;
+
+                startingRow += rowsPerCall;
+                moreToRead = data.HasMoreRows;
+            }
         }
 
         /// <summary>
@@ -634,7 +855,6 @@ namespace EmsApi.Client.V2.Access
             // We don't actually care about the bool response.
             await CallApiTask( api => api.CreateComment( databaseId, commentFieldId, newComment, context ) ).ConfigureAwait( false );
             return false;
-
         }
 
         /// <summary>
@@ -655,6 +875,21 @@ namespace EmsApi.Client.V2.Access
         public virtual void CreateComment( string databaseId, string commentFieldId, NewComment newComment, CallContext context = null )
         {
             AccessTaskResult<bool>( CreateCommentAsync( databaseId, commentFieldId, newComment, context ) );
+        }
+
+        /// <summary>
+        /// Handles formatting for well-known value types.
+        /// </summary>
+        /// <remarks>
+        /// Currently all this does is trim string values because they are often fixed width in the EMS database,
+        /// and this maintains compatability with the deprecated DatabaseQueryResult.Row behavior.
+        /// </remarks>
+        private object ScrubDatabaseValue( object raw )
+        {
+            if( raw == null || !(raw is string) )
+                return raw;
+
+            return ((string)raw).Trim();
         }
     }
 }

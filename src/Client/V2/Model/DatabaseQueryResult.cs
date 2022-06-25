@@ -92,7 +92,7 @@ namespace EmsApi.Dto.V2
         /// </summary>
         private Row CreateRowFromCollection( object collection )
         {
-            var converted = (Collection<object>)collection;
+            var converted = (IEnumerable<object>)collection;
             return new Row( m_orderedColumnIds, m_orderedColumnNames, converted.ToArray() );
         }
 

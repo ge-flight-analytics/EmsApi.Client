@@ -18,7 +18,7 @@ namespace EmsApi.Tests.Features
         [Then( @"An enumerable of AdminUser objects are returned" )]
         public void ThenAnEnumerableOfAdminUserObjectsReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<List<AdminUser>>();
+            m_result.Object.ShouldNotBeNullOfType<List<User>>();
         }
 
         [When( @"I run GetUsers with a filter" )]
@@ -30,8 +30,8 @@ namespace EmsApi.Tests.Features
         [Then( @"An enumerable with one AdminUser object is returned" )]
         public void ThenAnEnumerableWithOneAdminUserObjectIsReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<List<AdminUser>>();
-            var users = (IEnumerable<AdminUser>)m_result.Object;
+            m_result.Object.ShouldNotBeNullOfType<List<User>>();
+            var users = (IEnumerable<User>)m_result.Object;
             users.Should().OnlyContain( u => u.Username == "efoqa\\EmsWeb" );
         }
 

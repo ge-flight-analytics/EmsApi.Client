@@ -8,5 +8,6 @@
         <DebugType>portable</DebugType>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <Authors>c-owens</Authors>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 </Project>

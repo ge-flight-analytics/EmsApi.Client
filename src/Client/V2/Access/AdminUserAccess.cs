@@ -22,7 +22,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<AdminUser>> GetUsersAsync( string username = null, CallContext context = null )
+        public virtual Task<IEnumerable<User>> GetUsersAsync( string username = null, CallContext context = null )
         {
             return CallApiTask( api => api.AdminGetUsers( username, context ) );
         }
@@ -37,7 +37,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<AdminUser> GetUsers( string username = null, CallContext context = null )
+        public virtual IEnumerable<User> GetUsers( string username = null, CallContext context = null )
         {
             return AccessTaskResult( GetUsersAsync( username, context ) );
         }
@@ -57,9 +57,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="tableauUsername">
         /// The tableau user name to assign to the user, if it's different than the regular username.
         /// </param>
-        public virtual Task<AdminUser> AddUserAsync( string username, string[] roles = null, bool lockoutPolicyEnabled = true, string tableauUsername = null, CallContext context = null )
+        public virtual Task<User> AddUserAsync( string username, string[] roles = null, bool lockoutPolicyEnabled = true, string tableauUsername = null, CallContext context = null )
         {
-            var user = new AdminUser
+            var user = new User
             {
                 Username = username,
                 Roles = roles ?? new string[0],
@@ -85,7 +85,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="tableauUsername">
         /// The tableau user name to assign to the user, if it's different than the regular username.
         /// </param>
-        public virtual AdminUser AddUser( string username, string[] roles = null, bool lockoutPolicyEnabled = true, string tableauUsername = null, CallContext context = null )
+        public virtual User AddUser( string username, string[] roles = null, bool lockoutPolicyEnabled = true, string tableauUsername = null, CallContext context = null )
         {
             return AccessTaskResult( AddUserAsync( username, roles, lockoutPolicyEnabled, tableauUsername, context ) );
         }

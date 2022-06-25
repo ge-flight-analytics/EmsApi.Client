@@ -770,7 +770,7 @@ namespace EmsApi.Client.V2
         /// You must have Admin privileges to the EMS API to be able to call this route.
         /// </remarks>
         [Get( "/v2/admin/users" )]
-        Task<IEnumerable<AdminUser>> AdminGetUsers( string username = null, [Property] CallContext context = null );
+        Task<IEnumerable<User>> AdminGetUsers( string username = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates a new user account with the provided settings.
@@ -782,7 +782,7 @@ namespace EmsApi.Client.V2
         /// You must have Admin privileges to the EMS API to be able to call this route.
         /// </remarks>
         [Post( "/v2/admin/users" )]
-        Task<AdminUser> AdminAddUser( [Body] AdminUser user, [Property] CallContext context = null );
+        Task<User> AdminAddUser( [Body] User user, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the list of EMS systems associated with the user account.
