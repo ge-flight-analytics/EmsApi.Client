@@ -1,6 +1,7 @@
 
 using TechTalk.SpecFlow;
 using EmsApi.Dto.V2;
+using FluentAssertions;
 
 namespace EmsApi.Tests
 {
@@ -19,6 +20,12 @@ namespace EmsApi.Tests
             m_result.Object = m_api.Profiles.GetGlossary( p0 );
         }
 
+        [When( @"I run GetGlossary and enter a profile id of '(.*)' with version (.*)" )]
+        public void WhenIRunGetGlossaryAndEnterAProfileIdOfWithVersion( string p0, int p1 )
+        {
+            m_result.Object = m_api.Profiles.GetGlossary( p0, p1 );
+        }
+
         [Then(@"A ProfileResults object is returned")]
         public void ThenAProfileResultsObjectIsReturned()
         {
@@ -29,6 +36,14 @@ namespace EmsApi.Tests
         public void ThenAEmsProfileGlossaryObjectIsReturned()
         {
             m_result.Object.ShouldNotBeNullOfType<ProfileGlossary>();
+        }
+
+        [Then( @"A ProfileGlossary object is returned with version (.*)" )]
+        public void ThenAEmsProfileGlossaryObjectIsReturnedWithVersion(int p0)
+        {
+            m_result.Object.ShouldNotBeNullOfType<ProfileGlossary>();
+            var glossary = m_result.Object as ProfileGlossary;
+            glossary.CurrentVersion.Should().Be(p0);
         }
 
         [When( @"I run GetDefinitions" )]

@@ -17,6 +17,11 @@ Scenario: Get APM profile glossary
 	When I run GetGlossary and enter a profile id of 'A7483C44-9DB9-4A44-9EB5-F67681EE52B0'
 	Then A ProfileGlossary object is returned
 
+Scenario: Get APM profile glossary with version
+    Given A valid API endpoint
+    When I run GetGlossary and enter a profile id of 'A7483C44-9DB9-4A44-9EB5-F67681EE52B0' with version 1
+    Then A ProfileGlossary object is returned with version 1
+
 Scenario: Get an APM profile group
 	Given A valid API endpoint
 	When I run GetGroup
