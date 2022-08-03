@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 using EmsApi.Dto.V2;
-
+using Newtonsoft.Json.Linq;
 using RowCallback = System.Action<EmsApi.Dto.V2.DatabaseQueryResult.Row>;
 
 namespace EmsApi.Client.V2.Access
@@ -448,6 +451,72 @@ namespace EmsApi.Client.V2.Access
         public virtual Task<AsyncQueryData> ReadQueryAsync( string databaseId, string queryId, int start, int end, CallContext context = null )
         {
             return CallApiTask( api => api.ReadAsyncDatabaseQuery( databaseId, queryId, start, end, context ) );
+        }
+
+        /// <summary>
+        /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID. If the query has not been processed
+        /// by the server then the API request will be subsequently retried until data is available.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="queryId">
+        /// The unique identifier of the query created by the API.
+        /// </param>
+        /// <param name="start">
+        /// The zero-based index of the first row to return.
+        /// </param>
+        /// <param name="end">
+        /// The zero-based index of the last row to return.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        /// <param name="initialDelay">
+        /// The amount to delay after the first request if the query has not been processed yet. This has no effect if waitIfNotReady is set to true.
+        /// </param>
+        /// <param name="backoffFactor">
+        /// This number used to multiply the time between API requests relative to the initialDelay value. For example if this is set to 1.0 then the
+        /// initial delay will be elapsed between each subsequent API request. If this is set to 2.0 then the initial delay will be doubled for the second
+        /// delay, and that will again be doubled for the next request where the data is not yet ready. This has no effect if waitIfNotReady is set to true.
+        /// </param>
+        public virtual async Task<AsyncQueryData> ReadQueryWhenReadyAsync( string databaseId, string queryId, int start, int end,
+            TimeSpan initialDelay, float backoffFactor = 1.25f, CancellationToken cancel = default, CallContext context = null )
+        {
+            TimeSpan delay = initialDelay;
+            HttpResponseMessage response;
+            for( int i = 0; ; ++i )
+            {
+                response = await CallApiTask( api => api.ReadAsyncDatabaseQuery( databaseId, queryId, start, end, waitIfNotReady: false, context: context ) );
+                if( response.StatusCode != System.Net.HttpStatusCode.Accepted )
+                    break;
+
+                await Task.Delay( delay, cancel );
+                delay = TimeSpan.FromSeconds( delay.TotalSeconds * backoffFactor );
+            }
+
+            if( !response.IsSuccessStatusCode )
+            {
+                // This should be our standard error dto from the API.
+                string message = $"The async query returned non-success status code {response.StatusCode}";
+                string rawResult = await response.Content?.ReadAsStringAsync();
+                if( rawResult != null )
+                {
+                    var result = JObject.Parse( rawResult );
+                    string description = result.GetValue( "error_description" )?.ToString();
+                    if( description != null )
+                        message = $"{message}: {description}";
+                }
+
+                await CallApiTask( _ => throw new EmsApiException( message ) );
+                return new AsyncQueryData
+                {
+                    HasMoreRows = false
+                };
+            }
+
+            var data = AsyncQueryData.FromJson( await response.Content.ReadAsStringAsync() );
+            return data;
         }
 
         /// <summary>

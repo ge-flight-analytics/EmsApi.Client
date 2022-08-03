@@ -176,7 +176,7 @@ namespace EmsApi.Tests
             landingAirport.Should().NotBeNullOrEmpty();
         }
 
-        private static DatabaseQuery CreateQuery( bool orderResults )
+        internal static DatabaseQuery CreateQuery( bool orderResults )
         {
             var query = new DatabaseQuery();
 
@@ -200,7 +200,7 @@ namespace EmsApi.Tests
             return query;
         }
 
-        private static class Monikers
+        internal static class Monikers
         {
             public static string FlightDatabase = "[ems-core][entity-type][foqa-flights]";
             public static string FlightId = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
