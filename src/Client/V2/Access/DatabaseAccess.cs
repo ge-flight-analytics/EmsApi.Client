@@ -469,9 +469,6 @@ namespace EmsApi.Client.V2.Access
         /// <param name="end">
         /// The zero-based index of the last row to return.
         /// </param>
-        /// <param name="context">
-        /// The optional call context to include.
-        /// </param>
         /// <param name="initialDelay">
         /// The amount to delay after the first request if the query has not been processed yet. This has no effect if waitIfNotReady is set to true.
         /// </param>
@@ -479,6 +476,13 @@ namespace EmsApi.Client.V2.Access
         /// This number used to multiply the time between API requests relative to the initialDelay value. For example if this is set to 1.0 then the
         /// initial delay will be elapsed between each subsequent API request. If this is set to 2.0 then the initial delay will be doubled for the second
         /// delay, and that will again be doubled for the next request where the data is not yet ready. This has no effect if waitIfNotReady is set to true.
+        /// </param>
+        /// <param name="cancel">
+        /// A cancellation token to use to cancel the wait operation. This can also be used to implement a max timeout by using a <seealso cref="CancellationTokenSource"/>
+        /// with a delay timeout set.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
         /// </param>
         public virtual async Task<AsyncQueryData> ReadQueryWhenReadyAsync( string databaseId, string queryId, int start, int end,
             TimeSpan initialDelay, float backoffFactor = 1.25f, CancellationToken cancel = default, CallContext context = null )
