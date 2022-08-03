@@ -1,8 +1,12 @@
 using System;
 using Xunit;
 using FluentAssertions;
+using Moq;
 
 using EmsApi.Dto.V2;
+using System.Threading.Tasks;
+using EmsApi.Client.V2;
+using System.Threading;
 
 namespace EmsApi.Tests
 {
@@ -126,6 +130,59 @@ namespace EmsApi.Tests
                 EntityIdentifier = { 3135409 }
             };
             api.Databases.CreateComment( Monikers.FlightDatabase, Monikers.FlightDataQualityField, newComment );
+        }
+
+        [Fact( DisplayName = "Async query without wait will retry" )]
+        public async Task Async_Query_Without_Wait_Retries()
+        {
+            // This should never trigger a login because we mock the refit method.
+            using var api = NewInvalidLoginService();
+
+            int invocations = 0;
+            var mockRefitApi = new Mock<IEmsApi>();
+            mockRefitApi.Setup( mk => mk.ReadAsyncDatabaseQuery( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.Is<bool>( b => !b ), It.IsAny<CallContext>() ) )
+                .Returns( () =>
+                {
+                    invocations++;
+                    return Task.FromResult( new System.Net.Http.HttpResponseMessage
+                    {
+                        StatusCode = System.Net.HttpStatusCode.Accepted
+                    } );
+                } );
+;
+
+            api.RefitApi = mockRefitApi.Object;
+
+            try
+            {
+                var cts = new CancellationTokenSource( TimeSpan.FromSeconds( 2.5 ) );
+                AsyncQueryData data = await api.Databases.ReadQueryWhenReadyAsync( Monikers.FlightDatabase, Guid.NewGuid().ToString(), 0, 19999, TimeSpan.FromSeconds( 1 ), backoffFactor: 1.0f, cts.Token );
+            }
+            catch( OperationCanceledException )
+            {
+
+            }
+
+            invocations.Should().BeGreaterOrEqualTo( 2 );
+        }
+
+        [Fact( DisplayName = "Async query try get data returns false." )]
+        public async Task Async_Query_Try_Get_Data_Returns_False()
+        {
+            // This should never trigger a login because we mock the refit method.
+            using var api = NewInvalidLoginService();
+
+            var mockRefitApi = new Mock<IEmsApi>();
+            mockRefitApi.Setup( mk => mk.ReadAsyncDatabaseQuery( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.Is<bool>( b => !b ), It.IsAny<CallContext>() ) )
+                .Returns( Task.FromResult( new System.Net.Http.HttpResponseMessage
+                {
+                    StatusCode = System.Net.HttpStatusCode.Accepted
+                } ) );
+
+            api.RefitApi = mockRefitApi.Object;
+            (bool dataIsReady, AsyncQueryData data) = await api.Databases.TryReadQueryAsync( Monikers.FlightDatabase, Guid.NewGuid().ToString(), 0, 19999 );
+            dataIsReady.Should().BeFalse();
+            data.Should().BeNull();
         }
 
         private static void TestSimple( bool orderResults )

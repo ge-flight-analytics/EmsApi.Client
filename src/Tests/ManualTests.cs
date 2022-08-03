@@ -42,7 +42,7 @@ namespace EmsApi.Tests
             {
                 DatabaseQuery query = DatabaseTests.CreateQuery( false );
                 info = await api.Databases.StartQueryAsync( database, query );
-                AsyncQueryData data = await api.Databases.ReadQueryWhenReadyAsync( database, info.Id, 1, 19999, TimeSpan.FromSeconds( 30 ), backoffFactor: 1.0f );
+                AsyncQueryData data = await api.Databases.ReadQueryWhenReadyAsync( database, info.Id, 1, 19999, TimeSpan.FromSeconds( 10 ), backoffFactor: 1.0f );
             }
             finally
             {

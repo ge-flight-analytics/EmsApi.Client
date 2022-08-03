@@ -484,16 +484,41 @@ namespace EmsApi.Client.V2.Access
             TimeSpan initialDelay, float backoffFactor = 1.25f, CancellationToken cancel = default, CallContext context = null )
         {
             TimeSpan delay = initialDelay;
-            HttpResponseMessage response;
             for( int i = 0; ; ++i )
             {
-                response = await CallApiTask( api => api.ReadAsyncDatabaseQuery( databaseId, queryId, start, end, waitIfNotReady: false, context: context ) );
-                if( response.StatusCode != System.Net.HttpStatusCode.Accepted )
-                    break;
+                (bool dataIsReady, AsyncQueryData data) = await TryReadQueryAsync( databaseId, queryId, start, end, context );
+                if( dataIsReady )
+                    return data;
 
                 await Task.Delay( delay, cancel );
                 delay = TimeSpan.FromSeconds( delay.TotalSeconds * backoffFactor );
             }
+        }
+
+        /// <summary>
+        /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID. If the query has not been processed
+        /// by the server then the dataIsReady tuple value will be false, and the data tuple value will be null. 
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="queryId">
+        /// The unique identifier of the query created by the API.
+        /// </param>
+        /// <param name="start">
+        /// The zero-based index of the first row to return.
+        /// </param>
+        /// <param name="end">
+        /// The zero-based index of the last row to return.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual async Task<(bool dataIsReady, AsyncQueryData data)> TryReadQueryAsync( string databaseId, string queryId, int start, int end, CallContext context = null )
+        {
+            HttpResponseMessage response = await CallApiTask( api => api.ReadAsyncDatabaseQuery( databaseId, queryId, start, end, waitIfNotReady: false, context: context ) );
+            if( response.StatusCode == System.Net.HttpStatusCode.Accepted )
+                return (false, null);
 
             if( !response.IsSuccessStatusCode )
             {
@@ -509,14 +534,14 @@ namespace EmsApi.Client.V2.Access
                 }
 
                 await CallApiTask( _ => throw new EmsApiException( message ) );
-                return new AsyncQueryData
+                return (true, new AsyncQueryData
                 {
                     HasMoreRows = false
-                };
+                });
             }
 
             var data = AsyncQueryData.FromJson( await response.Content.ReadAsStringAsync() );
-            return data;
+            return (true, data);
         }
 
         /// <summary>
