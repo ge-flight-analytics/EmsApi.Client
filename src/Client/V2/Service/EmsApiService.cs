@@ -78,6 +78,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Access to parameter-sets routes
         /// </summary>
+        [Obsolete("The ParameterSets route is deprecated and the AnayticSets should be used instead.")]
         public ParameterSetsAccess ParameterSets { get; set; }
 
         /// <summary>
