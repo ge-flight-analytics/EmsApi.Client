@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Refit;
 using EmsApi.Dto.V2;
+using System.Net.Http;
 
 namespace EmsApi.Client.V2
 {
@@ -609,6 +610,30 @@ namespace EmsApi.Client.V2
         /// </param>
         [Get( "/v2/ems-systems/1/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
         Task<AsyncQueryData> ReadAsyncDatabaseQuery( string databaseId, string queryId, int start, int end, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID, or a 202 accepted repsonse code if
+        /// waitIfNotReady is false and the query has not yet been processed by the server.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="queryId">
+        /// The unique identifier of the query created by the API.
+        /// </param>
+        /// <param name="start">
+        /// The zero-based index of the first row to return.
+        /// </param>
+        /// <param name="end">
+        /// The zero-based index of the last row to return.
+        /// </param>
+        /// <param name="waitIfNotReady">
+        /// When false, will return a 202 accepted response code for database queries that have been accepted but have not yet been processed
+        /// by the server. When true this will have the same behavior as the other ReadAsyncDatabaseQuery method but will return an HttpResponseMessage
+        /// instead of the parsed data.
+        /// </param>
+        [Get( "/v2/ems-systems/1/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
+        Task<HttpResponseMessage> ReadAsyncDatabaseQuery( string databaseId, string queryId, int start, int end, bool waitIfNotReady, [Property] CallContext context = null );
 
         /// <summary>
         /// Stops the async query with the given ID.

@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using EmsApi.Client.V2.Access;
 using Microsoft.Extensions.Http;
 using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Extensions.Http;
 using Refit;
+
+// Make our internals visible to the tests.
+[assembly: InternalsVisibleToAttribute( "EmsApi.Tests" )]
 
 namespace EmsApi.Client.V2
 {
@@ -78,6 +82,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Access to parameter-sets routes
         /// </summary>
+        [Obsolete("The ParameterSets route is deprecated and the AnayticSets should be used instead.")]
         public ParameterSetsAccess ParameterSets { get; set; }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         internal IEmsApi RefitApi
         {
-            get; private set;
+            get; set;
         }
 
         private void InitializeHttpClient( EmsApiServiceHttpClientConfiguration httpClientConfig )
