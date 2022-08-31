@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmsApi.Dto.V2;
 
@@ -14,7 +15,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<NavigationAirport[]> GetAirportsAsync( CallContext context = null )
+        public virtual Task<IEnumerable<NavigationAirport>> GetAirportsAsync( CallContext context = null )
         {
             return CallApiTask( api => api.GetNavigationAirports( context ) );
         }
@@ -25,7 +26,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual NavigationAirport[] GetAirports( CallContext context = null )
+        public virtual IEnumerable<NavigationAirport> GetAirports( CallContext context = null )
         {
             return AccessTaskResult( GetAirportsAsync() );
         }
@@ -39,7 +40,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<NavigationRunway[]> GetRunwaysAsync( int airportId, CallContext context = null )
+        public virtual Task<IEnumerable<NavigationRunway>> GetRunwaysAsync( int airportId, CallContext context = null )
         {
             return CallApiTask( api => api.GetNavigationRunways( airportId, context ) );
         }
@@ -53,7 +54,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual NavigationRunway[] GetRunways( int airportId, CallContext context = null )
+        public virtual IEnumerable<NavigationRunway> GetRunways( int airportId, CallContext context = null )
         {
             return AccessTaskResult( GetRunwaysAsync( airportId, context ) );
         }
@@ -67,7 +68,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<NavigationProcedure[]> GetProceduresAsync( int airportId, CallContext context = null )
+        public virtual Task<IEnumerable<NavigationProcedure>> GetProceduresAsync( int airportId, CallContext context = null )
         {
             return CallApiTask( api => api.GetNavigationProcedures( airportId, context ) );
         }
@@ -81,7 +82,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual NavigationProcedure[] GetProcedures( int airportId, CallContext context = null )
+        public virtual IEnumerable<NavigationProcedure> GetProcedures( int airportId, CallContext context = null )
         {
             return AccessTaskResult( GetProceduresAsync( airportId, context ) );
         }
@@ -95,7 +96,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<NavigationProcedureSegment[]> GetSegmentsAsync( int procedureId, CallContext context = null )
+        public virtual Task<IEnumerable<NavigationProcedureSegment>> GetSegmentsAsync( int procedureId, CallContext context = null )
         {
             return CallApiTask( api => api.GetNavigationSegments( procedureId, context ) );
         }
@@ -109,7 +110,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual NavigationProcedureSegment[] GetSegments( int procedureId, CallContext context = null )
+        public virtual IEnumerable<NavigationProcedureSegment> GetSegments( int procedureId, CallContext context = null )
         {
             return AccessTaskResult( GetSegmentsAsync( procedureId, context ) );
         }

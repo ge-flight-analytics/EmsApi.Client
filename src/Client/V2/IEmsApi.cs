@@ -852,7 +852,7 @@ namespace EmsApi.Client.V2
         /// Gets all the airports' information.
         /// </summary
         [Get( "/v2/ems-systems/1/navigation/airports" )]
-        Task<NavigationAirport[]> GetNavigationAirports( [Property] CallContext context = null );
+        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the runways for a specific airport.
@@ -861,7 +861,7 @@ namespace EmsApi.Client.V2
         /// The airport to get the runways for.
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/runways" )]
-        Task<NavigationRunway[]> GetNavigationRunways( int airportId, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationRunway>> GetNavigationRunways( int airportId, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the procedures for a specific airport.
@@ -869,7 +869,7 @@ namespace EmsApi.Client.V2
         /// <param name="airportId">
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/procedures" )]
-        Task<NavigationProcedure[]> GetNavigationProcedures( int airportId, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationProcedure>> GetNavigationProcedures( int airportId, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the segments of a specific procedure for an airport.
@@ -878,7 +878,7 @@ namespace EmsApi.Client.V2
         /// The unique identifier of the procedure to get the segments for.
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/procedures/{procedureId}/segments" )]
-        Task<NavigationProcedureSegment[]> GetNavigationSegments( int procedureId, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationProcedureSegment>> GetNavigationSegments( int procedureId, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets information about a specific waypoint. Waypoints are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
