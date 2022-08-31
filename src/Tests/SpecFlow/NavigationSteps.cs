@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EmsApi.Dto.V2;
 using TechTalk.SpecFlow;
 
@@ -9,49 +10,49 @@ namespace EmsApi.Tests.SpecFlow
         [When( @"I run GetAirports" )]
         public void WhenIRunGetAirports()
         {
-            m_result.Object = m_api.Navigation.GetAirports();
+            m_result.Enumerable = m_api.Navigation.GetAirports();
         }
 
         [Then( @"NavigationAirports are returned" )]
         public void ThenNavigationAirportsAreReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<NavigationAirport[]>();
+            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<NavigationAirport>();
         }
 
         [When( @"I run GetRunways for airport id (.*)" )]
         public void WhenIRunGetRunwaysForAirportId( int airportId )
         {
-            m_result.Object = m_api.Navigation.GetRunways( airportId );
+            m_result.Enumerable = m_api.Navigation.GetRunways( airportId );
         }
 
         [Then( @"NavigationRunways are returned" )]
         public void ThenNavigationRunwaysAreReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<NavigationRunway[]>();
+            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<NavigationRunway>();
         }
 
         [When( @"I run GetProcedures for airport id (.*)" )]
         public void WhenIRunGetProceduresForAirportId( int airportId )
         {
-            m_result.Object = m_api.Navigation.GetProcedures( airportId );
+            m_result.Enumerable = m_api.Navigation.GetProcedures( airportId );
         }
 
         [Then( @"NavigationProcedures are returned" )]
         public void ThenNavigationProceduresAreReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<NavigationProcedure[]>();
+            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<NavigationProcedure>();
         }
 
         [When( @"I run GetSegments for procedure id (.*)" )]
         public void WhenIRunGetSegmentsForProcedureId( int procedureId )
         {
-            m_result.Object = m_api.Navigation.GetSegments(procedureId );
+            m_result.Enumerable = m_api.Navigation.GetSegments(procedureId );
         }
 
         [Then( @"NavigationProcedureSegments are returned" )]
         public void ThenNavigationProcedureSegmentsAreReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<NavigationProcedureSegment[]>();
+            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<NavigationProcedureSegment>();
         }
 
         [When( @"I run GetWaypoint for waypoint id (.*)" )]
