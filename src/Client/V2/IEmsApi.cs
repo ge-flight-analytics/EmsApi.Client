@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Refit;
-using EmsApi.Dto.V2;
 using System.Net.Http;
+using System.Threading.Tasks;
+using EmsApi.Dto.V2;
+using Refit;
 
 namespace EmsApi.Client.V2
 {
@@ -848,6 +847,56 @@ namespace EmsApi.Client.V2
         /// </remarks>
         [Get( "/v2/ems-systems/1/flights/{flightId}/identification" )]
         Task<Identification> GetFlightIdentification( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets all the airports' information.
+        /// </summary
+        [Get( "/v2/ems-systems/1/navigation/airports" )]
+        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the runways for a specific airport.
+        /// </summary>
+        /// <param name="airportId">
+        /// The airport to get the runways for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/runways" )]
+        Task<IEnumerable<NavigationRunway>> GetNavigationRunways( int airportId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the procedures for a specific airport.
+        /// </summary>
+        /// <param name="airportId">
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/procedures" )]
+        Task<IEnumerable<NavigationProcedure>> GetNavigationProcedures( int airportId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the segments of a specific procedure for an airport.
+        /// </summary>
+        /// <param name="procedureId">
+        /// The unique identifier of the procedure to get the segments for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/procedures/{procedureId}/segments" )]
+        Task<IEnumerable<NavigationProcedureSegment>> GetNavigationSegments( int procedureId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets information about a specific waypoint. Waypoints are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
+        /// </summary>
+        /// <param name="waypointId">
+        /// The unique identifier of the waypoint to get information for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/waypoints/{waypointId}" )]
+        Task<NavigationWaypoint> GetNavigationWaypoint( int waypointId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Get information about a specific NAVAID. NAVAID are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
+        /// </summary>
+        /// <param name="navaidId">
+        /// The unique identifier for the NAVAID to get information for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/navaids/{navaidId}" )]
+        Task<NavigationNavaid> GetNavigationNavaid(int navaidId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.
