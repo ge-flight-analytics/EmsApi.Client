@@ -1,2 +1,2 @@
-# Release 2.8.0
-* Adds the Navigation EMS API endpoints.
+# Release 2.9.0
+* Adds the Weather EMS API endpoints.

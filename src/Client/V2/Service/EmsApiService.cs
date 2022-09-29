@@ -121,6 +121,11 @@ namespace EmsApi.Client.V2
         public NavigationAccess Navigation { get; set; }
 
         /// <summary>
+        /// Access to airport weather data: METARs and TAFs.
+        /// </summary>
+        public WeatherAccess Weather { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
@@ -227,6 +232,7 @@ namespace EmsApi.Client.V2
             AdminEmsSecurables = InitializeAccessClass<AdminEmsSecurablesAccess>();
             Identification = InitializeAccessClass<IdentificationAccess>();
             Navigation = InitializeAccessClass<NavigationAccess>();
+            Weather = InitializeAccessClass<WeatherAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
