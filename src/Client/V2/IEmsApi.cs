@@ -896,7 +896,70 @@ namespace EmsApi.Client.V2
         /// The unique identifier for the NAVAID to get information for.
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/navaids/{navaidId}" )]
-        Task<NavigationNavaid> GetNavigationNavaid(int navaidId, [Property] CallContext context = null );
+        Task<NavigationNavaid> GetNavigationNavaid( int navaidId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of all matched TAF and METAR reports for a specified flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier to get the weather for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/weather" )]
+        Task<WeatherReport> GetFlightWeather( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of matched METAR reports for a specified flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier to get the METARs for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/weather/metars" )]
+        Task<IEnumerable<MetarReport>> GetFlightMetars( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of matched TAF reports for a specified flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier to get the TAFs for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/weather/tafs" )]
+        Task<IEnumerable<TafReport>> GetFlightTafs( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of collected TAF reports matching the specified search criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The search criteria for querying for TAF reports.
+        /// </param>
+        [Post( "/v2/ems-systems/1/weather/tafs" )]
+        Task<IEnumerable<TafReport>> GetTafs( [Body] TafQuery query, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of collected METAR reports matching the specified search criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The search criteria for querying for METAR reports.
+        /// </param>
+        [Post( "/v2/ems-systems/1/weather/metars" )]
+        Task<IEnumerable<MetarReport>> GetMetars( [Body] MetarQuery query, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Parses and validates a raw TAF report and returns parsed information.
+        /// </summary>
+        /// <param name="parseOptions">
+        /// The TAF string to parse and an issue date.
+        /// </param>
+        [Post( "/v2/weather/taf/parse" )]
+        Task<TafReport> ParseTaf( [Body] TafParseOptions parseOptions, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Parses and validates a raw METAR report and returns parsed information.
+        /// </summary>
+        /// <param name="parseOptions">
+        /// The METAR string to parse and an issue date.
+        /// </param>
+        [Post( "/v2/weather/metar/parse" )]
+        Task<MetarReport> ParseMetar( [Body] MetarParseOptions parseOptions, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.
