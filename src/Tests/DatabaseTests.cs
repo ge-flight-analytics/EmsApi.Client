@@ -1,12 +1,9 @@
 using System;
-using Xunit;
-using FluentAssertions;
-using Moq;
-
-using EmsApi.Dto.V2;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmsApi.Client.V2;
-using System.Threading;
+using EmsApi.Dto.V2;
+using FluentAssertions;
+using Xunit;
 
 namespace EmsApi.Tests
 {
@@ -17,12 +14,18 @@ namespace EmsApi.Tests
         {
             using var api = NewService();
 
+            const string flights = "[ems-core][entity-type][foqa-flights]";
             string flightRecordField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.uid]]]";
-            Field noDiscrete = api.Databases.GetField( "[ems-core][entity-type][foqa-flights]", flightRecordField );
+            Field noDiscrete = api.Databases.GetField( flights, flightRecordField );
             noDiscrete.DiscreteValues.Should().BeNull();
 
             string eventStatusField = "[-hub-][field][[[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]][[ems-apm][event-field][event-status:profile-a7483c449db94a449eb5f67681ee52b0]]]";
             Field withDiscrete = api.Databases.GetField( "[ems-apm][entity-type][events:profile-a7483c449db94a449eb5f67681ee52b0]", eventStatusField );
+            withDiscrete.DiscreteValues.Should().NotBeNull();
+
+            // City pair values are larger than an int32.
+            string cityPairField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][city-pair.pair]]]";
+            Field cityPair = api.Databases.GetField( flights, cityPairField );
             withDiscrete.DiscreteValues.Should().NotBeNull();
         }
 
