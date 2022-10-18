@@ -1,8 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using EmsApi.Client.V2;
 using EmsApi.Dto.V2;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace EmsApi.Tests
@@ -152,7 +154,7 @@ namespace EmsApi.Tests
                         StatusCode = System.Net.HttpStatusCode.Accepted
                     } );
                 } );
-;
+            ;
 
             api.RefitApi = mockRefitApi.Object;
 
