@@ -1,2 +1,2 @@
-# Release 2.9.1
-* Change the discrete field value dictionary to be keyed by long to support the city pair field
+# Release 2.9.2
+* Add a new column DTO (UpdateColumn) to allow for updating fields to null values.
