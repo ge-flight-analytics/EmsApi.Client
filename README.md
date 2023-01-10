@@ -1,12 +1,12 @@
 # C\# EMS API Tools and Documentation
 
-[![Build Status](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_apis/build/status/ge-flight-analytics.EmsApi.Client?branchName=master)](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/ge-flight-analytics/ems-api-sdk/_apis/build/status/EmsApi.Client%20Build?branchName=master)](https://dev.azure.com/ge-flight-analytics/ems-api-sdk/_build/latest?definitionId=4&branchName=master)
 
 # Getting started
 
 ## Include the nuget package in your project
 
-### .NET Core or .NET 5
+### .NET Core or .NET 5+
 * Create a new library or console project using `dotnet new classlib` or `dotnet new console`.
 * Add a referece to the EmsApi package with `dotnet add package EmsApi.Client`.
 
@@ -246,13 +246,13 @@ Run `dotnet build` in the `src` directory or build with Visual Studio.
 Run `dotnet test` in the `src` directory or use the Visual Studio test explorer. Many tests will talk to a real API endpoint and require the `EmsApiTestEndpoint`, `EmsApiTestUsername`, `EmsApiTestPassword`, `EmsApiTestClientId`, and `EmsApiTestClientSecret` environment variables to be set.
 
 ## Automated build and test
-The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary). Pull requests to the `master` branch are built and the nuget packages are attached to the pipeline run. The `master` branch is also built once the pull request is completed.
+The project is built using an [Azure DevOps pipeline](https://dev.azure.com/ge-flight-analytics/ems-api-sdk/_build?definitionId=4&_a=summary). Pull requests to the `master` branch are built and the nuget packages are attached to the pipeline run. The `master` branch is also built once the pull request is completed.
 
 ## Releases
 * Prior to a release, as part of a pull request:
 	* The version number should be updated in `src/Directory.Build.props`
 	* The [release notes](ReleaseNotes.md) file in the root should be updated
-* Once the pull request completes and the [build pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=1&_a=summary) for the `master` branch succeeds, run the [release pipeline](https://dev.azure.com/ge-flight-analytics/EmsApi.Client/_build?definitionId=2). Using the latest master branch build this will:
+* Once the pull request completes and the [build pipeline](https://dev.azure.com/ge-flight-analytics/ems-api-sdk/_build?definitionId=4&_a=summary) for the `master` branch succeeds, run the [release pipeline](https://dev.azure.com/ge-flight-analytics/ems-api-sdk/_build?definitionId=5). Using the latest master branch build this will:
 	* Create a new GitHub release and tag the commit with `vX.X.X`, where the version number matches the contents of the Build.Directory.props file
 	* Push the nupkg files to NuGet.org
 
