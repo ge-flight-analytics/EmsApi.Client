@@ -13,6 +13,8 @@ variables:
   # emsApiTestEndpoint = https://d1mo-api.us.efoqa.com/api
   # emsApiTestUsername = emsapitest
   # emsApiTestPass = (hidden)
+  # emsApiTestClientId = emsapi-test
+  # emsApiTestClientSec = (hidden)
   # versionSuffix = (no default)
   buildConfiguration: Release
   isMaster: $[startsWith(variables['Build.SourceBranchName'], 'master')]

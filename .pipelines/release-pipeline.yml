@@ -7,9 +7,9 @@ variables:
   # sourceBranch = master
   # githubRelease = true
   # nugetRelease = true
-  sourcePipelineId: 1
-  sourceProjectName: EmsApi.Client
-  githubServiceConnection: ge-flight-analytics-pat
+  sourcePipelineId: 4
+  sourceProjectName: ems-api-sdk
+  githubServiceConnection: ge-flight-analytics
   nugetServiceConnection: nuget-public
   doGithubRelease: $[in(variables['githubRelease'], 'true', 'True', 'TRUE')]
   doNugetRelease: $[in(variables['nugetRelease'], 'true', 'True', 'TRUE')]
