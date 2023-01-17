@@ -1,2 +1,3 @@
-# Release 2.9.2
-* Add a new column DTO (UpdateColumn) to allow for updating fields to null values.
+# Release 2.10.0
+* Adds Navigation Flight Procedures endpoint.
+* Updates Navigation endpoints with releaseId parameter.
