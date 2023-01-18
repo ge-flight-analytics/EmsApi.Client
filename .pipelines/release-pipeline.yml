@@ -40,7 +40,7 @@ jobs:
 
         - pwsh: |
             $versionFile = Get-Content "src/Directory.Build.props"
-            $exp = "<VersionPrefix>(?<version>[\d]\.[\d]\.[\d])<\/VersionPrefix>"
+            $exp = "<VersionPrefix>(?<version>[\d]+\.[\d]+\.[\d]+)<\/VersionPrefix>"
             $matchInfo = $versionFile | Select-String $exp
             if( -not $matchInfo.Matches.Success ) {
               throw "The regular expression $exp did not match anything in the Directory.Build.props file."
