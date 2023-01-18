@@ -40,7 +40,7 @@ jobs:
 
         - pwsh: |
             $packageDirectory = Join-Path '$(Build.ArtifactStagingDirectory)' 'drop'
-            $package = Get-ChildItem $packageDirectory -Filter EmsApi.Client.*.nupkg | Select -First 1 -ExpandProperty
+            $package = Get-ChildItem $packageDirectory -Filter EmsApi.Client.*.nupkg | Select -First 1 -ExpandProperty Name
             $exp = "EmsApi\.Client\.(?<version>[\d]+\.[\d]+\.[\d]+)\.nupkg"
             $matchInfo = $package | Select-String $exp
             if( -not $matchInfo.Matches.Success ) {
