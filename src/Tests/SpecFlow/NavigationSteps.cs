@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using EmsApi.Dto.V2;
 using TechTalk.SpecFlow;
 
@@ -46,7 +46,7 @@ namespace EmsApi.Tests.SpecFlow
         [When( @"I run GetSegments for procedure id (.*)" )]
         public void WhenIRunGetSegmentsForProcedureId( int procedureId )
         {
-            m_result.Enumerable = m_api.Navigation.GetSegments(procedureId );
+            m_result.Enumerable = m_api.Navigation.GetSegments( procedureId );
         }
 
         [Then( @"NavigationProcedureSegments are returned" )]
@@ -77,6 +77,18 @@ namespace EmsApi.Tests.SpecFlow
         public void ThenANavigationNavaidIsReturned()
         {
             m_result.Object.ShouldNotBeNullOfType<NavigationNavaid>();
+        }
+
+        [When( @"I run GetFlightProcedures for flight (.*) and procedure type (.*)" )]
+        public void WhenIRunGetFlightProceduresForFlightAndProcedureTypeDeparture( int flightId, string type )
+        {
+            m_result.Object = m_api.Navigation.GetFlightProcedures( flightId, Enum.Parse<Dto.V2.Type>( type ) );
+        }
+
+        [Then( @"a NavigationFlightProcedure is returned" )]
+        public void ThenANavigationFlightProcedureIsReturned()
+        {
+            m_result.Object.ShouldNotBeNullOfType<NavigationFlightProcedures>();
         }
     }
 }
