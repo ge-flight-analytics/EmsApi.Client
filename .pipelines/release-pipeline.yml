@@ -9,7 +9,7 @@ variables:
   # nugetRelease = true
   sourcePipelineId: 4
   sourceProjectName: ems-api-sdk
-  githubServiceConnection: ge-flight-analytics
+  githubServiceConnection: ge-flight-analytics-pat
   nugetServiceConnection: nuget-public
   doGithubRelease: $[in(variables['githubRelease'], 'true', 'True', 'TRUE')]
   doNugetRelease: $[in(variables['nugetRelease'], 'true', 'True', 'TRUE')]
@@ -45,7 +45,7 @@ jobs:
             if( -not $matchInfo.Matches.Success ) {
               throw "The regular expression $exp did not match anything in the Directory.Build.props file."
             }
-            
+
             $version = $matchInfo.Matches.Groups | Where Name -eq "version" | Select-Object -ExpandProperty Value
             Write-Host "##vso[task.setvariable variable=releaseVersion]$version"
           displayName: Determine tag
