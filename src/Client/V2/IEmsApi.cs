@@ -850,9 +850,13 @@ namespace EmsApi.Client.V2
 
         /// <summary>
         /// Gets all the airports' information.
-        /// </summary
+        /// </summary>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
         [Get( "/v2/ems-systems/1/navigation/airports" )]
-        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( [Property] CallContext context = null );
+        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( int?  releaseId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the runways for a specific airport.
@@ -860,16 +864,25 @@ namespace EmsApi.Client.V2
         /// <param name="airportId">
         /// The airport to get the runways for.
         /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
         [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/runways" )]
-        Task<IEnumerable<NavigationRunway>> GetNavigationRunways( int airportId, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationRunway>> GetNavigationRunways( int airportId, int? releaseId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the procedures for a specific airport.
         /// </summary>
         /// <param name="airportId">
+        /// The identifier of the airport to get procedures for.
+        /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/procedures" )]
-        Task<IEnumerable<NavigationProcedure>> GetNavigationProcedures( int airportId, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationProcedure>> GetNavigationProcedures( int airportId, int? releaseId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the segments of a specific procedure for an airport.
@@ -877,8 +890,12 @@ namespace EmsApi.Client.V2
         /// <param name="procedureId">
         /// The unique identifier of the procedure to get the segments for.
         /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
         [Get( "/v2/ems-systems/1/navigation/procedures/{procedureId}/segments" )]
-        Task<IEnumerable<NavigationProcedureSegment>> GetNavigationSegments( int procedureId, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationProcedureSegment>> GetNavigationSegments( int procedureId, int? releaseId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets information about a specific waypoint. Waypoints are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
@@ -886,8 +903,12 @@ namespace EmsApi.Client.V2
         /// <param name="waypointId">
         /// The unique identifier of the waypoint to get information for.
         /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
         [Get( "/v2/ems-systems/1/navigation/waypoints/{waypointId}" )]
-        Task<NavigationWaypoint> GetNavigationWaypoint( int waypointId, [Property] CallContext context = null );
+        Task<NavigationWaypoint> GetNavigationWaypoint( int waypointId, int? releaseId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Get information about a specific NAVAID. NAVAID are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
@@ -895,8 +916,35 @@ namespace EmsApi.Client.V2
         /// <param name="navaidId">
         /// The unique identifier for the NAVAID to get information for.
         /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
         [Get( "/v2/ems-systems/1/navigation/navaids/{navaidId}" )]
-        Task<NavigationNavaid> GetNavigationNavaid( int navaidId, [Property] CallContext context = null );
+        Task<NavigationNavaid> GetNavigationNavaid( int navaidId, int? releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the procedures for a a specific flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier of a specific flight to get the navigation procedures for.
+        /// </param>
+        /// <param name="type">
+        /// The type of procedures to retrieve for the flight:
+        ///  - all
+        ///  - arrival
+        ///  - departure
+        ///  - approach
+        /// </param>
+        /// <param name="runwayIdOverride">
+        /// An optional parameter that overrides either the takeoff or landing, depending on the
+        /// procedure type, runway for the flight. This is not compatible with 'includeAll=true' or 'type=all'.
+        /// </param>
+        /// <param name="includeAll">
+        /// An optional parameter, when true includes all the potential procedures of the given type for all runways at the airport.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/flights/{flightId}/procedures" )]
+        Task<NavigationFlightProcedures> GetNavigationFlightProcedures( int flightId, Type type, int? runwayIdOverride = null, bool? includeAll = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of all matched TAF and METAR reports for a specified flight.

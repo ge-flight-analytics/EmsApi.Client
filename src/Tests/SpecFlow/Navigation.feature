@@ -32,3 +32,13 @@ Scenario:  Get Navaid
     When I run GetNavaid for navaid id 20432
     Then a NavigationNavaid is returned
 
+Scenario: Get Flight Procedures: departures
+    Given A valid API endpoint
+    When I run GetFlightProcedures for flight 1 and procedure type Departure
+    Then a NavigationFlightProcedure is returned
+
+Scenario: Get Flight Procedures: approaches
+    Given A valid API endpoint
+    When I run GetFlightProcedures for flight 1 and procedure type Approach
+    Then a NavigationFlightProcedure is returned
+
