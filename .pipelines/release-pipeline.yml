@@ -58,7 +58,7 @@ jobs:
             tagSource: manual
             tag: v$(releaseVersion)
             title: Version $(releaseVersion)
-            releaseNotesFile: ReleaseNotes.md
+            releaseNotesFile: $(Build.ArtifactStagingDirectory)/drop/packages/ReleaseNotes.md
             assets: $(Build.ArtifactStagingDirectory)/drop/*
 
 - deployment: nuget
