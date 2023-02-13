@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
-
-using Refit;
 using EmsApi.Dto.V2;
+using Refit;
 
 namespace EmsApi.Client.V2
 {
@@ -172,11 +172,11 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<Profile>> GetProfiles( string parentGroupId = null, string search = null, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns a profile group with a matching ID containing only its immediate 
+        /// Returns a profile group with a matching ID containing only its immediate
         /// children in a hierarchical tree used to organize profiles.
         /// </summary>
         /// <param name="groupId">
-        /// The unique identifier of the profile group whose contents to return. If 
+        /// The unique identifier of the profile group whose contents to return. If
         /// not specified, the contents of the root group are returned.
         /// </param>
         [Get( "/v2/ems-systems/1/profile-groups" )]
@@ -196,20 +196,20 @@ namespace EmsApi.Client.V2
         Task<ProfileResults> GetProfileResults( int flightId, string profileId, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns a "glossary" for a specific profile and version, which helps define the 
+        /// Returns a "glossary" for a specific profile and version, which helps define the
         /// results that can be returned in a profile.
         /// </summary>
         /// <param name="profileId">
         /// The unique identifier of the profile whose glossary to return, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0".
         /// </param>
-        /// <param name="profileVersionNumber">
+        /// <param name="profileVersion">
         /// Integer version of the profile to return. If not specified the current version of the profile is used by default.
         /// </param>
         /// <param name="format">
         /// The format of the returned glossary. Options are "json" or "csv". Defaults to JSON.
         /// </param>
         [Get( "/v2/ems-systems/1/profiles/{profileId}/glossary" )]
-        Task<ProfileGlossary> GetProfileGlossary( string profileId, int? profileVersionNumber = null, string format = null, [Property] CallContext context = null );
+        Task<ProfileGlossary> GetProfileGlossary( string profileId, int? profileVersion = null, string format = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the events for a specific profile.
@@ -384,7 +384,7 @@ namespace EmsApi.Client.V2
         Task<AnalyticSetGroupCreated> CreateAnalyticSetGroup( [Body] NewAnalyticSetGroup newAnalyticSetGroup, [Property] CallContext context = null );
 
         /// <summary>
-        /// Updates an analytic set group. This will alter the location of any analytic sets and groups contained within. 
+        /// Updates an analytic set group. This will alter the location of any analytic sets and groups contained within.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the group to update.
@@ -396,7 +396,7 @@ namespace EmsApi.Client.V2
         Task<AnalyticSetGroupUpdated> UpdateAnalyticSetGroup( string groupId, [Body] UpdateAnalyticSetGroup updateAnalyticSetGroup, [Property] CallContext context = null );
 
         /// <summary>
-        /// Deletes an analytic set group. The group must be empty in order to remove it. 
+        /// Deletes an analytic set group. The group must be empty in order to remove it.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the analytic set group to delete.
@@ -429,7 +429,7 @@ namespace EmsApi.Client.V2
         Task<AnalyticSetCreated> CreateAnalyticSet( string groupId, [Body] NewAnalyticSet newAnalyticSet, [Property] CallContext context = null );
 
         /// <summary>
-        /// Updates an existing analytic set. 
+        /// Updates an existing analytic set.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the analytic set group where the analytic set to update exists.
@@ -444,7 +444,7 @@ namespace EmsApi.Client.V2
         Task<object> UpdateAnalyticSet( string groupId, string analyticSetName, [Body] UpdateAnalyticSet updateAnalyticSet, [Property] CallContext context = null );
 
         /// <summary>
-        /// Deletes an analytic set. 
+        /// Deletes an analytic set.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the analytic set group where the analytic set to remove exists.
@@ -456,7 +456,7 @@ namespace EmsApi.Client.V2
         Task<object> DeleteAnalyticSet( string groupId, string analyticSetName, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns the specified analytic collection. 
+        /// Returns the specified analytic collection.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the group that contains the analytic collection.
@@ -468,7 +468,7 @@ namespace EmsApi.Client.V2
         Task<AnalyticCollection> GetAnalyticCollection( string groupId, string analyticCollectionName, [Property] CallContext context = null );
 
         /// <summary>
-        /// Creates a new analytic collection.        
+        /// Creates a new analytic collection.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the group where the collection will be created.
@@ -480,7 +480,7 @@ namespace EmsApi.Client.V2
         Task<AnalyticCollectionCreated> CreateAnalyticCollection( string groupId, [Body] NewAnalyticCollection newAnalyticCollection, [Property] CallContext context = null );
 
         /// <summary>
-        /// Updates an analytic collection. 
+        /// Updates an analytic collection.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the group that contains the analytic collection to update.
@@ -495,7 +495,7 @@ namespace EmsApi.Client.V2
         Task<object> UpdateAnalyticCollection( string groupId, string analyticCollectionName, [Body] UpdateAnalyticCollection updateAnalyticCollection, [Property] CallContext context = null );
 
         /// <summary>
-        /// Deletes an analytic collection. 
+        /// Deletes an analytic collection.
         /// </summary>
         /// <param name="groupId">
         /// The ID of the group where the collection to be removed exists.
@@ -507,25 +507,25 @@ namespace EmsApi.Client.V2
         Task<object> DeleteAnalyticCollection( string groupId, string analyticCollectionName, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns a database group with a matching ID containing only its immediate children 
+        /// Returns a database group with a matching ID containing only its immediate children
         /// in a hierarchical tree used to organize databases.
         /// </summary>
         /// <param name="groupId">
-        /// The unique identifier of the EMS database group whose contents to return. If not specified, 
+        /// The unique identifier of the EMS database group whose contents to return. If not specified,
         /// the contents of the root group are returned.
         /// </param>
         [Get( "/v2/ems-systems/1/database-groups" )]
         Task<DatabaseGroup> GetDatabaseGroup( string groupId = null, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns a field group with a matching ID containing only its immediate children in a 
+        /// Returns a field group with a matching ID containing only its immediate children in a
         /// hierarchical tree used to organize fields.
         /// </summary>
         /// <param name="databaseId">
         /// The unique identifier of the EMS database containing a field group to return.
         /// </param>
         /// <param name="groupId">
-        /// The unique identifier of a field group whose contents to return. If not specified, 
+        /// The unique identifier of a field group whose contents to return. If not specified,
         /// the contents of the root group are returned.
         /// </param>
         [Get( "/v2/ems-systems/1/databases/{databaseId}/field-groups" )]
@@ -556,18 +556,18 @@ namespace EmsApi.Client.V2
         /// The optional parent field group ID whose contents to search.
         /// </param>
         /// <param name="includeProfiles">
-        /// An optional setting to indicate whether to search fields in profiles. By default, 
+        /// An optional setting to indicate whether to search fields in profiles. By default,
         /// this is false since including profile fields will significantly increase search time.
         /// </param>
         /// <param name="maxResults">
-        /// The maximum number of fields to return. This defaults to 200 fields. If this is set to 
+        /// The maximum number of fields to return. This defaults to 200 fields. If this is set to
         /// 0 all the results will be returned.
         /// </param>
         [Get( "/v2/ems-systems/1/databases/{databaseId}/fields" )]
         Task<IEnumerable<Field>> SearchDatabaseFields( string databaseId, string search = null, string fieldGroupId = null, bool includeProfiles = false, int maxResults = 200, [Property] CallContext context = null );
 
         /// <summary>
-        /// Queries a database for information, composing the query with information provided in the 
+        /// Queries a database for information, composing the query with information provided in the
         /// specified query structure.
         /// </summary>
         /// <param name="databaseId">
@@ -580,7 +580,7 @@ namespace EmsApi.Client.V2
         Task<DbQueryResult> QueryDatabase( string databaseId, [Body] DbQuery query, [Property] CallContext context = null );
 
         /// <summary>
-        /// Creates a query on a database using the provided query structure and returns an ID that 
+        /// Creates a query on a database using the provided query structure and returns an ID that
         /// can be used to fetch result data through other async-query routes.
         /// </summary>
         /// <param name="databaseId">
@@ -609,6 +609,30 @@ namespace EmsApi.Client.V2
         /// </param>
         [Get( "/v2/ems-systems/1/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
         Task<AsyncQueryData> ReadAsyncDatabaseQuery( string databaseId, string queryId, int start, int end, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns rows between (inclusive) the start and end indexes from the async query with the given ID, or a 202 accepted repsonse code if
+        /// waitIfNotReady is false and the query has not yet been processed by the server.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="queryId">
+        /// The unique identifier of the query created by the API.
+        /// </param>
+        /// <param name="start">
+        /// The zero-based index of the first row to return.
+        /// </param>
+        /// <param name="end">
+        /// The zero-based index of the last row to return.
+        /// </param>
+        /// <param name="waitIfNotReady">
+        /// When false, will return a 202 accepted response code for database queries that have been accepted but have not yet been processed
+        /// by the server. When true this will have the same behavior as the other ReadAsyncDatabaseQuery method but will return an HttpResponseMessage
+        /// instead of the parsed data.
+        /// </param>
+        [Get( "/v2/ems-systems/1/databases/{databaseId}/async-query/{queryId}/read/{start}/{end}" )]
+        Task<HttpResponseMessage> ReadAsyncDatabaseQuery( string databaseId, string queryId, int start, int end, bool waitIfNotReady, [Property] CallContext context = null );
 
         /// <summary>
         /// Stops the async query with the given ID.
@@ -698,7 +722,7 @@ namespace EmsApi.Client.V2
         /// The bytes to upload with the chunk.
         /// </param>
         /// <remarks>
-        /// The practical limit for a single chunk is less than 4MB or so, dependent on the web server's configuration. 
+        /// The practical limit for a single chunk is less than 4MB or so, dependent on the web server's configuration.
         /// If you receive 500 responses, try smaller chunk sizes.
         /// </remarks>
         [Put( "/v2/ems-systems/1/uploads/{transferId}/{first}/{last}" )]
@@ -717,7 +741,7 @@ namespace EmsApi.Client.V2
         /// Gets the list of upload records from the server.
         /// </summary>
         /// <param name="maxEntries">
-        /// The maximum number of entries to return; this is capped at 50, and 50 
+        /// The maximum number of entries to return; this is capped at 50, and 50
         /// will be used if it's not specified.
         /// </param>
         [Get( "/v2/uploads" )]
@@ -823,6 +847,167 @@ namespace EmsApi.Client.V2
         /// </remarks>
         [Get( "/v2/ems-systems/1/flights/{flightId}/identification" )]
         Task<Identification> GetFlightIdentification( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets all the airports' information.
+        /// </summary>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/airports" )]
+        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( int?  releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the runways for a specific airport.
+        /// </summary>
+        /// <param name="airportId">
+        /// The airport to get the runways for.
+        /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/runways" )]
+        Task<IEnumerable<NavigationRunway>> GetNavigationRunways( int airportId, int? releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the procedures for a specific airport.
+        /// </summary>
+        /// <param name="airportId">
+        /// The identifier of the airport to get procedures for.
+        /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/airports/{airportId}/procedures" )]
+        Task<IEnumerable<NavigationProcedure>> GetNavigationProcedures( int airportId, int? releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the segments of a specific procedure for an airport.
+        /// </summary>
+        /// <param name="procedureId">
+        /// The unique identifier of the procedure to get the segments for.
+        /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/procedures/{procedureId}/segments" )]
+        Task<IEnumerable<NavigationProcedureSegment>> GetNavigationSegments( int procedureId, int? releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets information about a specific waypoint. Waypoints are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
+        /// </summary>
+        /// <param name="waypointId">
+        /// The unique identifier of the waypoint to get information for.
+        /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/waypoints/{waypointId}" )]
+        Task<NavigationWaypoint> GetNavigationWaypoint( int waypointId, int? releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Get information about a specific NAVAID. NAVAID are referenced from procedures obtained from <see cref="GetNavigationProcedures(int, CallContext)"/>.
+        /// </summary>
+        /// <param name="navaidId">
+        /// The unique identifier for the NAVAID to get information for.
+        /// </param>
+        /// <param name="releaseId">
+        /// The DAFIF release identifier to use for the navigation information.
+        /// If not provided the current release is used.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/navaids/{navaidId}" )]
+        Task<NavigationNavaid> GetNavigationNavaid( int navaidId, int? releaseId = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the procedures for a a specific flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier of a specific flight to get the navigation procedures for.
+        /// </param>
+        /// <param name="type">
+        /// The type of procedures to retrieve for the flight:
+        ///  - all
+        ///  - arrival
+        ///  - departure
+        ///  - approach
+        /// </param>
+        /// <param name="runwayIdOverride">
+        /// An optional parameter that overrides either the takeoff or landing, depending on the
+        /// procedure type, runway for the flight. This is not compatible with 'includeAll=true' or 'type=all'.
+        /// </param>
+        /// <param name="includeAll">
+        /// An optional parameter, when true includes all the potential procedures of the given type for all runways at the airport.
+        /// </param>
+        [Get( "/v2/ems-systems/1/navigation/flights/{flightId}/procedures" )]
+        Task<NavigationFlightProcedures> GetNavigationFlightProcedures( int flightId, Type type, int? runwayIdOverride = null, bool? includeAll = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of all matched TAF and METAR reports for a specified flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier to get the weather for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/weather" )]
+        Task<WeatherReport> GetFlightWeather( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of matched METAR reports for a specified flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier to get the METARs for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/weather/metars" )]
+        Task<IEnumerable<MetarReport>> GetFlightMetars( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of matched TAF reports for a specified flight.
+        /// </summary>
+        /// <param name="flightId">
+        /// The flight record identifier to get the TAFs for.
+        /// </param>
+        [Get( "/v2/ems-systems/1/flights/{flightId}/weather/tafs" )]
+        Task<IEnumerable<TafReport>> GetFlightTafs( int flightId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of collected TAF reports matching the specified search criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The search criteria for querying for TAF reports.
+        /// </param>
+        [Post( "/v2/ems-systems/1/weather/tafs" )]
+        Task<IEnumerable<TafReport>> GetTafs( [Body] TafQuery query, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a list of collected METAR reports matching the specified search criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The search criteria for querying for METAR reports.
+        /// </param>
+        [Post( "/v2/ems-systems/1/weather/metars" )]
+        Task<IEnumerable<MetarReport>> GetMetars( [Body] MetarQuery query, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Parses and validates a raw TAF report and returns parsed information.
+        /// </summary>
+        /// <param name="parseOptions">
+        /// The TAF string to parse and an issue date.
+        /// </param>
+        [Post( "/v2/weather/taf/parse" )]
+        Task<TafReport> ParseTaf( [Body] TafParseOptions parseOptions, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Parses and validates a raw METAR report and returns parsed information.
+        /// </summary>
+        /// <param name="parseOptions">
+        /// The METAR string to parse and an issue date.
+        /// </param>
+        [Post( "/v2/weather/metar/parse" )]
+        Task<MetarReport> ParseMetar( [Body] MetarParseOptions parseOptions, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.

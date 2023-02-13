@@ -7,8 +7,8 @@ variables:
   # sourceBranch = master
   # githubRelease = true
   # nugetRelease = true
-  sourcePipelineId: 1
-  sourceProjectName: EmsApi.Client
+  sourcePipelineId: 4
+  sourceProjectName: ems-api-sdk
   githubServiceConnection: ge-flight-analytics-pat
   nugetServiceConnection: nuget-public
   doGithubRelease: $[in(variables['githubRelease'], 'true', 'True', 'TRUE')]
@@ -39,13 +39,14 @@ jobs:
             path: $(Build.ArtifactStagingDirectory)
 
         - pwsh: |
-            $versionFile = Get-Content "src/Directory.Build.props"
-            $exp = "<VersionPrefix>(?<version>[\d]\.[\d]\.[\d])<\/VersionPrefix>"
-            $matchInfo = $versionFile | Select-String $exp
+            $packageDirectory = Join-Path '$(Build.ArtifactStagingDirectory)' 'drop'
+            $package = Get-ChildItem $packageDirectory -Filter EmsApi.Client.*.nupkg | Select -First 1 -ExpandProperty Name
+            $exp = "EmsApi\.Client\.(?<version>[\d]+\.[\d]+\.[\d]+)\.nupkg"
+            $matchInfo = $package | Select-String $exp
             if( -not $matchInfo.Matches.Success ) {
-              throw "The regular expression $exp did not match anything in the Directory.Build.props file."
+              throw "The regular expression $exp did not match anything in the $package file."
             }
-            
+
             $version = $matchInfo.Matches.Groups | Where Name -eq "version" | Select-Object -ExpandProperty Value
             Write-Host "##vso[task.setvariable variable=releaseVersion]$version"
           displayName: Determine tag

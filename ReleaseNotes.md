@@ -1,3 +1,3 @@
-# Release 2.7.1
-* Adds the Flight Identification route.
-* Add a method for overriding the HTTP timeout
+# Release 2.10.0
+* Adds Navigation Flight Procedures endpoint.
+* Updates Navigation endpoints with releaseId parameter.

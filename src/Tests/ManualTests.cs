@@ -27,5 +27,24 @@ namespace EmsApi.Tests
             int emsSystemId = 1;
             api.AdminUser.AssignUserEmsSystem( userId, emsSystemId );
         }
+
+        [Fact( DisplayName = "Async query without wait will retry", Skip = "API repsonse time is not consistent" )]
+        public async Task Async_Query_Without_Wait_Retries()
+        {
+            using var api = NewService();
+            AsyncQueryInfo info = null;
+            string database = DatabaseTests.Monikers.FlightDatabase;
+            try
+            {
+                DatabaseQuery query = DatabaseTests.CreateQuery( false );
+                info = await api.Databases.StartQueryAsync( database, query );
+                AsyncQueryData data = await api.Databases.ReadQueryWhenReadyAsync( database, info.Id, 1, 19999, TimeSpan.FromSeconds( 10 ), backoffFactor: 1.0f );
+            }
+            finally
+            {
+                if( info != null )
+                    await api.Databases.StopQueryAsync( database, info.Id );
+            }
+        }
     }
 }

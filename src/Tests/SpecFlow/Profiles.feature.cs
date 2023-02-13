@@ -176,14 +176,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get an APM profile group")]
+        [Xunit.SkippableFactAttribute(DisplayName="Get APM profile glossary with version")]
         [Xunit.TraitAttribute("FeatureTitle", "Profiles")]
-        [Xunit.TraitAttribute("Description", "Get an APM profile group")]
-        public void GetAnAPMProfileGroup()
+        [Xunit.TraitAttribute("Description", "Get APM profile glossary with version")]
+        public virtual void GetAPMProfileGlossaryWithVersion()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get an APM profile group", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get APM profile glossary with version", null, tagsOfScenario, argumentsOfScenario);
 #line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -195,26 +195,27 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 21
- testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 22
- testRunner.When("I run GetGroup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I run GetGlossary and enter a profile id of \'A7483C44-9DB9-4A44-9EB5-F67681EE52B0" +
+                        "\' with version 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 23
- testRunner.Then("A ProfileGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("A ProfileGlossary object is returned with version 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get APM profile event definitions")]
+        [Xunit.SkippableFactAttribute(DisplayName="Get an APM profile group")]
         [Xunit.TraitAttribute("FeatureTitle", "Profiles")]
-        [Xunit.TraitAttribute("Description", "Get APM profile event definitions")]
-        public void GetAPMProfileEventDefinitions()
+        [Xunit.TraitAttribute("Description", "Get an APM profile group")]
+        public virtual void GetAnAPMProfileGroup()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get APM profile event definitions", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get an APM profile group", null, tagsOfScenario, argumentsOfScenario);
 #line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -226,26 +227,26 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 26
-    testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 27
-    testRunner.When("I run GetEvents and enter a profile id of \'A7483C44-9DB9-4A44-9EB5-F67681EE52B0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I run GetGroup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
-    testRunner.Then("Event objects are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("A ProfileGroup object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get APM profile event definition for a specific event")]
+        [Xunit.SkippableFactAttribute(DisplayName="Get APM profile event definitions")]
         [Xunit.TraitAttribute("FeatureTitle", "Profiles")]
-        [Xunit.TraitAttribute("Description", "Get APM profile event definition for a specific event")]
-        public void GetAPMProfileEventDefinitionForASpecificEvent()
+        [Xunit.TraitAttribute("Description", "Get APM profile event definitions")]
+        public virtual void GetAPMProfileEventDefinitions()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get APM profile event definition for a specific event", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get APM profile event definitions", null, tagsOfScenario, argumentsOfScenario);
 #line 30
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -260,13 +261,54 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 32
+    testRunner.When("I run GetEvents and enter a profile id of \'A7483C44-9DB9-4A44-9EB5-F67681EE52B0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 33
+    testRunner.Then("Event objects are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Get APM profile event definition for a specific event")]
+        [Xunit.TraitAttribute("FeatureTitle", "Profiles")]
+        [Xunit.TraitAttribute("Description", "Get APM profile event definition for a specific event")]
+        public virtual void GetAPMProfileEventDefinitionForASpecificEvent()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get APM profile event definition for a specific event", null, tagsOfScenario, argumentsOfScenario);
+#line 35
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 36
+    testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 37
     testRunner.When("I run GetEvent and enter a profile id of \'A7483C44-9DB9-4A44-9EB5-F67681EE52B0\' a" +
                         "nd an event id of 163", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 33
+#line 38
     testRunner.Then("An Event object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 34
+#line 39
     testRunner.Then("The ParameterSet is not null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

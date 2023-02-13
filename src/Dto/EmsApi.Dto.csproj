@@ -15,6 +15,7 @@
     <PackageReference Include="RoslynCodeTaskFactory" Version="2.0.7">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <Compile Include="Column.cs" />
     <Compile Include="EmsApi.Dto.V2.cs" />
     <Compile Include="Field.cs" />
   </ItemGroup>

@@ -11,2420 +11,6 @@
         "https"
     ],
     "paths": {
-        "/v2/admin/api-clients": {
-            "get": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Returns a list of the API clients.",
-                "operationId": "AdminApiClient_GetApiClients",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "query",
-                        "description": "The optional client ID search string used to search the list of clients. Only clients\r\n            that contain this search string in their client ID are returned.",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.ApiClient"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "post": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Creates a new API client with the provided client settings.",
-                "operationId": "AdminApiClient_CreateApiClient",
-                "consumes": [
-                    "application/json",
-                    "text/json"
-                ],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "apiClient",
-                        "in": "body",
-                        "description": "The API client settings to use for the new client.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.ApiClientNew"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.ApiClient"
-                        }
-                    },
-                    "400": {
-                        "description": "The specified API client properties are invalid, another client exists with the same client ID, or the client could not be saved.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/api-clients/{clientId}": {
-            "get": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Returns an API client.",
-                "operationId": "AdminApiClient_GetApiClient",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "path",
-                        "description": "The integer ID of the API client to return.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.ApiClient"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An API client with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Deletes an API client.",
-                "operationId": "AdminApiClient_DeleteApiClient",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "path",
-                        "description": "The integer ID of the API client to delete.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "An API client with the specified ID could not be deleted.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An API client with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/api-clients/{clientId}/reset-client-secret": {
-            "post": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Updates an API client record by resetting the \"client secret\" that can be used when authenticating with \r\n            the services.",
-                "operationId": "AdminApiClient_ResetApiClientSecret",
-                "consumes": [
-                    "application/json",
-                    "text/json"
-                ],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "path",
-                        "description": "The integer ID of the API client to reset the associated client secret.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "newClientSecret",
-                        "in": "body",
-                        "description": "An object containing the new value to use as the API client's secret value.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.ApiClientSecretReset"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The API client with the specified ID failed to have its client secret reset.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An API client with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/api-clients/{clientId}/enable": {
-            "post": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Updates an API client record by setting its \"enabled\" flag to true.",
-                "operationId": "AdminApiClient_EnableApiClient",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "path",
-                        "description": "The integer ID of the API client to enable.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The API client with the specified ID failed to be enabled.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An API client with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/api-clients/{clientId}/disable": {
-            "post": {
-                "tags": [
-                    "Admin Api Client APIs"
-                ],
-                "summary": "Updates an API client record by setting its \"enabled\" flag to false.",
-                "operationId": "AdminApiClient_DisableApiClient",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "clientId",
-                        "in": "path",
-                        "description": "The integer ID of the API client to disable.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The API client with the specified ID failed to be disabled.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An API client with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/application/reconnect-ems-systems": {
-            "post": {
-                "tags": [
-                    "Admin Application APIs"
-                ],
-                "summary": "Discards connection information to all EMS systems known to the user. This will force the server to reload all configuration\r\n            and other information from the server during the next connection.",
-                "operationId": "AdminApplication_ReconnectEmsSystems",
-                "consumes": [],
-                "produces": [],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/application/reconnect-ems-systems/{emsSystemId}": {
-            "post": {
-                "tags": [
-                    "Admin Application APIs"
-                ],
-                "summary": "Discards connection information to the backing EMS system. This will force the server to reload all configuration\r\n            and other information from the server during the next connection.",
-                "description": "Typically this is called when there have been modifications to user or group membership in groups in Active Dirctory. \r\n            In desktop applications, when someone has their group membership changed, that user can lock and unlock the machine, \r\n            which recreates the user token representing the rights for that user. In the case of a web server, there is no way to \r\n            manually refresh the cached user rights short of stopping and starting the application pool. \r\n            Instead, call this method to force the web server to refresh access rights based on group membership changes.",
-                "operationId": "AdminApplication_ReconnectEmsSystem",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/application/refresh-security/{emsSystemId}": {
-            "post": {
-                "tags": [
-                    "Admin Application APIs"
-                ],
-                "summary": "Informs the website that security has been modified on an EMS system and requests a refresh from Active Directory.",
-                "description": "Typically this is called when there have\r\n            been modifications to user or group membership in groups in Active Dirctory. In desktop applications, when someone\r\n            has their group membership changed, that user can lock and unlock the machine, which recreates the user token \r\n            representing the rights for that user. In the case of a web server, there is no way to manually refresh the cached\r\n            user rights short of stopping and starting the application pool. \r\n            Instead, call this method to force the web server to refresh access rights based on group membership changes.",
-                "operationId": "AdminApplication_RefreshSecurity",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards": {
-            "get": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Returns a list of dashboards.",
-                "operationId": "AdminDashboard_GetDashboards",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "title",
-                        "in": "query",
-                        "description": "The optional title search string used to search the list of dashboards. Only dashboards\r\n            that contain this search string in their title are returned.",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Dashboard"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/{dashboardId}": {
-            "get": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Returns a dashboard.",
-                "operationId": "AdminDashboard_GetDashboard",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of the dashboard to return.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Dashboard"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Deletes a dashboard.",
-                "operationId": "AdminDashboard_DeleteDashboard",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of the dashboard to delete.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "A dashboard with the specified ID could not be deleted.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/{dashboardId}/groups": {
-            "get": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Returns the list of the groups assigned to have access to a dashboard.",
-                "operationId": "AdminDashboard_GetDashboardGroups",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of dashboard for which to return assigned groups.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/{dashboardId}/groups/{groupId}": {
-            "post": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Assigns a group to a dashboard to provide access to a dashboard.",
-                "operationId": "AdminDashboard_AddDashboardGroup",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of the dashboard to assign a group.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to assign to a dashboard.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the dashboard and group with the specified IDs could not be added or already exists.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard or a group with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Removes the assignment of a group from a dashboard to remove access from a dashboard.",
-                "operationId": "AdminDashboard_RemoveDashboardGroup",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of the dashboard to remove group access.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to remove access from a dashboard.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the dashboard and group with the specified IDs could not be removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard and group association with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/{dashboardId}/users": {
-            "get": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Returns the list of the users assigned to have access to a dashboard.",
-                "operationId": "AdminDashboard_GetDashboardUsers",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of dashboard for which to return assigned users.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.User"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/{dashboardId}/users/{userId}": {
-            "post": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Assigns a user to a dashboard to provide access to a dashboard.",
-                "operationId": "AdminDashboard_AddDashboardUser",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of the dashboard to assign a user.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user to assign to a dashboard.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the dashboard and user with the specified IDs could not be added or already exists.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard or a user with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Removes the assignment of a user from a dashboard to remove access from a dashboard.",
-                "operationId": "AdminDashboard_RemoveDashboardUser",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "dashboardId",
-                        "in": "path",
-                        "description": "The integer ID of the dashboard to remove user access.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user to remove access from a dashboard.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the dashboard and user with the specified IDs could not be removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A dashboard and group association with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/import": {
-            "post": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Imports one or more dashboards in an XML file, included in the request body. When importing more than one\r\n            dashboard at once, imports might partially succeed. Information is returned about the status of each \r\n            import.",
-                "operationId": "AdminDashboard_ImportDashboards",
-                "consumes": [
-                    "application/json",
-                    "text/json"
-                ],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "xml",
-                        "in": "body",
-                        "description": "XML specifying the dashboards and all their properties to import.",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.DashboardsImport"
-                        }
-                    },
-                    "400": {
-                        "description": "None of the specified dashboards could be imported.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/dashboards/export": {
-            "post": {
-                "tags": [
-                    "Admin Dashboard APIs"
-                ],
-                "summary": "Exports one or more dashboards to an XML file, returned in the response body.",
-                "operationId": "AdminDashboard_ExportDashboards",
-                "consumes": [
-                    "application/json",
-                    "text/json"
-                ],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "dashboardIds",
-                        "in": "body",
-                        "description": "An object containing the list of dashboard IDs to export to XML.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.DashboardIds"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Dashboards with one or more of the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/ems-systems/{emsSystemId}/securables/{securableId}": {
-            "get": {
-                "tags": [
-                    "Admin Ems Securable APIs"
-                ],
-                "summary": "Returns the effective access permission for the given securable and access right for a given user.",
-                "operationId": "AdminEmsSecurable_GetUserAccessForSecurable",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The unique identifier of the system containing the EMS securable.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "securableId",
-                        "in": "path",
-                        "description": "The ID of the securable to check access for.",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "accessRight",
-                        "in": "query",
-                        "description": "The name of the access right for the securable. This has to be a valid access right for the specific type of securable.",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "username",
-                        "in": "query",
-                        "description": "The username of the user to check the securable access right against.",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableEffectiveAccess"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "The username, securable identifier or access right could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/ems-systems": {
-            "get": {
-                "tags": [
-                    "Admin Ems System APIs"
-                ],
-                "summary": "Returns a list of EMS systems.",
-                "operationId": "AdminEmsSystem_GetEmsSystems",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The optional name search string used to search the list of EMS systems. Only EMS \r\n            systems that contain this search string in their name are returned.",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.EmsSystem"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/ems-systems/{emsSystemId}": {
-            "get": {
-                "tags": [
-                    "Admin Ems System APIs"
-                ],
-                "summary": "Returns an EMS system.",
-                "operationId": "AdminEmsSystem_GetEmsSystem",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of the EMS system to return.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.EmsSystem"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An EMS system with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Ems System APIs"
-                ],
-                "summary": "Deletes an EMS system.",
-                "operationId": "AdminEmsSystem_DeleteEmsSystem",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of the EMS system to delete.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An EMS system with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/ems-systems/{emsSystemId}/users": {
-            "get": {
-                "tags": [
-                    "Admin Ems System APIs"
-                ],
-                "summary": "Returns the list of the users assigned to have access to an EMS system.",
-                "operationId": "AdminEmsSystem_GetEmsSystemUsers",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of EMS system for which to return assigned users.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.User"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An EMS system with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/ems-systems/{emsSystemId}/users/{userId}": {
-            "post": {
-                "tags": [
-                    "Admin Ems System APIs"
-                ],
-                "summary": "Assigns a user to an EMS system to provide access to an EMS system.",
-                "operationId": "AdminEmsSystem_AddEmsSystemUser",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of the EMS system to assign a user.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user to assign to an EMS system.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the EMS system and user with the specified IDs could not be added or already exists.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An EMS system or a user with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Ems System APIs"
-                ],
-                "summary": "Removes the assignment of a user from an EMS system to remove access from an EMS system.",
-                "operationId": "AdminEmsSystem_RemoveEmsSystemUser",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of the EMS system to remove user access.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user to remove access from an EMS system.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the EMS system and user with the specified IDs could not be removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "An EMS system and user association with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/groups": {
-            "get": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Returns a list of the groups.",
-                "operationId": "AdminGroup_GetGroups",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "The optional group name search string used to search the list of groups. Only groups\r\n            that contain this search string in their group name are returned.",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "post": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Creates a new group with the provided group settings.",
-                "operationId": "AdminGroup_CreateGroup",
-                "consumes": [
-                    "application/json",
-                    "text/json"
-                ],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "group",
-                        "in": "body",
-                        "description": "The group settings to use for the new group.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                        }
-                    },
-                    "400": {
-                        "description": "The specified group properties are invalid, another group exists with the same name, or the group could not be saved.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/groups/{groupId}": {
-            "get": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Returns a group.",
-                "operationId": "AdminGroup_GetGroup",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to return.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A group with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Deletes a group.",
-                "operationId": "AdminGroup_DeleteGroup",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to delete.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "force",
-                        "in": "query",
-                        "description": "If set to true, the group will be deleted even if the group has members; otherwise\r\n            an error message is returned.",
-                        "required": false,
-                        "type": "boolean"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "A group with the specified ID could not be deleted.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A group with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/groups/{groupId}/users": {
-            "get": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Returns the list of the user accounts associated with a group.",
-                "operationId": "AdminGroup_GetGroupUsers",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of group for which to return associated user accounts.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A group with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/groups/{groupId}/users/{userId}": {
-            "post": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Associates a user account with a group.",
-                "operationId": "AdminGroup_AddGroupUser",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to associate with the user account.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to associate with the group.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the group and user with the specified IDs could not be added or already exists.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A group or a user with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin Group APIs"
-                ],
-                "summary": "Disassociates a user account from a group.",
-                "operationId": "AdminGroup_RemoveUserGroup",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to disassociate from the user account.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to disassociate from the group.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the group and user with the specified IDs could not be removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A group and user association with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users": {
-            "get": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Returns a list of the user accounts.",
-                "operationId": "AdminUser_GetUsers",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "query",
-                        "description": "The optional username search string used to search the list of users. Only users\r\n            that contain this search string in their user name are returned.",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.User"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "post": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Creates a new user account with the provided account settings.",
-                "operationId": "AdminUser_CreateUser",
-                "consumes": [
-                    "application/json",
-                    "text/json"
-                ],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "user",
-                        "in": "body",
-                        "description": "The user account settings associated with the new user account.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.User"
-                        }
-                    },
-                    "400": {
-                        "description": "The specified user properties are invalid or the user could not be saved.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users/{userId}": {
-            "get": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Returns a user account.",
-                "operationId": "AdminUser_GetUser",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to return.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.User"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Deletes a user account.",
-                "operationId": "AdminUser_DeleteUser",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to delete.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "A user with the specified ID could not be deleted.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users/{userId}/send-welcome-email": {
-            "post": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Sends a welcome email to the email address associated with a user account.",
-                "operationId": "AdminUser_SendWelcomeEmail",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to which a welcome email should be sent.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "An email failed to be sent to the user with the specified ID.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users/{userId}/groups": {
-            "get": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Returns the list of the groups associated with a user account.",
-                "operationId": "AdminUser_GetUserGroups",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of user account for which to return associated groups.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Group"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users/{userId}/groups/{groupId}": {
-            "post": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Associates a user account with a group.",
-                "operationId": "AdminUser_AddUserGroup",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to associate with the group.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to associate with the user account.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the user and group with the specified IDs could not be added or already exists.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user or a group with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Disassociates a user account from a group.",
-                "operationId": "AdminUser_RemoveUserGroup",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to disassociate from the group.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "groupId",
-                        "in": "path",
-                        "description": "The integer ID of the group to disassociate from the user account.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the user and group with the specified IDs could not be removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user and group association with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users/{userId}/ems-systems": {
-            "get": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Returns the list of the EMS systems associated with a user account.",
-                "operationId": "AdminUser_GetUserEmsSystems",
-                "consumes": [],
-                "produces": [
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of user account for which to return associated EMS systems.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.EmsSystem"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user with the specified ID could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
-        "/v2/admin/users/{userId}/ems-systems/{emsSystemId}": {
-            "post": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Associates a user account with an EMS system.",
-                "operationId": "AdminUser_AddUserEmsSystem",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to associate with the EMS system.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of the EMS system to associate with the user account.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the user and EMS system with the specified IDs could not be added or already exists.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user or an EMS system with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            },
-            "delete": {
-                "tags": [
-                    "Admin User APIs"
-                ],
-                "summary": "Disassociates a user account from an EMS system.",
-                "operationId": "AdminUser_RemoveUserEmsSystem",
-                "consumes": [],
-                "produces": [],
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "The integer ID of the user account to disassociate from the EMS system.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "emsSystemId",
-                        "in": "path",
-                        "description": "The integer ID of the EMS system to disassociate from the user account.",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "The association between the user and EMS system with the specified IDs could not be removed.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "You do not have access to the requested resource.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "A user and EMS system association with the specified IDs could not be found.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    },
-                    "503": {
-                        "description": "The maximum number of concurrent requests has been reached.",
-                        "schema": {
-                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
-                        }
-                    }
-                },
-                "deprecated": false
-            }
-        },
         "/v2/ems-systems/{emsSystemId}/alerts/definitions": {
             "get": {
                 "tags": [
@@ -5068,28 +2654,28 @@
                     {
                         "name": "search",
                         "in": "query",
-                        "description": "An optional field name search string used to match fields to return.",
-                        "required": false,
+                        "description": "The search terms to look for, separated by commas.",
+                        "required": true,
                         "type": "string"
                     },
                     {
                         "name": "fieldGroupId",
                         "in": "query",
-                        "description": "The optional parent field group ID whose contents to search.",
+                        "description": "Deprecated; do not use this option.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "includeProfiles",
                         "in": "query",
-                        "description": "An optional setting to indicate whether to search fields in profiles. By\r\n            default, this is false since including profile fields will significantly increase search time.",
+                        "description": "Deprecated; do not use this option.",
                         "required": false,
                         "type": "boolean"
                     },
                     {
                         "name": "maxResults",
                         "in": "query",
-                        "description": "The maximum number of fields to return. This defaults to 200 fields.\r\n            If this is set to 0 all the results will be returned.",
+                        "description": "The maximum number of fields to return (default = 10), with a maximum of 1000.",
                         "required": false,
                         "type": "integer",
                         "format": "int32"
@@ -6293,6 +3879,14 @@
                         "required": true,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "releaseId",
+                        "in": "query",
+                        "description": "The DAFIF release identifier to load the airports from. If not specified the latest release is used.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
                     }
                 ],
                 "responses": {
@@ -6348,6 +3942,14 @@
                         "in": "path",
                         "description": "The airport ID, obtained from the \"airports\" route.",
                         "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "releaseId",
+                        "in": "query",
+                        "description": "The DAFIF release identifier to load the runways from. If not specified the latest release is used.",
+                        "required": false,
                         "type": "integer",
                         "format": "int32"
                     }
@@ -6407,6 +4009,14 @@
                         "required": true,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "releaseId",
+                        "in": "query",
+                        "description": "The DAFIF release identifier to load the procedures from. If not specified the latest release is used.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
                     }
                 ],
                 "responses": {
@@ -6462,6 +4072,14 @@
                         "in": "path",
                         "description": "The procedure ID, obtained from the \"procedures\" route.",
                         "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "releaseId",
+                        "in": "query",
+                        "description": "The DAFIF release identifier to load the segments from. If not specified the latest release is used.",
+                        "required": false,
                         "type": "integer",
                         "format": "int32"
                     }
@@ -6521,6 +4139,14 @@
                         "required": true,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "releaseId",
+                        "in": "query",
+                        "description": "The DAFIF release identifier to load the waypoints from. If not specified the latest release is used.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
                     }
                 ],
                 "responses": {
@@ -6575,6 +4201,14 @@
                         "required": true,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "releaseId",
+                        "in": "query",
+                        "description": "The DAFIF release identifier to load the navaids from. If not specified the latest release is used.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
                     }
                 ],
                 "responses": {
@@ -6586,6 +4220,100 @@
                     },
                     "401": {
                         "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/v2/ems-systems/{emsSystemId}/navigation/flights/{flightId}/procedures": {
+            "get": {
+                "tags": [
+                    "Navigation APIs"
+                ],
+                "summary": "[In Development] Gets the navigation procedures for a specific flight.",
+                "description": "This gets the flight procedures such as Departure, Approach, and Arrival for the flights\r\n            airports and runways.\r\n            This endpoint is currently in development which means that it is subject to change at any point in time.\r\n            Current limitations and expected changes:\r\n            - EMS currently only detects Approaches, with Arrivals being added. Identifiers for these will be added \r\n            as more work is done.\r\n            - Go Around procedures are not currently included.",
+                "operationId": "Navigation_GetFlightProcedures",
+                "consumes": [],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS data.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "flightId",
+                        "in": "path",
+                        "description": "The flight record identifier whose navigation procedures are returned.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "The type of procedure to get for the flight. For {Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureType.All}\r\n            all procedure types will be included.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "all",
+                            "arrival",
+                            "departure",
+                            "approach"
+                        ]
+                    },
+                    {
+                        "name": "runwayIdOverride",
+                        "in": "query",
+                        "description": "If provided this runway Id will be used for getting procedures rather\r\n            than the flight's identified runway. This must be a valid runway Id for the flight's airport.\r\n            This cannot be provided with the includeAll parameter and cannot be used with the {Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureType.All} type.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "includeAll",
+                        "in": "query",
+                        "description": "If true, include all potential procedures of the specified type for the airport instead of just the procedures\r\n            for the identified runway. This can not be used with the runwayIdOverride parameter.",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationFlightProcedures"
+                        }
+                    },
+                    "400": {
+                        "description": "\"Only the 'runwayIdOverride' or the 'includeAll' parameter can be used\", or \"The 'runwayIdOverride' can not be used in combination with the procedure type 'All'.\"",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "The flight record could not be found.",
                         "schema": {
                             "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
                         }
@@ -9102,261 +6830,6 @@
         }
     },
     "definitions": {
-        "Adi.Ems.Web.Api.V2.Model.Admin.ApiClient": {
-            "description": "Represents an API client application that consumes REST services hosted in the website.",
-            "required": [
-                "id",
-                "clientId",
-                "grantType",
-                "enabled",
-                "created",
-                "updated"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "format": "int32",
-                    "description": "The unique integer identifier of the API client",
-                    "type": "integer"
-                },
-                "clientId": {
-                    "description": "The unique, user friendly, client ID of the client, used when clients request tokens to access the API",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "A brief summary describing the API client and its purpose",
-                    "type": "string"
-                },
-                "redirectUri": {
-                    "description": "The redirect or callback URI for specific grant types (e.g. implicit).",
-                    "type": "string"
-                },
-                "grantType": {
-                    "description": "The grant type that may be used by the client to access the API",
-                    "enum": [
-                        "trusted",
-                        "password",
-                        "implicit"
-                    ],
-                    "type": "string"
-                },
-                "enabled": {
-                    "description": "Indicates whether the API client is active and can currently consume the API",
-                    "type": "boolean"
-                },
-                "created": {
-                    "format": "date-time",
-                    "description": "The date and time at which the API client record was created",
-                    "type": "string"
-                },
-                "updated": {
-                    "format": "date-time",
-                    "description": "The date and time at which the API client record was last updated",
-                    "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.Model.Error": {
-            "required": [
-                "message",
-                "messageDetail",
-                "unexpected"
-            ],
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "messageDetail": {
-                    "type": "string"
-                },
-                "unexpected": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.ApiClientNew": {
-            "description": "Represents a new API client application that consumes REST services hosted in the website that can be provided\r\n            when creating a new client record.",
-            "required": [
-                "clientId",
-                "grantType"
-            ],
-            "type": "object",
-            "properties": {
-                "clientId": {
-                    "description": "The unique, user friendly, client ID of the client used when clients request tokens to access the API",
-                    "pattern": "^[^:]*$",
-                    "type": "string"
-                },
-                "clientSecret": {
-                    "description": "The client secret value used when clients request tokens to access the API",
-                    "type": "string"
-                },
-                "grantType": {
-                    "description": "The grant type that may be used by the client to access the API",
-                    "enum": [
-                        "trusted",
-                        "password",
-                        "implicit"
-                    ],
-                    "type": "string"
-                },
-                "description": {
-                    "description": "An optional brief summary describing the API client and its purpose",
-                    "type": "string"
-                },
-                "redirectUri": {
-                    "description": "The redirect URI for the API client for specific grant types (e.g. implicit)",
-                    "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.ApiClientSecretReset": {
-            "description": "Represents an object that can be provided to change an API client's secret value.",
-            "required": [
-                "newClientSecret"
-            ],
-            "type": "object",
-            "properties": {
-                "newClientSecret": {
-                    "description": "The client secret value used when clients request tokens to access the API",
-                    "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.Dashboard": {
-            "description": "Encapsulates the basic properties of a dashboard used by EMS web application users to view EMS-related data.",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "format": "int32",
-                    "description": "The unique integer identifier of the dashboards.",
-                    "type": "integer"
-                },
-                "title": {
-                    "description": "The title of the dashboard typically rendered in the page header of a displayed dashboard.",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "A detailed description that describes the contents of the dashboard.",
-                    "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.Group": {
-            "description": "Represents a group that is used to control security for website users that are members of the group.",
-            "required": [
-                "name"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "format": "int32",
-                    "description": "The unique integer identifier of the group.",
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "The unique, user friendly, name of the group.",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "A brief summary describing the group and its members and purpose.",
-                    "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.User": {
-            "description": "Represents a user account that can be used to access the website.",
-            "required": [
-                "username"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "format": "int32",
-                    "description": "The unique integer identifier of the user.",
-                    "type": "integer"
-                },
-                "username": {
-                    "description": "The Active Directory username of the user, typically in the form of \"domain\\user.name\". If not in an \r\n            environment with multiple domains, the domain name is not needed.",
-                    "type": "string"
-                },
-                "lockoutPolicyEnabled": {
-                    "description": "Indicates whether the account lockout policy applies to this user, causing them to be locked out of the\r\n            application for a configured amount of time after failed login attempts.",
-                    "type": "boolean"
-                },
-                "roles": {
-                    "description": "The list of roles to which the user is a member.",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "tableauUsername": {
-                    "description": "The Tableau username to which this user is linked. This user name is only needed if different than the user \r\n            name.",
-                    "type": "string"
-                },
-                "lastLogin": {
-                    "format": "date-time",
-                    "description": "A read-only value indicating the last time the user logged into the application.",
-                    "type": "string"
-                },
-                "lockoutEndDateUtc": {
-                    "format": "date-time",
-                    "description": "A read-only value indicating the time that the user will no longer be locked out. Null if the user is not \r\n            currently locked out.",
-                    "type": "string"
-                },
-                "accessFailedCount": {
-                    "format": "int32",
-                    "description": "A read-only value indicating the number of times the user failed to login.",
-                    "type": "integer"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.DashboardsImport": {
-            "description": "Represents a message used to provide information to users about an action that took place in an API request.",
-            "type": "object",
-            "properties": {
-                "imports": {
-                    "description": "The list of imported dashboards and information gathered for each performed import.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.DashboardImport"
-                    }
-                },
-                "summary": {
-                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.ApiMessage",
-                    "description": "A summary messaged intended to be shown to users of what happened in the import process."
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.DashboardImport": {
-            "description": "Represents a message used to provide information to users about an action that took place in an API request.",
-            "type": "object",
-            "properties": {
-                "dashboard": {
-                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Admin.Dashboard",
-                    "description": "The deserialized {Adi.Ems.Web.Api.V2.Model.Admin.DashboardImport.Dashboard} instance created in the import process."
-                },
-                "messages": {
-                    "description": "A list of messages indicating the status of the import and any extra information that may be useful to \r\n            convey to a user performing an import.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.ApiMessage"
-                    }
-                },
-                "hasErrors": {
-                    "description": "A value indicating whether any of the messages included in this instance is an error.",
-                    "type": "boolean",
-                    "readOnly": true
-                },
-                "hasWarnings": {
-                    "description": "A value indicating whether any of the messages included in this instance is a warning.",
-                    "type": "boolean",
-                    "readOnly": true
-                }
-            }
-        },
         "Adi.Ems.Web.Api.V2.Model.ApiMessage": {
             "description": "Represents a message used to provide information to users about an action that took place in an API request.",
             "type": "object",
@@ -9372,75 +6845,6 @@
                 },
                 "message": {
                     "description": "A string message describing an event that occurred in an API action or event.",
-                    "type": "string"
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.DashboardIds": {
-            "description": "Represents a structure for specifying one or existing dashboard IDs.",
-            "required": [
-                "ids"
-            ],
-            "type": "object",
-            "properties": {
-                "ids": {
-                    "description": "An array specifying one or more unique IDs of existing dashboards.",
-                    "type": "array",
-                    "items": {
-                        "format": "int32",
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableEffectiveAccess": {
-            "description": "Represents the access results for a securable access check request.",
-            "type": "object",
-            "properties": {
-                "securableId": {
-                    "description": "The identifier for the securable",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "accessRight": {
-                    "description": "The access right for the securable",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "hasAccess": {
-                    "description": "Whether the user has access or not to the securable and access right",
-                    "type": "boolean",
-                    "readOnly": true
-                }
-            }
-        },
-        "Adi.Ems.Web.Api.V2.Model.Admin.EmsSystem": {
-            "description": "Represents an EMS system that can be used and accessed by users of the website.",
-            "required": [
-                "name",
-                "dirAdi"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "format": "int32",
-                    "description": "The unique integer identifier of the EMS system.",
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "The unique, user friendly, name of the EMS system.",
-                    "type": "string"
-                },
-                "dirAdi": {
-                    "description": "The \"Dir Adi\" URI where the EMS system installation is located, used to access the EMS system's resources.",
-                    "type": "string"
-                },
-                "dirCollection": {
-                    "description": "The path to the collection location indicating where data collections for this EMS system should go.",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "A brief summary describing the EMS system and its purpose.",
                     "type": "string"
                 }
             }
@@ -9469,6 +6873,25 @@
                     "format": "int32",
                     "description": "When set to a value greater than 0, alerts in the Active state whose last change was\r\n            recorded at least this many days ago will be automatically set back to Inactive",
                     "type": "integer"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.Model.Error": {
+            "required": [
+                "message",
+                "messageDetail",
+                "unexpected"
+            ],
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "messageDetail": {
+                    "type": "string"
+                },
+                "unexpected": {
+                    "type": "boolean"
                 }
             }
         },
@@ -10591,6 +8014,13 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "displayPath": {
+                    "description": "An ordered list of group names that make up the path to this field, excluding the root group.\r\n            The last entry is the parent group of this field",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -11186,8 +8616,6 @@
                 "severity",
                 "status",
                 "falsePositive",
-                "startTime",
-                "endTime",
                 "globalMeasurements",
                 "globalTimepoints",
                 "localMeasurements",
@@ -11228,12 +8656,12 @@
                 },
                 "startTime": {
                     "format": "double",
-                    "description": "The starting offset for the event",
+                    "description": "The starting offset for the event.\r\n            This can be null for computed events where the timepoint or interval aren't set or don't resolve",
                     "type": "number"
                 },
                 "endTime": {
                     "format": "double",
-                    "description": "The ending offset for the event",
+                    "description": "The ending offset for the event.\r\n            This can be null for computed events where the timepoint or interval aren't set or don't resolve",
                     "type": "number"
                 },
                 "globalMeasurements": {
@@ -11498,6 +8926,27 @@
                 }
             }
         },
+        "Adi.Ems.Web.Api.V2.Dto.EmsSecurable.EmsSecurableEffectiveAccess": {
+            "description": "Represents the access results for a securable access check request.",
+            "type": "object",
+            "properties": {
+                "securableId": {
+                    "description": "The identifier for the securable",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "accessRight": {
+                    "description": "The access right for the securable",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "hasAccess": {
+                    "description": "Whether the user has access or not to the securable and access right",
+                    "type": "boolean",
+                    "readOnly": true
+                }
+            }
+        },
         "Adi.Ems.Web.Data.Model.EmsSystem": {
             "type": "object",
             "properties": {
@@ -11724,11 +9173,11 @@
             "properties": {
                 "id": {
                     "format": "int32",
-                    "description": "The unique identifier for this airport.",
+                    "description": "The unique identifier for this airport",
                     "type": "integer"
                 },
                 "name": {
-                    "description": "The name of the airport.",
+                    "description": "The name of the airport",
                     "type": "string"
                 },
                 "ataCode": {
@@ -11736,29 +9185,29 @@
                     "type": "string"
                 },
                 "city": {
-                    "description": "The city of the airport.",
+                    "description": "The city of the airport",
                     "type": "string"
                 },
                 "country": {
-                    "description": "The country of the airport.",
+                    "description": "The country of the airport",
                     "type": "string"
                 },
                 "emsCode": {
-                    "description": "The airport code as it should be displayed by EMS apps.",
+                    "description": "The airport code as it should be displayed by EMS apps",
                     "type": "string"
                 },
                 "icaoCode": {
-                    "description": "The ICAO code is the international 4-letter identifier (e.g. KORD).",
+                    "description": "The ICAO code is the international 4-letter identifier (e.g. KORD)",
                     "type": "string"
                 },
                 "latitude": {
                     "format": "double",
-                    "description": "The latitude of the airport.",
+                    "description": "The latitude of the airport",
                     "type": "number"
                 },
                 "longitude": {
                     "format": "double",
-                    "description": "The longitude of the airport.",
+                    "description": "The longitude of the airport",
                     "type": "number"
                 },
                 "altitude": {
@@ -11768,7 +9217,7 @@
                 },
                 "magneticVariation": {
                     "format": "double",
-                    "description": "The magnetic variation of the airport.",
+                    "description": "The magnetic variation of the airport",
                     "type": "number"
                 },
                 "type": {
@@ -11783,35 +9232,35 @@
             "properties": {
                 "id": {
                     "format": "int32",
-                    "description": "The unique identifier for the runway.",
+                    "description": "The unique identifier for the runway",
                     "type": "integer"
                 },
                 "airportId": {
                     "format": "int32",
-                    "description": "The unique identifier of the airport for this runway.",
+                    "description": "The unique identifier of the airport for this runway",
                     "type": "integer"
                 },
                 "string": {
-                    "description": "A text value associated with the runway.",
+                    "description": "A text value associated with the runway",
                     "type": "string"
                 },
                 "length": {
                     "format": "double",
-                    "description": "The length of the runway.",
+                    "description": "The length of the runway",
                     "type": "number"
                 },
                 "width": {
                     "format": "double",
-                    "description": "The width of the runway.",
+                    "description": "The width of the runway",
                     "type": "number"
                 },
                 "oppositeId": {
                     "format": "int32",
-                    "description": "The dafif id of the reciprocal runway (i.e. landing in the opposite direction on this runway).",
+                    "description": "The dafif id of the reciprocal runway (i.e. landing in the opposite direction on this runway)",
                     "type": "integer"
                 },
                 "isParallel": {
-                    "description": "Whether the runway is parallel.",
+                    "description": "Whether the runway is parallel",
                     "type": "boolean"
                 },
                 "headingTrue": {
@@ -11821,216 +9270,216 @@
                 },
                 "headingMagnetic": {
                     "format": "double",
-                    "description": "The magnetic heading of the runway.",
+                    "description": "The magnetic heading of the runway",
                     "type": "number"
                 },
                 "takeoffDistance": {
                     "format": "double",
-                    "description": "The takeoff distance of the runway.",
+                    "description": "The takeoff distance of the runway",
                     "type": "number"
                 },
                 "landingDistance": {
                     "format": "double",
-                    "description": "The landing distance of the runway.",
+                    "description": "The landing distance of the runway",
                     "type": "number"
                 },
                 "latitudeStart": {
                     "format": "double",
-                    "description": "The runway's starting latitude.",
+                    "description": "The runway's starting latitude",
                     "type": "number"
                 },
                 "latitudeEnd": {
                     "format": "double",
-                    "description": "The runway's ending latitude.",
+                    "description": "The runway's ending latitude",
                     "type": "number"
                 },
                 "longitudeStart": {
                     "format": "double",
-                    "description": "The runway's starting longitude.",
+                    "description": "The runway's starting longitude",
                     "type": "number"
                 },
                 "longitudeEnd": {
                     "format": "double",
-                    "description": "The runway's ending longitude.",
+                    "description": "The runway's ending longitude",
                     "type": "number"
                 },
                 "altitudeStart": {
                     "format": "double",
-                    "description": "The runway's starting altitude.",
+                    "description": "The runway's starting altitude",
                     "type": "number"
                 },
                 "altitudeEnd": {
                     "format": "double",
-                    "description": "The runway's ending altitude.",
+                    "description": "The runway's ending altitude",
                     "type": "number"
                 },
                 "slope": {
                     "format": "double",
-                    "description": "The slope of the runway.",
+                    "description": "The slope of the runway",
                     "type": "number"
                 },
                 "thresholdDisplaced": {
                     "format": "double",
-                    "description": "The threshold displaced value associated with the runway.",
+                    "description": "The threshold displaced value associated with the runway",
                     "type": "number"
                 },
                 "thresholdLatitude": {
                     "format": "double",
-                    "description": "The threshold latitude value associated with the runway.",
+                    "description": "The threshold latitude value associated with the runway",
                     "type": "number"
                 },
                 "thresholdLongitude": {
                     "format": "double",
-                    "description": "The threshold longitude value associated with the runway.",
+                    "description": "The threshold longitude value associated with the runway",
                     "type": "number"
                 },
                 "thresholdElevation": {
                     "format": "double",
-                    "description": "The threshold elevation value associated with the runway.",
+                    "description": "The threshold elevation value associated with the runway",
                     "type": "number"
                 },
                 "thresholdCrossHeight": {
                     "format": "double",
-                    "description": "The threshold crossheight value associated with the runway.",
+                    "description": "The threshold crossheight value associated with the runway",
                     "type": "number"
                 },
                 "thresholdToGlideslopeDistance": {
                     "format": "double",
-                    "description": "The threshold to glideslope distance associated with the runway.",
+                    "description": "The threshold to glideslope distance associated with the runway",
                     "type": "number"
                 },
                 "lighting": {
-                    "description": "Bitflags indicating the available lighting for the runway.",
+                    "description": "Bitflags indicating the available lighting for the runway",
                     "type": "string"
                 },
                 "glideslopeAngle": {
                     "format": "double",
-                    "description": "The glideslope angle value associated with the runway.",
+                    "description": "The glideslope angle value associated with the runway",
                     "type": "number"
                 },
                 "glideslopeLatitude": {
                     "format": "double",
-                    "description": "The glideslope latitude value associated with the runway.",
+                    "description": "The glideslope latitude value associated with the runway",
                     "type": "number"
                 },
                 "glideslopeLongitude": {
                     "format": "double",
-                    "description": "The glideslope longitude value associated with the runway.",
+                    "description": "The glideslope longitude value associated with the runway",
                     "type": "number"
                 },
                 "glideslopeAltitude": {
                     "format": "double",
-                    "description": "The glideslope altitude value associated with the runway.",
+                    "description": "The glideslope altitude value associated with the runway",
                     "type": "number"
                 },
                 "localizerWidth": {
                     "format": "double",
-                    "description": "The localizer width value associated with the runway.",
+                    "description": "The localizer width value associated with the runway",
                     "type": "number"
                 },
                 "localizerNavaid": {
                     "format": "int32",
-                    "description": "The navaid id of the localizer navaid.",
+                    "description": "The navaid id of the localizer navaid",
                     "type": "integer"
                 },
                 "localizerFrequency": {
                     "format": "double",
-                    "description": "The localizer frequency value associated with the runway.",
+                    "description": "The localizer frequency value associated with the runway",
                     "type": "number"
                 },
                 "backcourseLocalizerFrequency": {
                     "format": "double",
-                    "description": "The backcourse localizer frequency value associated with the runway.",
+                    "description": "The backcourse localizer frequency value associated with the runway",
                     "type": "number"
                 },
                 "ilsBearingCourse": {
                     "format": "double",
-                    "description": "The magnetic heading to fly the ILS.",
+                    "description": "The magnetic heading to fly the ILS",
                     "type": "number"
                 },
                 "dmeNavaid": {
                     "format": "int32",
-                    "description": "The navid id of the localizer dme.",
+                    "description": "The navid id of the localizer dme",
                     "type": "integer"
                 },
                 "dmeBias": {
                     "format": "double",
-                    "description": "The DME bias for the runway (the distance in NM from the DME to the landing threshold).",
+                    "description": "The DME bias for the runway (the distance in NM from the DME to the landing threshold)",
                     "type": "number"
                 },
                 "innerMarkerLatitude": {
                     "format": "double",
-                    "description": "The inner marker latitude value associated with the runway.",
+                    "description": "The inner marker latitude value associated with the runway",
                     "type": "number"
                 },
                 "innerMarkerLongitude": {
                     "format": "double",
-                    "description": "The inner marker longitude value associated with the runway.",
+                    "description": "The inner marker longitude value associated with the runway",
                     "type": "number"
                 },
                 "innerMarkerAltitude": {
                     "format": "double",
-                    "description": "The inner marker altitude value associated with the runway.",
+                    "description": "The inner marker altitude value associated with the runway",
                     "type": "number"
                 },
                 "middleMarkerNavaid": {
                     "format": "int32",
-                    "description": "The navaid id of the middle marker, if any.",
+                    "description": "The navaid id of the middle marker, if any",
                     "type": "integer"
                 },
                 "middleMarkerLatitude": {
                     "format": "double",
-                    "description": "The middle marker latitude value associated with the runway.",
+                    "description": "The middle marker latitude value associated with the runway",
                     "type": "number"
                 },
                 "middleMarkerLongitude": {
                     "format": "double",
-                    "description": "The middle marker longitude value associated with the runway.",
+                    "description": "The middle marker longitude value associated with the runway",
                     "type": "number"
                 },
                 "middleMarkerAltitude": {
                     "format": "double",
-                    "description": "The middle marker altitude value associated with the runway.",
+                    "description": "The middle marker altitude value associated with the runway",
                     "type": "number"
                 },
                 "outerMarkerNavaid": {
                     "format": "double",
-                    "description": "The navaid id of the outer marker, if any.",
+                    "description": "The navaid id of the outer marker, if any",
                     "type": "number"
                 },
                 "outerMarkerLatitude": {
                     "format": "double",
-                    "description": "The outer marker latitude value associated with the runway.",
+                    "description": "The outer marker latitude value associated with the runway",
                     "type": "number"
                 },
                 "outerMarkerLongitude": {
                     "format": "double",
-                    "description": "The outer marker longitude value associated with the runway.",
+                    "description": "The outer marker longitude value associated with the runway",
                     "type": "number"
                 },
                 "outerMarkerAltitude": {
                     "format": "double",
-                    "description": "The outer marker altitude value associated with the runway.",
+                    "description": "The outer marker altitude value associated with the runway",
                     "type": "number"
                 },
                 "locatorNavaid": {
                     "format": "int32",
-                    "description": "The navaid id of the compass locator, if any.",
+                    "description": "The navaid id of the compass locator, if any",
                     "type": "integer"
                 },
                 "locatorLatitude": {
                     "format": "double",
-                    "description": "The locator latitude value associated with the runway.",
+                    "description": "The locator latitude value associated with the runway",
                     "type": "number"
                 },
                 "locatorLongitude": {
                     "format": "double",
-                    "description": "The locator longitude value associated with the runway.",
+                    "description": "The locator longitude value associated with the runway",
                     "type": "number"
                 },
                 "locatorAltitude": {
                     "format": "double",
-                    "description": "The locator altitude value associated with the runway.",
+                    "description": "The locator altitude value associated with the runway",
                     "type": "number"
                 }
             }
@@ -12041,34 +9490,34 @@
             "properties": {
                 "id": {
                     "format": "int32",
-                    "description": "The unique identifier for this procedure.",
+                    "description": "The unique identifier for this procedure",
                     "type": "integer"
                 },
                 "cycleDate": {
-                    "description": "A text value representing the cycle date of the procedure.",
+                    "description": "A text value representing the cycle date of the procedure",
                     "type": "string"
                 },
                 "emergencySafeAltitude": {
                     "format": "double",
-                    "description": "The emergency safe altitude of the procedure.",
+                    "description": "The emergency safe altitude of the procedure",
                     "type": "number"
                 },
                 "string": {
-                    "description": "A text identifier of the procedure.",
+                    "description": "A text identifier of the procedure",
                     "type": "string"
                 },
                 "transitionalAltitude": {
                     "format": "double",
-                    "description": "The transition altitude of the procedure.",
+                    "description": "The transition altitude of the procedure",
                     "type": "number"
                 },
                 "transitionalLevel": {
                     "format": "double",
-                    "description": "The transition level of the procedure.",
+                    "description": "The transition level of the procedure",
                     "type": "number"
                 },
                 "type": {
-                    "description": "The type of the procedure.",
+                    "description": "The type of the procedure",
                     "type": "string"
                 }
             }
@@ -12078,16 +9527,16 @@
             "type": "object",
             "properties": {
                 "type": {
-                    "description": "The segment type.",
+                    "description": "The segment type",
                     "type": "string"
                 },
                 "transitionId": {
-                    "description": "The procedure segment id.",
+                    "description": "The procedure segment id",
                     "type": "string"
                 },
                 "sequenceNumber": {
                     "format": "int32",
-                    "description": "The procedure segment sequence number.",
+                    "description": "The procedure segment sequence number",
                     "type": "integer"
                 },
                 "trackCode": {
@@ -12096,11 +9545,11 @@
                 },
                 "waypointId": {
                     "format": "int32",
-                    "description": "The procedure segment waypoint id.",
+                    "description": "The procedure segment waypoint id",
                     "type": "integer"
                 },
                 "waypointDescCodes": {
-                    "description": "The procedure segment waypoint description codes.",
+                    "description": "The procedure segment waypoint description codes",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -12108,35 +9557,35 @@
                 },
                 "waypointBearing": {
                     "format": "double",
-                    "description": "The bearing to the waypoint.",
+                    "description": "The bearing to the waypoint",
                     "type": "number"
                 },
                 "waypointDistance": {
                     "format": "double",
-                    "description": "The distance to the waypoint.",
+                    "description": "The distance to the waypoint",
                     "type": "number"
                 },
                 "navaids": {
-                    "description": "The navaids referenced by this segment.",
+                    "description": "The navaids referenced by this segment",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureSegmentNavaid"
                     }
                 },
                 "turnDirection": {
-                    "description": "The procedure segment turn direction.",
+                    "description": "The procedure segment turn direction",
                     "type": "string"
                 },
                 "altitudeDescription": {
-                    "description": "The procedure segment altitude description.",
+                    "description": "The procedure segment altitude description",
                     "type": "string"
                 },
                 "altitude1": {
-                    "description": "The procedure segment altitude 1.",
+                    "description": "The procedure segment altitude 1",
                     "type": "string"
                 },
                 "altitude2": {
-                    "description": "The procedure segment altitude 2.",
+                    "description": "The procedure segment altitude 2",
                     "type": "string"
                 }
             }
@@ -12147,17 +9596,17 @@
             "properties": {
                 "navaidId": {
                     "format": "int32",
-                    "description": "The ID of the navaid referenced by this segment.",
+                    "description": "The ID of the navaid referenced by this segment",
                     "type": "integer"
                 },
                 "bearing": {
                     "format": "double",
-                    "description": "The bearing to the navaid.",
+                    "description": "The bearing to the navaid",
                     "type": "number"
                 },
                 "distance": {
                     "format": "double",
-                    "description": "The distance to the navaid.",
+                    "description": "The distance to the navaid",
                     "type": "number"
                 }
             }
@@ -12168,70 +9617,70 @@
             "properties": {
                 "id": {
                     "format": "int32",
-                    "description": "The unique identifier of the waypoint.",
+                    "description": "The unique identifier of the waypoint",
                     "type": "integer"
                 },
                 "airportId": {
                     "format": "int32",
-                    "description": "The airport id for the waypoint, if any.",
+                    "description": "The airport id for the waypoint, if any",
                     "type": "integer"
                 },
                 "countryCode": {
-                    "description": "The country code of the waypoint.",
+                    "description": "The country code of the waypoint",
                     "type": "string"
                 },
                 "type": {
-                    "description": "The type of the waypoint.",
+                    "description": "The type of the waypoint",
                     "type": "string"
                 },
                 "name": {
-                    "description": "The name of the waypoint.",
+                    "description": "The name of the waypoint",
                     "type": "string"
                 },
                 "icaoCode": {
-                    "description": "The ICAO code of the waypoint.",
+                    "description": "The ICAO code of the waypoint",
                     "type": "string"
                 },
                 "usageCode": {
-                    "description": "The usage code of the waypoint.",
+                    "description": "The usage code of the waypoint",
                     "type": "string"
                 },
                 "latitude": {
                     "format": "double",
-                    "description": "The latitude of the waypoint.",
+                    "description": "The latitude of the waypoint",
                     "type": "number"
                 },
                 "longitude": {
                     "format": "double",
-                    "description": "The longitude of the waypoint.",
+                    "description": "The longitude of the waypoint",
                     "type": "number"
                 },
                 "magneticVariance": {
                     "format": "double",
-                    "description": "The magnetic variance from true north at the waypoint.",
+                    "description": "The magnetic variance from true north at the waypoint",
                     "type": "number"
                 },
                 "navaidId": {
                     "format": "int32",
-                    "description": "The id of the associated naviad, if any.",
+                    "description": "The id of the associated navaid, if any",
                     "type": "integer"
                 },
                 "colocationFlag": {
-                    "description": "Flag indicating whether or not the waypoint is colocated with the navaid.",
+                    "description": "Flag indicating whether or not the waypoint is colocated with the navaid",
                     "type": "boolean"
                 },
                 "navaidBearing": {
                     "format": "double",
-                    "description": "The magnetic bearing from the navaid to the waypoint.",
+                    "description": "The magnetic bearing from the navaid to the waypoint",
                     "type": "number"
                 },
                 "navaidDistance": {
                     "format": "double",
-                    "description": "The distance from the navaid to the waypoint.",
+                    "description": "The distance from the navaid to the waypoint",
                     "type": "number"
                 },
                 "dafifId": {
-                    "description": "The DAFIF text identifier of the waypoint.",
+                    "description": "The DAFIF text identifier of the waypoint",
                     "type": "string"
                 }
             }
@@ -12242,33 +9691,33 @@
             "properties": {
                 "id": {
                     "format": "int32",
-                    "description": "The unique identifier of the navaid.",
+                    "description": "The unique identifier of the navaid",
                     "type": "integer"
                 },
                 "callsign": {
-                    "description": "The radio callsign of the navaid.",
+                    "description": "The radio callsign of the navaid",
                     "type": "string"
                 },
                 "type": {
-                    "description": "The navaid type.",
+                    "description": "The navaid type",
                     "type": "string"
                 },
                 "countryCode": {
-                    "description": "The navaid's country code.",
+                    "description": "The navaid's country code",
                     "type": "string"
                 },
                 "stateCode": {
                     "format": "int32",
-                    "description": "The navaid's state code.",
+                    "description": "The navaid's state code",
                     "type": "integer"
                 },
                 "name": {
-                    "description": "The official name of the navaid.",
+                    "description": "The official name of the navaid",
                     "type": "string"
                 },
                 "frequency": {
                     "format": "double",
-                    "description": "The radio frequency of the navaid.",
+                    "description": "The radio frequency of the navaid",
                     "type": "number"
                 },
                 "usageCode": {
@@ -12276,7 +9725,7 @@
                     "type": "string"
                 },
                 "channel": {
-                    "description": "The navaid's radio channel.",
+                    "description": "The navaid's radio channel",
                     "type": "string"
                 },
                 "radioClassCode": {
@@ -12285,51 +9734,237 @@
                 },
                 "range": {
                     "format": "double",
-                    "description": "The effective range of the navaid in nautical miles.",
+                    "description": "The effective range of the navaid in nautical miles",
                     "type": "number"
                 },
                 "latitude": {
                     "format": "double",
-                    "description": "The latitude of the navaid.",
+                    "description": "The latitude of the navaid",
                     "type": "number"
                 },
                 "longitude": {
                     "format": "double",
-                    "description": "The longitude of the navaid.",
+                    "description": "The longitude of the navaid",
                     "type": "number"
                 },
                 "elevation": {
                     "format": "double",
-                    "description": "The navaid's elevation.",
+                    "description": "The navaid's elevation",
                     "type": "number"
                 },
                 "magneticVariance": {
                     "format": "double",
-                    "description": "The magnetic varation from true north at the navaid.",
+                    "description": "The magnetic varation from true north at the navaid",
                     "type": "number"
                 },
                 "dmeLatitude": {
                     "format": "double",
-                    "description": "The latitude of the DME equipment colocated with the navaid, if any.",
+                    "description": "The latitude of the DME equipment colocated with the navaid, if any",
                     "type": "number"
                 },
                 "dmeLongitude": {
                     "format": "double",
-                    "description": "The longitude of the DME equipment colocated with the navaid, if any.",
+                    "description": "The longitude of the DME equipment colocated with the navaid, if any",
                     "type": "number"
                 },
                 "dmeElevation": {
                     "format": "double",
-                    "description": "The elevation of the DME equipment colocated with the navaid, if any.",
+                    "description": "The elevation of the DME equipment colocated with the navaid, if any",
                     "type": "number"
                 },
                 "associatedAirport": {
-                    "description": "The airport code of the associated airport, if any.",
+                    "description": "The airport code of the associated airport, if any",
                     "type": "string"
                 },
                 "status": {
                     "description": "The status of the navaid (e.g. in service, out of service, etc.)",
                     "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationFlightProcedures": {
+            "description": "Navigation procedures for a specific flight.",
+            "type": "object",
+            "properties": {
+                "takeoff": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.TakeoffProcedures",
+                    "description": "Procedures for the flight's takeoff"
+                },
+                "landing": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.LandingProcedures",
+                    "description": "Procedures for the flights landing"
+                },
+                "goAround": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.GoAroundProcedures",
+                    "description": "Procedures for any go arounds"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Navigation.TakeoffProcedures": {
+            "description": "Procedures for a flight's takeoff.",
+            "type": "object",
+            "properties": {
+                "departures": {
+                    "description": "The departure procedures",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedurePlus"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Navigation.LandingProcedures": {
+            "description": "Procedures for a flight's landing.",
+            "type": "object",
+            "properties": {
+                "detectedApproachId": {
+                    "format": "int32",
+                    "description": "The approach procedure identifier that was detected for the flight.\r\n            This defaults to 0 which represents unknown",
+                    "type": "integer"
+                },
+                "approaches": {
+                    "description": "The approach procedures",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedurePlus"
+                    }
+                },
+                "arrivals": {
+                    "description": "The arrival procedures",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedurePlus"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Navigation.GoAroundProcedures": {
+            "description": "Procedures for any go arounds.\r\n            This is not currently supported.",
+            "type": "object",
+            "properties": {
+                "procedures": {
+                    "description": "Any procedures that occurred for the go around",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedurePlus"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedurePlus": {
+            "description": "A {Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedure} with some more data. Specifically this nests subtypes, like segments, rather than just including id references.",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "description": "The unique identifier for this procedure",
+                    "type": "integer"
+                },
+                "cycleDate": {
+                    "description": "A text value representing the cycle date of the procedure",
+                    "type": "string"
+                },
+                "emergencySafeAltitude": {
+                    "format": "double",
+                    "description": "The emergency safe altitude of the procedure",
+                    "type": "number"
+                },
+                "name": {
+                    "description": "A text identifier of the procedure",
+                    "type": "string"
+                },
+                "transitionalAltitude": {
+                    "format": "double",
+                    "description": "The transition altitude of the procedure",
+                    "type": "number"
+                },
+                "transitionalLevel": {
+                    "format": "double",
+                    "description": "The transition level of the procedure",
+                    "type": "number"
+                },
+                "type": {
+                    "description": "The type of the procedure",
+                    "type": "string"
+                },
+                "segments": {
+                    "description": "The segments associated with this procedure",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureSegmentPlus"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureSegmentPlus": {
+            "description": "A {Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureSegment} with some more data. Specifically this nests subtypes, like waypoints, rather than just using id references.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The segment type",
+                    "type": "string"
+                },
+                "transitionId": {
+                    "description": "The procedure segment id",
+                    "type": "string"
+                },
+                "sequenceNumber": {
+                    "format": "int32",
+                    "description": "The procedure segment sequence number",
+                    "type": "integer"
+                },
+                "trackCode": {
+                    "description": "The procedure segment",
+                    "type": "string"
+                },
+                "waypointId": {
+                    "format": "int32",
+                    "description": "The procedure segment waypoint id",
+                    "type": "integer"
+                },
+                "waypointDescCodes": {
+                    "description": "The procedure segment waypoint description codes",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "waypointBearing": {
+                    "format": "double",
+                    "description": "The bearing to the waypoint",
+                    "type": "number"
+                },
+                "waypointDistance": {
+                    "format": "double",
+                    "description": "The distance to the waypoint",
+                    "type": "number"
+                },
+                "navaids": {
+                    "description": "The navaids referenced by this segment",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureSegmentNavaid"
+                    }
+                },
+                "turnDirection": {
+                    "description": "The procedure segment turn direction",
+                    "type": "string"
+                },
+                "altitudeDescription": {
+                    "description": "The procedure segment altitude description",
+                    "type": "string"
+                },
+                "altitude1": {
+                    "description": "The procedure segment altitude 1",
+                    "type": "string"
+                },
+                "altitude2": {
+                    "description": "The procedure segment altitude 2",
+                    "type": "string"
+                },
+                "waypoint": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationWaypoint",
+                    "description": "The procedure segment waypoint"
                 }
             }
         },
@@ -12507,8 +10142,6 @@
                 "severity",
                 "status",
                 "falsePositive",
-                "startTime",
-                "endTime",
                 "globalMeasurements",
                 "globalTimepoints",
                 "localMeasurements",
@@ -12549,12 +10182,12 @@
                 },
                 "startTime": {
                     "format": "double",
-                    "description": "The start offset for the event",
+                    "description": "The start offset for the event.\r\n            This can be null for computed events where the timepoint or interval aren't set or don't resolve",
                     "type": "number"
                 },
                 "endTime": {
                     "format": "double",
-                    "description": "The end offset for the event",
+                    "description": "The end offset for the event.\r\n            This can be null for computed events where the timepoint or interval aren't set or don't resolve",
                     "type": "number"
                 },
                 "globalMeasurements": {

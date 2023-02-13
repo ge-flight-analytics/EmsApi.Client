@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using EmsApi.Client.V2.Access;
 using Microsoft.Extensions.Http;
 using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Extensions.Http;
 using Refit;
+
+// Make our internals visible to the tests.
+[assembly: InternalsVisibleToAttribute( "EmsApi.Tests" )]
 
 namespace EmsApi.Client.V2
 {
@@ -78,6 +82,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Access to parameter-sets routes
         /// </summary>
+        [Obsolete("The ParameterSets route is deprecated and the AnayticSets should be used instead.")]
         public ParameterSetsAccess ParameterSets { get; set; }
 
         /// <summary>
@@ -111,13 +116,23 @@ namespace EmsApi.Client.V2
         public IdentificationAccess Identification { get; set; }
 
         /// <summary>
+        /// Access to airport navigation information: airports, runways, procedures, segments, waypoints, and NAVAIDs. 
+        /// </summary>
+        public NavigationAccess Navigation { get; set; }
+
+        /// <summary>
+        /// Access to airport weather data: METARs and TAFs.
+        /// </summary>
+        public WeatherAccess Weather { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
         /// </summary>
         internal IEmsApi RefitApi
         {
-            get; private set;
+            get; set;
         }
 
         private void InitializeHttpClient( EmsApiServiceHttpClientConfiguration httpClientConfig )
@@ -216,6 +231,8 @@ namespace EmsApi.Client.V2
             AdminUser = InitializeAccessClass<AdminUserAccess>();
             AdminEmsSecurables = InitializeAccessClass<AdminEmsSecurablesAccess>();
             Identification = InitializeAccessClass<IdentificationAccess>();
+            Navigation = InitializeAccessClass<NavigationAccess>();
+            Weather = InitializeAccessClass<WeatherAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()

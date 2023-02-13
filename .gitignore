@@ -1,6 +1,7 @@
 $RECYCLE.BIN
 .vs
 .suo
+.vscode
 packages/
 obj/
 bin/
