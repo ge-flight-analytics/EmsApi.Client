@@ -1,10 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmsApi.Client.V2;
 using EmsApi.Dto.V2;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using Xunit;
