@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>EmsApi.Dto</PackageId>
     <EnableDefaultItems>false</EnableDefaultItems>
     <Description>.NET data transfer objects for the Event Measurement System API</Description>

@@ -71,8 +71,6 @@ steps:
   displayName: Copy netstandard2.1 artifacts
   inputs:
     contents: |
-      src/Dto/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Dto.dll
-      src/Dto/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Dto.pdb
       src/Client/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Client.dll
       src/Client/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Client.pdb
     targetFolder: $(Build.ArtifactStagingDirectory)/netstandard2.1
