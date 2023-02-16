@@ -225,7 +225,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        [System.Obsolete("Database queries using RowCallback will be removed in future versions.")]
+        [System.Obsolete( "Database queries using RowCallback will be removed in future versions." )]
         public virtual Task SimpleQueryAsync( string databaseId, DatabaseQuery query, RowCallback callback, CallContext context = null )
         {
             return CallApiTask( api => api.QueryDatabase( databaseId, query.Raw, context ) ).ContinueWith( task =>
@@ -825,6 +825,62 @@ namespace EmsApi.Client.V2.Access
         public virtual void StopQuery( string databaseId, string queryId, CallContext context = null )
         {
             StopQueryAsync( databaseId, queryId, context ).Wait();
+        }
+
+        /// <summary>
+        /// Rolls back a specific tracked query that occurred in the past.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the tracked query uses.
+        /// </param>
+        /// <param name="rollback">
+        /// The information used to rollback the query.
+        /// </param>
+        public virtual Task RollbackTrackedQueryAsync( string databaseId, TrackedQueryRollback rollback, CallContext context = null )
+        {
+            return CallApiTask( api => api.RollbackTrackedQuery( databaseId, rollback, context ) );
+        }
+
+        /// <summary>
+        /// Rolls back a specific tracked query that occurred in the past.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the tracked query uses.
+        /// </param>
+        /// <param name="rollback">
+        /// The information used to rollback the query.
+        /// </param>
+        public virtual void RollbackTrackedQuery( string databaseId, TrackedQueryRollback rollback, CallContext context = null )
+        {
+            RollbackTrackedQueryAsync( databaseId, rollback, context ).Wait();
+        }
+
+        /// <summary>
+        /// Deletes a tracked query by name.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the tracked query uses.
+        /// </param>
+        /// <param name="queryName">
+        /// The unique name of the tracked query.
+        /// </param>
+        public virtual Task DeleteTrackedQueryAsync( string databaseId, string queryName, CallContext context = null )
+        {
+            return CallApiTask( api => api.DeleteTrackedQuery( databaseId, queryName, context ) );
+        }
+
+        /// <summary>
+        /// Deletes a tracked query by name.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the tracked query uses.
+        /// </param>
+        /// <param name="queryName">
+        /// The unique name of the tracked query.
+        /// </param>
+        public virtual void DeleteTrackedQuery( string databaseId, string queryName, CallContext context = null )
+        {
+            DeleteTrackedQueryAsync( databaseId, queryName, context ).Wait();
         }
 
         /// <summary>

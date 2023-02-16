@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>EmsApi.Dto</PackageId>
     <EnableDefaultItems>false</EnableDefaultItems>
     <Description>.NET data transfer objects for the Event Measurement System API</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.JSon" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.JSon" Version="13.0.2" />
     <PackageReference Include="NSwag.MSBuild" Version="13.16.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -20,7 +20,23 @@
     <Compile Include="Field.cs" />
   </ItemGroup>
 
-  <Target Name="NSwag" BeforeTargets="BeforeBuild">
+  <!-- 
+    This stuff exists because we need to run the NSwag generation once before the individual framework builds run. Typically
+    you cannot reference targets that are imported via nuget with BeforeTarget="DispatchToInnerBuilds" without specifying a
+    TargetFramework for it. So we have an "inner" task that actual does the work, and an "outer" task that calls it with the
+    first target framework in the list.
+  -->
+
+  <PropertyGroup>
+    <FirstTargetFramework Condition=" '$(TargetFrameworks)' == '' ">$(TargetFramework)</FirstTargetFramework>
+    <FirstTargetFramework Condition=" '$(FirstTargetFrameworks)' == '' ">$(TargetFrameworks.Split(';')[0])</FirstTargetFramework>
+  </PropertyGroup>
+
+  <Target Name="NSwag" BeforeTargets="DispatchToInnerBuilds">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="NswagInner" Properties="TargetFramework=$(FirstTargetFramework)" />
+  </Target>
+
+  <Target Name="NSwagInner">
     <Delete Files="EmsApi.Dto.V2.cs" />
     <Exec Command="$(NSwagExe_Net60) run settings.nswag" />
     <ItemGroup>
