@@ -46,17 +46,36 @@ steps:
     workingDirectory: src
 
 - task: CopyFiles@2
-  displayName: Copy artifacts
+  displayName: Copy packaging artifacts
   inputs:
     contents: |
       src/**/*.nupkg
       src/**/*.snupkg
+      src/Dto/EmsApi.Dto.V2.cs
+      ReleaseNotes.md
+    targetFolder: $(Build.ArtifactStagingDirectory)/packages
+    flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: Copy netstandard2.0 artifacts
+  inputs:
+    contents: |
       src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.dll
       src/Dto/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Dto.pdb
       src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.dll
       src/Client/bin/$(buildConfiguration)/netstandard2.0/EmsApi.Client.pdb
-      src/Dto/EmsAi.Dto.V2.cs
-    targetFolder: $(Build.ArtifactStagingDirectory)
+    targetFolder: $(Build.ArtifactStagingDirectory)/netstandard2.0
+    flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: Copy netstandard2.1 artifacts
+  inputs:
+    contents: |
+      src/Dto/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Dto.dll
+      src/Dto/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Dto.pdb
+      src/Client/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Client.dll
+      src/Client/bin/$(buildConfiguration)/netstandard2.1/EmsApi.Client.pdb
+    targetFolder: $(Build.ArtifactStagingDirectory)/netstandard2.1
     flattenFolders: true
 
 - task: PublishBuildArtifacts@1

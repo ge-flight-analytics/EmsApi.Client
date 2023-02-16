@@ -39,7 +39,7 @@ jobs:
             path: $(Build.ArtifactStagingDirectory)
 
         - pwsh: |
-            $packageDirectory = Join-Path '$(Build.ArtifactStagingDirectory)' 'drop'
+            $packageDirectory = Join-Path '$(Build.ArtifactStagingDirectory)' 'drop/packages'
             $package = Get-ChildItem $packageDirectory -Filter EmsApi.Client.*.nupkg | Select -First 1 -ExpandProperty Name
             $exp = "EmsApi\.Client\.(?<version>[\d]+\.[\d]+\.[\d]+)\.nupkg"
             $matchInfo = $package | Select-String $exp
@@ -58,7 +58,7 @@ jobs:
             tagSource: manual
             tag: v$(releaseVersion)
             title: Version $(releaseVersion)
-            releaseNotesFile: ReleaseNotes.md
+            releaseNotesFile: $(Build.ArtifactStagingDirectory)/drop/packages/ReleaseNotes.md
             assets: $(Build.ArtifactStagingDirectory)/drop/*
 
 - deployment: nuget
@@ -87,6 +87,6 @@ jobs:
           displayName: Push to NuGet.org
           inputs:
             command: push
-            packagesToPush: $(Build.ArtifactStagingDirectory)/drop/*.nupkg
+            packagesToPush: $(Build.ArtifactStagingDirectory)/drop/packages/*.nupkg
             nuGetFeedType: external
             publishFeedCredentials: $(nugetServiceConnection)

@@ -647,6 +647,30 @@ namespace EmsApi.Client.V2
         Task StopAsyncDatabaseQuery( string databaseId, string queryId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Rolls back a specific tracked query that occurred in the past.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the tracked query uses.
+        /// </param>
+        /// <param name="rollback">
+        /// The information used to rollback the query.
+        /// </param>
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/query-tracking/rollback" )]
+        Task RollbackTrackedQuery( string databaseId, [Body] TrackedQueryRollback rollback, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes a tracked query by name.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database that the tracked query uses.
+        /// </param>
+        /// <param name="queryName">
+        /// The unique name of the tracked query.
+        /// </param>
+        [Delete( "/v2/ems-systems/1/databases/{databaseId}/query-tracking/delete/{queryName}" )]
+        Task DeleteTrackedQuery( string databaseId, string queryName, [Property] CallContext context = null );
+
+        /// <summary>
         /// Creates one or more new data entities in the database.
         /// </summary>
         /// <param name="databaseId">
@@ -794,7 +818,7 @@ namespace EmsApi.Client.V2
         /// You must have Admin privileges to the EMS API to be able to call this route.
         /// </remarks>
         [Get( "/v2/admin/users" )]
-        Task<IEnumerable<AdminUser>> AdminGetUsers( string username = null, [Property] CallContext context = null );
+        Task<IEnumerable<User>> AdminGetUsers( string username = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates a new user account with the provided settings.
@@ -806,7 +830,7 @@ namespace EmsApi.Client.V2
         /// You must have Admin privileges to the EMS API to be able to call this route.
         /// </remarks>
         [Post( "/v2/admin/users" )]
-        Task<AdminUser> AdminAddUser( [Body] AdminUser user, [Property] CallContext context = null );
+        Task<User> AdminAddUser( [Body] User user, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the list of EMS systems associated with the user account.
@@ -856,7 +880,7 @@ namespace EmsApi.Client.V2
         /// If not provided the current release is used.
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/airports" )]
-        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( int?  releaseId = null, [Property] CallContext context = null );
+        Task<IEnumerable<NavigationAirport>> GetNavigationAirports( int? releaseId = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Gets the runways for a specific airport.

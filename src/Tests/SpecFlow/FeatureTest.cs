@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 using FluentAssertions;
@@ -61,14 +60,14 @@ namespace EmsApi.Tests
         /// </summary>
         public static void ShouldNotBeNullOfType<T>( this object input )
         {
-            input.Should().BeOfType<T>().And.Should().NotBeNull();
+            input.Should().BeOfType<T>().And.NotBeNull();
         }
 
         /// <summary>
         /// Asserts that the given enumerable is not null or empty, and all the values
         /// are of the specified type.
         /// </summary>
-        public static void ShouldNotBeNullOrEmptyOfType<T>( this IEnumerable input )
+        public static void ShouldNotBeNullOrEmptyOfType<T>( this IEnumerable<object> input )
         {
             // This has a problem when ANDed together, so they are asserted separately.
             input.Should().NotBeNullOrEmpty();

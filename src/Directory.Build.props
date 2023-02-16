@@ -1,13 +1,13 @@
 <Project>
-  <PropertyGroup>
-    <VersionPrefix>2.10.0</VersionPrefix>
-    <VersionSuffix>prerelease</VersionSuffix>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <EmbedAllSources>true</EmbedAllSources>
-    <DebugType>portable</DebugType>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Authors>c-owens</Authors>
-  </PropertyGroup>
+    <PropertyGroup>
+        <VersionPrefix>2.11.0</VersionPrefix>
+        <VersionSuffix>prerelease</VersionSuffix>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <EmbedAllSources>true</EmbedAllSources>
+        <DebugType>portable</DebugType>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Authors>c-owens</Authors>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
 </Project>

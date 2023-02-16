@@ -1,10 +1,8 @@
 using System;
-using Xunit;
-using FluentAssertions;
-
-using EmsApi.Client.V2;
 using System.Threading.Tasks;
 using EmsApi.Dto.V2;
+using FluentAssertions;
+using Xunit;
 
 namespace EmsApi.Tests
 {
@@ -18,7 +16,7 @@ namespace EmsApi.Tests
         public void Users_Can_Be_Added()
         {
             using var api = NewService();
-            Dto.V2.AdminUser user = api.AdminUser.AddUser( "EmsApiTest" );
+            Dto.V2.User user = api.AdminUser.AddUser( "EmsApiTest" );
             user.Should().NotBeNull();
             user.Username.Should().Be( "EmsApiTest" );
         }

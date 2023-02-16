@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EmsApi.Client.V2;
@@ -44,6 +45,7 @@ namespace EmsApi.Tests
         }
 
         [Fact( DisplayName = "A simple query should fire callbacks" )]
+        [Obsolete]
         public void Simple_query_should_fire_callbacks()
         {
             using var api = NewService();
@@ -78,6 +80,7 @@ namespace EmsApi.Tests
         }
 
         [Fact( DisplayName = "An advanced query should fire callbacks" )]
+        [Obsolete]
         public void Advanced_query_should_fire_callbacks()
         {
             using var api = NewService();
@@ -100,6 +103,7 @@ namespace EmsApi.Tests
         }
 
         [Fact( DisplayName = "An advanced query should handle pagination" )]
+        [Obsolete]
         public void Advanced_query_should_handle_pagination()
         {
             using var api = NewService();
@@ -120,6 +124,102 @@ namespace EmsApi.Tests
 
             api.Databases.Query( Monikers.FlightDatabase, query, callback, rowsPerCall: 10 );
             numCallbacks.Should().Be( numItems );
+        }
+
+        [Fact( DisplayName = "An advanced query can return an async enumerable of dictionaries" )]
+        public async Task Advanced_query_can_return_async_dictionary()
+        {
+            using var api = NewService();
+            var query = CreateQuery( orderResults: false );
+
+            const int numItems = 20;
+            query.Top = numItems;
+
+            int received = 0;
+            string[] fieldIds = QueryFields;
+            await foreach( IReadOnlyDictionary<string, object> dict in api.Databases.QueryDictionaryAsync( Monikers.FlightDatabase, query ) )
+            {
+                received++;
+                dict.Keys.Should().Equal( fieldIds );
+            }
+
+            received.Should().Be( numItems );
+        }
+
+        [Fact( DisplayName = "An advanced query can return an async enumerable of lists" )]
+        public async Task Advanced_query_can_return_async_list()
+        {
+            using var api = NewService();
+            var query = CreateQuery( orderResults: false );
+
+            const int numItems = 20;
+            query.Top = numItems;
+
+            int received = 0;
+            string[] fieldIds = QueryFields;
+            await foreach( IList<object> values in api.Databases.QueryValuesAsync( Monikers.FlightDatabase, query ) )
+            {
+                received++;
+                values.Count.Should().Be( fieldIds.Length );
+            }
+
+            received.Should().Be( numItems );
+        }
+
+        [Fact( DisplayName = "An advanced dictionary query can be started manually" )]
+        public async Task Advanced_dictionary_query_can_call_start()
+        {
+            using var api = NewService();
+            var query = CreateQuery( orderResults: false );
+
+            const int numItems = 20;
+            query.Top = numItems;
+
+            int received = 0;
+            string[] fieldIds = QueryFields;
+            AsyncQueryInfo info = null;
+            try
+            {
+                info = await api.Databases.StartQueryAsync( Monikers.FlightDatabase, query );
+                await foreach( IReadOnlyDictionary<string, object> dict in api.Databases.ReadQueryDictionaryAsync( Monikers.FlightDatabase, info ) )
+                {
+                    received++;
+                    dict.Keys.Should().Equal( fieldIds );
+                }
+            }
+            finally
+            {
+                if( info != null )
+                    await api.Databases.StopQueryAsync( Monikers.FlightDatabase, info.Id );
+            }
+        }
+
+        [Fact( DisplayName = "An advanced list query can be started manually" )]
+        public async Task Advanced_list_query_can_call_start()
+        {
+            using var api = NewService();
+            var query = CreateQuery( orderResults: false );
+
+            const int numItems = 20;
+            query.Top = numItems;
+
+            int received = 0;
+            string[] fieldIds = QueryFields;
+            AsyncQueryInfo info = null;
+            try
+            {
+                info = await api.Databases.StartQueryAsync( Monikers.FlightDatabase, query );
+                await foreach( IList<object> values in api.Databases.ReadQueryValuesAsync( Monikers.FlightDatabase, info ) )
+                {
+                    received++;
+                    values.Count.Should().Be( fieldIds.Length );
+                }
+            }
+            finally
+            {
+                if( info != null )
+                    await api.Databases.StopQueryAsync( Monikers.FlightDatabase, info.Id );
+            }
         }
 
 #pragma warning disable xUnit1004 // Test methods should not be skipped
@@ -243,11 +343,12 @@ namespace EmsApi.Tests
             var query = new DatabaseQuery();
 
             // Select a few columns.
-            query.SelectField( Monikers.FlightId );
-            query.SelectField( Monikers.TailNumber );
-            query.SelectField( Monikers.CityPair );
-            query.SelectField( Monikers.TakeoffAirportName );
-            query.SelectField( Monikers.LandingAirportName );
+            var fields = QueryFields;
+            query.SelectField( fields[0] );
+            query.SelectField( fields[1] );
+            query.SelectField( fields[2] );
+            query.SelectField( fields[3] );
+            query.SelectField( fields[4] );
 
             // Filter for takeoff and landing valid.
             query.AddBooleanFilter( Monikers.TakeoffValid, true );
@@ -261,6 +362,15 @@ namespace EmsApi.Tests
             query.ValueFormat = DbQueryFormat.Display;
             return query;
         }
+
+        private static string[] QueryFields => new[]
+        {
+            Monikers.FlightId,
+            Monikers.TailNumber,
+            Monikers.CityPair,
+            Monikers.TakeoffAirportName,
+            Monikers.LandingAirportName
+        };
 
         internal static class Monikers
         {
