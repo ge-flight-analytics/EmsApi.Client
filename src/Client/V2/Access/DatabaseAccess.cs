@@ -124,6 +124,41 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Returns information about multiple database fields matching the input IDs.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database containing a fields to return.
+        /// </param>
+        /// <param name="query">
+        /// Information about which fields to get definitions for.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<FieldInfo> GetFieldsAsync( string databaseId, string[] fieldIds, CallContext context = null )
+        {
+            var query = new FieldInfoQuery { FieldIds = fieldIds };
+            return CallApiTask( api => api.GetDatabaseFieldDefinitions( databaseId, query, context ) );
+        }
+
+        /// <summary>
+        /// Returns information about multiple database fields matching the input IDs.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database containing a fields to return.
+        /// </param>
+        /// <param name="query">
+        /// Information about which fields to get definitions for.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual FieldInfo GetFields( string databaseId, string[] fieldIds, CallContext context = null )
+        {
+            return AccessTaskResult( GetFieldsAsync( databaseId, fieldIds, context ) );
+        }
+
+        /// <summary>
         /// Returns all the fields matching the specified search options.
         /// </summary>
         /// <param name="databaseId">

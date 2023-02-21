@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmsApi.Client.V2;
@@ -271,7 +272,7 @@ namespace EmsApi.Tests
             invocations.Should().BeGreaterOrEqualTo( 2 );
         }
 
-        [Fact( DisplayName = "Async query try get data returns false." )]
+        [Fact( DisplayName = "Async query try get data returns false" )]
         public async Task Async_Query_Try_Get_Data_Returns_False()
         {
             // This should never trigger a login because we mock the refit method.
@@ -288,6 +289,44 @@ namespace EmsApi.Tests
             (bool dataIsReady, AsyncQueryData data) = await api.Databases.TryReadQueryAsync( Monikers.FlightDatabase, Guid.NewGuid().ToString(), 0, 19999 );
             dataIsReady.Should().BeFalse();
             data.Should().BeNull();
+        }
+
+        [Fact( DisplayName = "Get fields returns multiple fields" )]
+        public async Task Get_Fields_Returns_Multiple_Fields()
+        {
+            using var api = NewService();
+            string[] fieldIds = new[]
+            {
+                Monikers.FlightId,
+                Monikers.TakeoffValid,
+                Monikers.TakeoffAirportName
+            };
+
+            FieldInfo result = await api.Databases.GetFieldsAsync( Monikers.FlightDatabase, fieldIds );
+
+            result.Should().NotBeNull();
+            result.Fields.Should().HaveCount( fieldIds.Length );
+            result.InvalidFieldIds.Should().BeNullOrEmpty();
+        }
+
+        [Fact( DisplayName = "Get fields returns invalid fields" )]
+        public async Task Get_Fields_Returns_Invalid_Fields()
+        {
+            using var api = NewService();
+            string[] fieldIds = new[]
+            {
+                Monikers.FlightId,
+                Monikers.TakeoffValid,
+                Monikers.TakeoffAirportName,
+                Monikers.Invalid
+            };
+
+            FieldInfo result = await api.Databases.GetFieldsAsync( Monikers.FlightDatabase, fieldIds );
+
+            result.Should().NotBeNull();
+            result.Fields.Should().HaveCount( fieldIds.Length - 1 );
+            result.InvalidFieldIds.Should().HaveCount( 1 );
+            result.InvalidFieldIds.First().Should().BeEquivalentTo( Monikers.Invalid );
         }
 
         private static void TestSimple( bool orderResults )
@@ -383,6 +422,7 @@ namespace EmsApi.Tests
             public static string TakeoffValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-takeoff]]]";
             public static string LandingValid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.exist-landing]]]";
             public static string FlightDataQualityField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[data-quality][base-field][data-quality-comments]]]";
+            public static string Invalid = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[ems-core][base-field][flight.this-field-does-not-really-exist]]]";
         }
     }
 }
