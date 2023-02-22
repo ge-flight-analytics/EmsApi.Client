@@ -291,7 +291,7 @@ namespace EmsApi.Tests
             data.Should().BeNull();
         }
 
-        [Fact( DisplayName = "Get fields returns multiple fields" )]
+        [Fact( DisplayName = "Get fields returns multiple fields", Skip = "API route not yet deployed" )]
         public async Task Get_Fields_Returns_Multiple_Fields()
         {
             using var api = NewService();
@@ -309,7 +309,7 @@ namespace EmsApi.Tests
             result.InvalidFieldIds.Should().BeNullOrEmpty();
         }
 
-        [Fact( DisplayName = "Get fields returns invalid fields" )]
+        [Fact( DisplayName = "Get fields returns invalid fields", Skip = "API route not yet deployed" )]
         public async Task Get_Fields_Returns_Invalid_Fields()
         {
             using var api = NewService();
