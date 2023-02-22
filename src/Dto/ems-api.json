@@ -5043,7 +5043,7 @@
                 ],
                 "summary": "Returns all the fields matching the specified search options.",
                 "description": "This API will return fields matching your search options. If no fields are found, an empty list is returned.",
-                "operationId": "Database_GetFields",
+                "operationId": "Database_SearchFields",
                 "consumes": [],
                 "produces": [
                     "application/json",
@@ -5103,6 +5103,66 @@
                             "items": {
                                 "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Field"
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            },
+            "post": {
+                "tags": [
+                    "Database APIs"
+                ],
+                "summary": "Returns information about multiple database fields matching the input ids.",
+                "description": "Fields are elements in an EMS system that can be queried for results. For more details on how to query for\r\n            results, see the \"query\" resource below.",
+                "operationId": "Database_GetFields",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "query",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FieldInfoQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FieldInfo"
                         }
                     },
                     "401": {
@@ -10866,6 +10926,45 @@
                 }
             }
         },
+        "Adi.Ems.Web.Api.V2.Dto.Schema.FieldInfoQuery": {
+            "description": "Represents the body for a request to get information about multiple database fields.",
+            "required": [
+                "fieldIds"
+            ],
+            "type": "object",
+            "properties": {
+                "fieldIds": {
+                    "description": "The list of database field ids to return information for",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.Schema.FieldInfo": {
+            "description": "Represents the result of a query to retrieve info for multiple fields.",
+            "required": [
+                "fields"
+            ],
+            "type": "object",
+            "properties": {
+                "fields": {
+                    "description": "Information about the available fields that were requested in the query",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Field"
+                    }
+                },
+                "invalidFieldIds": {
+                    "description": "The ids for fields that were requested in the query but are unavailable.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "Adi.Ems.Web.Api.V2.Dto.Schema.Query": {
             "description": "Represents the options used to make up a data source query.",
             "required": [
@@ -10952,6 +11051,10 @@
                         "none",
                         "display"
                     ],
+                    "type": "string"
+                },
+                "alias": {
+                    "description": "An optional name to use to represent this this column of data (vs the default display \r\n            name of the field)",
                     "type": "string"
                 }
             }
@@ -11323,7 +11426,7 @@
             }
         },
         "Adi.Ems.Web.Api.V2.Dto.Schema.CreateResult": {
-            "description": "Represents the result of an update.",
+            "description": "Represents the result of a create.",
             "required": [
                 "rowsAdded"
             ],

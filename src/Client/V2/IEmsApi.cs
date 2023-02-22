@@ -544,6 +544,18 @@ namespace EmsApi.Client.V2
         Task<Field> GetDatabaseFieldDefinition( string databaseId, string fieldId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns information about multiple database fields matching the input IDs.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database containing a fields to return.
+        /// </param>
+        /// <param name="query">
+        /// Information about which fields to get definitions for.
+        /// </param>
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/fields" )]
+        Task<FieldInfo> GetDatabaseFieldDefinitions( string databaseId, [Body] FieldInfoQuery query, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns all the fields matching the specified search options.
         /// </summary>
         /// <param name="databaseId">

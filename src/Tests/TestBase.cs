@@ -1,5 +1,4 @@
 using System;
-using System.Net.Http;
 
 using EmsApi.Client.V2;
 
@@ -14,7 +13,7 @@ using EmsApi.Client.V2;
 // This value CAN be overridden by test runner configuration, so be careful. Full details on that
 // can be found here: https://xunit.net/docs/running-tests-in-parallel
 //
-[assembly: Xunit.CollectionBehavior(MaxParallelThreads = -1)]
+[assembly: Xunit.CollectionBehavior( MaxParallelThreads = -1 )]
 
 namespace EmsApi.Tests
 {
@@ -27,23 +26,23 @@ namespace EmsApi.Tests
         {
             string endpoint = Environment.GetEnvironmentVariable( "EmsApiTestEndpoint" );
             if( string.IsNullOrEmpty( endpoint ) )
-                throw new InvalidOperationException( "Test API Endpoint not set" );
+               throw new InvalidOperationException( "Test API Endpoint not set" );
 
             string user = Environment.GetEnvironmentVariable( "EmsApiTestUsername" );
             if( string.IsNullOrEmpty( user ) )
-                throw new InvalidOperationException( "Test API Username not set" );
+               throw new InvalidOperationException( "Test API Username not set" );
 
             string pass = Environment.GetEnvironmentVariable( "EmsApiTestPassword" );
             if( string.IsNullOrEmpty( pass ) )
-                throw new InvalidOperationException( "Test API Password not set" );
+               throw new InvalidOperationException( "Test API Password not set" );
 
             string apiClientId = Environment.GetEnvironmentVariable( "EmsApiTestClientId" );
             if( string.IsNullOrEmpty( apiClientId ) )
-                throw new InvalidOperationException( "Test API Client Id not set" );
+               throw new InvalidOperationException( "Test API Client Id not set" );
 
             string apiClientSecret = Environment.GetEnvironmentVariable( "EmsApiTestClientSecret" );
             if( string.IsNullOrEmpty( apiClientSecret ) )
-                throw new InvalidOperationException( "Test API Client Secret not set" );
+               throw new InvalidOperationException( "Test API Client Secret not set" );
 
             m_config = new EmsApiServiceConfiguration( useEnvVars: false )
             {
