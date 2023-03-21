@@ -189,12 +189,15 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
+        /// <param name="includeMetadata">
+        /// When true, metadata will be returned along with analytic items.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
+        public virtual Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAnalyticGroup( analyticGroupId, category, context ) );
+            return CallApiTask( api => api.GetAnalyticGroup( analyticGroupId, category, includeMetadata, context ) );
         }
 
         /// <summary>
@@ -207,33 +210,15 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
-        /// <param name="context">
-        /// The optional call context to include.
-        /// </param>
-        public virtual AnalyticGroupContents GetGroup( string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
-        {
-            return AccessTaskResult( GetGroupAsync( analyticGroupId, category, context ) );
-        }
-
-        /// <summary>
-        /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
-        /// </summary>
-        /// <param name="flightId">
-        /// The integer ID of the flight record to use when retrieving the analytic information.
-        /// </param>
-        /// <param name="analyticGroupId">
-        /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
-        /// </param>
-        /// <param name="category">
-        /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
-        /// analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// <param name="includeMetadata">
+        /// When true, metadata will be returned along with analytic items.
         /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<AnalyticGroupContents> GetGroupAsync( int flightId, string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
+        public virtual AnalyticGroupContents GetGroup( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAnalyticGroupWithFlight( flightId, analyticGroupId, category, context ) );
+            return AccessTaskResult( GetGroupAsync( analyticGroupId, category, includeMetadata, context ) );
         }
 
         /// <summary>
@@ -249,12 +234,39 @@ namespace EmsApi.Client.V2.Access
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
+        /// <param name="includeMetadata">
+        /// When true, metadata will be returned along with analytic items.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual AnalyticGroupContents GetGroup( int flightId, string analyticGroupId = null, Category category = Category.Full, CallContext context = null )
+        public virtual Task<AnalyticGroupContents> GetGroupAsync( int flightId, string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, CallContext context = null )
         {
-            return AccessTaskResult( GetGroupAsync( flightId, analyticGroupId, category, context ) );
+            return CallApiTask( api => api.GetAnalyticGroupWithFlight( flightId, analyticGroupId, category, includeMetadata, context ) );
+        }
+
+        /// <summary>
+        /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
+        /// </summary>
+        /// <param name="flightId">
+        /// The integer ID of the flight record to use when retrieving the analytic information.
+        /// </param>
+        /// <param name="analyticGroupId">
+        /// The ID of the group whose contents to retrieve. If not specified, the contents of the root group will be returned.
+        /// </param>
+        /// <param name="category">
+        /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
+        /// analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// </param>
+        /// <param name="includeMetadata">
+        /// When true, metadata will be returned along with analytic items.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual AnalyticGroupContents GetGroup( int flightId, string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, CallContext context = null )
+        {
+            return AccessTaskResult( GetGroupAsync( flightId, analyticGroupId, category, includeMetadata, context ) );
         }
 
         /// <summary>

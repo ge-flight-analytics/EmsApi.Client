@@ -51,15 +51,16 @@ jobs:
             Write-Host "##vso[task.setvariable variable=releaseVersion]$version"
           displayName: Determine tag
 
-        - task: GitHubRelease@0
+        - task: GitHubRelease@1
           displayName: Create GitHub release
           inputs:
             gitHubConnection: $(githubServiceConnection)
-            tagSource: manual
+            tagSource: userSpecifiedTag
             tag: v$(releaseVersion)
             title: Version $(releaseVersion)
-            releaseNotesFile: $(Build.ArtifactStagingDirectory)/drop/packages/ReleaseNotes.md
-            assets: $(Build.ArtifactStagingDirectory)/drop/*
+            releaseNotesSource: filePath
+            releaseNotesFilePath: $(Build.ArtifactStagingDirectory)/drop/packages/ReleaseNotes.md
+            assets: $(Build.ArtifactStagingDirectory)/drop/**
 
 - deployment: nuget
   displayName: NuGet.org

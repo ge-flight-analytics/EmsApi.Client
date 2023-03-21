@@ -315,8 +315,11 @@ namespace EmsApi.Client.V2
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
+        /// <param name="includeMetadata">
+        /// When true, metadata will be returned along with analytic items.
+        /// </param>
         [Get( "/v2/ems-systems/1/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroup( string analyticGroupId = null, Category category = Category.Full, [Property] CallContext context = null );
+        Task<AnalyticGroupContents> GetAnalyticGroup( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
@@ -331,8 +334,11 @@ namespace EmsApi.Client.V2
         /// The category of analytics we are interested in. "Full", "Physical" or "Logical". A null value specifies the default
         /// analytic set, which represents the full set of values exposed by the backing EMS system.
         /// </param>
+        /// <param name="includeMetadata">
+        /// When true, metadata will be returned along with analytic items.
+        /// </param>
         [Get( "/v2/ems-systems/1/flights/{flightId}/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int flightId, string analyticGroupId = null, Category category = Category.Full, [Property] CallContext context = null );
+        Task<AnalyticGroupContents> GetAnalyticGroupWithFlight( int flightId, string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, [Property] CallContext context = null );
 
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.
