@@ -66,13 +66,14 @@ namespace EmsApi.Dto.V2
         /// <summary>
         /// Adds a field to be included in the select statement of the query.
         /// </summary>
-        public void SelectField( string fieldId, SelectColumnAggregate? aggregate = null, SelectColumnFormat? format = null )
+        public void SelectField( string fieldId, SelectColumnAggregate? aggregate = null, SelectColumnFormat? format = null, string alias = null )
         {
             var column = new SelectColumn
             {
                 FieldId = fieldId,
                 Aggregate = aggregate,
-                Format = format
+                Format = format,
+                Alias = alias
             };
 
             Raw.Select.Add( column );
@@ -139,7 +140,7 @@ namespace EmsApi.Dto.V2
                 Args = new Collection<FilterArgument>()
             };
 
-            foreach( var arg in arguments )
+            foreach( FilterArgument arg in arguments )
                 inner.Args.Add( arg );
 
             wrapper.Value = inner;
