@@ -1,2 +1,2 @@
-# Release 2.13.0
-* Add the includeMetadata option for analytic group routes
+# Release 2.14.0
+* Add alias option to DatabaseQuery.SelectField() method for alternate field result naming.

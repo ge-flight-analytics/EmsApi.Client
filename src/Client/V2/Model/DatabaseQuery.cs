@@ -66,7 +66,8 @@ namespace EmsApi.Dto.V2
         /// <summary>
         /// Adds a field to be included in the select statement of the query.
         /// </summary>
-        public void SelectField( string fieldId, SelectColumnAggregate? aggregate = null, SelectColumnFormat? format = null, string alias = null )
+        /// <returns>The newly added select column object.</returns>
+        public SelectColumn SelectField( string fieldId, SelectColumnAggregate? aggregate = null, SelectColumnFormat? format = null, string alias = null )
         {
             var column = new SelectColumn
             {
@@ -77,6 +78,7 @@ namespace EmsApi.Dto.V2
             };
 
             Raw.Select.Add( column );
+            return column;
         }
 
         /// <summary>
