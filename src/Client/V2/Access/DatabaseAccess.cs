@@ -62,12 +62,16 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of a field group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
+        /// <param name="ignoreIndex">
+        /// If specified as True, the API will not attempt to use a pre-built index to answer the request.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<FieldGroup> GetFieldGroupAsync( string databaseId, string groupId = null, CallContext context = null )
+        public virtual Task<FieldGroup> GetFieldGroupAsync( string databaseId, string groupId = null,
+            bool? ignoreIndex = null, CallContext context = null )
         {
-            return CallApiTask( api => api.GetDatabaseFieldGroup( databaseId, groupId, context ) );
+            return CallApiTask( api => api.GetDatabaseFieldGroup( databaseId, groupId, ignoreIndex, context ) );
         }
 
         /// <summary>
@@ -81,12 +85,16 @@ namespace EmsApi.Client.V2.Access
         /// The unique identifier of a field group whose contents to return. If not specified, 
         /// the contents of the root group are returned.
         /// </param>
+        /// <param name="ignoreIndex">
+        /// If specified as True, the API will not attempt to use a pre-built index to answer the request.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual FieldGroup GetFieldGroup( string databaseId, string groupId = null, CallContext context = null )
+        public virtual FieldGroup GetFieldGroup( string databaseId, string groupId = null, 
+            bool? ignoreIndex = null, CallContext context = null )
         {
-            return AccessTaskResult( GetFieldGroupAsync( databaseId, groupId, context ) );
+            return AccessTaskResult( GetFieldGroupAsync( databaseId, groupId, ignoreIndex, context ) );
         }
 
         /// <summary>
