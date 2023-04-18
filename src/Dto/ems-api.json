@@ -5958,6 +5958,64 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/query-transform": {
+      "post": {
+        "tags": [
+          "Database APIs"
+        ],
+        "summary": "Transforms a given EMS database query based on a requested transformation type (e.g. add automatic filters).",
+        "operationId": "Database_QueryTransform",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "databaseId",
+            "in": "path",
+            "description": "The unique identifier of the EMS database that is the target of the query.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "queryTransform",
+            "in": "body",
+            "description": "The EMS query transformation information (including the query to be transformed and the transformation type to be applied).",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.QueryTransform"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query"
+            }
+          },
+          "400": {
+            "description": "If the specified query transform structure is invalid or incorrectly configured.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/flights/{flightId}/ems-profiles/{profileId}": {
       "get": {
         "tags": [
@@ -11357,6 +11415,28 @@
         "value": {
           "$ref": "#/definitions/System.Object",
           "description": "The value represented by the filter argument."
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.QueryTransform": {
+      "description": "Represents the options used to make up a query transformation.",
+      "required": [
+        "inputQuery",
+        "queryTransformType"
+      ],
+      "type": "object",
+      "properties": {
+        "inputQuery": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query",
+          "description": "The EMS query to be transformed"
+        },
+        "queryTransformType": {
+          "description": "The type of transformation to apply to the query.",
+          "enum": [
+            "none",
+            "addAutoFilters"
+          ],
+          "type": "string"
         }
       }
     },

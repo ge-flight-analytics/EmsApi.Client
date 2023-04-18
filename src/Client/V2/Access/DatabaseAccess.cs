@@ -863,6 +863,40 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Applies one of a set of transformational changes to an EMS database query and returns the modified query result.
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="query">
+        /// The query to be transformed.
+        /// </param>
+        /// <param name="type">
+        /// The type of transformation to apply.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<DatabaseQuery> TransformQueryAsync( string databaseId, DatabaseQuery query, QueryTransformType type, CallContext context = null )
+        {
+            var request = new QueryTransform
+            {
+                InputQuery = query.Raw,
+                QueryTransformType = type
+            };
+
+            return CallApiTask( api => api.TransformDatabaseQuery( databaseId, request, context ) ).ContinueWith( task =>
+            {
+                // Convert to our result format.
+                var transformedQuery = new DatabaseQuery
+                {
+                    Raw = task.Result
+                };
+                return transformedQuery;
+            } );
+        }
+
+        /// <summary>
         /// Rolls back a specific tracked query that occurred in the past.
         /// </summary>
         /// <param name="databaseId">
