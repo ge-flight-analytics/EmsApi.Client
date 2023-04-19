@@ -534,8 +534,11 @@ namespace EmsApi.Client.V2
         /// The unique identifier of a field group whose contents to return. If not specified,
         /// the contents of the root group are returned.
         /// </param>
+        /// <param name="ignoreIndex">
+        /// If specified as True, the API will not attempt to use a pre-built index to answer the request.
+        /// </param>
         [Get( "/v2/ems-systems/1/databases/{databaseId}/field-groups" )]
-        Task<FieldGroup> GetDatabaseFieldGroup( string databaseId, string groupId = null, [Property] CallContext context = null );
+        Task<FieldGroup> GetDatabaseFieldGroup( string databaseId, string groupId = null, bool? ignoreIndex = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information about a database field matching the specified ID.
