@@ -11422,7 +11422,7 @@
       "description": "Represents the options used to make up a query transformation.",
       "required": [
         "inputQuery",
-        "queryTransformType"
+        "type"
       ],
       "type": "object",
       "properties": {
@@ -11430,7 +11430,7 @@
           "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query",
           "description": "The EMS query to be transformed"
         },
-        "queryTransformType": {
+        "type": {
           "description": "The type of transformation to apply to the query.",
           "enum": [
             "none",

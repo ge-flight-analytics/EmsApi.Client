@@ -882,7 +882,7 @@ namespace EmsApi.Client.V2.Access
             var request = new QueryTransform
             {
                 InputQuery = query.Raw,
-                QueryTransformType = type
+                Type = type
             };
 
             return CallApiTask( api => api.TransformDatabaseQuery( databaseId, request, context ) ).ContinueWith( task =>
