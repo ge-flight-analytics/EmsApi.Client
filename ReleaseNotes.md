@@ -1,2 +1,2 @@
-# Release 2.14.1
-* Adds DisplayName property to NavigationProcedures.
+# Release 2.14.2
+* Adds missing ignoreIndex parameter to the GetFieldGroup Database API.
