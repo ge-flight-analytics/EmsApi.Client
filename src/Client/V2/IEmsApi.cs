@@ -668,6 +668,18 @@ namespace EmsApi.Client.V2
         Task StopAsyncDatabaseQuery( string databaseId, string queryId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Applies changes to an EMS database query (e.g. to add automatic filters based on the selected fields).
+        /// </summary>
+        /// <param name="databaseId">
+        /// The unique identifier of the EMS database to query.
+        /// </param>
+        /// <param name="request">
+        /// The transformation request - including the query to be transformed and the transformation type.
+        /// </param>
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/query-transform" )]
+        Task<DbQuery> TransformDatabaseQuery( string databaseId, [Body] QueryTransform request, [Property] CallContext context = null );
+
+        /// <summary>
         /// Rolls back a specific tracked query that occurred in the past.
         /// </summary>
         /// <param name="databaseId">
