@@ -7,6 +7,22 @@ namespace EmsApi.Dto.V2
     // This adds properties for derived field types in the API that are not visible in the OpenAPI spec.
 
     /// <summary>
+    /// Indicates the suggested method for editing numeric field values.
+    /// </summary>
+    public enum NumberEditStyle
+    {
+        /// <summary>
+        /// A manual input text box is recommended.
+        /// </summary>
+        ManualInput,
+
+        /// <summary>
+        /// A numeric slider is recommended.
+        /// </summary>
+        Slider
+    }
+
+    /// <summary>
     /// Indicates the way in which numeric field values should be interpreted in query results.
     /// </summary>
     public enum NumberInterpretation
@@ -73,7 +89,8 @@ namespace EmsApi.Dto.V2
         /// The number edit style for the field, if <see cref="Type"/> is <see cref="FieldType.Number"/>.
         /// </summary>
         [JsonProperty( "numberEditStyle", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore )]
-        public string NumberEditStyle { get; set; }
+        [JsonConverter( typeof( StringEnumConverter ) )]
+        public NumberEditStyle? NumberEditStyle { get; set; }
 
         /// <summary>
         /// The number interpretation for the field, if <see cref="Type"/> is <see cref="FieldType.Number"/>.
