@@ -1,2 +1,2 @@
-# Release 2.16.0
-* Adds extended field information for the GetField and GetFields database routes
+# Release 2.16.1
+* Adds more information about segments for the GetFlightProcedures and GetSegments navigation routes

@@ -5288,6 +5288,13 @@
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query"
             }
+          },
+          {
+            "name": "enableAnyDatabaseFields",
+            "in": "query",
+            "description": "If true, the field identifiers in the query can come from any database,\r\n            not just the provided database. For example, if you have a field identifier for the flight id from the flight database,\r\nbut want to make a request to an event database, you could use that same field identifier.",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -5359,6 +5366,13 @@
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query"
             }
+          },
+          {
+            "name": "enableAnyDatabaseFields",
+            "in": "query",
+            "description": "If true, the field identifiers in the query can come from any database,\r\n            not just the provided database. For example, if you have a field identifier for the flight id from the flight database,\r\n            but want to make a request to an event database, you could use that same field identifier.",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -5603,6 +5617,76 @@
           },
           "400": {
             "description": "If the specified create structure is invalid or incorrectly configured. In particular the content of createColumns must be a JSON array containing one JSON array for each data entity, and all the primary key columns must be provided for each data entity being created.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/insert": {
+      "post": {
+        "tags": [
+          "Database APIs"
+        ],
+        "summary": "Inserts one or more new data entities in the database.",
+        "operationId": "Database_RunInsert",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "databaseId",
+            "in": "path",
+            "description": "The unique identifier of the EMS database to add data entities to.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "insert",
+            "in": "body",
+            "description": "The information used to insert one or more new data entities.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Insert"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.CreateResult"
+            }
+          },
+          "400": {
+            "description": "If the specified insert structure is invalid or incorrectly configured.",
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
@@ -5963,8 +6047,9 @@
         "tags": [
           "Database APIs"
         ],
-        "summary": "Transforms a given EMS database query based on a requested transformation type (e.g. add automatic filters).",
-        "operationId": "Database_QueryTransform",
+        "summary": "Transforms the given EMS database query based on a specified transformation type (e.g. 'add auto filters').",
+        "description": "Event queries should generally exclude events marked as false positive, profile measurements should\r\n            exclude flights not yet processed by that profile, etc.",
+        "operationId": "Database_TransformQuery",
         "consumes": [
           "application/json",
           "text/json"
@@ -5985,14 +6070,14 @@
           {
             "name": "databaseId",
             "in": "path",
-            "description": "The unique identifier of the EMS database that is the target of the query.",
+            "description": "The unique identifier of the EMS database being queried.",
             "required": true,
             "type": "string"
           },
           {
-            "name": "queryTransform",
+            "name": "transformInput",
             "in": "body",
-            "description": "The EMS query transformation information (including the query to be transformed and the transformation type to be applied).",
+            "description": "The input query query transformation information.",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.QueryTransform"
@@ -6008,6 +6093,18 @@
           },
           "400": {
             "description": "If the specified query transform structure is invalid or incorrectly configured.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
@@ -11418,28 +11515,6 @@
         }
       }
     },
-    "Adi.Ems.Web.Api.V2.Dto.Schema.QueryTransform": {
-      "description": "Represents the options used to make up a query transformation.",
-      "required": [
-        "inputQuery",
-        "type"
-      ],
-      "type": "object",
-      "properties": {
-        "inputQuery": {
-          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query",
-          "description": "The EMS query to be transformed"
-        },
-        "type": {
-          "description": "The type of transformation to apply to the query.",
-          "enum": [
-            "none",
-            "addAutoFilters"
-          ],
-          "type": "string"
-        }
-      }
-    },
     "Adi.Ems.Web.Api.V2.Dto.Schema.QueryResult": {
       "description": "Represents the tabular results of a data source query.",
       "required": [
@@ -11518,6 +11593,10 @@
             "var"
           ],
           "type": "string"
+        },
+        "originalId": {
+          "description": "The unique string identifier of the field associated with this column as defined in the original request.\r\n            This is only set when the query is altered due to the fieldId used in order to match the database queried against",
+          "type": "string"
         }
       }
     },
@@ -11544,6 +11623,44 @@
         "trackingBatchId": {
           "description": "If query tracking options were specified as part of the query, this is the batch id that may be used to roll\r\n            back tracking after query results have been returned",
           "type": "string"
+        }
+      }
+    },
+    "System.Threading.CancellationToken": {
+      "type": "object",
+      "properties": {
+        "isCancellationRequested": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "canBeCanceled": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "waitHandle": {
+          "$ref": "#/definitions/System.Threading.WaitHandle",
+          "readOnly": true
+        }
+      }
+    },
+    "System.Threading.WaitHandle": {
+      "type": "object",
+      "properties": {
+        "safeWaitHandle": {
+          "$ref": "#/definitions/Microsoft.Win32.SafeHandles.SafeWaitHandle"
+        }
+      }
+    },
+    "Microsoft.Win32.SafeHandles.SafeWaitHandle": {
+      "type": "object",
+      "properties": {
+        "isInvalid": {
+          "type": "boolean",
+          "readOnly": true
+        },
+        "isClosed": {
+          "type": "boolean",
+          "readOnly": true
         }
       }
     },
@@ -11644,6 +11761,30 @@
           "format": "int32",
           "description": "The number of rows added by the creation.",
           "type": "integer"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.Insert": {
+      "description": "Represents the options used to make up a data entity creation.",
+      "required": ["fields", "values"],
+      "type": "object",
+      "properties": {
+        "fields": {
+          "description": "The set of schema fields that will be provided during the creation. This should always include the primary key fields.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "values": {
+          "description": "One or more data entity specifications, where each specification is an array of values that exactly correspond to\r\n            the Fields collection.",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/System.Object"
+            }
+          }
         }
       }
     },
@@ -11749,6 +11890,22 @@
         },
         "batchId": {
           "description": "A unique id (guid) which represents the specific query instance that should be rolled back",
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.QueryTransform": {
+      "description": "Represents the input information for performing a query transformation\r\n            (e.g. applying automatic filtering).",
+      "required": ["inputQuery", "type"],
+      "type": "object",
+      "properties": {
+        "inputQuery": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Query",
+          "description": "The query to be transformed"
+        },
+        "type": {
+          "description": "The type of transformation to apply",
+          "enum": ["none", "addAutoFilters"],
           "type": "string"
         }
       }
@@ -12717,6 +12874,11 @@
       "description": "Various pieces of information associated with a procedure segment.",
       "type": "object",
       "properties": {
+        "id": {
+          "format": "int32",
+          "description": "The id of the segment",
+          "type": "integer"
+        },
         "type": {
           "description": "The segment type",
           "type": "string"
@@ -12731,7 +12893,7 @@
           "type": "integer"
         },
         "trackCode": {
-          "description": "The procedure segment",
+          "description": "The procedure segment track code",
           "type": "string"
         },
         "waypointId": {
@@ -12778,6 +12940,15 @@
         "altitude2": {
           "description": "The procedure segment altitude 2",
           "type": "string"
+        },
+        "isIAF": {
+          "description": "Flag that lets us know if the segment is IAF or not",
+          "type": "boolean"
+        },
+        "nextSegmentId": {
+          "format": "int32",
+          "description": "The id of the next segment, this is needed to get the correct\r\n            order of segments",
+          "type": "integer"
         }
       }
     },
@@ -12798,6 +12969,21 @@
         "distance": {
           "format": "double",
           "description": "The distance to the navaid",
+          "type": "number"
+        },
+        "latitude": {
+          "format": "double",
+          "description": "The latitude of the navaid",
+          "type": "number"
+        },
+        "longitude": {
+          "format": "double",
+          "description": "The longitude of the navaid",
+          "type": "number"
+        },
+        "elevation": {
+          "format": "double",
+          "description": "The elevation of the navaid",
           "type": "number"
         }
       }
@@ -13095,6 +13281,11 @@
       "description": "A {Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationProcedureSegment} with some more data. Specifically this nests subtypes, like waypoints, rather than just using id references.",
       "type": "object",
       "properties": {
+        "id": {
+          "format": "int32",
+          "description": "The id of the segment",
+          "type": "integer"
+        },
         "type": {
           "description": "The segment type",
           "type": "string"
@@ -13156,6 +13347,15 @@
         "altitude2": {
           "description": "The procedure segment altitude 2",
           "type": "string"
+        },
+        "isIAF": {
+          "description": "Flag that lets us know if the segment is IAF or not",
+          "type": "boolean"
+        },
+        "nextSegmentId": {
+          "format": "int32",
+          "description": "The id of the next segment, this is needed to get the correct\r\n            order of segments",
+          "type": "integer"
         },
         "waypoint": {
           "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Navigation.NavigationWaypoint",
