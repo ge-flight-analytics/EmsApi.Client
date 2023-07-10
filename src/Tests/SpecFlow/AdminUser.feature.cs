@@ -137,7 +137,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I run GetUsers with a filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 14
- testRunner.Then("An enumerable with one AdminUser object is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("An enumerable with filtered AdminUser objects is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
