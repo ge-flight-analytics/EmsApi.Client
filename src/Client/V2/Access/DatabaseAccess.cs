@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 using EmsApi.Dto.V2;
@@ -750,7 +749,7 @@ namespace EmsApi.Client.V2.Access
         /// The optional call context to include.
         /// </param>
         public virtual async Task<AsyncQueryData> ReadQueryWhenReadyAsync( string databaseId, string queryId, int start, int end,
-            TimeSpan initialDelay, float backoffFactor = 1.25f, CancellationToken cancel = default, CallContext context = null )
+            TimeSpan initialDelay, float backoffFactor = 1.25f, System.Threading.CancellationToken cancel = default, CallContext context = null )
         {
             TimeSpan delay = initialDelay;
             for( int i = 0; ; ++i )
