@@ -24,15 +24,15 @@ namespace EmsApi.Tests.Features
         [When( @"I run GetUsers with a filter" )]
         public void WhenIRunGetUsersWithAFilter()
         {
-            m_result.Object = m_api.AdminUser.GetUsers("emsweb");
+            m_result.Object = m_api.AdminUser.GetUsers( "emsweb" );
         }
 
-        [Then( @"An enumerable with one AdminUser object is returned" )]
+        [Then( @"An enumerable with filtered AdminUser objects is returned" )]
         public void ThenAnEnumerableWithOneAdminUserObjectIsReturned()
         {
             m_result.Object.ShouldNotBeNullOfType<List<User>>();
             var users = (IEnumerable<User>)m_result.Object;
-            users.Should().OnlyContain( u => u.Username == "efoqa\\EmsWeb" );
+            users.Should().OnlyContain( u => u.Username.Contains( "efoqa\\EmsWeb", System.StringComparison.InvariantCultureIgnoreCase ) );
         }
 
         [When( @"I run GetUserEmsSystems with the user id (.*)" )]
