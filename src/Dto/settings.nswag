@@ -91,7 +91,8 @@
         "Group",
         "DashboardIds",
         "DashboardImport",
-        "DashboardsImport"
+        "DashboardsImport",
+        "CancellationToken"
       ],
       "excludedParameterNames": [],
       "handleReferences": false,

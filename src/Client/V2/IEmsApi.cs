@@ -513,6 +513,15 @@ namespace EmsApi.Client.V2
         Task<object> DeleteAnalyticCollection( string groupId, string analyticCollectionName, [Property] CallContext context = null );
 
         /// <summary>
+        /// Creates a new formula analytic.
+        /// </summary>
+        /// <param name="formula">
+        /// Information needed to create the formula analytic.
+        /// </param>
+        [Post( "/v2/ems-systems/1/analytics/formula" )]
+        Task<AnalyticInfo> CreateFormulaAnalytic( [Body] AnalyticFormula formula, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns a database group with a matching ID containing only its immediate children
         /// in a hierarchical tree used to organize databases.
         /// </summary>
@@ -1065,6 +1074,63 @@ namespace EmsApi.Client.V2
         /// </param>
         [Post( "/v2/weather/metar/parse" )]
         Task<MetarReport> ParseMetar( [Body] MetarParseOptions parseOptions, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns basic information for a specific analytic export service on the system.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service to return.
+        /// </param>
+        [Get( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}" )]
+        Task<ServiceInfo> GetAnalyticExportService( string serviceId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns processing status information for an analytic export service on the system.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service status to return.
+        /// </param>
+        [Get( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/status" )]
+        Task<ServiceStatus> GetAnalyticExportServiceStatus( string serviceId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Enables an analytic export service.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service status to enable.
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/enable" )]
+        Task EnableAnalyticExportService( string serviceId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Disables an analytic export service.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service status to disable.
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/disable" )]
+        Task DisableAnalyticExportService( string serviceId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Creates (or updates) an analytic export service using the supplied export definition.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export (service) to create/update.
+        /// </param>
+        /// <param name="definition">
+        /// The definition of the analytic export to create/update.
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/definition" )]
+        Task UpdateAnalyticExportService( string serviceId, [Body] AnalyticExportDefinition definition, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes an analytic export service.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export (service) to delete.
+        /// </param>
+        [Delete( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/definition" )]
+        Task DeleteAnalyticExportService( string serviceId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.
