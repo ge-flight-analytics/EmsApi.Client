@@ -5,10 +5,10 @@
     "title": "EMS API v2",
     "description": "The second version of the REST-based API for accessing EMS data"
   },
-    "host": "d1mo-api.us.efoqa.com:443",
+  "host": "d1mo-api.us.efoqa.com:443",
   "basePath": "/api",
   "schemes": [
-        "https"
+    "https"
   ],
   "paths": {
     "/v2/admin/api-clients": {
@@ -5292,7 +5292,7 @@
           {
             "name": "enableAnyDatabaseFields",
             "in": "query",
-            "description": "If true, the field identifiers in the query can come from any database,\r\n            not just the provided database. For example, if you have a field identifier for the flight id from the flight database,\r\nbut want to make a request to an event database, you could use that same field identifier.",
+            "description": "If true, the field identifiers in the query can come from any database,\r\n            not just the provided database. For example, if you have a field identifier for the flight id from the flight database,\r\n            but want to make a request to an event database, you could use that same field identifier.",
             "required": false,
             "type": "boolean"
           }
@@ -6550,6 +6550,376 @@
                 "$ref": "#/definitions/System.Object"
               }
             }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/definition": {
+      "post": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Create (or update) an analytic export service using the supplied export definition.",
+        "operationId": "ExportService_CreateAnalyticExportService",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier for the export (service) to create/update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "export",
+            "in": "body",
+            "description": "The definition of the analytic export to create/update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.Analytic.Definition"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "If the specified definition structure is invalid or incorrectly configured.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Deletes an analytic export service.",
+        "operationId": "ExportService_DeleteAnalyticExportService",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier of the export service to remove.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An export service with the specified ID could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic": {
+      "get": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Returns a collection of analytic export services on the system.",
+        "operationId": "ExportService_GetAllAnalyticExportServices",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.ServiceInfo"
+              }
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}": {
+      "get": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Returns basic information for a specific analytic export service on the system.",
+        "operationId": "ExportService_GetAnalyticExportServiceBasicInfo",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier of the export service of interest.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.ServiceInfo"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An export service with the specified ID could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/status": {
+      "get": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Returns processing status information for an analytic export service on the system.",
+        "operationId": "ExportService_GetAnalyticExportServiceStatus",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier of the export service of interest.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.ServiceStatus"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An export service with the specified ID could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/enable": {
+      "post": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Enable an analytic export service.",
+        "operationId": "ExportService_EnableAnalyticExportService",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier for the export (service) to enable.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/disable": {
+      "post": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Disable an analytic export service.",
+        "operationId": "ExportService_DisableAnalyticExportService",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier for the export (service) to enable.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
           },
           "401": {
             "description": "You do not have access to the requested resource.",
@@ -10290,6 +10660,10 @@
         "analyticId": {
           "description": "The unique string identifier of the analytic to select in a query",
           "type": "string"
+        },
+        "alias": {
+          "description": "An optional, custom name to associate with the analytic in the query results",
+          "type": "string"
         }
       }
     },
@@ -10350,6 +10724,10 @@
       "properties": {
         "analyticId": {
           "description": "The unique string identifier of the analytic queried",
+          "type": "string"
+        },
+        "alias": {
+          "description": "The (optional) custom name of the analytic that produced these results",
           "type": "string"
         },
         "values": {
@@ -11766,7 +12144,10 @@
     },
     "Adi.Ems.Web.Api.V2.Dto.Schema.Insert": {
       "description": "Represents the options used to make up a data entity creation.",
-      "required": ["fields", "values"],
+      "required": [
+        "fields",
+        "values"
+      ],
       "type": "object",
       "properties": {
         "fields": {
@@ -11896,7 +12277,10 @@
     },
     "Adi.Ems.Web.Api.V2.Dto.Schema.QueryTransform": {
       "description": "Represents the input information for performing a query transformation\r\n            (e.g. applying automatic filtering).",
-      "required": ["inputQuery", "type"],
+      "required": [
+        "inputQuery",
+        "type"
+      ],
       "type": "object",
       "properties": {
         "inputQuery": {
@@ -11905,7 +12289,10 @@
         },
         "type": {
           "description": "The type of transformation to apply",
-          "enum": ["none", "addAutoFilters"],
+          "enum": [
+            "none",
+            "addAutoFilters"
+          ],
           "type": "string"
         }
       }
@@ -12308,6 +12695,191 @@
           "type": "string"
         },
         "dirCollection": {
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.ExportService.Analytic.Definition": {
+      "description": "Represents the options used to make up an analytic export service.",
+      "required": [
+        "name",
+        "databaseId",
+        "exportType",
+        "select",
+        "offsetType",
+        "azureBlobContainer",
+        "azureBlobPath",
+        "azureBlobConnectionString"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The (display) name of the export service",
+          "type": "string"
+        },
+        "description": {
+          "description": "An optional description for the export service",
+          "type": "string"
+        },
+        "databaseId": {
+          "description": "The identifier of the database on which the anlytics are based.",
+          "type": "string"
+        },
+        "exportType": {
+          "description": "The type of export to produce (e.g. text-based CSV, Parquet, etc.)",
+          "enum": [
+            "textCsv",
+            "parquet"
+          ],
+          "type": "string"
+        },
+        "select": {
+          "description": "An array specifying the analytics (e.g. parameters) to be included in the export\r\n            Use null or an empty array to return only offset values",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticSelect"
+          }
+        },
+        "offsetType": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.OffsetType",
+          "description": "This defines the way in which the offsets are determined"
+        },
+        "start": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticId",
+          "description": "The optional analytic identifier representing the start offset in the data, in seconds from the start of the data. \r\n            If not specified, the beginning of the available data is used"
+        },
+        "end": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticId",
+          "description": "The optional analytic identifier representing the end offset in the data, in seconds from the start of the data. \r\n            If not specified, the end of the available data is used"
+        },
+        "unsampledDataMode": {
+          "description": "This determines how to treat data values for offsets that are not sampled. If left unset this defaults to 'leaveBlank'.\r\n            This only applies when performing queries using an \"OffsetType\" other than sampled values",
+          "enum": [
+            "leaveBlank",
+            "uniquePreviousSample",
+            "stairStep",
+            "linearInterpolation",
+            "parameterDefault",
+            "previousSample"
+          ],
+          "type": "string"
+        },
+        "unsampledValue": {
+          "description": "This optional parameter replaces any unsampled (blank) values with a constant value. This defaults to a null value.\r\n            This only applies for TextCsv exports - specifically when performing exports using an \"OffsetType\" other than sampled values",
+          "type": "string"
+        },
+        "doesNotExistValue": {
+          "description": "This optional parameter replaces any values that come back as DNE (does not exist) with a constant value. This defaults to \"DNE\".\r\n            This only applies for TextCsv exports - specifically when performing queries using an \"OffsetType\" other than sampled values",
+          "type": "string"
+        },
+        "filtering": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Filter",
+          "description": "The filtering used to narrow down the set of entities (e.g. flights) that should be exported"
+        },
+        "azureBlobContainer": {
+          "description": "The name of the Azure blob container where the export blob output will be written\r\n            (see AzureBlobName property for the name of the blob).\r\n            NOTE: This container must already exist in order for the export to complete successfully",
+          "type": "string"
+        },
+        "azureBlobPath": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticId",
+          "description": "An analytic identifer that defines the path (relative to the blob container) of the export blob output"
+        },
+        "azureBlobConnectionString": {
+          "description": "The connection string to the Azure blob store where the export output will be written",
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.ExportService.ServiceInfo": {
+      "description": "Represents information about an export service.",
+      "required": [
+        "id",
+        "name",
+        "type",
+        "databaseId",
+        "enabled"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The unique identifier of the service",
+          "type": "string"
+        },
+        "name": {
+          "description": "The (display) name of the service",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of export service",
+          "enum": [
+            "analytic"
+          ],
+          "type": "string"
+        },
+        "databaseId": {
+          "description": "The database identifier associated with this export",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether the service is currently enabled",
+          "type": "boolean"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.ExportService.ServiceStatus": {
+      "description": "Contains status/count information for an export service.",
+      "required": [
+        "id",
+        "enabled"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The unique identifier of the export service to which this status information belongs",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Whether the service is currently enabled",
+          "type": "boolean"
+        },
+        "exportsWaiting": {
+          "format": "int32",
+          "description": "The count of exports waiting to be processed",
+          "type": "integer"
+        },
+        "exportsPending": {
+          "format": "int32",
+          "description": "The count of exports currently processing",
+          "type": "integer"
+        },
+        "exportsProcessed": {
+          "format": "int32",
+          "description": "The count of exports successfully processed",
+          "type": "integer"
+        },
+        "exportsFailed": {
+          "format": "int32",
+          "description": "The count of exports that failed processing",
+          "type": "integer"
+        },
+        "lastDispatchedTime": {
+          "format": "date-time",
+          "description": "The last time that an export job was dispatched for processing",
+          "type": "string"
+        },
+        "lastSuccessfulTime": {
+          "format": "date-time",
+          "description": "The last time an export completed successfully",
+          "type": "string"
+        },
+        "lastUnsuccessfulTime": {
+          "format": "date-time",
+          "description": "The last time an export failed to process",
+          "type": "string"
+        },
+        "estimatedCompletionTime": {
+          "format": "date-time",
+          "description": "The estimated completion time for all waiting exports",
           "type": "string"
         }
       }

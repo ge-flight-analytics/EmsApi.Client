@@ -338,5 +338,33 @@ namespace EmsApi.Client.V2.Access
         {
             return AccessTaskResult( GetMetadataAsync( flightId, analyticId, context ) );
         }
+
+        /// <summary>
+        /// Creates a new formula analytic.
+        /// </summary>
+        /// <param name="formula">
+        /// Information needed to create the formula analytic.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual AnalyticInfo CreateFormula( AnalyticFormula formula, CallContext context = null )
+        {
+            return AccessTaskResult( CreateFormulaAsync( formula, context ) );
+        }
+
+        /// <summary>
+        /// Creates a new formula analytic.
+        /// </summary>
+        /// <param name="formula">
+        /// Information needed to create the formula analytic.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<AnalyticInfo> CreateFormulaAsync( AnalyticFormula formula, CallContext context = null )
+        {
+            return CallApiTask( api => api.CreateFormulaAnalytic( formula, context ) );
+        }
     }
 }

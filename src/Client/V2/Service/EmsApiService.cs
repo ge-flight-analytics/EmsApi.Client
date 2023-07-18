@@ -82,7 +82,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Access to parameter-sets routes
         /// </summary>
-        [Obsolete("The ParameterSets route is deprecated and the AnayticSets should be used instead.")]
+        [Obsolete( "The ParameterSets route is deprecated and the AnayticSets should be used instead." )]
         public ParameterSetsAccess ParameterSets { get; set; }
 
         /// <summary>
@@ -124,6 +124,11 @@ namespace EmsApi.Client.V2
         /// Access to airport weather data: METARs and TAFs.
         /// </summary>
         public WeatherAccess Weather { get; set; }
+
+        /// <summary>
+        /// Access to export services.
+        /// </summary>
+        public ExportServiceAccess ExportService { get; set; }
 
         /// <summary>
         /// The raw refit interface. This is internal and private set so that the
@@ -233,6 +238,7 @@ namespace EmsApi.Client.V2
             Identification = InitializeAccessClass<IdentificationAccess>();
             Navigation = InitializeAccessClass<NavigationAccess>();
             Weather = InitializeAccessClass<WeatherAccess>();
+            ExportService = InitializeAccessClass<ExportServiceAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
