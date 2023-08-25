@@ -1113,7 +1113,7 @@ namespace EmsApi.Client.V2.Access
         /// </summary>
         /// <remarks>
         /// Currently all this does is trim string values because they are often fixed width in the EMS database,
-        /// and this maintains compatability with the deprecated DatabaseQueryResult.Row behavior.
+        /// and this maintains compatibility with the deprecated DatabaseQueryResult.Row behavior.
         /// </remarks>
         private object ScrubDatabaseValue( object raw )
         {
