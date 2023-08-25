@@ -734,12 +734,12 @@ namespace EmsApi.Client.V2.Access
         /// The zero-based index of the last row to return.
         /// </param>
         /// <param name="initialDelay">
-        /// The amount to delay after the first request if the query has not been processed yet. This has no effect if waitIfNotReady is set to true.
+        /// The amount to delay after the first request if the query has not been processed yet.
         /// </param>
         /// <param name="backoffFactor">
         /// This number used to multiply the time between API requests relative to the initialDelay value. For example if this is set to 1.0 then the
-        /// initial delay will be elapsed between each subsequent API request. If this is set to 2.0 then the initial delay will be doubled for the second
-        /// delay, and that will again be doubled for the next request where the data is not yet ready. This has no effect if waitIfNotReady is set to true.
+        /// initial delay will be used between each subsequent API request. If this is set to 2.0 then the initial delay will be doubled for the second
+        /// delay, and that will again be doubled for the next request where the data is not yet ready.
         /// </param>
         /// <param name="cancel">
         /// A cancellation token to use to cancel the wait operation. This can also be used to implement a max timeout by using a <seealso cref="CancellationTokenSource"/>
