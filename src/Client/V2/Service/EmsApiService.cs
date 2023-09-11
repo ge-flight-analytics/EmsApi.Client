@@ -126,6 +126,11 @@ namespace EmsApi.Client.V2
         public WeatherAccess Weather { get; set; }
 
         /// <summary>
+        /// Access to incoming files data to EMS.
+        /// </summary>
+        public IncomingFileAccess IncomingFile { get; set; }
+
+        /// <summary>
         /// Access to export services.
         /// </summary>
         public ExportServiceAccess ExportService { get; set; }
@@ -238,6 +243,7 @@ namespace EmsApi.Client.V2
             Identification = InitializeAccessClass<IdentificationAccess>();
             Navigation = InitializeAccessClass<NavigationAccess>();
             Weather = InitializeAccessClass<WeatherAccess>();
+            IncomingFile = InitializeAccessClass<IncomingFileAccess>();
             ExportService = InitializeAccessClass<ExportServiceAccess>();
         }
 
