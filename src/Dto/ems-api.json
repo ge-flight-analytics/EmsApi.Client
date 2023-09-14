@@ -7089,14 +7089,16 @@
                         "in": "query",
                         "description": "The start date to filter activation time. (Valid format: dd/MM/yyyy, Ex:04/05/2023)",
                         "required": false,
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     },
                     {
                         "name": "activityTimeRangeEnd",
                         "in": "query",
                         "description": "The end date to filter activation time. (Valid format: dd/MM/yyyy, Ex:14/05/2023)",
                         "required": false,
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     },
                     {
                         "name": "fileName",

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmsApi.Dto.V2;
@@ -24,7 +25,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="sourceType">
         /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
         /// </param>
-        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( string activityTimeRangeStart, string activityTimeRangeEnd, string fileName, int status, int sourceType, CallContext context = null )
+        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? activityTimeRangeStart, DateTime? activityTimeRangeEnd, string fileName, int status, int sourceType, CallContext context = null )
         {
             return CallApiTask( ( IEmsApi api ) => api.GetIncomingFiles( activityTimeRangeStart, activityTimeRangeEnd, fileName, status, sourceType, context ) );
         }

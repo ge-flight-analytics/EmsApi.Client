@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -1010,7 +1011,7 @@ namespace EmsApi.Client.V2
         /// An optional parameter, when true includes all the potential procedures of the given type for all runways at the airport.
         /// </param>
         [Get( "/v2/ems-systems/1/navigation/flights/{flightId}/procedures" )]
-        Task<NavigationFlightProcedures> GetNavigationFlightProcedures( int flightId, Type type, int? runwayIdOverride = null, bool? includeAll = null, [Property] CallContext context = null );
+        Task<NavigationFlightProcedures> GetNavigationFlightProcedures( int flightId, Dto.V2.Type type, int? runwayIdOverride = null, bool? includeAll = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of all matched TAF and METAR reports for a specified flight.
@@ -1040,7 +1041,7 @@ namespace EmsApi.Client.V2
         /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
         /// </param>
         [Get( "/v2/ems-systems/1/incomingFiles" )]
-        Task<IEnumerable<IncomingFile>> GetIncomingFiles( string activityTimeRangeStart, string activityTimeRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null );
+        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? activityTimeRangeStart, DateTime? activityTimeRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of matched METAR reports for a specified flight.
