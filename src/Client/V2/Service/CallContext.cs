@@ -1,4 +1,6 @@
 
+using System.Text;
+
 namespace EmsApi.Client.V2
 {
     /// <summary>
@@ -15,20 +17,39 @@ namespace EmsApi.Client.V2
     /// </summary>
     public class CallContext
     {
+        private string m_applicationName;
+        private string m_clientUsername;
+        private string m_correlationId;
+
         /// <summary>
         /// The value to use for the 'X-Adi-Application-Name' header.
+        /// Note: assigned values will be converted to ASCII strings as required for HTTP headers.
         /// </summary>
-        public string ApplicationName { get; set; }
+        public string ApplicationName
+        {
+            get { return m_applicationName; }
+            set { m_applicationName = EncodeAsAsciiString( value ); }
+        }
 
         /// <summary>
         /// The value to use in the 'X-Adi-Client-Username' header.
+        /// Note: assigned values will be converted to ASCII strings as required for HTTP headers.
         /// </summary>
-        public string ClientUsername { get; set; }
+        public string ClientUsername
+        {
+            get { return m_clientUsername; }
+            set { m_clientUsername = EncodeAsAsciiString( value ); }
+        }
 
         /// <summary>
         /// The value to use in the 'X-Adi-Correlation-Id' header.
+        /// Note: assigned values will be converted to ASCII strings as required for HTTP headers.
         /// </summary>
-        public string CorrelationId { get; set; }
+        public string CorrelationId
+        {
+            get { return m_correlationId; }
+            set { m_correlationId = EncodeAsAsciiString( value ); }
+        }
 
         /// <summary>
         /// The trusted authentication name to use as part of Trusted Authentication for this call.
@@ -55,5 +76,12 @@ namespace EmsApi.Client.V2
         /// and the <seealso cref="EmsApiServiceConfiguration.ApiClientSecret"/>.
         /// </summary>
         public string TrustedAuthValue { get; set; }
+
+        private string EncodeAsAsciiString( string value )
+        {
+            byte[] byteArray = Encoding.UTF8.GetBytes( value );
+            byte[] asciiArray = Encoding.Convert( Encoding.UTF8, Encoding.ASCII, byteArray );
+            return Encoding.ASCII.GetString( asciiArray );
+        }
     }
 }
