@@ -160,7 +160,6 @@ namespace EmsApi.Tests
             reqHeaders.GetValues( HttpHeaderNames.CorrelationId ).First().Should().BeEquivalentTo( correlationId );
         }
 
-
         [Fact( DisplayName = "Test call context with non-ASCII characters" )]
         public void Use_Call_Context_Not_Ascii()
         {
@@ -189,6 +188,29 @@ namespace EmsApi.Tests
             reqHeaders.GetValues( HttpHeaderNames.ClientUsername ).First().Should().BeEquivalentTo( "???" );
             reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeTrue();
             reqHeaders.GetValues( HttpHeaderNames.CorrelationId ).First().Should().BeEquivalentTo( "?" );
+        }
+
+        [Fact( DisplayName = "Test call context with null" )]
+        public void Use_Call_Context_Nulls()
+        {
+            var lastHandler = new TestMessageHandler();
+
+            using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
+
+            var ctx = new CallContext
+            {
+                ApplicationName = null,
+                ClientUsername = null,
+                CorrelationId = null,
+            };
+            api.EmsSystem.Get( ctx );
+
+            lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
+            var reqHeaders = lastHandler.LastRequest.Headers;
+
+            reqHeaders.Contains( HttpHeaderNames.ApplicationName ).Should().BeFalse();
+            reqHeaders.Contains( HttpHeaderNames.ClientUsername ).Should().BeFalse();
+            reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeFalse();
         }
     }
 }

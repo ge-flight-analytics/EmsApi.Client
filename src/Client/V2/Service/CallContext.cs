@@ -79,6 +79,11 @@ namespace EmsApi.Client.V2
 
         private string EncodeAsAsciiString( string value )
         {
+            if(value == null )
+            {
+                return null;
+            }
+
             byte[] byteArray = Encoding.UTF8.GetBytes( value );
             byte[] asciiArray = Encoding.Convert( Encoding.UTF8, Encoding.ASCII, byteArray );
             return Encoding.ASCII.GetString( asciiArray );
