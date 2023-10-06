@@ -132,15 +132,16 @@ namespace EmsApi.Tests
             result.Description.Should().Be( "Not a real system" );
         }
 
-        [Theory( DisplayName = "Test basic call context" )]
-        [InlineData(null, null, null)]
-        [InlineData( "AngryBards", "bob@burgers.com", "123456" )]
-        [InlineData( "", "", "")]
-        public void Use_Call_Context(string appname, string username, string correlationId)
+        [Fact( DisplayName = "Test basic call context" )]
+        public void Use_Call_Context()
         {
             var lastHandler = new TestMessageHandler();
 
             using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
+
+            string appname = "AngryBards";
+            string username = "bob@burgers.com";
+            string correlationId = "123456";
             var ctx = new CallContext
             {
                 ApplicationName = appname,
@@ -187,6 +188,29 @@ namespace EmsApi.Tests
             reqHeaders.GetValues( HttpHeaderNames.ClientUsername ).First().Should().BeEquivalentTo( "???" );
             reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeTrue();
             reqHeaders.GetValues( HttpHeaderNames.CorrelationId ).First().Should().BeEquivalentTo( "?" );
+        }
+
+        [Fact( DisplayName = "Test call context with null" )]
+        public void Use_Call_Context_Nulls()
+        {
+            var lastHandler = new TestMessageHandler();
+
+            using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
+
+            var ctx = new CallContext
+            {
+                ApplicationName = null,
+                ClientUsername = null,
+                CorrelationId = null,
+            };
+            api.EmsSystem.Get( ctx );
+
+            lastHandler.CallCount.Should().Be( 2 ); // One for the token and one for our actual call.
+            var reqHeaders = lastHandler.LastRequest.Headers;
+
+            reqHeaders.Contains( HttpHeaderNames.ApplicationName ).Should().BeFalse();
+            reqHeaders.Contains( HttpHeaderNames.ClientUsername ).Should().BeFalse();
+            reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeFalse();
         }
     }
 }
