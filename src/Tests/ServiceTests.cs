@@ -132,16 +132,15 @@ namespace EmsApi.Tests
             result.Description.Should().Be( "Not a real system" );
         }
 
-        [Fact( DisplayName = "Test basic call context" )]
-        public void Use_Call_Context()
+        [Theory( DisplayName = "Test basic call context" )]
+        [InlineData(null, null, null)]
+        [InlineData( "AngryBards", "bob@burgers.com", "123456" )]
+        [InlineData( "", "", "")]
+        public void Use_Call_Context(string appname, string username, string correlationId)
         {
             var lastHandler = new TestMessageHandler();
 
             using var api = NewService( new EmsApiServiceHttpClientConfiguration { LastHandler = lastHandler } );
-
-            string appname = "AngryBards";
-            string username = "bob@burgers.com";
-            string correlationId = "123456";
             var ctx = new CallContext
             {
                 ApplicationName = appname,
@@ -159,7 +158,6 @@ namespace EmsApi.Tests
             reqHeaders.Contains( HttpHeaderNames.CorrelationId ).Should().BeTrue();
             reqHeaders.GetValues( HttpHeaderNames.CorrelationId ).First().Should().BeEquivalentTo( correlationId );
         }
-
 
         [Fact( DisplayName = "Test call context with non-ASCII characters" )]
         public void Use_Call_Context_Not_Ascii()
