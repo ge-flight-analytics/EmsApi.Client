@@ -7071,7 +7071,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "The status of incoming file. (0=Fetched, 1=Uploaded, -1=All)",
+                        "description": "The status of incoming file. (0=Received, 1=Fetched, 2=Preprocessed, 3=PartiallyIngested, 4=Ingested, -1=All)",
                         "required": true,
                         "type": "integer",
                         "format": "int32"
@@ -7085,17 +7085,17 @@
                         "format": "int32"
                     },
                     {
-                        "name": "activityTimeRangeStart",
+                        "name": "statusModifiedDateRangeStart",
                         "in": "query",
-                        "description": "The start date to filter activation time. (Valid format: dd/MM/yyyy, Ex:04/05/2023)",
+                        "description": "The start date to filter status modified date. (Valid format: dd/MM/yyyy, Ex:04/05/2023)",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
                     },
                     {
-                        "name": "activityTimeRangeEnd",
+                        "name": "statusModifiedDateRangeEnd",
                         "in": "query",
-                        "description": "The end date to filter activation time. (Valid format: dd/MM/yyyy, Ex:14/05/2023)",
+                        "description": "The end date to filter status modified date. (Valid format: dd/MM/yyyy, Ex:14/05/2023)",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
