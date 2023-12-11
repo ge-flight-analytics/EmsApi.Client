@@ -192,7 +192,7 @@ namespace EmsApi.Client.V2.Access
         /// The optional call context to include.
         /// </param>
         /// <returns></returns>
-        public virtual void ReprocessAnalyticExportServiceObjects( string serviceId, AnalyticExportReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
+        public virtual void ReprocessAnalyticExportServiceObjects( string serviceId, ReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
         {
             ReprocessAnalyticExportServiceObjectsAsync( serviceId, reprocessObjectsRequest, context ).Wait();
         }
@@ -207,7 +207,7 @@ namespace EmsApi.Client.V2.Access
         /// The optional call context to include.
         /// </param>
         /// <returns></returns>
-        public virtual Task ReprocessAnalyticExportServiceObjectsAsync( string serviceId, AnalyticExportReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
+        public virtual Task ReprocessAnalyticExportServiceObjectsAsync( string serviceId, ReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
         {
             return CallApiTask( api => api.ReprocessAnalyticExportServiceObjects( serviceId, reprocessObjectsRequest, context ) );
         }

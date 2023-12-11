@@ -6937,6 +6937,64 @@
                 "deprecated": false
             }
         },
+        "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/reprocess": {
+            "post": {
+                "tags": [
+                    "Export Service APIs"
+                ],
+                "summary": "Reprocess Objects for an analytic export service.",
+                "operationId": "ExportService_ReprocessAnalyticExportServiceObjects",
+                "consumes": [
+                    "application/json",
+                    "text/json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "emsSystemId",
+                        "in": "path",
+                        "description": "The unique identifier of the system containing the EMS service.",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "description": "The unique identifier for the export (service) to enable.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "reprocessObjectsRequest",
+                        "in": "body",
+                        "description": "Represents the options used to reprocess an export service objects.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.Analytic.ReprocessObjectsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "You do not have access to the requested resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    },
+                    "503": {
+                        "description": "The maximum number of concurrent requests has been reached.",
+                        "schema": {
+                            "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
         "/v2/html-documentation/{version}": {
             "get": {
                 "tags": [
@@ -12968,6 +13026,23 @@
                     "format": "date-time",
                     "description": "The estimated completion time for all waiting exports",
                     "type": "string"
+                }
+            }
+        },
+        "Adi.Ems.Web.Api.V2.Dto.ExportService.Analytic.ReprocessObjectsRequest": {
+            "description": "Represents the options used to reprocess an export service objects.",
+            "required": [
+                "databaseId"
+            ],
+            "type": "object",
+            "properties": {
+                "databaseId": {
+                    "description": "The identifier of the database on which the analytics are based.",
+                    "type": "string"
+                },
+                "filtering": {
+                    "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Filter",
+                    "description": "Empty if we are to reprocess everything, otherwise this will be a stringitized filter string for selectively reprocessing."
                 }
             }
         },

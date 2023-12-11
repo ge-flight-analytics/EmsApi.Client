@@ -1,2 +1,2 @@
-# Release 2.18.2
-* Fixes exception for null headers in the CallContext.
+# Release 2.19.0
+* Adds support for the Export Analytic Service Reprocess route.
