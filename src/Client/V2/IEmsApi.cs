@@ -1023,25 +1023,25 @@ namespace EmsApi.Client.V2
         Task<WeatherReport> GetFlightWeather( int flightId, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns a list of incoming files to EMS with their status.
+        /// Returns a list of incoming files to EMS with their current status.
         /// </summary>
-        /// <param name="activityTimeRangeStartDate">
-        /// The start date to filter activation time.
+        /// <param name="statusModifiedDateRangeStart">
+        /// The start date to filter status modified date.
         /// </param>
-        /// <param name="activityTimeRangeEndDate">
-        /// The end date to filter activation time.
+        /// <param name="statusModifiedDateRangeEnd">
+        /// The end date to filter status modified date.
         /// </param>
         /// <param name="fileName">
         /// The file name to search.
         /// </param>
         /// <param name="status">
-        /// The status of incoming file. (0=Fetched, 1=Uploaded, 2=Processed, -1=All)
+        /// The status of incoming file. (0=Received, 1=Fetched, 2=Preprocessed, 3=PartiallyIngested, 4=Ingested, -1=All)
         /// </param>
         /// <param name="sourceType">
         /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
         /// </param>
         [Get( "/v2/ems-systems/1/incomingFiles" )]
-        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? activityTimeRangeStart, DateTime? activityTimeRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null );
+        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of matched METAR reports for a specified flight.
