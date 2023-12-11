@@ -181,5 +181,35 @@ namespace EmsApi.Client.V2.Access
         {
             return CallApiTask( api => api.DeleteAnalyticExportService( serviceId, context ) );
         }
+
+        /// <summary>
+        /// Reprocess objects for an analytic export service.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service to reprocess objects.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        /// <returns></returns>
+        public virtual void ReprocessAnalyticExportServiceObjects( string serviceId, AnalyticExportReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
+        {
+            ReprocessAnalyticExportServiceObjectsAsync( serviceId, reprocessObjectsRequest, context ).Wait();
+        }
+
+        /// <summary>
+        /// Reprocess objects for an analytic export service.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service to reprocess objects.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        /// <returns></returns>
+        public virtual Task ReprocessAnalyticExportServiceObjectsAsync( string serviceId, AnalyticExportReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
+        {
+            return CallApiTask( api => api.ReprocessAnalyticExportServiceObjects( serviceId, reprocessObjectsRequest, context ) );
+        }
     }
 }
