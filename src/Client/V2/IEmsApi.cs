@@ -1155,6 +1155,15 @@ namespace EmsApi.Client.V2
         Task DeleteAnalyticExportService( string serviceId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Reprocess an analytic export service objects.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export service status to reprocess objects.
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/reprocess" )]
+        Task ReprocessAnalyticExportServiceObjects( string serviceId, [Body] ReprocessObjectsRequest reprocessObjectsRequest, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>
         /// <param name="apiVersion">

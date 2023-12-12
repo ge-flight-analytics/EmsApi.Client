@@ -1,2 +1,2 @@
-# Release 2.18.3
-* Update date range parameter names for file tracker api.
+# Release 2.19.0
+* Adds support for the Export Analytic Service Reprocess route.
