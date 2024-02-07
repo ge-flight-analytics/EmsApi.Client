@@ -73,7 +73,7 @@ namespace EmsApi.Client.V2.Access
         /// </param>
         /// <param name="maxResults">
         /// The optional maximum number of matching results to return. If not specified, a default value of 200
-        /// is used. Use 0 to return all results.
+        /// is used. Use 0 to return the maximum of 1000 results.
         /// </param>
         /// <param name="category">
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
@@ -101,7 +101,7 @@ namespace EmsApi.Client.V2.Access
         /// </param>
         /// <param name="maxResults">
         /// The optional maximum number of matching results to return. If not specified, a default value of 200
-        /// is used. Use 0 to return all results.
+        /// is used. Use 0 to return the maximum of 1000 results.
         /// </param>
         /// <param name="category">
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
@@ -192,12 +192,15 @@ namespace EmsApi.Client.V2.Access
         /// <param name="includeMetadata">
         /// When true, metadata will be returned along with analytic items.
         /// </param>
+        /// <param name="ignoreIndex">
+        /// When true, the API will not attempt to use a pre-built index to answer the request.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, CallContext context = null )
+        public virtual Task<AnalyticGroupContents> GetGroupAsync( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, bool ignoreIndex = false, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAnalyticGroup( analyticGroupId, category, includeMetadata, context ) );
+            return CallApiTask( api => api.GetAnalyticGroup( analyticGroupId, category, includeMetadata, ignoreIndex, context ) );
         }
 
         /// <summary>
@@ -213,12 +216,15 @@ namespace EmsApi.Client.V2.Access
         /// <param name="includeMetadata">
         /// When true, metadata will be returned along with analytic items.
         /// </param>
+        /// <param name="ignoreIndex">
+        /// When true, the API will not attempt to use a pre-built index to answer the request.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual AnalyticGroupContents GetGroup( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, CallContext context = null )
+        public virtual AnalyticGroupContents GetGroup( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, bool ignoreIndex = false, CallContext context = null )
         {
-            return AccessTaskResult( GetGroupAsync( analyticGroupId, category, includeMetadata, context ) );
+            return AccessTaskResult( GetGroupAsync( analyticGroupId, category, includeMetadata, ignoreIndex, context ) );
         }
 
         /// <summary>

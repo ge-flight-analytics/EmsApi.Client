@@ -253,7 +253,7 @@ namespace EmsApi.Client.V2
         /// </param>
         /// <param name="maxResults">
         /// The optional maximum number of matching results to return. If not specified, a default value of 200
-        /// is used. Use 0 to return all results.
+        /// is used. Use 0 to return the maximum of 1000 results.
         /// </param>
         /// <param name="category">
         /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
@@ -319,8 +319,11 @@ namespace EmsApi.Client.V2
         /// <param name="includeMetadata">
         /// When true, metadata will be returned along with analytic items.
         /// </param>
+        /// <param name="ignoreIndex">
+        /// When true, the API will not attempt to use a pre-built index to answer the request.
+        /// </param>
         [Get( "/v2/ems-systems/1/analytic-groups" )]
-        Task<AnalyticGroupContents> GetAnalyticGroup( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, [Property] CallContext context = null );
+        Task<AnalyticGroupContents> GetAnalyticGroup( string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, bool ignoreIndex = false, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves the contents of an analytic group, which is a hierarchical tree structure used to organize analytics.
