@@ -1,2 +1,3 @@
-# Release 2.19.0
-* Adds support for the Export Analytic Service Reprocess route.
+# Release 2.20.0
+* Adds analytic path properties.
+* Adds the ignoreIndex optional property for getting analytic groups.
