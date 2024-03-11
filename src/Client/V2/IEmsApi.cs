@@ -601,6 +601,18 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<Field>> SearchDatabaseFields( string databaseId, string search = null, string fieldGroupId = null, bool includeProfiles = false, int maxResults = 200, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns any change logs for the fields provided in the query for a specific entity.
+        /// </summary>
+        /// <param name="databaseId">
+        /// That database that the fields and entity exist on.
+        /// </param>
+        /// <param name="query">
+        /// The query options, including which fields to query and entity to query against.
+        /// </param>
+        [Post( "/v2/ems-systems/1/databases/{databaseId}/field-changes" )]
+        Task<FieldChanges> GetDatabaseFieldChanges( string databaseId, [Body] FieldChangesQuery query, [Property] CallContext context = null );
+
+        /// <summary>
         /// Queries a database for information, composing the query with information provided in the
         /// specified query structure.
         /// </summary>

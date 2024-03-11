@@ -33,6 +33,22 @@ namespace EmsApi.Tests
             withDiscrete.DiscreteValues.Should().NotBeNull();
         }
 
+        [Fact( DisplayName = "Get field changes should return changes" )]
+        public void Get_field_changes_should_return_changes()
+        {
+            using var api = NewService();
+
+            const string flights = "[ems-core][entity-type][foqa-flights]";
+            string flightRecordField = "[-hub-][field][[[ems-core][entity-type][foqa-flights]][[crew-contact][base-field][crew-contact-status]]]";
+            var query = new FieldChangesQuery
+            {
+                FieldIds = new[] { flightRecordField },
+                EntityIdentifier = { 190 }
+            };
+            FieldChanges crewContactStatusChanges = api.Databases.GetFieldChanges( flights, query );
+            crewContactStatusChanges.Changes.Should().HaveCountGreaterThanOrEqualTo( 3 );
+        }
+
         [Fact( DisplayName = "A simple query with ordered results should return rows" )]
         public void Simple_query_with_ordered_results_should_return_rows()
         {
