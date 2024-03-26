@@ -2928,7 +2928,7 @@
           {
             "name": "maxResults",
             "in": "query",
-            "description": "The optional maximum number of matching results to return. If not specified, a \r\n            default value of 200 is used. Use 0 or 1000 to return the maximum of 1000 results.",
+            "description": "The optional maximum number of matching results to return. If not specified, a \r\n            default value of 200 is used. Use 0 to return all results.",
             "required": false,
             "type": "integer",
             "format": "int32"
@@ -3225,13 +3225,6 @@
             "name": "includeMetadata",
             "in": "query",
             "description": "A flag to determine if the route should return metadata on analytics. If not specified, metadata is not returned.",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "ignoreIndex",
-            "in": "query",
-            "description": "If specified as True, the API will not attempt to use a pre-built index to answer the request.",
             "required": false,
             "type": "boolean"
           }
@@ -6031,6 +6024,77 @@
             "description": "The tracked query was successfully deleted back.",
             "schema": {
               "$ref": "#/definitions/System.Void"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/databases/{databaseId}/field-changes": {
+      "post": {
+        "tags": [
+          "Database APIs"
+        ],
+        "summary": "Gets the change history for the specified field(s) in the specified database.",
+        "description": "The field identifier must be a field that supports change logging and the field must exist on the database. \r\n            The EntityIdentifier values provided in the query body are used to identify which entity (e.g. Event) the\r\n            field changes should be retrieved for and these EntityIdentifier values must match the order of the primary\r\n            keys and should uniquely identify a single entity. The EntityIdentifier is an array since some entity types\r\n            have compound primary keys (multiple fields). This field will only ever represent a single entity.",
+        "operationId": "Database_GetFieldChanges",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the EMS system.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "databaseId",
+            "in": "path",
+            "description": "The unique identifier of the EMS database that the fields are on.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fieldChangeQuery",
+            "in": "body",
+            "description": "The fields and entity identifier to retrieve the field changes for.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FieldChangesQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FieldChanges"
+            }
+          },
+          "400": {
+            "description": "If the field(s) or the entity IDs provided are invalid or incompatible or if the Start index is outside the range of change results.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
           },
           "401": {
@@ -10680,20 +10744,6 @@
           "items": {
             "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.MetadataItem"
           }
-        },
-        "path": {
-          "description": "An ordered list of analytic group ids that make up the path to this analytic, excluding the root group. \r\n            The last group id is the parent group of this group. This is only available when search results are returned\r\n            via an index",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "displayPath": {
-          "description": "An ordered list of group names that make up the path to this analytic, excluding the root group. \r\n            The last name is the parent group of this analytic. This is only available when search results are returned\r\n            via an index",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },
@@ -10746,20 +10796,6 @@
         "description": {
           "description": "The description of the group",
           "type": "string"
-        },
-        "path": {
-          "description": "An ordered list of analytic group ids that make up the path to this group, excluding the root group.\r\n            The last analytic group id is the parent group of this group. This is only available when search results \r\n            are returned via an index",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "displayPath": {
-          "description": "An ordered list of group names that make up the path to this group, excluding the root group. \r\n            The last name is the parent group of this group. This is only available when search results \r\n            are returned via an index",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },
@@ -12352,7 +12388,8 @@
     "Adi.Ems.Web.Api.V2.Dto.Schema.Update": {
       "description": "Represents the options used to make up an update.",
       "required": [
-        "updateColumns"
+        "updateColumns",
+        "filter"
       ],
       "type": "object",
       "properties": {
@@ -12452,6 +12489,93 @@
         "batchId": {
           "description": "A unique id (guid) which represents the specific query instance that should be rolled back",
           "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.FieldChangesQuery": {
+      "description": "The request object for getting field change history.",
+      "required": [
+        "fieldIds",
+        "entityIdentifier"
+      ],
+      "type": "object",
+      "properties": {
+        "fieldIds": {
+          "description": "The fields to get the changes for. These must be fields that support change logging.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entityIdentifier": {
+          "description": "The unique identifier of the entity (flight, event, etc.) that the comment is associated with.\r\n            This is an array since some entity types have compound primary keys (multiple fields).\r\n            These should be primary key values on the entity's database and should be in order. These should \r\n            uniquely identify a single entity",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/System.Object"
+          }
+        },
+        "start": {
+          "format": "int32",
+          "description": "An optional starting index for the results. This is used for paging.\r\n            If not set, the default is 0",
+          "type": "integer"
+        },
+        "end": {
+          "format": "int32",
+          "description": "An optional ending index for the results. This is used for paging.\r\n            If not set, the default is the 500 results",
+          "type": "integer"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.FieldChanges": {
+      "description": "A collection of changes made to fields.",
+      "required": [
+        "changes",
+        "hasMoreChanges"
+      ],
+      "type": "object",
+      "properties": {
+        "changes": {
+          "description": "The actual change history entries for the fields",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FieldChange"
+          }
+        },
+        "hasMoreChanges": {
+          "description": "True if there are more changes, false otherwise",
+          "type": "boolean"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.FieldChange": {
+      "description": "Represents a change to a field within a database.",
+      "required": [
+        "fieldId",
+        "time",
+        "username"
+      ],
+      "type": "object",
+      "properties": {
+        "fieldId": {
+          "description": "The unique identifier for the field",
+          "type": "string"
+        },
+        "time": {
+          "format": "date-time",
+          "description": "The time at which the change occurred",
+          "type": "string"
+        },
+        "username": {
+          "description": "The username of the user who made the change",
+          "type": "string"
+        },
+        "oldValue": {
+          "$ref": "#/definitions/System.Object",
+          "description": "The old value of the field.\r\n            For longer text fields, this may not be populated"
+        },
+        "newValue": {
+          "$ref": "#/definitions/System.Object",
+          "description": "The new value of the field.\r\n            For longer text fields, this may not be populated"
         }
       }
     },

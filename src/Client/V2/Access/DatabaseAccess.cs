@@ -225,6 +225,35 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Returns any change logs for the fields provided in the query for a specific entity.
+        /// </summary>
+        /// <param name="databaseId">
+        /// That database that the fields and entity exist on.
+        /// </param>
+        /// <param name="query">
+        /// The query options, including which fields to query and entity to query against.
+        /// </param>
+        public virtual Task<FieldChanges> GetFieldChangesAsync( string databaseId, FieldChangesQuery query, CallContext context = null )
+        {
+            return CallApiTask( api => api.GetDatabaseFieldChanges( databaseId, query, context ) );
+        }
+
+        /// <summary>
+        /// Returns any change logs for the fields provided in the query for a specific entity.
+        /// </summary>
+        /// <param name="databaseId">
+        /// That database that the fields and entity exist on.
+        /// </param>
+        /// <param name="query">
+        /// The query options, including which fields to query and entity to query against.
+        /// </param>
+        public virtual FieldChanges GetFieldChanges( string databaseId, FieldChangesQuery query, CallContext context = null )
+        {
+            return AccessTaskResult( GetFieldChangesAsync( databaseId, query, context ) );
+        }
+
+
+        /// <summary>
         /// Queries a database for information, composing the query with information provided in the 
         /// specified query structure. This query uses a single request and as such cannot be used
         /// with large data sets.
