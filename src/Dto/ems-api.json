@@ -2928,7 +2928,7 @@
           {
             "name": "maxResults",
             "in": "query",
-            "description": "The optional maximum number of matching results to return. If not specified, a \r\n            default value of 200 is used. Use 0 to return all results.",
+            "description": "The optional maximum number of matching results to return. If not specified, a \r\n            default value of 200 is used. Use 0 or 1000 to return the maximum of 1000 results.",
             "required": false,
             "type": "integer",
             "format": "int32"
@@ -3225,6 +3225,13 @@
             "name": "includeMetadata",
             "in": "query",
             "description": "A flag to determine if the route should return metadata on analytics. If not specified, metadata is not returned.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "ignoreIndex",
+            "in": "query",
+            "description": "If specified as True, the API will not attempt to use a pre-built index to answer the request.",
             "required": false,
             "type": "boolean"
           }
@@ -10744,6 +10751,20 @@
           "items": {
             "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.MetadataItem"
           }
+        },
+        "path": {
+          "description": "An ordered list of analytic group ids that make up the path to this analytic, excluding the root group. \r\n            The last group id is the parent group of this group. This is only available when search results are returned\r\n            via an index",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "displayPath": {
+          "description": "An ordered list of group names that make up the path to this analytic, excluding the root group. \r\n            The last name is the parent group of this analytic. This is only available when search results are returned\r\n            via an index",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -10796,6 +10817,20 @@
         "description": {
           "description": "The description of the group",
           "type": "string"
+        },
+        "path": {
+          "description": "An ordered list of analytic group ids that make up the path to this group, excluding the root group.\r\n            The last analytic group id is the parent group of this group. This is only available when search results \r\n            are returned via an index",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "displayPath": {
+          "description": "An ordered list of group names that make up the path to this group, excluding the root group. \r\n            The last name is the parent group of this group. This is only available when search results \r\n            are returned via an index",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
