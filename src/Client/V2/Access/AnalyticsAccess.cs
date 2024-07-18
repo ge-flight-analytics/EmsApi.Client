@@ -275,6 +275,16 @@ namespace EmsApi.Client.V2.Access
             return AccessTaskResult( GetGroupAsync( flightId, analyticGroupId, category, includeMetadata, context ) );
         }
 
+        public virtual AnalyticGroupContents GetGroup( AnalyticContext analyticContext, string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, bool ignoreIndex = false, CallContext context = null )
+        {
+            return AccessTaskResult( GetGroupAsync( analyticContext, analyticGroupId, category, includeMetadata, ignoreIndex, context ) );
+        }
+
+        public virtual Task<AnalyticGroupContents> GetGroupAsync( AnalyticContext analyticContext, string analyticGroupId = null, Category category = Category.Full, bool includeMetadata = false, bool ignoreIndex = false, CallContext context = null )
+        {
+            return CallApiTask( api => api.GetAnalyticGroup( analyticContext, analyticGroupId, category, includeMetadata, ignoreIndex, context ) );
+        }
+
         /// <summary>
         /// Queries offsets and values in time-series data for a specified flight and analytic.
         /// </summary>
