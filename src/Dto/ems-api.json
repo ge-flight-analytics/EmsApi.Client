@@ -3257,6 +3257,95 @@
           }
         },
         "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Analytic APIs"
+        ],
+        "summary": "Retrieves the contents of an analytic group for a specified context that can be a flight or a fleet, which is a hierarchical tree structure used to organize analytics.",
+        "description": "The contents of a group includes both subgroups and analytics.",
+        "operationId": "Analytic_GetAnalyticGroupContents",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "analyticContext",
+            "in": "body",
+            "description": "Defines the context type to retrieve the contents of an analytic group, whether a fleet or flight.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticContext"
+            }
+          },
+          {
+            "name": "analyticGroupId",
+            "in": "query",
+            "description": "The ID of the group whose contents to retrieve. \r\n            If not specified, the contents of the root group will be returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "The category of analytics we are interested in. \"Full\", \"Physical\" or \"Logical\". \r\n            A null value specifies the default analytic set, which represents the full set of values exposed by the backing EMS system.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "full",
+              "physical",
+              "logical"
+            ]
+          },
+          {
+            "name": "includeMetadata",
+            "in": "query",
+            "description": "A flag to determine if the route should return metadata on analytics. If not specified, metadata is not returned.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "ignoreIndex",
+            "in": "query",
+            "description": "If specified as True, the API will not attempt to use a pre-built index to answer the request.",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticGroupContents"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
       }
     },
     "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytic-groups": {
@@ -10721,6 +10810,33 @@
       "properties": {
         "id": {
           "description": "The unique string identifier of the analytic.",
+          "type": "string"
+        },
+        "context": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticContext",
+          "description": "Defines the context to get the analytic."
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticContext": {
+      "description": "Represents the structure used to make up an analytic query based on specific Resolvables.",
+      "required": [
+        "id",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "description": "EMS Id for the resolvable.",
+          "type": "integer"
+        },
+        "type": {
+          "description": "Resolvable type from ResolvableType enum: FlightId, AircraftId or FleetId.",
+          "enum": [
+            "flight",
+            "fleet"
+          ],
           "type": "string"
         }
       }
