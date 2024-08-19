@@ -1,2 +1,2 @@
-# Release 2.22.0
-* Add routes to get analytic groups by fleet
+# Release 2.23.0
+* Add route to search for analytics by fleet.

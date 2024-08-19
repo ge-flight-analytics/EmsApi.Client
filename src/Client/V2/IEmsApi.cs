@@ -286,6 +286,22 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFlight( int flightId, string text, string group = null, int? maxResults = null, Category category = Category.Full, [Property] CallContext context = null );
 
         /// <summary>
+		/// Searches for analytics by name for a specific fleet.
+		/// </summary>
+		/// <param name="emsSystemId">The unique identifier of the system containing the EMS data.</param>
+		/// <param name="fleetId">The integer ID of the fleet to use when searching analytics.</param>
+		/// <param name="text">The search terms used to find a list of analytics by name.</param>
+		/// <param name="group">An optional group ID to specify where to limit the search. If not specified, all groups are searched.</param>
+		/// <param name="maxResults">The optional maximum number of matching results to return. If not specified, a 
+		/// default value of 200 is used. Use 0 to return all results.</param>
+		/// <param name="category">The category of analytics to search, including "Full", "Physical" or "Logical". A 
+		/// null value specifies the default analytic set, which represents the full set of values exposed by the 
+		/// backing EMS system.
+        /// </param>
+        [Get( "/v2/ems-systems/1/fleets/{fleetId}/analytics" )]
+        Task<IEnumerable<AnalyticInfo>> GetAnalyticsWithFleet( int fleetId, string text, string group = null, int? maxResults = null, Category category = Category.Full, [Property] CallContext context = null );
+
+        /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
         /// <param name="analyticId">

@@ -34,6 +34,13 @@ namespace EmsApi.Client.V2.Access
             return CallApiTask( api => api.GetAnalytics( text, groupId, maxResults, category, context ) );
         }
 
+        public virtual Task<IEnumerable<AnalyticInfo>> SearchAsync( AnalyticContext analyticContext, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
+        {
+            return analyticContext.Type == AnalyticContextType.Flight
+                ? CallApiTask( api => api.GetAnalyticsWithFlight( analyticContext.Id, text, groupId, maxResults, category, context ) )
+                : CallApiTask( api => api.GetAnalyticsWithFleet( analyticContext.Id, text, groupId, maxResults, category, context ) );
+        }
+
         /// <summary>
         /// Searches for analytics by name.
         /// </summary>
@@ -113,6 +120,33 @@ namespace EmsApi.Client.V2.Access
         public virtual IEnumerable<AnalyticInfo> Search( int flightId, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
         {
             return SafeAccessEnumerableTask( SearchAsync( flightId, text, groupId, maxResults, category, context ) );
+        }
+
+        /// <summary>
+        ///  Searches for analytics by name for an context resolvable.
+        /// </summary>
+        /// <param name="analyticContext">The resolvable context to look into, can be a flight or a fleet.</param>
+        /// <param name="text">
+        /// The search terms used to find a list of analytics by name.
+        /// </param>
+        /// <param name="groupId">
+        /// An optional group ID to specify where to limit the search. If not specified, all groups are searched.
+        /// </param>
+        /// <param name="maxResults">
+        /// The optional maximum number of matching results to return. If not specified, a default value of 200
+        /// is used. Use 0 to return the maximum of 1000 results.
+        /// </param>
+        /// <param name="category">
+        /// The category of analytics to search, including "Full", "Physical" or "Logical". A null value specifies
+        /// the default analytic set, which represents the full set of values exposed by the backing EMS system.
+        /// </param>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        /// <returns></returns>
+        public virtual IEnumerable<AnalyticInfo> Search( AnalyticContext analyticContext, string text, string groupId = null, int? maxResults = null, Category category = Category.Full, CallContext context = null )
+        {
+            return SafeAccessEnumerableTask( SearchAsync( analyticContext, text, groupId, maxResults, category, context ) );
         }
 
         /// <summary>
