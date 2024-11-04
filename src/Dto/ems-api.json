@@ -6886,12 +6886,78 @@
           }
         },
         "deprecated": false
-      },
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/rawFlightData/{serviceId}/definition": {
+      "post": {
+        "tags": [
+          "Export Service APIs"
+        ],
+        "summary": "Create (or update) a raw flight data export service using the supplied export definition.",
+        "operationId": "ExportService_CreateRawFlightDataExportService",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS service.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "The unique identifier for the export (service) to create/update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "export",
+            "in": "body",
+            "description": "The definition of the analytic export to create/update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.RawFlightData.Definition"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "If the specified definition structure is invalid or incorrectly configured.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}/{serviceId}/definition": {
       "delete": {
         "tags": [
           "Export Service APIs"
         ],
-        "summary": "Deletes an analytic export service.",
+        "summary": "Deletes an export service.",
         "operationId": "ExportService_DeleteAnalyticExportService",
         "consumes": [],
         "produces": [
@@ -6906,6 +6972,17 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
           },
           {
             "name": "serviceId",
@@ -6938,12 +7015,12 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic": {
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}": {
       "get": {
         "tags": [
           "Export Service APIs"
         ],
-        "summary": "Returns a collection of analytic export services on the system.",
+        "summary": "Returns a collection of export services on the system.",
         "operationId": "ExportService_GetAllAnalyticExportServices",
         "consumes": [],
         "produces": [
@@ -6958,6 +7035,17 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
           }
         ],
         "responses": {
@@ -6986,12 +7074,12 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}": {
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}/{serviceId}": {
       "get": {
         "tags": [
           "Export Service APIs"
         ],
-        "summary": "Returns basic information for a specific analytic export service on the system.",
+        "summary": "Returns basic information for a specific export service on the system.",
         "operationId": "ExportService_GetAnalyticExportServiceBasicInfo",
         "consumes": [],
         "produces": [
@@ -7006,6 +7094,17 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
           },
           {
             "name": "serviceId",
@@ -7044,12 +7143,12 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/status": {
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}/{serviceId}/status": {
       "get": {
         "tags": [
           "Export Service APIs"
         ],
-        "summary": "Returns processing status information for an analytic export service on the system.",
+        "summary": "Returns processing status information for an export service on the system.",
         "operationId": "ExportService_GetAnalyticExportServiceStatus",
         "consumes": [],
         "produces": [
@@ -7064,6 +7163,17 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
           },
           {
             "name": "serviceId",
@@ -7102,12 +7212,12 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/enable": {
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}/{serviceId}/enable": {
       "post": {
         "tags": [
           "Export Service APIs"
         ],
-        "summary": "Enable an analytic export service.",
+        "summary": "Enable an export service.",
         "operationId": "ExportService_EnableAnalyticExportService",
         "consumes": [],
         "produces": [],
@@ -7119,6 +7229,17 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
           },
           {
             "name": "serviceId",
@@ -7148,7 +7269,7 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/disable": {
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}/{serviceId}/disable": {
       "post": {
         "tags": [
           "Export Service APIs"
@@ -7167,6 +7288,17 @@
             "format": "int32"
           },
           {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
+          },
+          {
             "name": "serviceId",
             "in": "path",
             "description": "The unique identifier for the export (service) to enable.",
@@ -7194,12 +7326,12 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/exportsvc/analytic/{serviceId}/reprocess": {
+    "/v2/ems-systems/{emsSystemId}/exportsvc/{serviceType}/{serviceId}/reprocess": {
       "post": {
         "tags": [
           "Export Service APIs"
         ],
-        "summary": "Reprocess Objects for an analytic export service.",
+        "summary": "Reprocess Objects for an export service.",
         "operationId": "ExportService_ReprocessAnalyticExportServiceObjects",
         "consumes": [
           "application/json",
@@ -7216,9 +7348,20 @@
             "format": "int32"
           },
           {
+            "name": "serviceType",
+            "in": "path",
+            "description": "The type of export service (analytic or raw flight data).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "analytic",
+              "rawFlightData"
+            ]
+          },
+          {
             "name": "serviceId",
             "in": "path",
-            "description": "The unique identifier for the export (service) to enable.",
+            "description": "The unique identifier for the export (service) to reprocess.",
             "required": true,
             "type": "string"
           },
@@ -13267,7 +13410,7 @@
           "type": "string"
         },
         "databaseId": {
-          "description": "The identifier of the database on which the anlytics are based.",
+          "description": "The identifier of the database on which the analytics are based.",
           "type": "string"
         },
         "exportType": {
@@ -13335,6 +13478,54 @@
         }
       }
     },
+    "Adi.Ems.Web.Api.V2.Dto.ExportService.RawFlightData.Definition": {
+      "description": "Represents the options used to make up an raw flight data export service.",
+      "required": [
+        "name",
+        "databaseId",
+        "azureBlobContainer",
+        "azureBlobPath",
+        "azureBlobConnectionString"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The (display) name of the export service",
+          "type": "string"
+        },
+        "description": {
+          "description": "An optional description for the export service",
+          "type": "string"
+        },
+        "redactionParameters": {
+          "description": "The parameters to redact in the raw data files.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "databaseId": {
+          "description": "The identifier of the database for the export.",
+          "type": "string"
+        },
+        "filtering": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Filter",
+          "description": "The filtering used to narrow down the set of entities (e.g. flights) that should be exported"
+        },
+        "azureBlobContainer": {
+          "description": "The name of the Azure blob container where the export blob output will be written\r\n            (see AzureBlobName property for the name of the blob).\r\n            NOTE: This container must already exist in order for the export to complete successfully",
+          "type": "string"
+        },
+        "azureBlobPath": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticId",
+          "description": "An analytic identifer that defines the path (relative to the blob container) of the export blob output"
+        },
+        "azureBlobConnectionString": {
+          "description": "The connection string to the Azure blob store where the export output will be written",
+          "type": "string"
+        }
+      }
+    },
     "Adi.Ems.Web.Api.V2.Dto.ExportService.ServiceInfo": {
       "description": "Represents information about an export service.",
       "required": [
@@ -13357,7 +13548,8 @@
         "type": {
           "description": "The type of export service",
           "enum": [
-            "analytic"
+            "analytic",
+            "rawFlightData"
           ],
           "type": "string"
         },
