@@ -1160,7 +1160,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Get( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}" )]
-        Task<ServiceInfo> GetAnalyticExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
+        Task<ServiceInfo> GetExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a collection of export services on the system. 
@@ -1169,7 +1169,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Get( "/v2/ems-systems/1/exportsvc/{serviceType}" )]
-        Task<IEnumerable<ServiceInfo>> GetAnalyticExportServices( ServiceType serviceType, [Property] CallContext context = null );
+        Task<IEnumerable<ServiceInfo>> GetExportServices( ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns processing status information for an analytic export service on the system.
@@ -1181,7 +1181,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Get( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/status" )]
-        Task<ServiceStatus> GetAnalyticExportServiceStatus( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
+        Task<ServiceStatus> GetExportServiceStatus( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Enable an export service.
@@ -1193,7 +1193,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/enable" )]
-        Task EnableAnalyticExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
+        Task EnableExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Disable an export service.
@@ -1205,7 +1205,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/disable" )]
-        Task DisableAnalyticExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
+        Task DisableExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Create (or update) an analytic export service using the supplied export definition.
@@ -1241,7 +1241,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Delete( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/definition" )]
-        Task DeleteAnalyticExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
+        Task DeleteExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Reprocess Objects for an export service.
@@ -1253,7 +1253,7 @@ namespace EmsApi.Client.V2
         /// The type of export service (analytic or raw flight data).
         /// </param>
         [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/reprocess" )]
-        Task ReprocessAnalyticExportServiceObjects( string serviceId, ServiceType serviceType, [Body] ReprocessObjectsRequest reprocessObjectsRequest, [Property] CallContext context = null );
+        Task ReprocessExportServiceObjects( string serviceId, ServiceType serviceType, [Body] ReprocessObjectsRequest reprocessObjectsRequest, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.

@@ -20,9 +20,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual ServiceInfo GetAnalyticExport( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual ServiceInfo GetExport( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return AccessTaskResult( GetAnalyticExportAsync( serviceId, serviceType, context ) );
+            return AccessTaskResult( GetExportAsync( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<ServiceInfo> GetAnalyticExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual Task<ServiceInfo> GetExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAnalyticExportService( serviceId, serviceType, context ) );
+            return CallApiTask( api => api.GetExportService( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual ServiceStatus GetAnalyticExportStatus( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual ServiceStatus GetExportStatus( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return AccessTaskResult( GetAnalyticExportStatusAsync( serviceId, serviceType, context ) );
+            return AccessTaskResult( GetExportStatusAsync( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<ServiceStatus> GetAnalyticExportStatusAsync( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual Task<ServiceStatus> GetExportStatusAsync( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAnalyticExportServiceStatus( serviceId, serviceType, context ) );
+            return CallApiTask( api => api.GetExportServiceStatus( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -88,9 +88,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual void EnableAnalyticExport( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual void EnableExport( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            EnableAnalyticExportAsync( serviceId, serviceType, context ).Wait();
+            EnableExportAsync( serviceId, serviceType, context ).Wait();
         }
 
         /// <summary>
@@ -105,9 +105,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task EnableAnalyticExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual Task EnableExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return CallApiTask( api => api.EnableAnalyticExportService( serviceId, serviceType, context ) );
+            return CallApiTask( api => api.EnableExportService( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual void DisableAnalyticExport( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual void DisableExport( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            DisableAnalyticExportAsync( serviceId, serviceType, context ).Wait();
+            DisableExportAsync( serviceId, serviceType, context ).Wait();
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task DisableAnalyticExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual Task DisableExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return CallApiTask( api => api.DisableAnalyticExportService( serviceId, serviceType, context ) );
+            return CallApiTask( api => api.DisableExportService( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -225,9 +225,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual void DeleteAnalyticExport( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual void DeleteExport( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            DeleteAnalyticExportAsync( serviceId, serviceType, context ).Wait();
+            DeleteExportAsync( serviceId, serviceType, context ).Wait();
         }
 
         /// <summary>
@@ -242,9 +242,9 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task DeleteAnalyticExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
+        public virtual Task DeleteExportAsync( string serviceId, ServiceType serviceType, CallContext context = null )
         {
-            return CallApiTask( api => api.DeleteAnalyticExportService( serviceId, serviceType, context ) );
+            return CallApiTask( api => api.DeleteExportService( serviceId, serviceType, context ) );
         }
 
         /// <summary>
@@ -260,9 +260,9 @@ namespace EmsApi.Client.V2.Access
         /// The optional call context to include.
         /// </param>
         /// <returns></returns>
-        public virtual void ReprocessAnalyticExportServiceObjects( string serviceId, ServiceType serviceType, ReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
+        public virtual void ReprocessExportServiceObjects( string serviceId, ServiceType serviceType, ReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
         {
-            ReprocessAnalyticExportServiceObjectsAsync( serviceId, serviceType, reprocessObjectsRequest, context ).Wait();
+            ReprocessExportServiceObjectsAsync( serviceId, serviceType, reprocessObjectsRequest, context ).Wait();
         }
 
         /// <summary>
@@ -278,9 +278,9 @@ namespace EmsApi.Client.V2.Access
         /// The optional call context to include.
         /// </param>
         /// <returns></returns>
-        public virtual Task ReprocessAnalyticExportServiceObjectsAsync( string serviceId, ServiceType serviceType, ReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
+        public virtual Task ReprocessExportServiceObjectsAsync( string serviceId, ServiceType serviceType, ReprocessObjectsRequest reprocessObjectsRequest, CallContext context = null )
         {
-            return CallApiTask( api => api.ReprocessAnalyticExportServiceObjects( serviceId, serviceType, reprocessObjectsRequest, context ) );
+            return CallApiTask( api => api.ReprocessExportServiceObjects( serviceId, serviceType, reprocessObjectsRequest, context ) );
         }
     }
 }
