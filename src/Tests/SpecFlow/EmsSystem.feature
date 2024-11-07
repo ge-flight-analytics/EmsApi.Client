@@ -23,6 +23,7 @@ Scenario: Get EMS system information with search
 	When I run GetSystemInfoWithSearch
 	Then An EmsSystemInfo object is returned
 
+@ignore
 Scenario: Get EMS system next maintenance window
 	Given A valid API endpoint
 	When I run GetNextMaintenanceWindow

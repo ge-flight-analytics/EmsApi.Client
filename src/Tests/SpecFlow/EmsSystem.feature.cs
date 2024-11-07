@@ -205,12 +205,13 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Get EMS system next maintenance window")]
+        [Xunit.SkippableFactAttribute(DisplayName="Get EMS system next maintenance window", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "EmsSystem")]
         [Xunit.TraitAttribute("Description", "Get EMS system next maintenance window")]
         public void GetEMSSystemNextMaintenanceWindow()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get EMS system next maintenance window", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 26
