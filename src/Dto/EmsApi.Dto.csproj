@@ -65,6 +65,10 @@
         <Find><![CDATA[Definition2]]></Find>
         <ReplaceWith><![CDATA[AnalyticExportDefinition]]></ReplaceWith>
       </RegexTransform>
+      <RegexTransform Include="EmsApi.Dto.V2.cs">
+        <Find><![CDATA[Definition3]]></Find>
+        <ReplaceWith><![CDATA[RawFlightDataExportDefinition]]></ReplaceWith>
+      </RegexTransform>
     </ItemGroup>
     <RegexTransform Items="@(RegexTransform)" />
   </Target>

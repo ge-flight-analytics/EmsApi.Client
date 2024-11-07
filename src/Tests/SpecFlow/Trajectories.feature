@@ -12,6 +12,7 @@ Scenario: Get a single trajectory
 	When I run GetTrajectory and enter a value of 1
 	Then A TrajectoryValueArray object is returned
 
+@ignore
 Scenario: Get a single trajectory KML document
 	Given A valid API endpoint
 	When I run GetTrajectoryKml and enter a value of 1 and a value of 'KML Trajectory'

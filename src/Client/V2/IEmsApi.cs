@@ -1156,8 +1156,20 @@ namespace EmsApi.Client.V2
         /// <param name="serviceId">
         /// The unique identifier for the export service to return.
         /// </param>
-        [Get( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}" )]
-        Task<ServiceInfo> GetAnalyticExportService( string serviceId, [Property] CallContext context = null );
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Get( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}" )]
+        Task<ServiceInfo> GetExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a collection of export services on the system. 
+        /// </summary>
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Get( "/v2/ems-systems/1/exportsvc/{serviceType}" )]
+        Task<IEnumerable<ServiceInfo>> GetExportServices( ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns processing status information for an analytic export service on the system.
@@ -1165,29 +1177,38 @@ namespace EmsApi.Client.V2
         /// <param name="serviceId">
         /// The unique identifier for the export service status to return.
         /// </param>
-        [Get( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/status" )]
-        Task<ServiceStatus> GetAnalyticExportServiceStatus( string serviceId, [Property] CallContext context = null );
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Get( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/status" )]
+        Task<ServiceStatus> GetExportServiceStatus( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
-        /// Enables an analytic export service.
+        /// Enable an export service.
         /// </summary>
         /// <param name="serviceId">
         /// The unique identifier for the export service status to enable.
         /// </param>
-        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/enable" )]
-        Task EnableAnalyticExportService( string serviceId, [Property] CallContext context = null );
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/enable" )]
+        Task EnableExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
-        /// Disables an analytic export service.
+        /// Disable an export service.
         /// </summary>
         /// <param name="serviceId">
         /// The unique identifier for the export service status to disable.
         /// </param>
-        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/disable" )]
-        Task DisableAnalyticExportService( string serviceId, [Property] CallContext context = null );
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/disable" )]
+        Task DisableExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
-        /// Creates (or updates) an analytic export service using the supplied export definition.
+        /// Create (or update) an analytic export service using the supplied export definition.
         /// </summary>
         /// <param name="serviceId">
         /// The unique identifier for the export (service) to create/update.
@@ -1199,22 +1220,40 @@ namespace EmsApi.Client.V2
         Task UpdateAnalyticExportService( string serviceId, [Body] AnalyticExportDefinition definition, [Property] CallContext context = null );
 
         /// <summary>
-        /// Deletes an analytic export service.
+        /// Create (or update) a raw flight data export service using the supplied export definition.
+        /// </summary>
+        /// <param name="serviceId">
+        /// The unique identifier for the export (service) to create/update.
+        /// </param>
+        /// <param name="definition">
+        /// The definition of the raw flight data export to create/update.
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/rawFlightData/{serviceId}/definition" )]
+        Task UpdateRawFlightDataExportService( string serviceId, [Body] RawFlightDataExportDefinition definition, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes an export service.
         /// </summary>
         /// <param name="serviceId">
         /// The unique identifier for the export (service) to delete.
         /// </param>
-        [Delete( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/definition" )]
-        Task DeleteAnalyticExportService( string serviceId, [Property] CallContext context = null );
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Delete( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/definition" )]
+        Task DeleteExportService( string serviceId, ServiceType serviceType, [Property] CallContext context = null );
 
         /// <summary>
-        /// Reprocess an analytic export service objects.
+        /// Reprocess Objects for an export service.
         /// </summary>
         /// <param name="serviceId">
         /// The unique identifier for the export service status to reprocess objects.
         /// </param>
-        [Post( "/v2/ems-systems/1/exportsvc/analytic/{serviceId}/reprocess" )]
-        Task ReprocessAnalyticExportServiceObjects( string serviceId, [Body] ReprocessObjectsRequest reprocessObjectsRequest, [Property] CallContext context = null );
+        /// <param name="serviceType">
+        /// The type of export service (analytic or raw flight data).
+        /// </param>
+        [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/reprocess" )]
+        Task ReprocessExportServiceObjects( string serviceId, ServiceType serviceType, [Body] ReprocessObjectsRequest reprocessObjectsRequest, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.
