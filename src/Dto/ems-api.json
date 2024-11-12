@@ -14534,6 +14534,11 @@
       "description": "Procedures for a flight's takeoff.",
       "type": "object",
       "properties": {
+        "detectedDepartureId": {
+          "format": "int32",
+          "description": "The departure procedure identifier that was detected for the flight.\r\n            This defaults to 0 which represents unknown",
+          "type": "integer"
+        },
         "departures": {
           "description": "The departure procedures",
           "type": "array",
