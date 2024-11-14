@@ -1,2 +1,2 @@
-# Release 2.23.0
-* Add route to search for analytics by fleet.
+# Release 2.25.0
+* Add the detected departure id for the procedures list by flight.
