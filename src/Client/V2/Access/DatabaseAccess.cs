@@ -105,12 +105,16 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fieldId">
         /// The unique identifier of the field whose information to return.
         /// </param>
+        /// <param name="useIndex">
+        /// Whether or not to attempt to use an index to load the field. This should be more efficient, however
+        /// you won't received the same level of type information (for discretes you won't have their discrete mappings). 
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<Field> GetFieldAsync( string databaseId, string fieldId, CallContext context = null )
+        public virtual Task<Field> GetFieldAsync( string databaseId, string fieldId, bool? useIndex = null, CallContext context = null )
         {
-            return CallApiTask( api => api.GetDatabaseFieldDefinition( databaseId, fieldId, context ) );
+            return CallApiTask( api => api.GetDatabaseFieldDefinition( databaseId, fieldId, useIndex, context ) );
         }
 
         /// <summary>
@@ -122,12 +126,16 @@ namespace EmsApi.Client.V2.Access
         /// <param name="fieldId">
         /// The unique identifier of the field whose information to return.
         /// </param>
+        /// <param name="useIndex">
+        /// Whether or not to attempt to use an index to load the field. This should be more efficient, however
+        /// you won't received the same level of type information (for discretes you won't have their discrete mappings). 
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Field GetField( string databaseId, string fieldId, CallContext context = null )
+        public virtual Field GetField( string databaseId, string fieldId, bool? useIndex = null, CallContext context = null )
         {
-            return AccessTaskResult( GetFieldAsync( databaseId, fieldId, context ) );
+            return AccessTaskResult( GetFieldAsync( databaseId, fieldId, useIndex, context ) );
         }
 
         /// <summary>

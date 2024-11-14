@@ -5255,6 +5255,13 @@
             "description": "The unique identifier of the field whose information to return.",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "useIndex",
+            "in": "query",
+            "description": "When true, attempt to use a pre-built index to answer the request. \r\n            This will only return basic information about the field, no type specific information will be included.",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -6919,7 +6926,7 @@
           {
             "name": "export",
             "in": "body",
-            "description": "The definition of the analytic export to create/update.",
+            "description": "The definition of the raw flight data export to create/update.",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.RawFlightData.Definition"
@@ -7371,7 +7378,7 @@
             "description": "Represents the options used to reprocess an export service objects.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.Analytic.ReprocessObjectsRequest"
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ExportService.ReprocessObjectsRequest"
             }
           }
         ],
@@ -8048,6 +8055,124 @@
           },
           "404": {
             "description": "The flight record could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/odw/fragments/{fragmentId}/raw": {
+      "get": {
+        "tags": [
+          "Odw Fragment APIs"
+        ],
+        "summary": "Returns the content of the ODW fragment as raw text.",
+        "operationId": "OdwFragment_GetFragmentById",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fragmentId",
+            "in": "path",
+            "description": "The integer ID of the fragment whose raw text will be retrieved.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/System.Object"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "A fragment with the specified ID could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/odw/fragments/{fragmentId}/file": {
+      "get": {
+        "tags": [
+          "Odw Fragment APIs"
+        ],
+        "summary": "Returns the content of the ODW fragment as a downloadable file.",
+        "operationId": "OdwFragment_GetFragmentStreamById",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fragmentId",
+            "in": "path",
+            "description": "The integer ID of the fragment whose raw text will be retrieved.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/System.Object"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "A fragment with the specified ID could not be found.",
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
@@ -9691,7 +9816,7 @@
           {
             "name": "request",
             "in": "body",
-            "description": "Information about the upload to start.",
+            "description": "Information about the upload to start. (Type: emsCollectionZipped, emsCollectionRaw, emsPlainFile)",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Upload.UploadRequest"
@@ -13621,7 +13746,7 @@
         }
       }
     },
-    "Adi.Ems.Web.Api.V2.Dto.ExportService.Analytic.ReprocessObjectsRequest": {
+    "Adi.Ems.Web.Api.V2.Dto.ExportService.ReprocessObjectsRequest": {
       "description": "Represents the options used to reprocess an export service objects.",
       "required": [
         "databaseId"
@@ -15598,7 +15723,8 @@
           "enum": [
             "emsCollectionZipped",
             "testTransfer",
-            "emsCollectionRaw"
+            "emsCollectionRaw",
+            "emsPlainFile"
           ],
           "type": "string"
         },
@@ -15690,7 +15816,8 @@
           "enum": [
             "emsCollectionZipped",
             "testTransfer",
-            "emsCollectionRaw"
+            "emsCollectionRaw",
+            "emsPlainFile"
           ],
           "type": "string"
         },

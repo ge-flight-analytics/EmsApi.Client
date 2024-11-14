@@ -600,8 +600,12 @@ namespace EmsApi.Client.V2
         /// <param name="fieldId">
         /// The unique identifier of the field whose information to return.
         /// </param>
+        /// <param name="useIndex">
+        /// Whether or not to attempt to use an index to load the field. This should be more efficient, however
+        /// you won't received the same level of type information (for discretes you won't have their discrete mappings). 
+        /// </param>
         [Get( "/v2/ems-systems/1/databases/{databaseId}/fields/{fieldId}" )]
-        Task<Field> GetDatabaseFieldDefinition( string databaseId, string fieldId, [Property] CallContext context = null );
+        Task<Field> GetDatabaseFieldDefinition( string databaseId, string fieldId, bool? useIndex = null, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information about multiple database fields matching the input IDs.

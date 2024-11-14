@@ -1,2 +1,2 @@
-# Release 2.25.0
-* Add the detected departure id for the procedures list by flight.
+# Release 2.26.0
+* Add useIndex parameter to GET fieldId Database endpoint.
