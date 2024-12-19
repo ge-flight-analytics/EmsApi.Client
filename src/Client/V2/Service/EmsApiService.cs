@@ -233,7 +233,7 @@ namespace EmsApi.Client.V2
             Assets = InitializeAccessClass<AssetsAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
             Profiles = InitializeAccessClass<ProfilesAccess>();
-            ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
+            AnalyticSets = InitializeAccessClass<AnalyticSetAccess>();
             Analytics = InitializeAccessClass<AnalyticsAccess>();
             AnalyticSets = InitializeAccessClass<AnalyticSetAccess>();
             Databases = InitializeAccessClass<DatabaseAccess>();
