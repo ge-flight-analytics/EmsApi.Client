@@ -233,7 +233,9 @@ namespace EmsApi.Client.V2
             Assets = InitializeAccessClass<AssetsAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
             Profiles = InitializeAccessClass<ProfilesAccess>();
+#pragma warning disable CS0618 // Type or member is obsolete
             ParameterSets = InitializeAccessClass<ParameterSetsAccess>();
+#pragma warning restore CS0618 // Type or member is obsolete
             Analytics = InitializeAccessClass<AnalyticsAccess>();
             AnalyticSets = InitializeAccessClass<AnalyticSetAccess>();
             Databases = InitializeAccessClass<DatabaseAccess>();

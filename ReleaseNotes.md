@@ -1,2 +1,2 @@
-# Release 2.26.0
-* Add useIndex parameter to GET fieldId Database endpoint.
+# Release 2.26.1
+* Updated Refit package version to the latest available.
