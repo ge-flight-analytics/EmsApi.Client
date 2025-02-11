@@ -2890,6 +2890,168 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/{emsSystemId}/analysis-groups": {
+      "get": {
+        "tags": [
+          "Analysis APIs"
+        ],
+        "summary": "Returns the set of analyses at the root.",
+        "operationId": "Analysis_GetAnalysisGroups",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Analysis.AnalysisGroup"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/analysis-groups/{groupId}": {
+      "get": {
+        "tags": [
+          "Analysis APIs"
+        ],
+        "summary": "Returns an analysis group.",
+        "operationId": "Analysis_GetAnalysisGroup",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The ID of the aanalysis group to return.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Analysis.AnalysisGroup"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/analysis-groups/{groupId}/analysis/{analysisName}": {
+      "get": {
+        "tags": [
+          "Analysis APIs"
+        ],
+        "summary": "Returns an analysis with the provided name from the group requested.",
+        "operationId": "Analysis_GetAnalysis",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The ID of the analysis group to retrieve the analysis from.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "analysisName",
+            "in": "path",
+            "description": "The name of the analysis to return.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Analysis.Analysis"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An analysis with the provided name or ID could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/analytics": {
       "get": {
         "tags": [
@@ -11159,6 +11321,152 @@
         }
       }
     },
+    "Adi.Ems.Web.Api.V2.Dto.Analysis.AnalysisGroup": {
+      "description": "A container for explorer analysis groups.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the group",
+          "type": "string"
+        },
+        "groupId": {
+          "description": "The ID of the group. This should be a relative path with backslashes replaced with colons",
+          "type": "string"
+        },
+        "groups": {
+          "description": "An array of groups contained by this group",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Analysis.AnalysisGroup"
+          }
+        },
+        "analyses": {
+          "description": "An array of explorer analyses contained by this group",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Analysis.Analysis"
+          }
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Analysis.Analysis": {
+      "description": "A container for explorer analysis groups.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the analysis.",
+          "type": "string"
+        },
+        "description": {
+          "description": "An optional description of the analysis.",
+          "type": "string"
+        },
+        "filter": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Filter",
+          "description": "The filters for this analysis."
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.Filter": {
+      "description": "Represents the operations and arguments that can be used to filter a data source query.",
+      "required": [
+        "operator",
+        "args"
+      ],
+      "type": "object",
+      "properties": {
+        "operator": {
+          "description": "The unique string identifier of the operation to perform",
+          "enum": [
+            "isTrue",
+            "isFalse",
+            "isNull",
+            "isNotNull",
+            "and",
+            "or",
+            "not",
+            "in",
+            "notIn",
+            "plus",
+            "minus",
+            "multiply",
+            "divide",
+            "modulo",
+            "equal",
+            "notEqual",
+            "lessThan",
+            "lessThanOrEqual",
+            "greaterThan",
+            "greaterThanOrEqual",
+            "betweenInclusive",
+            "betweenLowerExclusive",
+            "betweenUpperExclusive",
+            "betweenExclusive",
+            "notBetweenInclusive",
+            "notBetweenLowerExclusive",
+            "notBetweenUpperExclusive",
+            "notBetweenExclusive",
+            "integerRangeInclude",
+            "integerRangeExclude",
+            "realRangeInclude",
+            "realRangeExclude",
+            "like",
+            "notLike",
+            "allWords",
+            "anyWords",
+            "noWords",
+            "dateRelative",
+            "dateSpecificMonths",
+            "dateSpecificMonth",
+            "dateBeforeMonth",
+            "dateOnAfterMonth",
+            "dateSpecificDays",
+            "dateSpecificDay",
+            "dateBeforeDay",
+            "dateOnAfterDay",
+            "dateTimeRange",
+            "dateTimeBefore",
+            "dateTimeOnAfter",
+            "dateQuarterOfYear",
+            "dateMonthOfYear",
+            "dateDayOfWeek",
+            "dateTimeHourOfDay"
+          ],
+          "type": "string"
+        },
+        "args": {
+          "description": "An ordered list of arguments to provide the operator. The requirements for the arguments depend on which \r\n            operation is being performed",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FilterArgument"
+          }
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Schema.FilterArgument": {
+      "description": "Represents an argument in a filter.",
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "The type of the filter argument, describing the role of the argument.",
+          "enum": [
+            "none",
+            "filter",
+            "field",
+            "constant"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/System.Object",
+          "description": "The value represented by the filter argument."
+        }
+      }
+    },
     "Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticId": {
       "description": "Provides an identifier for an individual analytic.",
       "required": [
@@ -12493,82 +12801,6 @@
         }
       }
     },
-    "Adi.Ems.Web.Api.V2.Dto.Schema.Filter": {
-      "description": "Represents the operations and arguments that can be used to filter a data source query.",
-      "required": [
-        "operator",
-        "args"
-      ],
-      "type": "object",
-      "properties": {
-        "operator": {
-          "description": "The unique string identifier of the operation to perform",
-          "enum": [
-            "isTrue",
-            "isFalse",
-            "isNull",
-            "isNotNull",
-            "and",
-            "or",
-            "not",
-            "in",
-            "notIn",
-            "plus",
-            "minus",
-            "multiply",
-            "divide",
-            "modulo",
-            "equal",
-            "notEqual",
-            "lessThan",
-            "lessThanOrEqual",
-            "greaterThan",
-            "greaterThanOrEqual",
-            "betweenInclusive",
-            "betweenLowerExclusive",
-            "betweenUpperExclusive",
-            "betweenExclusive",
-            "notBetweenInclusive",
-            "notBetweenLowerExclusive",
-            "notBetweenUpperExclusive",
-            "notBetweenExclusive",
-            "integerRangeInclude",
-            "integerRangeExclude",
-            "realRangeInclude",
-            "realRangeExclude",
-            "like",
-            "notLike",
-            "allWords",
-            "anyWords",
-            "noWords",
-            "dateRelative",
-            "dateSpecificMonths",
-            "dateSpecificMonth",
-            "dateBeforeMonth",
-            "dateOnAfterMonth",
-            "dateSpecificDays",
-            "dateSpecificDay",
-            "dateBeforeDay",
-            "dateOnAfterDay",
-            "dateTimeRange",
-            "dateTimeBefore",
-            "dateTimeOnAfter",
-            "dateQuarterOfYear",
-            "dateMonthOfYear",
-            "dateDayOfWeek",
-            "dateTimeHourOfDay"
-          ],
-          "type": "string"
-        },
-        "args": {
-          "description": "An ordered list of arguments to provide the operator. The requirements for the arguments depend on which \r\n            operation is being performed",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.FilterArgument"
-          }
-        }
-      }
-    },
     "Adi.Ems.Web.Api.V2.Dto.Schema.QueryTracking": {
       "description": "Additional options that may be provided as part of a data source query to enable querying for only new or updated data.",
       "required": [
@@ -12591,30 +12823,6 @@
             "onlyNew"
           ],
           "type": "string"
-        }
-      }
-    },
-    "Adi.Ems.Web.Api.V2.Dto.Schema.FilterArgument": {
-      "description": "Represents an argument in a filter.",
-      "required": [
-        "type",
-        "value"
-      ],
-      "type": "object",
-      "properties": {
-        "type": {
-          "description": "The type of the filter argument, describing the role of the argument.",
-          "enum": [
-            "none",
-            "filter",
-            "field",
-            "constant"
-          ],
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/System.Object",
-          "description": "The value represented by the filter argument."
         }
       }
     },
