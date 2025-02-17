@@ -408,6 +408,29 @@ namespace EmsApi.Client.V2
         Task<Metadata> GetAnalyticMetadata( int flightId, [Body] AnalyticId analyticId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns the set of analyses at the root.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/analysis-groups" )]
+        Task<AnalysisGroup> GetAnalysisGroups( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns an analysis group.
+        /// </summary>
+        /// <param name="groupId">The ID of the analysis group to return.</param>
+        /// <returns></returns>
+        [Get( "/v2/ems-systems/1/analysis-groups/{groupId}" )]
+        Task<AnalysisGroup> GetAnalysisGroup( string groupId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns an analysis with the provided name from the group requested.
+        /// </summary>
+        /// <param name="groupId">The ID of the analysis group to retrieve the analysis from.</param>
+        /// <param name="analysisName">The name of the analysis to return.</param>
+        /// <returns></returns>
+        [Get( "/v2/ems-systems/1/analysis-groups/{groupId}/analysis/{analysisName}" )]
+        Task<Analysis> GetAnalysis( string groupId, string analysisName, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns information about the analytic set groups on the given EMS system.
         /// </summary>
         [Get( "/v2/ems-systems/1/analytic-set-groups" )]

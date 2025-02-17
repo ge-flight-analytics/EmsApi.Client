@@ -1,2 +1,2 @@
-# Release 2.26.1
-* Updated Refit package version to the latest available.
+# Release 2.27.0
+* Analysis access endpoints added.
