@@ -1,2 +1,2 @@
-# Release 2.27.0
-* Analysis access endpoints added.
+# Release 2.27.1
+* Expose Analysis access endpoints.
