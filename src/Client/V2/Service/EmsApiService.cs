@@ -136,6 +136,11 @@ namespace EmsApi.Client.V2
         public ExportServiceAccess ExportService { get; set; }
 
         /// <summary>
+        /// Access to the analysis routes.
+        /// </summary>
+        public AnalysisAccess Analysis { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
@@ -247,6 +252,7 @@ namespace EmsApi.Client.V2
             Weather = InitializeAccessClass<WeatherAccess>();
             IncomingFile = InitializeAccessClass<IncomingFileAccess>();
             ExportService = InitializeAccessClass<ExportServiceAccess>();
+            Analysis = InitializeAccessClass<AnalysisAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
