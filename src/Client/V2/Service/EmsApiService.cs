@@ -141,6 +141,11 @@ namespace EmsApi.Client.V2
         public AnalysisAccess Analysis { get; set; }
 
         /// <summary>
+        /// Access to the fieldSet routes.
+        /// </summary>
+        public FieldSetAccess FieldSet { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.

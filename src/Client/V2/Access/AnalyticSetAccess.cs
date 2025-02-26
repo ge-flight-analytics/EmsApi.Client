@@ -164,12 +164,15 @@ namespace EmsApi.Client.V2.Access
         /// <param name="analyticSetName">
         /// The name of the analytic set.
         /// </param>
+        /// <param name="fleetId">
+        /// Optionally include a specific fleet for context while enumerating the set (may be needed for physical parameter names).
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<AnalyticSet> GetAnalyticSetAsync( string analyticGroupId, string analyticSetName, CallContext context = null )
+        public virtual Task<AnalyticSet> GetAnalyticSetAsync( string analyticGroupId, string analyticSetName, int fleetId = -1, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAnalyticSet( analyticGroupId, analyticSetName, context ) );
+            return CallApiTask( api => api.GetAnalyticSet( analyticGroupId, analyticSetName, fleetId, context ) );
         }
 
         /// <summary>
@@ -181,12 +184,15 @@ namespace EmsApi.Client.V2.Access
         /// <param name="analyticSetName">
         /// The name of the analytic set.
         /// </param>
+        /// <param name="fleetId">
+        /// Optionally include a specific fleet for context while enumerating the set (may be needed for physical parameter names).
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual AnalyticSet GetAnalyticSet( string analyticGroupId, string analyticSetName, CallContext context = null )
+        public virtual AnalyticSet GetAnalyticSet( string analyticGroupId, string analyticSetName, int fleetId = -1, CallContext context = null )
         {
-            return AccessTaskResult( GetAnalyticSetAsync( analyticGroupId, analyticSetName, context ) );
+            return AccessTaskResult( GetAnalyticSetAsync( analyticGroupId, analyticSetName, fleetId, context ) );
         }
 
         /// <summary>
