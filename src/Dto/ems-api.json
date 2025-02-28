@@ -4270,6 +4270,14 @@
             "description": "The name of the analytic set to return.",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "fleetId",
+            "in": "query",
+            "description": "Optionally include a specific fleet for context while enumerating the set (may be needed for physical parameter names).",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "responses": {
@@ -7550,6 +7558,168 @@
           },
           "401": {
             "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/fieldset-groups": {
+      "get": {
+        "tags": [
+          "Field Set APIs"
+        ],
+        "summary": "Returns the set of analyses at the root.",
+        "operationId": "FieldSet_GetFieldSetGroups",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSetGroup"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/fieldset-groups/{groupId}": {
+      "get": {
+        "tags": [
+          "Field Set APIs"
+        ],
+        "summary": "Returns an FieldSet group.",
+        "operationId": "FieldSet_GetFieldSetGroup",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The ID of the aFieldSet group to return.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSetGroup"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/fieldset-groups/{groupId}/fieldset/{fieldSetName}": {
+      "get": {
+        "tags": [
+          "Field Set APIs"
+        ],
+        "summary": "Returns an FieldSet with the provided name from the group requested.",
+        "operationId": "FieldSet_GetFieldSet",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "The ID of the FieldSet group to retrieve the FieldSet from.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fieldSetName",
+            "in": "path",
+            "description": "The name of the FieldSet to return.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSet"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An FieldSet with the provided name or ID could not be found.",
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
@@ -13968,6 +14138,69 @@
         "filtering": {
           "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Schema.Filter",
           "description": "Empty if we are to reprocess everything, otherwise this will be a stringitized filter string for selectively reprocessing."
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSetGroup": {
+      "description": "A container for Explorer FieldSet groups.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the group",
+          "type": "string"
+        },
+        "groupId": {
+          "description": "The ID of the group. This should be a relative path with backslashes replaced with colons",
+          "type": "string"
+        },
+        "groups": {
+          "description": "An array of groups contained by this group",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSetGroup"
+          }
+        },
+        "fieldSets": {
+          "description": "An array of field sets contained by this group",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSet"
+          }
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSet": {
+      "description": "A container for Explorer FieldSets.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the FieldSet.",
+          "type": "string"
+        },
+        "description": {
+          "description": "An optional description of the FieldSet.",
+          "type": "string"
+        },
+        "schemaItems": {
+          "description": "The schema items in this FieldSet.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSetItem"
+          }
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.FieldSet.FieldSetItem": {
+      "description": "A container for Explorer FieldSet items.",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "The description of this item.",
+          "type": "string"
+        },
+        "moniker": {
+          "description": "The schema moniker for this item.",
+          "type": "string"
         }
       }
     },

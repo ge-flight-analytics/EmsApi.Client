@@ -431,6 +431,29 @@ namespace EmsApi.Client.V2
         Task<Analysis> GetAnalysis( string groupId, string analysisName, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns the set of fieldSets at the root.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/fieldset-groups" )]
+        Task<FieldSetGroup> GetFieldSetGroups( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns an fieldSet group.
+        /// </summary>
+        /// <param name="groupId">The ID of the fieldSet group to return.</param>
+        /// <returns></returns>
+        [Get( "/v2/ems-systems/1/fieldset-groups/{groupId}" )]
+        Task<FieldSetGroup> GetFieldSetGroup( string groupId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns an fieldSet with the provided name from the group requested.
+        /// </summary>
+        /// <param name="groupId">The ID of the fieldSet group to retrieve the fieldSet from.</param>
+        /// <param name="fieldSetName">The name of the fieldSet to return.</param>
+        /// <returns></returns>
+        [Get( "/v2/ems-systems/1/fieldset-groups/{groupId}/fieldset/{fieldSetName}" )]
+        Task<FieldSet> GetFieldSet( string groupId, string fieldSetName, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns information about the analytic set groups on the given EMS system.
         /// </summary>
         [Get( "/v2/ems-systems/1/analytic-set-groups" )]
@@ -484,8 +507,11 @@ namespace EmsApi.Client.V2
         /// <param name="analyticSetName">
         /// The name of the analytic set to return.
         /// </param>
+        /// <param name="fleetId">
+        /// Optionally include a specific fleet for context while enumerating the set (may be needed for physical parameter names).
+        /// </param>
         [Get( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-sets/{analyticSetName}" )]
-        Task<AnalyticSet> GetAnalyticSet( string groupId, string analyticSetName, [Property] CallContext context = null );
+        Task<AnalyticSet> GetAnalyticSet( string groupId, string analyticSetName, int fleetId = -1, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates a new analytic set.
