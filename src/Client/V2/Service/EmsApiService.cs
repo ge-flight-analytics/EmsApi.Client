@@ -258,6 +258,7 @@ namespace EmsApi.Client.V2
             IncomingFile = InitializeAccessClass<IncomingFileAccess>();
             ExportService = InitializeAccessClass<ExportServiceAccess>();
             Analysis = InitializeAccessClass<AnalysisAccess>();
+            FieldSet = InitializeAccessClass<FieldSetAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
