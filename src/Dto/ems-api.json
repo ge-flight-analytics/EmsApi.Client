@@ -1853,6 +1853,13 @@
             "description": "The optional username search string used to search the list of users. Only users\r\n            that contain this search string in their user name are returned.",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeADAttributes",
+            "in": "query",
+            "description": "True if the Active Directory attributes should be included in the user object.",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -11229,6 +11236,16 @@
           "format": "int32",
           "description": "A read-only value indicating the number of times the user failed to login.",
           "type": "integer"
+        },
+        "isEnabled": {
+          "description": "A read-only value indicating if user is enabled on the Active Directory.\r\n            This property will be null if {M:Adi.Ems.Web.Api.V2.Model.Admin.User.GetADAttributesAsync} has not been called.",
+          "type": "boolean",
+          "readOnly": true
+        },
+        "isPasswordExpired": {
+          "description": "A read-only value indicating if user is has an expired password on the Active Directory.\r\n            This property will be null if {M:Adi.Ems.Web.Api.V2.Model.Admin.User.GetADAttributesAsync} has not been called.",
+          "type": "boolean",
+          "readOnly": true
         }
       }
     },

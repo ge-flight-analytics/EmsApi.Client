@@ -19,12 +19,15 @@ namespace EmsApi.Client.V2.Access
         /// The optional username search string used to search the list of users. Only users that contain this search
         /// string in their user name are returned.
         /// </param>
+        /// <param name="includeADAttributes">
+        /// True if the Active Directory attributes should be included in the user object.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<User>> GetUsersAsync( string username = null, CallContext context = null )
+        public virtual Task<IEnumerable<User>> GetUsersAsync( string username = null, bool includeADAttributes = false, CallContext context = null )
         {
-            return CallApiTask( api => api.AdminGetUsers( username, context ) );
+            return CallApiTask( api => api.AdminGetUsers( username, includeADAttributes, context ) );
         }
 
         /// <summary>
@@ -34,12 +37,14 @@ namespace EmsApi.Client.V2.Access
         /// The optional username search string used to search the list of users. Only users that contain this search
         /// string in their user name are returned.
         /// </param>
+        /// <param name="includeADAttributes">
+        /// True if the Active Directory attributes should be included in the user object.
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual IEnumerable<User> GetUsers( string username = null, CallContext context = null )
+        public virtual IEnumerable<User> GetUsers( string username = null, bool includeADAttributes = false, CallContext context = null )
         {
-            return AccessTaskResult( GetUsersAsync( username, context ) );
+            return AccessTaskResult( GetUsersAsync( username, includeADAttributes, context ) );
         }
 
         /// <summary>
