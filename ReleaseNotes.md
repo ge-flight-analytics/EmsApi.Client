@@ -1,3 +1,2 @@
-# Release 2.28.0
-* Allow passing fleet context when retrieving analytic sets. 
-* Added FieldSet access endpoints.
+# Release 2.28.1
+* Allow passing includeADAttributes for admin user endpoints to expand User object. 

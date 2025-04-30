@@ -963,11 +963,13 @@ namespace EmsApi.Client.V2
         /// The optional username search string used to search the list of users. Only users that contain this search
         /// string in their user name are returned.
         /// </param>
+        /// <param name="includeADAttributes">
+        /// True if the Active Directory attributes should be included in the user object.
         /// <remarks>
         /// You must have Admin privileges to the EMS API to be able to call this route.
         /// </remarks>
         [Get( "/v2/admin/users" )]
-        Task<IEnumerable<User>> AdminGetUsers( string username = null, [Property] CallContext context = null );
+        Task<IEnumerable<User>> AdminGetUsers( string username = null, bool includeADAttributes = false, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates a new user account with the provided settings.
