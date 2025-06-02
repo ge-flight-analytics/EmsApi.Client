@@ -146,6 +146,11 @@ namespace EmsApi.Client.V2
         public FieldSetAccess FieldSet { get; set; }
 
         /// <summary>
+        /// Access to the alert routes.
+        /// </summary>
+        public AlertAccess Alerts { get; set; }
+
+        /// <summary>
         /// The raw refit interface. This is internal and private set so that the
         /// access classes can use it without having to hold their own references,
         /// because this can change when the endpoint changes.
@@ -259,6 +264,7 @@ namespace EmsApi.Client.V2
             ExportService = InitializeAccessClass<ExportServiceAccess>();
             Analysis = InitializeAccessClass<AnalysisAccess>();
             FieldSet = InitializeAccessClass<FieldSetAccess>();
+            Alerts = InitializeAccessClass<AlertAccess>();
         }
 
         private TAccess InitializeAccessClass<TAccess>() where TAccess : RouteAccess, new()
