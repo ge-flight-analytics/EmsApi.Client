@@ -18,7 +18,7 @@ namespace EmsApi.Client.V2.Access
 
         public virtual Definition CreateAlertDefinition( SetDefinition alertDefinition, CallContext context = null )
         {
-           return AccessTaskResult( CreateAlertDefinitionAsync( alertDefinition, context ) );
+            return AccessTaskResult( CreateAlertDefinitionAsync( alertDefinition, context ) );
         }
 
         public virtual Task<Definition> CreateAlertDefinitionAsync( SetDefinition alertDefinition, CallContext context = null )
@@ -58,7 +58,7 @@ namespace EmsApi.Client.V2.Access
 
         public virtual GetActivity GetAlertDefinitionEntityState( string definitionId, int entityRecord, int? maxRestults = null, CallContext context = null )
         {
-            return AccessTaskResult( GetAlertDefinitionEntityStateAsync( definitionId, entityRecord, maxRestults, context ) );            
+            return AccessTaskResult( GetAlertDefinitionEntityStateAsync( definitionId, entityRecord, maxRestults, context ) );
         }
 
         public virtual Task<GetActivity> GetAlertDefinitionEntityStateAsync( string definitionId, int entityRecord, int? maxRestults = null, CallContext context = null )
@@ -66,14 +66,25 @@ namespace EmsApi.Client.V2.Access
             return CallApiTask( api => api.GetAlertDefinitionEntityState( definitionId, entityRecord, maxRestults, context ) );
         }
 
-        public virtual IEnumerable<GetActivity> GetAlertDefinitionEntityActivity( string definitionId, int entityRecord, CallContext context = null )
+        public virtual IEnumerable<GetActivity> GetAlertDefinitionEntityActivity( string definitionId, int entityRecord, int? maxRestults = null, CallContext context = null )
         {
-            return SafeAccessEnumerableTask( GetAlertDefinitionEntityActivityAsync( definitionId, entityRecord, context ) );
+            return SafeAccessEnumerableTask( GetAlertDefinitionEntityActivityAsync( definitionId, entityRecord, maxRestults, context ) );
         }
 
-        public virtual Task<IEnumerable<GetActivity>> GetAlertDefinitionEntityActivityAsync( string definitionId, int entityRecord, CallContext context = null )
+        public virtual Task<IEnumerable<GetActivity>> GetAlertDefinitionEntityActivityAsync( string definitionId, int entityRecord, int? maxRestults = null, CallContext context = null )
         {
-            return CallApiTask( api => api.GetAlertDefinitionEntityActivity( definitionId, entityRecord, context ) );
+            return CallApiTask( api => api.GetAlertDefinitionEntityActivity( definitionId, entityRecord, maxRestults, context ) );
+        }
+
+        public virtual GetActivity AddAlertDefinitionEntityActivity( string definitionId, int entityRecord, AddActivity activity, CallContext context = null )
+        {
+            return AccessTaskResult( AddAlertDefinitionEntityActivityASync( definitionId, entityRecord, activity, context ) );
+        }
+
+        public virtual Task<GetActivity> AddAlertDefinitionEntityActivityASync( string definitionId, int entityRecord, AddActivity activity, CallContext context = null )
+        {
+            return CallApiTask( api => api.AddAlertDefinitionEntityActivity( definitionId, entityRecord, activity, context ) );
+
         }
     }
 }

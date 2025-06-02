@@ -1387,14 +1387,24 @@ namespace EmsApi.Client.V2
         /// <param name="entityRecord">
         /// The record number of the entity whose alert activity is being queried.
         /// </param>
+        /// <param name="maxResults">
+        /// The maximum number of activity entries to retrieve (default = 100). Results are returned in newest-first order.
+        /// </param>
         /// <returns>
         /// Activity entries for some alert on a particular entity.
         /// </returns>
-        [Get( "/v2/ems-systems/{emsSystemId}/alerts/definitions/{definitionId}/entities/{entityRecord}/activity" )]
-        Task<IEnumerable<GetActivity>> GetAlertDefinitionEntityActivity( string definitionId, int entityRecord, [Property] CallContext context = null );
+        [Get( "/v2/ems-systems/1/alerts/definitions/{definitionId}/entities/{entityRecord}/activity" )]
+        Task<IEnumerable<GetActivity>> GetAlertDefinitionEntityActivity( string definitionId, int entityRecord, int? maxResults = null, [Property] CallContext context = null );
 
-        [Post( "/v2/ems-systems/{emsSystemId}/alerts/definitions/{definitionId}/entities/{entityRecord}/activity" )]
-        Task PostAlertDefinitionEntityActivity( string definitionId, string entityRecord, [Body] AddActivity activity, [Property] CallContext context = null );
+        /// <summary>
+        /// Adds an activity/history entry for some alert on a particular entity, indicating a time when the alert state was changed or known to have some value.
+        /// </summary>
+        /// <param name="definitionId">"The alert definition whose activity is being recorded.</param>
+        /// <param name="entityRecord">The record number of the entity whose alert activity is being recorded.</param>
+        /// <param name="activity">The inputs for how to set the alert state.</param>
+        /// <returns></returns>
+        [Post( "/v2/ems-systems/1/alerts/definitions/{definitionId}/entities/{entityRecord}/activity" )]
+        Task<GetActivity> AddAlertDefinitionEntityActivity( string definitionId, int entityRecord, [Body] AddActivity activity, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.
