@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <VersionPrefix>2.28.1</VersionPrefix>
+        <VersionPrefix>2.28.2</VersionPrefix>
         <VersionSuffix>prerelease</VersionSuffix>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>
