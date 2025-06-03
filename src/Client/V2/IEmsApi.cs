@@ -1310,6 +1310,102 @@ namespace EmsApi.Client.V2
         [Post( "/v2/ems-systems/1/exportsvc/{serviceType}/{serviceId}/reprocess" )]
         Task ReprocessExportServiceObjects( string serviceId, ServiceType serviceType, [Body] ReprocessObjectsRequest reprocessObjectsRequest, [Property] CallContext context = null );
 
+        /// <summary>  
+        /// Returns the full list of alert definitions in the system.
+        /// </summary>          
+        /// <returns>  
+        /// A collection of alert definitions.  
+        /// </returns>  
+        [Get( "/v2/ems-systems/1/alerts/definitions" )]
+        Task<IEnumerable<Definition>> GetAlertDefinitions( [Property] CallContext context = null );
+
+        /// <summary>  
+        /// Creates a new alert definition in the system.
+        /// </summary>  
+        /// <param name="definition">  
+        /// The new alert definition, without an Id.
+        /// </param>  
+        [Post( "/v2/ems-systems/1/alerts/definitions" )]
+        Task<Definition> CreateAlertDefinition( [Body] SetDefinition definition, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns a specific alert definition from the system.
+        /// </summary>
+        /// <param name="definitionId">
+        /// The unique identifier of the alert definition of interest.
+        /// </param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        [Get( "/v2/ems-systems/1/alerts/definitions/{definitionId}" )]
+        Task<Definition> GetAlertDefinition( string definitionId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Updates an alert definition in the system. Note that the alert's linked type cannot be changed.
+        /// </summary>
+        /// <param name="definitionId">
+        /// The id of the alert definition to update.
+        /// </param>
+        /// <param name="definition">
+        /// The updated alert definition.
+        /// </param>        
+        [Put( "/v2/ems-systems/1/alerts/definitions/{definitionId}" )]
+        Task UpdateAlertDefinition( string definitionId, [Body] SetDefinition definition, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Deletes a specific alert definition from the system.
+        /// </summary>
+        /// <param name="definitionId">
+        /// The unique identifier of the alert definition to delete.
+        /// </param>
+        [Delete( "/v2/ems-systems/1/alerts/definitions/{definitionId}" )]
+        Task DeleteAlertDefinition( string definitionId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets the current state for some alert for a data entity (e.g. an aircraft).
+        /// </summary>
+        /// <param name="definitionId">
+        /// The alert definition whose state is being queried.
+        /// </param>
+        /// <param name="entityRecord">
+        /// The record number of the entity being queried.
+        /// </param>
+        /// <param name="maxResults">
+        /// The maximum number of activity entries to retrieve (default = 100). Results are returned in newest-first order.
+        /// </param>
+        /// <returns>
+        /// Current state of the alert for the entity.
+        /// </returns>
+        [Get( "/v2/ems-systems/1/alerts/definitions/{definitionId}/entities/{entityRecord}/state" )]
+        Task<GetActivity> GetAlertDefinitionEntityState( string definitionId, int entityRecord, int? maxResults = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Gets all the activity/history entries for some alert on a particular entity.
+        /// </summary>
+        /// <param name="definitionId">
+        /// The alert definition whose activity is being queried.
+        /// </param>
+        /// <param name="entityRecord">
+        /// The record number of the entity whose alert activity is being queried.
+        /// </param>
+        /// <param name="maxResults">
+        /// The maximum number of activity entries to retrieve (default = 100). Results are returned in newest-first order.
+        /// </param>
+        /// <returns>
+        /// Activity entries for some alert on a particular entity.
+        /// </returns>
+        [Get( "/v2/ems-systems/1/alerts/definitions/{definitionId}/entities/{entityRecord}/activity" )]
+        Task<IEnumerable<GetActivity>> GetAlertDefinitionEntityActivity( string definitionId, int entityRecord, int? maxResults = null, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Adds an activity/history entry for some alert on a particular entity, indicating a time when the alert state was changed or known to have some value.
+        /// </summary>
+        /// <param name="definitionId">"The alert definition whose activity is being recorded.</param>
+        /// <param name="entityRecord">The record number of the entity whose alert activity is being recorded.</param>
+        /// <param name="activity">The inputs for how to set the alert state.</param>
+        /// <returns></returns>
+        [Post( "/v2/ems-systems/1/alerts/definitions/{definitionId}/entities/{entityRecord}/activity" )]
+        Task<GetActivity> AddAlertDefinitionEntityActivity( string definitionId, int entityRecord, [Body] AddActivity activity, [Property] CallContext context = null );
+
         /// <summary>
         /// Returns the swagger specification as a raw JSON string.
         /// </summary>

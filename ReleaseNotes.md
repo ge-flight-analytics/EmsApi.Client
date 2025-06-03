@@ -1,2 +1,2 @@
-# Release 2.28.1
-* Allow passing includeADAttributes for admin user endpoints to expand User object. 
+# Release 2.28.2
+* Add Alert access endpoints.
