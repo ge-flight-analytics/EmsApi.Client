@@ -8,10 +8,10 @@ namespace EmsApi.Client.V2.Access
     {
         public virtual IEnumerable<Definition> GetAlertDefinitions( CallContext context = null )
         {
-            return AccessTaskResult( GetAlertDefinitionAsync( context ) );
+            return AccessTaskResult( GetAlertDefinitionsAsync( context ) );
         }
 
-        public virtual Task<IEnumerable<Definition>> GetAlertDefinitionAsync( CallContext context = null )
+        public virtual Task<IEnumerable<Definition>> GetAlertDefinitionsAsync( CallContext context = null )
         {
             return CallApiTask( api => api.GetAlertDefinitions( context ) );
         }
