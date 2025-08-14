@@ -1148,8 +1148,19 @@ namespace EmsApi.Client.V2
         /// <param name="sourceType">
         /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
         /// </param>
+        /// <param name="activityId">
+        /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
+        /// </param>
         [Get( "/v2/ems-systems/1/incomingFiles" )]
-        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null );
+        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null, string activityId = null );
+
+        /// <summary>
+        /// Returns a list of listened fetch activities.
+        /// </summary>
+        /// The listened fetch activity.
+        /// </param>
+        [Get( "/v2/ems-systems/1/listenedFetchActivities" )]
+        Task<IEnumerable<ListenedFetchActivity>> GetListenedFetchActivities( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of matched METAR reports for a specified flight.

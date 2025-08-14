@@ -7938,6 +7938,54 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/{emsSystemId}/listenedFetchActivities": {
+      "get": {
+        "tags": [
+          "Incoming File Tracker APIs"
+        ],
+        "summary": "Returns list of listened fetch activities.",
+        "operationId": "IncomingFileTracker_GetListenedFechActivities",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Adi.Interfaces.ListenedFetchActivity"
+              }
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/navigation/airports": {
       "get": {
         "tags": [
@@ -14443,6 +14491,17 @@
           "type": "integer"
         },
         "sourcePath": {
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Interfaces.ListenedFetchActivity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
           "type": "string"
         }
       }

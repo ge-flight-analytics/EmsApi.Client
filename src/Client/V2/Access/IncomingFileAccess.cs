@@ -25,9 +25,23 @@ namespace EmsApi.Client.V2.Access
         /// <param name="sourceType">
         /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
         /// </param>
-        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, CallContext context = null )
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        /// <param name="activityId">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, CallContext context = null, string activityId = null )
         {
-            return CallApiTask( ( IEmsApi api ) => api.GetIncomingFiles( statusModifiedDateRangeStart, statusModifiedDateRangeEnd, fileName, status, sourceType, context ) );
+            return CallApiTask( ( IEmsApi api ) => api.GetIncomingFiles( statusModifiedDateRangeStart, statusModifiedDateRangeEnd, fileName, status, sourceType, context, activityId ) );
+        }
+
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<IEnumerable<ListenedFetchActivity>> GetListenedFetchActivitiesAsync( CallContext context = null )
+        {
+            return CallApiTask( ( IEmsApi api ) => api.GetListenedFetchActivities( context ) );
         }
 
     }
