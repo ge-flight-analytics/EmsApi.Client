@@ -28,12 +28,12 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        /// <param name="activityId">
-        /// The optional call context to include.
+        /// <param name="activityIds">
+        /// The activvity ids of listened fetch activities.
         /// </param>
-        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, CallContext context = null, string activityId = null )
+        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, CallContext context = null, long[] activityIds = null )
         {
-            return CallApiTask( ( IEmsApi api ) => api.GetIncomingFiles( statusModifiedDateRangeStart, statusModifiedDateRangeEnd, fileName, status, sourceType, context, activityId ) );
+            return CallApiTask( ( IEmsApi api ) => api.GetIncomingFiles( statusModifiedDateRangeStart, statusModifiedDateRangeEnd, fileName, status, sourceType, context, activityIds ) );
         }
 
         /// <param name="context">

@@ -7910,6 +7910,18 @@
             "description": "The file name to search.",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "activityIds",
+            "in": "query",
+            "description": "List of activity IDs to filter in.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "responses": {
@@ -14492,6 +14504,10 @@
         },
         "sourcePath": {
           "type": "string"
+        },
+        "activityId": {
+          "format": "int64",
+          "type": "integer"
         }
       }
     },
@@ -14499,7 +14515,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "format": "int64",
+          "type": "integer"
         },
         "name": {
           "type": "string"
