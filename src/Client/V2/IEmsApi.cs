@@ -1149,7 +1149,7 @@ namespace EmsApi.Client.V2
         /// The source type of incoming file. (0=Undefined, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:All)
         /// </param>
         /// <param name="activityIds">
-        /// The activvity ids of listened fetch activities.
+        /// The activity ids of listened fetch activities.
         /// </param>
         [Get( "/v2/ems-systems/1/incomingFiles" )]
         Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null, long[] activityIds = null );
