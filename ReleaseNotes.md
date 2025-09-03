@@ -1,3 +1,2 @@
-# Release 2.28.3
-* Add Alert access endpoints.
-* Add missing `GetAlertDefinitionsAsync` method to `AlertAccess`.
+# Release 2.28.4
+* Update incoming file tracker endpoints to get listened activities

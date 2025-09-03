@@ -7910,6 +7910,18 @@
             "description": "The file name to search.",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "activityIds",
+            "in": "query",
+            "description": "List of activity IDs to filter in.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "responses": {
@@ -7919,6 +7931,54 @@
               "type": "array",
               "items": {
                 "$ref": "#/definitions/Adi.Interfaces.IncomingFile"
+              }
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/listenedFetchActivities": {
+      "get": {
+        "tags": [
+          "Incoming File Tracker APIs"
+        ],
+        "summary": "Returns list of listened fetch activities.",
+        "operationId": "IncomingFileTracker_GetListenedFechActivities",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Adi.Interfaces.ListenedFetchActivity"
               }
             }
           },
@@ -14443,6 +14503,22 @@
           "type": "integer"
         },
         "sourcePath": {
+          "type": "string"
+        },
+        "activityId": {
+          "format": "int64",
+          "type": "integer"
+        }
+      }
+    },
+    "Adi.Interfaces.ListenedFetchActivity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "name": {
           "type": "string"
         }
       }
