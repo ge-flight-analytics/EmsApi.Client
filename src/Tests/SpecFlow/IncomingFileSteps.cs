@@ -25,17 +25,5 @@ namespace EmsApi.Tests.SpecFlow
         {
             m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<IncomingFile>();
         }
-
-        [When( @"I run GetListenedFetchActivities" )]
-        public void WhenIRunGetListenedFetchActivities()
-        {
-            m_result.Enumerable = m_api.IncomingFile.GetListenedFetchActivitiesAsync().Result;
-        }
-
-        [Then( @"ListenedFetchActivities are returned" )]
-        public void ThenListenedFetchActivitiesAreReturned()
-        {
-            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<ListenedFetchActivity>();
-        }
     }
 }

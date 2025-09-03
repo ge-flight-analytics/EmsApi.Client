@@ -81,14 +81,14 @@ namespace EmsApi.Tests.SpecFlow
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="GetIncomingFiles")]
+        [Xunit.SkippableFactAttribute(DisplayName="GetIncomingFiles with filters")]
         [Xunit.TraitAttribute("FeatureTitle", "IncomingFile")]
-        [Xunit.TraitAttribute("Description", "GetIncomingFiles")]
-        public void GetIncomingFiles()
+        [Xunit.TraitAttribute("Description", "GetIncomingFiles with filters")]
+        public void GetIncomingFilesWithFilters()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetIncomingFiles", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetIncomingFiles with filters", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -103,41 +103,12 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
-    testRunner.When("I run GetIncomingFiles for activity 1001", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I run GetIncomingFiles with statusModifiedDateRangeStart \"2025-09-01\", statusModi" +
+                        "fiedDateRangeEnd \"2025-09-03\", fileName \"test.csv\", status 1, sourceType 2, acti" +
+                        "vityIds \"1001,1002\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
     testRunner.Then("IncomingFiles are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="GetListenedFetchActivities")]
-        [Xunit.TraitAttribute("FeatureTitle", "IncomingFile")]
-        [Xunit.TraitAttribute("Description", "GetListenedFetchActivities")]
-        public void GetListenedFetchActivities()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetListenedFetchActivities", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 10
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 11
-    testRunner.Given("A valid API endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 12
-    testRunner.When("I run GetListenedFetchActivities for fileId 2002", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 13
-    testRunner.Then("ListenedFetchActivities are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
