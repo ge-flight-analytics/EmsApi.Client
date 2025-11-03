@@ -1152,7 +1152,7 @@ namespace EmsApi.Client.V2
         /// The activity ids of listened fetch activities.
         /// </param>
         [Get( "/v2/ems-systems/1/incomingFiles" )]
-        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null, long[] activityIds = null );
+        Task<IEnumerable<IncomingFile>> GetIncomingFiles( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, [Property] CallContext context = null, string[] activityIds = null );
 
         /// <summary>
         /// Returns a list of listened fetch activities.

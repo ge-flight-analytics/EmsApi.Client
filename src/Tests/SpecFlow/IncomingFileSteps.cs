@@ -13,7 +13,7 @@ namespace EmsApi.Tests.SpecFlow
         {
             DateTime? dateStart = string.IsNullOrEmpty( start ) ? (DateTime?)null : DateTime.Parse( start );
             DateTime? dateEnd = string.IsNullOrEmpty( end ) ? (DateTime?)null : DateTime.Parse( end );
-            long[] activityIds = string.IsNullOrEmpty( activityIdsCsv ) ? null : activityIdsCsv.Split( ',' ).Select( long.Parse ).ToArray();
+            string[] activityIds = string.IsNullOrEmpty( activityIdsCsv ) ? null : activityIdsCsv.Split( ',' ).ToArray();
 
             m_result.Enumerable = m_api.IncomingFile.GetIncomingFilesAsync(
                 dateStart, dateEnd, fileName, status, sourceType, null, activityIds

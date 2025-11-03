@@ -31,7 +31,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="activityIds">
         /// The activity ids of listened fetch activities.
         /// </param>
-        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, CallContext context = null, long[] activityIds = null )
+        public virtual Task<IEnumerable<IncomingFile>> GetIncomingFilesAsync( DateTime? statusModifiedDateRangeStart, DateTime? statusModifiedDateRangeEnd, string fileName, int status, int sourceType, CallContext context = null, string[] activityIds = null )
         {
             return CallApiTask( ( IEmsApi api ) => api.GetIncomingFiles( statusModifiedDateRangeStart, statusModifiedDateRangeEnd, fileName, status, sourceType, context, activityIds ) );
         }
