@@ -31,6 +31,13 @@ steps:
     Write-Host "##vso[task.setvariable variable=EmsApiTestClientSecret]$(emsApiTestClientSec)"
   displayName: Prepare
 
+- task: UseDotNet@2
+  displayName: Install .NET 6.0
+  inputs:
+    packageType: runtime
+    version: 6.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
