@@ -32,11 +32,10 @@ steps:
   displayName: Prepare
 
 - task: UseDotNet@2
-  displayName: Install .NET 6.0
+  displayName: Install .NET 6.0 SDK
   inputs:
-    packageType: runtime
-    version: 6.x
-    installationPath: $(Agent.ToolsDirectory)/dotnet
+    packageType: sdk
+    version: 6.0.x
 
 - task: DotNetCoreCLI@2
   displayName: Build
