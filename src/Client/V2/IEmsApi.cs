@@ -514,6 +514,14 @@ namespace EmsApi.Client.V2
         Task<AnalyticSet> GetAnalyticSet( string groupId, string analyticSetName, int fleetId = -1, [Property] CallContext context = null );
 
         /// <summary>
+        /// Searches for all analytic sets within the EMS system that match the provided criteria.
+        /// </summary>
+        /// <param name="analyticSetName">The name or partial name of the analytic set to return.</param>
+        /// <returns>An array of all parameter sets that matched the criteria.</returns>
+        [Get( "v2/ems-systems/{emsSystemId}/analytic-set-groups/analytic-sets/{analyticSetName}/search" )]
+        Task<AnalyticSet[]> SearchAnalyticSetTree(string analyticSetName, [Property] CallContext context = null );
+
+        /// <summary>
         /// Creates a new analytic set.
         /// </summary>
         /// <param name="groupId">
