@@ -101,6 +101,18 @@ namespace EmsApi.Client.V2
         Task SetOperatorAuthJson( string operatorId, [Body] WasabiAuthRequest auth, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns the config JSON for the given operator.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/wasabi/config" )]
+        Task<object> GetOperatorConfigJson( string operatorId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Sets the config JSON for the given operator.
+        /// </summary>
+        [Post( "/v2/ems-systems/1/wasabi/config" )]
+        Task SetOperatorConfigJson( string operatorId, [Body] HttpContent jsonContent, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns information for a fleet on the system.
         /// </summary>
         /// <param name="fleetId">

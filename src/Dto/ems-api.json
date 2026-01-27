@@ -2524,6 +2524,98 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/1/wasabi/config": {
+      "get": {
+        "tags": [
+          "Wasabi APIs"
+        ],
+        "summary": "Returns the config JSON for the given operator.",
+        "operationId": "Wasabi_GetOperatorConfigJson",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "description": "The unique identifier of the operator.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Wasabi APIs"
+        ],
+        "summary": "Sets the config JSON for the given operator.",
+        "operationId": "Wasabi_SetOperatorConfigJson",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "description": "The unique identifier of the operator.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "jsonText",
+            "in": "body",
+            "description": "The config JSON to set for the operator.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/alerts/definitions": {
       "get": {
         "tags": [
