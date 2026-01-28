@@ -518,7 +518,7 @@ namespace EmsApi.Client.V2
         /// </summary>
         /// <param name="analyticSetName">The name or partial name of the analytic set to return.</param>
         /// <returns>An array of all parameter sets that matched the criteria.</returns>
-        [Get( "/v2/ems-systems/{emsSystemId}/analytic-set-groups/analytic-sets/{analyticSetName}/search" )]
+        [Get( "/v2/ems-systems/1/analytic-set-groups/analytic-sets/{analyticSetName}/search" )]
         Task<AnalyticSet[]> SearchAnalyticSetTree(string analyticSetName, [Property] CallContext context = null );
 
         /// <summary>
