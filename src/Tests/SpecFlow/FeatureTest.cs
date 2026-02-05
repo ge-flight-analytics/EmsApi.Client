@@ -21,8 +21,6 @@ namespace EmsApi.Tests
         {
             m_api = NewService();
             m_api.Authenticate().Should().BeTrue();
-            // Log the endpoint used so pipeline output shows which base address was queried.
-            Console.WriteLine($"EMS API Endpoint: {m_api.ServiceConfig.Endpoint}");
         }
 
         [Then( @"The Id property is (.*)" )]
