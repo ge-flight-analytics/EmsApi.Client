@@ -1,2 +1,2 @@
-# Release 2.28.5
-* Update incoming file tracker endpoints to get listened activities
+# Release 2.28.6
+* Add parameter set search endpoint.

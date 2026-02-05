@@ -196,6 +196,28 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Searches for all analytic sets within the EMS system that match the provided criteria.
+        /// </summary>
+        /// <param name="analyticSetName">The name or partial name of the analytic set to return.</param>
+        /// <param name="context">The optional call context to include.</param>
+        /// <returns>An array of all parameter sets that matched the criteria.</returns>
+        public virtual Task<AnalyticSet[]> SearchAnalyticSetTreeAsync( string analyticSetName, CallContext context = null )
+        {
+            return CallApiTask( api => api.SearchAnalyticSetTree( analyticSetName, context ) );
+        }
+
+        /// <summary>
+        /// Searches for all analytic sets within the EMS system that match the provided criteria.
+        /// </summary>
+        /// <param name="analyticSetName">The name or partial name of the analytic set to return.</param>
+        /// <param name="context">The optional call context to include.</param>
+        /// <returns>An array of all parameter sets that matched the criteria.</returns>
+        public virtual AnalyticSet[] SearchAnalyticSetTree( string analyticSetName, CallContext context = null )
+        {
+            return AccessTaskResult( SearchAnalyticSetTreeAsync( analyticSetName, context ) );
+        }
+
+        /// <summary>
         /// Creates an analytic set.
         /// </summary>
         /// <param name="analyticGroupId">

@@ -4454,6 +4454,67 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/{emsSystemId}/analytic-set-groups/analytic-sets/{analyticSetName}/search": {
+      "get": {
+        "tags": [
+          "Analytic Set APIs"
+        ],
+        "summary": "Returns all analytic sets that match the provided criteria.",
+        "operationId": "AnalyticSet_SearchAnalyticSetTree",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "analyticSetName",
+            "in": "path",
+            "description": "The name (or partial name) of the analytic set to return.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticSet.AnalyticSet"
+              }
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An analytic set could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/analytic-set-groups/{groupId}/analytic-sets": {
       "post": {
         "tags": [
