@@ -32,6 +32,38 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Returns the list of fleets the user has access to in their security context.
+        /// </summary>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<IEnumerable<Operator>> GetAllOperatorsAsync( CallContext context = null )
+        {
+            return CallApiTask( api => api.GetOperators( context ) );
+        }
+
+        /// <summary>
+        /// Returns the list of operators the user has access to in their security context.
+        /// </summary>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual IEnumerable<Operator> GetAllOperators( CallContext context = null )
+        {
+            return SafeAccessEnumerableTask( GetAllOperatorsAsync( context ) );
+        }
+
+        /// <summary>
+        /// Returns the list of fleets the user has access to in their security context.
+        /// </summary>
+        /// <param name="context">
+        /// The optional call context to include.
+        /// </param>
+        public virtual Task<IEnumerable<Aircraft>> GetOperatorAircraftsAsync( int operatorId, CallContext context = null )
+        {
+            return CallApiTask( api => api.GetAircraftByOperatorId( operatorId, context ) );
+        }
+        /// <summary>
         /// Returns information for a fleet on the system.
         /// </summary>
         /// <param name="fleetId">
