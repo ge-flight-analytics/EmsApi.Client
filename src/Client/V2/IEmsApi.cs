@@ -77,6 +77,42 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<Fleet>> GetFleets( [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns the list of operators the user has access to in their security context.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/assets/operators" )]
+        Task<IEnumerable<Operator>> GetOperators( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns the list of operators the user has access to in their security context.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/assets/aircraftByOperator" )]
+        Task<IEnumerable<Aircraft>> GetAircraftByOperatorId( int operatorId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns the security JSON for the given operator.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/wasabi/auth" )]
+        Task<object> GetOperatorAuthJson( string operatorId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Sets the security JSON for the given operator.
+        /// </summary>
+        [Post( "/v2/ems-systems/1/wasabi/auth" )]
+        Task SetOperatorAuthJson( string operatorId, [Body] WasabiAuthRequest auth, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns the config JSON for the given operator.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/wasabi/config" )]
+        Task<object> GetOperatorConfigJson( string operatorId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Sets the config JSON for the given operator.
+        /// </summary>
+        [Post( "/v2/ems-systems/1/wasabi/config" )]
+        Task SetOperatorConfigJson( string operatorId, [Body] HttpContent jsonContent, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns information for a fleet on the system.
         /// </summary>
         /// <param name="fleetId">

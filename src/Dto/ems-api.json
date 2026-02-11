@@ -2432,6 +2432,190 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/1/wasabi/auth": {
+      "get": {
+        "tags": [
+          "Wasabi APIs"
+        ],
+        "summary": "Returns the security JSON for the given operator.",
+        "operationId": "Wasabi_GetOperatorAuthJson",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "description": "The unique identifier of the operator.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Wasabi APIs"
+        ],
+        "summary": "Sets the security JSON for the given operator.",
+        "operationId": "Wasabi_SetOperatorAuthJson",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "description": "The unique identifier of the operator.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "in": "body",
+            "description": "The request body containing the security JSON to set for the operator.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.WasabiAuthRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/1/wasabi/config": {
+      "get": {
+        "tags": [
+          "Wasabi APIs"
+        ],
+        "summary": "Returns the config JSON for the given operator.",
+        "operationId": "Wasabi_GetOperatorConfigJson",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "description": "The unique identifier of the operator.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "Wasabi APIs"
+        ],
+        "summary": "Sets the config JSON for the given operator.",
+        "operationId": "Wasabi_SetOperatorConfigJson",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "description": "The unique identifier of the operator.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "jsonText",
+            "in": "body",
+            "description": "The config JSON to set for the operator.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/alerts/definitions": {
       "get": {
         "tags": [
@@ -4969,6 +5153,113 @@
           },
           "404": {
             "description": "A fleet with the specified ID could not be found.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/assets/operators": {
+      "get": {
+        "tags": [
+          "Asset APIs"
+        ],
+        "summary": "Returns the list of operators the user has access to in their security context.",
+        "operationId": "Asset_GetOperators",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Asset.Operator"
+              }
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/assets/aircraftByOperator": {
+      "get": {
+        "tags": [
+          "Asset APIs"
+        ],
+        "summary": "Returns the list of aircraft for a specific operator on the system.",
+        "operationId": "Asset_GetAircraftByOperatorId",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "operatorId",
+            "in": "path",
+            "description": "The unique identifier of the operator of interest.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Asset.Aircraft"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "An aircraft with the specified ID could not be found.",
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
@@ -11555,6 +11846,29 @@
       "type": "object",
       "properties": {}
     },
+    "Adi.Ems.Web.Api.V2.Dto.WasabiAuthRequest": {
+      "description": "Request body for configuring Wasabi authentication.",
+      "required": [
+        "tenantId",
+        "clientId",
+        "clientSecret"
+      ],
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "description": "Gets or sets the Azure AD tenant ID.",
+          "type": "string"
+        },
+        "clientId": {
+          "description": "Gets or sets the Service Principal client ID.",
+          "type": "string"
+        },
+        "clientSecret": {
+          "description": "Gets or sets the Service Principal client secret.",
+          "type": "string"
+        }
+      }
+    },
     "Adi.Ems.Web.Api.V2.Dto.Alert.GetActivity": {
       "description": "Output type for getting the activity of an alert, and returned from a call to add alert trigger history.",
       "type": "object",
@@ -12645,6 +12959,21 @@
         },
         "description": {
           "description": "The description for this fleet.",
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Asset.Operator": {
+      "description": "Represents a 'Operator' in the EMS system.\r\n            A fleet in this sense is a group of aircraft using the same configuration.\r\n            There may be several fleets representing a particular model of aircraft, each showing a specific configuration\r\n            of the airframe.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "description": "The identifier of the operator within the system.",
+          "type": "integer"
+        },
+        "description": {
+          "description": "The description for this operator.",
           "type": "string"
         }
       }
