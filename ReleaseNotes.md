@@ -1,2 +1,2 @@
-# Release 2.28.6
-* Add parameter set search endpoint.
+# Release 2.28.7
+* Adds missing property to the Analytic DTO.

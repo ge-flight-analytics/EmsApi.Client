@@ -12197,6 +12197,10 @@
           "description": "An optional description of the AnalyticSet.",
           "type": "string"
         },
+        "path": {
+          "description": "The full file path to this ParameterSet.",
+          "type": "string"
+        },
         "items": {
           "description": "An array of the analytics contained in the AnalyticSet",
           "type": "array",
