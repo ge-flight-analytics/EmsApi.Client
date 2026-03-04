@@ -193,8 +193,11 @@ namespace EmsApi.Client.V2
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
+        /// <param name="includeDiagnostics">
+        /// Whether to include processing diagnostic information in the response. Defaults to true if not specified.
+        /// </param>
         [Get( "/v2/ems-systems/1/flights/{flightId}/profiles/{profileId}/query" )]
-        Task<ProfileResults> GetProfileResults( int flightId, string profileId, [Property] CallContext context = null );
+        Task<ProfileResults2> GetProfileResults( int flightId, string profileId, bool? includeDiagnostics, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a "glossary" for a specific profile and version, which helps define the
@@ -1168,7 +1171,7 @@ namespace EmsApi.Client.V2
         /// The listened fetch activity.
         /// </param>
         [Get( "/v2/ems-systems/1/listenedFetchActivities" )]
-        Task<IEnumerable<ListenedFetchActivity>> GetListenedFetchActivities( [Property] CallContext context = null );
+        Task<IEnumerable<ListenedActivity>> GetListenedFetchActivities( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of matched METAR reports for a specified flight.

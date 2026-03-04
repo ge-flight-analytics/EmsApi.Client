@@ -29,7 +29,11 @@ namespace EmsApi.Tests
         [Then(@"A ProfileResults object is returned")]
         public void ThenAProfileResultsObjectIsReturned()
         {
-            m_result.Object.ShouldNotBeNullOfType<ProfileResults>();
+            m_result.Object.ShouldNotBeNullOfType<ProfileResults2>();
+            if(m_result.Object is ProfileResults2 profileResults)
+            {
+                profileResults.ProcessingInformation.ProcessingState.Should().NotBeNull();
+            }
         }
 
         [Then(@"A ProfileGlossary object is returned")]
@@ -99,6 +103,20 @@ namespace EmsApi.Tests
         {
             var ev = m_result.Object as Event;
             ev.ParameterSet.ShouldNotBeNullOfType<ParameterSet>();
+        }
+
+        [When( @"I run GetResults and enter a flight id of (.*) and a profile id of '([^']*)' with processing diagnostics turned off" )]
+        public void WhenIRunGetResultsAndEnterAFlightIdOfAndAProfileIdOfWithProcessingDiagnosticsTurnedOff( int p0, string p1 )
+        {
+            m_result.Object = m_api.Profiles.GetResults( p0, p1, false );
+        }
+
+        [Then( @"A ProfileResults object is returned without diagnostics" )]
+        public void ThenAProfileResultsObjectIsReturnedWithoutDiagnostics()
+        {
+            m_result.Object.ShouldNotBeNullOfType<ProfileResults2>();
+            var profileResults = m_result.Object as ProfileResults2;
+            profileResults.ProcessingInformation.ProcessingState.Should().BeNull();
         }
     }
 }

@@ -483,6 +483,41 @@
         "deprecated": false
       }
     },
+    "/v2/admin/application/configuration": {
+      "get": {
+        "tags": [
+          "Admin Application APIs"
+        ],
+        "summary": "Gets the full application configuration.",
+        "operationId": "AdminApplication_GetAppConfig",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/admin/dashboards": {
       "get": {
         "tags": [
@@ -1857,7 +1892,6 @@
           {
             "name": "includeADAttributes",
             "in": "query",
-            "description": "True if the Active Directory attributes should be included in the user object.",
             "required": false,
             "type": "boolean"
           }
@@ -2966,7 +3000,7 @@
           {
             "name": "groupId",
             "in": "path",
-            "description": "The ID of the aanalysis group to return.",
+            "description": "The ID of the analysis group to return.",
             "required": true,
             "type": "string"
           }
@@ -7936,7 +7970,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "The status of incoming file to filter in. (0=Received, 1=Fetched, 2=Preprocessed, 3=Ingested, -1=Any)",
+            "description": "The status of incoming file to filter in. (0=Received, 1=Fetched, 2=Preprocessed, 3=Partially Ingested (applicable for ODW data), 4=Ingested, -1=Any)",
             "required": true,
             "type": "integer",
             "format": "int32"
@@ -7944,7 +7978,7 @@
           {
             "name": "sourceType",
             "in": "query",
-            "description": "The source type of incoming file to filter in. (0=Not Set, 1=SFTP, 2=Wasabi, 3=API, 4= Other, -1:Any)",
+            "description": "The source type of incoming file to filter in. (0=Not Set, 1=SFTP, 2=Wasabi, 3=API, 4=Other, -1=Any)",
             "required": true,
             "type": "integer",
             "format": "int32"
@@ -7975,7 +8009,7 @@
           {
             "name": "activityIds",
             "in": "query",
-            "description": "List of activity IDs to filter in.",
+            "description": "Unique ids of the fetch activities",
             "required": false,
             "type": "array",
             "items": {
@@ -8015,8 +8049,8 @@
         "tags": [
           "Incoming File Tracker APIs"
         ],
-        "summary": "Returns list of listened fetch activities.",
-        "operationId": "IncomingFileTracker_GetListenedFechActivities",
+        "summary": "Returns list of fetch activities in the EMS system.",
+        "operationId": "IncomingFileTracker_GetListenedFetchActivities",
         "consumes": [],
         "produces": [
           "application/json",
@@ -8038,7 +8072,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Adi.Interfaces.ListenedFetchActivity"
+                "$ref": "#/definitions/Adi.Interfaces.ListenedActivity"
               }
             }
           },
@@ -8737,9 +8771,16 @@
           {
             "name": "profileId",
             "in": "path",
-            "description": "The unique identifier of the APM profile, e.g. \"A7483C44-9DB9-4A44-9EB5-F67681EE52B0\" for \r\n            the library flight safety events profile.",
+            "description": "The unique identifier of the APM profile, e.g. \"A7483C44-9DB9-4A44-9EB5-F67681EE52B0\" for\r\n            the library flight safety events profile.",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "includeDiagnostics",
+            "in": "query",
+            "description": "Determines whether processing diagnostics are included with the results; these are informative but have a\r\n            performance cost.",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -9084,6 +9125,67 @@
           },
           "404": {
             "description": "An event with the specified ID could not be found in the specified profile.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/ems-systems/{emsSystemId}/profiles/{profileId}/measurementSummaries": {
+      "get": {
+        "tags": [
+          "Profile APIs"
+        ],
+        "summary": "Returns information on the measurement result summaries in the specified profile.",
+        "operationId": "Profile_GetProfileMeasurementSummaries",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "The unique identifier of the profile whose measurement summaries to return, e.g.\r\n            \"A7483C44-9DB9-4A44-9EB5-F67681EE52B0\".",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Profile.MeasurementResultSummary"
+              }
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "A profile with the specified ID could not be found.",
             "schema": {
               "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
             }
@@ -13685,9 +13787,19 @@
           "type": "integer"
         },
         "dataValue": {
-          "format": "double",
-          "description": "The computed data value for the given item",
-          "type": "number"
+          "$ref": "#/definitions/System.Object",
+          "description": "The computed data value for the given item"
+        },
+        "dataType": {
+          "description": "profile Result data type",
+          "enum": [
+            "real",
+            "string",
+            "bool",
+            "discrete",
+            "dateTime"
+          ],
+          "type": "string"
         }
       }
     },
@@ -14574,7 +14686,7 @@
         }
       }
     },
-    "Adi.Interfaces.ListenedFetchActivity": {
+    "Adi.Interfaces.ListenedActivity": {
       "type": "object",
       "properties": {
         "id": {
@@ -15710,15 +15822,12 @@
     "Adi.Ems.Web.Api.V2.Dto.Profile.ProcessingInformation": {
       "description": "Encapsulates information about processing.",
       "required": [
-        "processingState",
-        "processedDate",
         "retryCount",
         "workerCpuTime",
         "workerWallTime",
         "totalWallTime",
         "isFailure",
-        "failureType",
-        "failureName"
+        "failureType"
       ],
       "type": "object",
       "properties": {
@@ -16059,6 +16168,171 @@
         "parameterSet": {
           "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.ParameterSet.ParameterSet",
           "description": "The parameter set associated with the event if any"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Profile.MeasurementResultSummary": {
+      "description": "Represents an APM measurement summary definition.",
+      "required": [
+        "id",
+        "name",
+        "nameWasAutoGenerated",
+        "periodType",
+        "periodCount",
+        "aggerationOps",
+        "groupByFields",
+        "measurements"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "description": "The Identifier of Measurement result summary.",
+          "type": "integer"
+        },
+        "name": {
+          "description": "The name assigned to measurement result summary.",
+          "type": "string"
+        },
+        "nameWasAutoGenerated": {
+          "description": "Flag to identify if name has been created automatically.",
+          "type": "boolean"
+        },
+        "periodType": {
+          "description": "Period type Month, Quarter, Year",
+          "enum": [
+            "month",
+            "quarter",
+            "year"
+          ],
+          "type": "string"
+        },
+        "periodCount": {
+          "format": "int32",
+          "description": "The number of period(s) behind.",
+          "type": "integer"
+        },
+        "aggerationOps": {
+          "description": "List of operations.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Profile.AggregationOp"
+          }
+        },
+        "groupByFields": {
+          "description": "List of fields to be grouped.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Profile.GroupByField"
+          }
+        },
+        "measurements": {
+          "description": "List of profile measurements included on this summary.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.Profile.ObjectId"
+          }
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Profile.AggregationOp": {
+      "description": "Represents an aggregation op definition listed at measurement summary.",
+      "required": [
+        "id",
+        "function",
+        "percentile",
+        "displayOrder"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The definition ID of this AggregationOp object.",
+          "type": "string"
+        },
+        "function": {
+          "description": "The Function Type from enum",
+          "enum": [
+            "min",
+            "max",
+            "mean",
+            "stdDev",
+            "percentile"
+          ],
+          "type": "string"
+        },
+        "percentile": {
+          "format": "float",
+          "description": "The Percentile of operation",
+          "type": "number"
+        },
+        "displayOrder": {
+          "format": "float",
+          "description": "The Display Order according with function type",
+          "type": "number"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Profile.GroupByField": {
+      "description": "Represents a group by field definition listed at measurement summary.",
+      "required": [
+        "id",
+        "schemaField"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The definition ID of this GroupBy object.",
+          "type": "string"
+        },
+        "schemaField": {
+          "description": "The SchemaField of the GroupBy object.",
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.Profile.ObjectId": {
+      "description": "Represents an APM ObjectId definition.",
+      "required": [
+        "localId",
+        "type",
+        "scope",
+        "specificEventId"
+      ],
+      "type": "object",
+      "properties": {
+        "localId": {
+          "format": "int32",
+          "description": "The local integer identifier for the ObjectId",
+          "type": "integer"
+        },
+        "type": {
+          "description": "The object type (Folder, Event, Measurement, Interval, Timepoint, ...)",
+          "enum": [
+            "timepoint",
+            "interval",
+            "measurement",
+            "event",
+            "eventFilter",
+            "folder",
+            "parametric",
+            "alertTrigger",
+            "measurementResultSummary"
+          ],
+          "type": "string"
+        },
+        "scope": {
+          "description": "The ScopeType for ObjectId",
+          "enum": [
+            "default",
+            "eventCommon",
+            "eventSpecific"
+          ],
+          "type": "string"
+        },
+        "specificEventId": {
+          "format": "int32",
+          "description": "The specific eventId for a given ObjectId",
+          "type": "integer"
         }
       }
     },

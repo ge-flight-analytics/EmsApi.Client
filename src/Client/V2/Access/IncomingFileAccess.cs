@@ -39,7 +39,7 @@ namespace EmsApi.Client.V2.Access
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<IEnumerable<ListenedFetchActivity>> GetListenedFetchActivitiesAsync( CallContext context = null )
+        public virtual Task<IEnumerable<ListenedActivity>> GetListenedFetchActivitiesAsync( CallContext context = null )
         {
             return CallApiTask( ( IEmsApi api ) => api.GetListenedFetchActivities( context ) );
         }
