@@ -19,12 +19,15 @@ namespace EmsApi.Client.V2.Access
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
+        /// <param name="includeDiagnostics">
+        /// Whether to include processing diagnostic information in the response. Defaults to true if not specified.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual Task<ProfileResults> GetResultsAsync( int flightId, string profileId, CallContext context = null )
+        public virtual Task<ProfileResults2> GetResultsAsync( int flightId, string profileId, bool? includeDiagnostics, CallContext context = null )
         {
-            return CallApiTask( api => api.GetProfileResults( flightId, profileId, context ) );
+            return CallApiTask( api => api.GetProfileResults( flightId, profileId, includeDiagnostics, context ) );
         }
 
         /// <summary>
@@ -37,12 +40,15 @@ namespace EmsApi.Client.V2.Access
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
+        /// <param name="includeDiagnostics">
+        /// Whether to include processing diagnostic information in the response. Defaults to true if not specified.
+        /// </param>
         /// <param name="context">
         /// The optional call context to include.
         /// </param>
-        public virtual ProfileResults GetResults( int flightId, string profileId, CallContext context = null )
+        public virtual ProfileResults2 GetResults( int flightId, string profileId, bool? includeDiagnostics = true, CallContext context = null )
         {
-            return AccessTaskResult( GetResultsAsync( flightId, profileId, context ) );
+            return AccessTaskResult( GetResultsAsync( flightId, profileId, includeDiagnostics, context ) );
         }
 
         /// <summary>
