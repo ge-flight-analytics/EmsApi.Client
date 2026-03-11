@@ -20,6 +20,12 @@ Scenario: Get analytic set
     Then An AnalyticSet object is returned
     And It has the name 'Uncommanded Pitch'
 
+Scenario: Search analytic sets
+	Given A valid API endpoint
+	When I run SearchAnalyticSetTree and enter a search string of 'Uncommanded Pitch'
+	Then One or more AnalyticSet objects are returned
+	And It contains an analytic set with the name 'Uncommanded Pitch'
+
 # The pipeline test runner has limited access. This test should only be run manually.
 # WARNING: failures during this test could lead to new or altered analytic (parameter) set groups on the EMS system.
 @ignore
@@ -53,7 +59,7 @@ Scenario: Create, update, read, and delete an analytic set
     And it has the description 'new analytic set'
     Given I have a UpdateAnalyticSet
     When I run UpdateAnalyticSet with group id 'Root' and analytic set name 'New Analytic Set'
-    When I run GetAnalyticSet with group id 'Root' and analytic name 'New Analytic Set'
+    When I run GetAnalyticSet with group id 'Root' and analytic set name 'New Analytic Set'
     Then An AnalyticSet object is returned
     And it has the description 'updated analytic set'
     When I run DeleteAnalyticSet with group id 'Root' and analytic set name 'New Analytic Set'
@@ -77,5 +83,3 @@ Scenario: Create, update, read, and delete an analytic collection
     And it has the description 'updated analytic collection'
     When I run DeleteAnalyticCollection with group id 'Root' and analytic collection name 'New Analytic Collection'
     Then the analytic collection in group id 'Root' and name 'New Analytic Collection' does not exist
-    
-    

@@ -241,8 +241,11 @@ namespace EmsApi.Client.V2
         /// The APM profile guid to return results for, e.g. "A7483C44-9DB9-4A44-9EB5-F67681EE52B0"
         /// for the library flight safety events profile.
         /// </param>
+        /// <param name="includeDiagnostics">
+        /// Whether to include processing diagnostic information in the response. Defaults to true if not specified.
+        /// </param>
         [Get( "/v2/ems-systems/1/flights/{flightId}/profiles/{profileId}/query" )]
-        Task<ProfileResults> GetProfileResults( int flightId, string profileId, [Property] CallContext context = null );
+        Task<ProfileResults2> GetProfileResults( int flightId, string profileId, bool? includeDiagnostics, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a "glossary" for a specific profile and version, which helps define the
@@ -560,6 +563,14 @@ namespace EmsApi.Client.V2
         /// </param>
         [Get( "/v2/ems-systems/1/analytic-set-groups/{groupId}/analytic-sets/{analyticSetName}" )]
         Task<AnalyticSet> GetAnalyticSet( string groupId, string analyticSetName, int fleetId = -1, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Searches for all analytic sets within the EMS system that match the provided criteria.
+        /// </summary>
+        /// <param name="analyticSetName">The name or partial name of the analytic set to return.</param>
+        /// <returns>An array of all parameter sets that matched the criteria.</returns>
+        [Get( "/v2/ems-systems/1/analytic-set-groups/analytic-sets/{analyticSetName}/search" )]
+        Task<AnalyticSet[]> SearchAnalyticSetTree(string analyticSetName, [Property] CallContext context = null );
 
         /// <summary>
         /// Creates a new analytic set.
@@ -1208,7 +1219,7 @@ namespace EmsApi.Client.V2
         /// The listened fetch activity.
         /// </param>
         [Get( "/v2/ems-systems/1/listenedFetchActivities" )]
-        Task<IEnumerable<ListenedFetchActivity>> GetListenedFetchActivities( [Property] CallContext context = null );
+        Task<IEnumerable<ListenedActivity>> GetListenedFetchActivities( [Property] CallContext context = null );
 
         /// <summary>
         /// Returns a list of matched METAR reports for a specified flight.

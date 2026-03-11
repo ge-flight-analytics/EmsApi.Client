@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using EmsApi.Client.V2;
 using EmsApi.Dto.V2;
 using FluentAssertions;
@@ -33,6 +34,26 @@ namespace EmsApi.Tests.SpecFlow
         public void WhenIRunGetAnalyticSetAndEnterAGroupIdOfAndASetNameOf( string p0, string p1 )
         {
             m_result.Object = m_api.AnalyticSets.GetAnalyticSet( p0, p1 );
+        }
+
+        [When( @"I run SearchAnalyticSetTree and enter a search string of '(.*)'" )]
+        public void WhenIRunSearchAnalyticSetTreeAndEnterASearchStringOf( string p0 )
+        {
+            // SearchAnalyticSetTree returns an array of AnalyticSet
+            m_result.Enumerable = m_api.AnalyticSets.SearchAnalyticSetTree( p0 );
+        }
+
+        [Then( @"One or more AnalyticSet objects are returned" )]
+        public void ThenOneOrMoreAnalyticSetObjectsAreReturned()
+        {
+            m_result.Enumerable.ShouldNotBeNullOrEmptyOfType<AnalyticSet>();
+        }
+
+        [Then( @"It contains an analytic set with the name '(.*)'" )]
+        public void ThenItContainsAnAnalyticSetWithTheName( string p0 )
+        {
+            // m_result.Enumerable is IEnumerable<object> (covariant) with AnalyticSet elements
+            m_result.Enumerable.Should().Contain( o => ((AnalyticSet)o).Name == p0 );
         }
 
         [Then( @"An AnalyticSetGroup object is returned" )]
