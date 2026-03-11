@@ -18,6 +18,7 @@
     <Compile Include="Column.cs" />
     <Compile Include="EmsApi.Dto.V2.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="WasabiRegistrationAudit.cs" />
   </ItemGroup>
 
   <!-- 

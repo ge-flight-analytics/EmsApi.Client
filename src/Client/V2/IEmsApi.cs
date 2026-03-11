@@ -85,7 +85,7 @@ namespace EmsApi.Client.V2
         /// <summary>
         /// Returns the list of operators the user has access to in their security context.
         /// </summary>
-        [Get( "/v2/ems-systems/1/assets/aircraftByOperator" )]
+        [Get( "/v2/ems-systems/1/assets/operators/{operatorId}/aircraft" )]
         Task<IEnumerable<Aircraft>> GetAircraftByOperatorId( int operatorId, [Property] CallContext context = null );
 
         /// <summary>
@@ -105,6 +105,18 @@ namespace EmsApi.Client.V2
         /// </summary>
         [Get( "/v2/ems-systems/1/wasabi/config" )]
         Task<object> GetOperatorConfigJson( string operatorId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns registration audit information for the specified operator.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/wasabi/registration-audit/{operatorId}" )]
+        Task<WasabiRegistrationAuditResponse> GetWasabiRegistrationAudit( string operatorId, [Property] CallContext context = null );
+
+        /// <summary>
+        /// Returns the artifact PAT (Personal Access Token) for Wasabi for the specified EMS system.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/wasabi/artifact-pat" )]
+        Task<string> GetWasabiArtifactPat( [Property] CallContext context = null );
 
         /// <summary>
         /// Sets the config JSON for the given operator.

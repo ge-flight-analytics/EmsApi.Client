@@ -5154,7 +5154,7 @@
         "deprecated": false
       }
     },
-    "/v2/ems-systems/{emsSystemId}/assets/aircraftByOperator": {
+    "/v2/ems-systems/{emsSystemId}/assets/operators/{operatorId}/aircraft": {
       "get": {
         "tags": [
           "Asset APIs"
