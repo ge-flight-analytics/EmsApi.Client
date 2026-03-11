@@ -107,6 +107,12 @@ namespace EmsApi.Client.V2
         Task<object> GetOperatorConfigJson( string operatorId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Sets the config JSON for the given operator.
+        /// </summary>
+        [Post( "/v2/ems-systems/1/wasabi/config" )]
+        Task SetOperatorConfigJson( string operatorId, [Body] HttpContent jsonContent, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns registration audit information for the specified operator.
         /// </summary>
         [Get( "/v2/ems-systems/1/wasabi/registration-audit/{operatorId}" )]
@@ -117,12 +123,6 @@ namespace EmsApi.Client.V2
         /// </summary>
         [Get( "/v2/ems-systems/1/wasabi/artifact-pat" )]
         Task<string> GetWasabiArtifactPat( [Property] CallContext context = null );
-
-        /// <summary>
-        /// Sets the config JSON for the given operator.
-        /// </summary>
-        [Post( "/v2/ems-systems/1/wasabi/config" )]
-        Task SetOperatorConfigJson( string operatorId, [Body] HttpContent jsonContent, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information for a fleet on the system.

@@ -10,16 +10,19 @@ namespace EmsApi.Client.V2.Access
     public class WasabiAccess : RouteAccess
     {
         /// <summary>
-        /// Returns the list of fleets the user has access to in their security context.
+        /// Returns the the operator authentication JSON.
         /// </summary>
-        /// <param name="context">
-        /// The optional call context to include.
+        /// <param name="operatorId">
+        /// The unique identifier of the operator.
         /// </param>
         public virtual Task<object> GetOperatorAuthJsonAsync( string operatorId, CallContext context = null )
         {
             return CallApiTask( api => api.GetOperatorAuthJson( operatorId, context ) );
         }
 
+        /// <summary> Sets the operator authentication JSON.
+        /// </summary> <param name="operatorId"> The unique identifier of the operator. </param>
+        /// <param name="auth">The authentication information to set.</param> 
         public virtual Task SetOperatorAuthJsonAsync( string operatorId, WasabiAuthRequest auth, CallContext context = null )
         {
             return CallApiTask( api => api.SetOperatorAuthJson( operatorId, auth, context ) );
@@ -74,7 +77,6 @@ namespace EmsApi.Client.V2.Access
 
         public virtual void SetOperatorAuthJson( string operatorId, WasabiAuthRequest auth, CallContext context = null )
         {
-            // fire-and-wait to propagate errors
             SetOperatorAuthJsonAsync( operatorId, auth, context ).Wait();
         }
 
@@ -95,7 +97,6 @@ namespace EmsApi.Client.V2.Access
 
         public virtual void SetOperatorConfigJson( string operatorId, string jsonText, CallContext context = null )
         {
-            // fire-and-wait to propagate errors
             SetOperatorConfigJsonAsync( operatorId, jsonText, context ).Wait();
         }
     }

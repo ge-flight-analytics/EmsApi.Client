@@ -13055,7 +13055,7 @@
       }
     },
     "Adi.Ems.Web.Api.V2.Dto.Asset.Fleet": {
-      "description": "Represents a 'Fleet' in the EMS system.\r\n            A fleet in this sense is a group of aircraft using the same configuration.\r\n            There may be several fleets representing a particular model of aircraft, each showing a specific configuration\r\n            of the airframe.",
+      "description": "Represents a 'Fleet' in the EMS system.\r\n",
       "type": "object",
       "properties": {
         "id": {
