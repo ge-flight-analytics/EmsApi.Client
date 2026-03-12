@@ -83,7 +83,7 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<Operator>> GetOperators( [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns the list of operators the user has access to in their security context.
+        /// Returns the list of aircraft the user has access to in their security context by given operator ID.
         /// </summary>
         [Get( "/v2/ems-systems/1/assets/operators/{operatorId}/aircraft" )]
         Task<IEnumerable<Aircraft>> GetAircraftByOperatorId( int operatorId, [Property] CallContext context = null );
