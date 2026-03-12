@@ -69,6 +69,8 @@ namespace EmsApi.Client.V2
         /// </summary>
         public AssetsAccess Assets { get; set; }
 
+        public WasabiAccess Wasabi { get; set; }
+
         /// <summary>
         /// Access to trajectory routes.
         /// </summary>
@@ -246,6 +248,7 @@ namespace EmsApi.Client.V2
             EmsSystem = InitializeAccessClass<EmsSystemAccess>();
             EmsSecurables = InitializeAccessClass<EmsSecurablesAccess>();
             Assets = InitializeAccessClass<AssetsAccess>();
+            Wasabi = InitializeAccessClass<WasabiAccess>();
             Trajectories = InitializeAccessClass<TrajectoriesAccess>();
             Profiles = InitializeAccessClass<ProfilesAccess>();
 #pragma warning disable CS0618 // Type or member is obsolete
