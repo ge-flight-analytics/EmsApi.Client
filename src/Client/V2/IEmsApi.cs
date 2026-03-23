@@ -89,40 +89,46 @@ namespace EmsApi.Client.V2
         Task<IEnumerable<Aircraft>> GetAircraftByOperatorId( int operatorId, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns the security JSON for the given operator.
+        /// Returns the blob SAS URL for the given operator.
         /// </summary>
-        [Get( "/v2/ems-systems/1/wasabi/auth" )]
-        Task<object> GetOperatorAuthJson( string operatorId, [Property] CallContext context = null );
+        [Get( "/v2/ems-systems/1/efd/blob-sas/{operatorId}" )]
+        Task<string> GetOperatorBlobSasUrl( string operatorId, [Property] CallContext context = null );
 
         /// <summary>
-        /// Sets the security JSON for the given operator.
+        /// Returns the operators authorized for EFD access on the given EMS system.
         /// </summary>
-        [Post( "/v2/ems-systems/1/wasabi/auth" )]
-        Task SetOperatorAuthJson( string operatorId, [Body] WasabiAuthRequest auth, [Property] CallContext context = null );
+        [Get( "/v2/ems-systems/1/efd/operators" )]
+        Task<IEnumerable<Operator>> GetAuthorizedOperators( [Property] CallContext context = null );
+
+        /// <summary>
+        /// Sets the blob SAS URL for the given operator.
+        /// </summary>
+        [Post( "/v2/ems-systems/1/efd/blob-sas/{operatorId}" )]
+        Task SetOperatorBlobSasUrl( string operatorId, [Body] HttpContent blobSasUrl, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns the config JSON for the given operator.
         /// </summary>
-        [Get( "/v2/ems-systems/1/wasabi/config" )]
+        [Get( "/v2/ems-systems/1/efd/config" )]
         Task<object> GetOperatorConfigJson( string operatorId, [Property] CallContext context = null );
 
         /// <summary>
         /// Sets the config JSON for the given operator.
         /// </summary>
-        [Post( "/v2/ems-systems/1/wasabi/config" )]
+        [Post( "/v2/ems-systems/1/efd/config" )]
         Task SetOperatorConfigJson( string operatorId, [Body] HttpContent jsonContent, [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns registration audit information for the specified operator.
+        /// Returns the artifact PAT (Personal Access Token) for EFD for the specified EMS system.
         /// </summary>
-        [Get( "/v2/ems-systems/1/wasabi/registration-audit/{operatorId}" )]
-        Task<WasabiRegistrationAuditResponse> GetWasabiRegistrationAudit( string operatorId, [Property] CallContext context = null );
+        [Get( "/v2/ems-systems/1/efd/artifact-pat" )]
+        Task<string> GetEfdArtifactPat( [Property] CallContext context = null );
 
         /// <summary>
-        /// Returns the artifact PAT (Personal Access Token) for Wasabi for the specified EMS system.
+        /// Returns members of the configured fleet AD group for a given operator.
         /// </summary>
-        [Get( "/v2/ems-systems/1/wasabi/artifact-pat" )]
-        Task<string> GetWasabiArtifactPat( [Property] CallContext context = null );
+        [Get( "/v2/ems-systems/1/efd/fleet-group-members/{operatorId}" )]
+        Task<EfdFleetGroupMembersResponse> GetFleetGroupMembers( string operatorId, [Property] CallContext context = null );
 
         /// <summary>
         /// Returns information for a fleet on the system.
