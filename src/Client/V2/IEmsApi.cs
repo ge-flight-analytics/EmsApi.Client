@@ -131,6 +131,12 @@ namespace EmsApi.Client.V2
         Task<EfdFleetGroupMembersResponse> GetFleetGroupMembers( string operatorId, [Property] CallContext context = null );
 
         /// <summary>
+        /// Returns the authentication response for the EFD client and audits the registration.
+        /// </summary>
+        [Get( "/v2/ems-systems/1/efd/register/{operatorId}" )]
+        Task<EfdRegistrationResponse> GetRegisterInfoByOpId( string operatorId, string machineName, [Property] CallContext context = null );
+
+        /// <summary>
         /// Returns information for a fleet on the system.
         /// </summary>
         /// <param name="fleetId">
