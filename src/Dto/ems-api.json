@@ -2834,6 +2834,71 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/{emsSystemId}/efd/register/{operatorId}": {
+      "get": {
+        "tags": [
+          "EFD APIs"
+        ],
+        "summary": "Returns the authentication response (SP creds.) to the EFD client and audits the registration.",
+        "operationId": "Efd_GetRegisterInfoByOpId",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "operatorId",
+            "in": "path",
+            "description": "The FDW operator id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "machineName",
+            "in": "query",
+            "description": "Client machine name.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EfdRegistrationResponse"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "404": {
+            "description": "Authentication info is not found for the given operator.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/alerts/definitions": {
       "get": {
         "tags": [
@@ -12183,6 +12248,46 @@
           "type": "string"
         },
         "email": {
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.EfdRegistrationResponse": {
+      "description": "Authentication response returned to the EFD client during registration.",
+      "type": "object",
+      "properties": {
+        "regConfig": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.EfdRegistrationConfig",
+          "description": "The Azure storage configuration."
+        },
+        "message": {
+          "description": "The success message.",
+          "type": "string"
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.EfdRegistrationConfig": {
+      "description": "Registration configuration returned to the EFD client.",
+      "type": "object",
+      "properties": {
+        "machineGuid": {
+          "description": "A stable GUID assigned per unique machine name for this operator.",
+          "type": "string"
+        },
+        "configBlobUrl": {
+          "description": "The URL of the operator config blob.",
+          "type": "string"
+        },
+        "keyvaultUrl": {
+          "description": "The Key Vault URL for this operator.",
+          "type": "string"
+        },
+        "keyvaultSecretName": {
+          "description": "The Key Vault secret name holding the operator auth credentials.",
+          "type": "string"
+        },
+        "blobSasUrl": {
+          "description": "A SAS URL granting access to the operator's config blob.",
           "type": "string"
         }
       }

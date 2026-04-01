@@ -68,6 +68,17 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Returns the authentication response for the EFD client and audits the registration.
+        /// </summary>
+        /// <param name="operatorId">The operator identifier.</param>
+        /// <param name="machineName">Client machine name.</param>
+        /// <param name="context">Optional call context.</param>
+        public virtual Task<EfdRegistrationResponse> GetRegisterInfoByOpIdAsync( string operatorId, string machineName, CallContext context = null )
+        {
+            return CallApiTask( api => api.GetRegisterInfoByOpId( operatorId, machineName, context ) );
+        }
+
+        /// <summary>
         /// Sets the config JSON for the given operator.
         /// </summary>
         /// <param name="operatorId">The operator identifier.</param>
