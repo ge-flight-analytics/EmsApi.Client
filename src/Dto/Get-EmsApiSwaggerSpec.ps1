@@ -17,18 +17,19 @@ param
     [string] $OutFile
 )
 
-# Authenticate
-$tokenUri = "{0}/token" -f $Endpoint
-$passConverted = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password))
-$requestBody = "grant_type=password&username={0}&password={1}" -f $UserName, $passConverted
-$token = Invoke-RestMethod -Uri $tokenUri -Method Post -Body $requestBody
+
+$tokenUri = "{0}/api/token" -f $Endpoint  
+$passConverted = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password))  
+$body = @{ grant_type = "password"; username = $UserName; password = $passConverted }
+$response = Invoke-RestMethod -Uri $tokenUri -Method Post -Body $body
+$token = $response.access_token
 
 try
 {
     # Return the raw swagger json (we write it to a file to make sure Powershell
     # doesn't try to parse it into a PSObject).
-    $auth = @{ Authorization = "Bearer $($token.access_token)" }
-    $swaggerUri = "{0}/v2/swagger" -f $Endpoint
+    $auth = @{ Authorization = "Bearer $($token)" }
+    $swaggerUri = "{0}/api/v2/swagger" -f $Endpoint
 
     $tempFile = $null
     if( [string]::IsNullOrEmpty( $OutFile ) )

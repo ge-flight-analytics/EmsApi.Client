@@ -179,6 +179,33 @@ namespace EmsApi.Client.V2.Access
         }
 
         /// <summary>
+        /// Retrieves metadata information associated with a list of analytics
+        /// </summary>
+        /// <param name="analyticIds">The list of  analytic IDs. These identifiers are typically obtained from nodes in an analytic group tree.</param>
+        /// <param name="includeMetadata">Metadata flag.</param>
+        /// <param name="context">The optional call context to include.</param>
+        public virtual Task<IEnumerable<AnalyticInfoMultiple>> GetInfoMultipleAsync( IEnumerable<string> analyticIds, bool includeMetadata = false, CallContext context = null )
+        {
+            var analyticIdObjs = new List<AnalyticId>();
+            foreach( var id in analyticIds )
+            {
+                analyticIdObjs.Add( new AnalyticId { Id = id } );
+            }
+            return CallApiTask( api => api.GetAnalyticInfoMultiple( analyticIdObjs.ToArray(), includeMetadata, context ) );
+        }
+
+        /// <summary>
+        /// Retrieves metadata information associated with a list of analytics
+        /// </summary>
+        /// <param name="analyticIds">The list of  analytic IDs. These identifiers are typically obtained from nodes in an analytic group tree.</param>
+        /// <param name="includeMetadata">Metadata flag.</param>
+        /// <param name="context">The optional call context to include.</param>
+        public virtual IEnumerable<AnalyticInfoMultiple> GetInfoMultiple( IEnumerable<string> analyticIds, bool includeMetadata = false, CallContext context = null )
+        {
+            return AccessTaskResult( GetInfoMultipleAsync( analyticIds, includeMetadata, context ) );
+        }
+
+        /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
         /// </summary>
         /// <param name="flightId">
