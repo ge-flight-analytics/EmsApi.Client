@@ -3663,6 +3663,70 @@
         "deprecated": false
       }
     },
+    "/v2/ems-systems/{emsSystemId}/analytics/multiple": {
+      "post": {
+        "tags": [
+          "Analytic APIs"
+        ],
+        "summary": "Retrieves metadata information associated with a list of analytics.",
+        "operationId": "Analytic_GetMultipleAnalyticInfo",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "emsSystemId",
+            "in": "path",
+            "description": "The unique identifier of the system containing the EMS data.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "includeMetadata",
+            "in": "query",
+            "description": "Metadata flag.",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "analyticIds",
+            "in": "body",
+            "description": "The list of  analytic IDs. These identifiers are typically \r\n            obtained from nodes in an analytic group tree.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticIds"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticInfoMultiple"
+            }
+          },
+          "401": {
+            "description": "You do not have access to the requested resource.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          },
+          "503": {
+            "description": "The maximum number of concurrent requests has been reached.",
+            "schema": {
+              "$ref": "#/definitions/Adi.Ems.Web.Api.Model.Error"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics": {
       "get": {
         "tags": [
@@ -12605,6 +12669,46 @@
         "value": {
           "$ref": "#/definitions/System.Object",
           "description": "The metadata value."
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticIds": {
+      "description": "Provides an identifier for multiple analytics.",
+      "required": [
+        "ids"
+      ],
+      "type": "object",
+      "properties": {
+        "ids": {
+          "description": "Array of string identifier of the analytic.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "context": {
+          "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Model.Analytic.AnalyticContext",
+          "description": "Defines the context to get the analytic."
+        }
+      }
+    },
+    "Adi.Ems.Web.Api.V2.Dto.AnalyticInfoMultiple": {
+      "description": "Response for multiple analytics query.",
+      "type": "object",
+      "properties": {
+        "analytics": {
+          "description": "Detailed information on a collection of analytics.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Adi.Ems.Web.Api.V2.Dto.AnalyticInfo"
+          }
+        },
+        "invalidIds": {
+          "description": "The set of analytic IDs whose detailed information could not be loaded.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
