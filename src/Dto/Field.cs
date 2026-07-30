@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -79,11 +81,21 @@ namespace EmsApi.Dto.V2
 
     public partial class Field
     {
-        /// <summary>
-        /// The possible discrete values for the field, if <see cref="Type"/> is <see cref="FieldType.Discrete"/>.
-        /// </summary>
+        /// <summary>  
+        /// The possible discrete values for the field, if <see cref="Type"/> is <see cref="FieldType.Discrete"/>, keys can be of any type.  
+        /// </summary>  
         [JsonProperty( "discreteValues", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore )]
-        public IDictionary<long, string> DiscreteValues { get; set; }
+        public IDictionary<object, string> DiscreteValuesRaw { get; set; }
+
+        /// <summary>  
+        /// The possible discrete values for the field, if <see cref="Type"/> is <see cref="FieldType.Discrete"/>, keyed by numeric ids.  
+        /// </summary>  
+        public IDictionary<long, string> DiscreteValues
+        {
+            get => DiscreteValuesRaw?.ToDictionary(
+                kvp => Convert.ToInt64( kvp.Key ),
+                kvp => kvp.Value );
+        }
 
         /// <summary>
         /// The number edit style for the field, if <see cref="Type"/> is <see cref="FieldType.Number"/>.
