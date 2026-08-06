@@ -1,2 +1,2 @@
-# Release 2.30.4
-* Added defensive conversion to Field.DiscreteValues to skip non‑numeric keys and handle duplicate converted keys, preventing exceptions when DiscreteValuesRaw contains non‑numeric identifiers.
+# Release 2.30.5
+* Fix parameter and response types in GetInfoMultipleAsync and GetInfoMultiple methods.
