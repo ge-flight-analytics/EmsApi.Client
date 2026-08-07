@@ -383,7 +383,7 @@ namespace EmsApi.Client.V2
         /// Metadata flag.
         /// </param>
         [Post( "/v2/ems-systems/1/analytics/multiple" )]
-        Task<IEnumerable<AnalyticInfoMultiple>> GetAnalyticInfoMultiple( [Body] AnalyticId[] analyticIds, bool includeMetadata = false, [Property] CallContext context = null );
+        Task<AnalyticInfoMultiple> GetAnalyticInfoMultiple( [Body] AnalyticIds analyticIds, bool includeMetadata = false, [Property] CallContext context = null );
 
         /// <summary>
         /// Retrieves metadata information associated with an analytic such as a description or units.
