@@ -12845,6 +12845,14 @@
         "alias": {
           "description": "An optional, custom name to associate with the analytic in the query results",
           "type": "string"
+        },
+        "format": {
+          "description": "Value formatting that should be performed on this analytic's values before returning. When set to\r\n            'display' the display value is returned, which for discrete analytics is their text description; when set\r\n            to 'none' the raw (numeric) value is returned without formatting. This overrides the display value setting\r\n            of the query or export for this analytic only. Omission of this property leaves the analytic's values\r\n            formatted according to that query or export setting.\r\n            Note: this currently only applies to analytic export services; it is ignored by analytic queries",
+          "enum": [
+            "none",
+            "display"
+          ],
+          "type": "string"
         }
       }
     },
