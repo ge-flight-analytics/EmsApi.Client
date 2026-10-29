@@ -119,6 +119,34 @@ namespace EmsApi.Dto.V2
         }
 
         /// <summary>
+        /// This optional parameter, when set to true, removes samples where the value is DNE. This defaults to false.
+        /// This only applies when performing queries using "offsetType" and where there is only a single analytic in the "Select" array.
+        /// This can be useful if the client was just going to remove the DNEs themselves as it will reduce the data sent over the wire.
+        /// </summary>
+        public bool? RemoveDNEs
+        {
+            get { return Raw.RemoveDNEs; }
+            set { Raw.RemoveDNEs = value; }
+        }
+
+        /// <summary>
+        /// This optional parameter, when set to true, removes duplicate samples. This defaults to false.
+        /// This removes samples that would not impact a client side linear interpolation of the data. For instance, if the data is 
+        /// A, A, A, A, B, B, B, C, D, E, E, E, E then this would only return A, A, B, B, C, D, E, E. For a given run of a value it
+        /// would return the first and last samples in that run.
+        /// If both this and RemoveDNEs are set, then RemoveDNEs is applied first. This is because the removal of DNEs can create longer
+        /// runs of the same value which can then be further reduced by RemoveDuplicates.
+        /// This only applies when performing queries using "offsetType" and where there is only a single analytic in the "Select" array.
+        /// This can be useful if the client was just going to remove the duplicate samples themselves as it will reduce the data sent
+        /// over the wire.
+        /// </summary>
+        public bool? RemoveDuplicates
+        {
+            get { return Raw.RemoveDuplicates; }
+            set { Raw.RemoveDuplicates = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the raw JSON for the query.
         /// </summary>
         public string Json
