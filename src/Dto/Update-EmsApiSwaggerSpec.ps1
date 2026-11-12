@@ -14,6 +14,13 @@ param
     [SecureString] $Password
 )
 
+$ErrorActionPreference = "Stop"
 Push-Location $PSScriptRoot
-& .\Get-EmsApiSwaggerSpec.ps1 @PSBoundParameters -OutFile "ems-api.json" | Out-Null
-Pop-Location
+try
+{
+    & .\Get-EmsApiSwaggerSpec.ps1 @PSBoundParameters -OutFile "ems-api.json" | Out-Null
+}
+finally
+{
+    Pop-Location
+}

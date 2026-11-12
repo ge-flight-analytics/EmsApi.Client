@@ -10,4 +10,10 @@ When this project is built, the following steps occur:
 * MSBuild builds `EmsApi.Dto.dll` using the included files under `Generated`
 
 In order to update the cached EMS API swagger specification manually:
-* Run `.\Update-EmsApiSwaggerSpec.ps1`
+* From this directory, run:
+  ```powershell
+  $secureString = Read-Host "EMS API password" -AsSecureString
+  .\Update-EmsApiSwaggerSpec.ps1 -Endpoint "https://your-ems-host/api" -UserName "your-user" -Password $secureString
+  ```
+  Bare hostnames are also accepted and default to HTTPS. Use HTTPS directly to
+  avoid HTTP redirects that can discard the token request's POST body.

@@ -12669,6 +12669,10 @@
         "value": {
           "$ref": "#/definitions/System.Object",
           "description": "The metadata value."
+        },
+        "valueType": {
+          "description": "Describes how to interpret the value. This is omitted for literal values. When present with the value\r\n            \"analyticId\", the value is an opaque EMS API analytic ID that must be resolved against a specific flight\r\n            using the flight analytic metadata or query routes (e.g. POST\r\n            v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/metadata or .../analytics/query).",
+          "type": "string"
         }
       }
     },
@@ -13894,6 +13898,10 @@
           "format": "int32",
           "description": "Identifies a subset of rows to return.\r\n            The subset is formed by selecting only the first N rows of the set, where N is a positive integer provided \r\n            as the value of this property. If not specified, all rows are returned",
           "type": "integer"
+        },
+        "description": {
+          "description": "An optional user-defined description for the query, stored as metadata and returned\r\n            in both the start response and the list response for async queries.",
+          "type": "string"
         }
       }
     },
