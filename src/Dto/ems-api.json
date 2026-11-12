@@ -13897,7 +13897,7 @@
         "top": {
           "format": "int32",
           "description": "Identifies a subset of rows to return.\r\n            The subset is formed by selecting only the first N rows of the set, where N is a positive integer provided \r\n            as the value of this property. If not specified, all rows are returned",
-          "type": "integer" 
+          "type": "integer"
         }
       }
     },
