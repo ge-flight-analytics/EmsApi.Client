@@ -18,16 +18,39 @@ param
 )
 
 $apiEndpoint = $Endpoint.TrimEnd( "/" )
+if( $apiEndpoint -notmatch "^https?://" )
+{
+    $apiEndpoint = "https://{0}" -f $apiEndpoint
+}
 if( -not $apiEndpoint.EndsWith( "/api" ) )
 {
     $apiEndpoint = "{0}/api" -f $apiEndpoint
 }
 
 $tokenUri = "{0}/token" -f $apiEndpoint
-$passConverted = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password))
-$body = @{ grant_type = "password"; username = $UserName; password = $passConverted }
-$response = Invoke-RestMethod -Uri $tokenUri -Method Post -Body $body -ErrorAction Stop
+$passwordPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
+try
+{
+    $body = @{
+        grant_type = "password"
+        username = $UserName
+        password = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($passwordPointer)
+    }
+    $response = Invoke-RestMethod -Uri $tokenUri -Method Post -Body $body -ContentType "application/x-www-form-urlencoded" -ErrorAction Stop
+}
+finally
+{
+    [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($passwordPointer)
+    if( $null -ne $body )
+    {
+        $body.Clear()
+    }
+}
 $token = $response.access_token
+if( [string]::IsNullOrWhiteSpace( $token ) )
+{
+    throw "The token response did not contain an access_token."
+}
 
 try
 {

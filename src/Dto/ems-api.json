@@ -12669,6 +12669,10 @@
         "value": {
           "$ref": "#/definitions/System.Object",
           "description": "The metadata value."
+        },
+        "valueType": {
+          "description": "Describes how to interpret the value. This is omitted for literal values. When present with the value\r\n            \"analyticId\", the value is an opaque EMS API analytic ID that must be resolved against a specific flight\r\n            using the flight analytic metadata or query routes (e.g. POST\r\n            v2/ems-systems/{emsSystemId}/flights/{flightId}/analytics/metadata or .../analytics/query).",
+          "type": "string"
         }
       }
     },
